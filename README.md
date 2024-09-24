@@ -6,6 +6,12 @@
 
 **Mechanical Engineering Toolkit** is a professional engineering calculator designed for students, researchers, and industrial engineers. This toolkit offers a wide range of engineering equations, formulas, calculation tools, instructions, and reference material. Users can easily calculate results by selecting a formula and entering the required variables.
 
+<p align="center">
+  <img src="./doc_images/1.webp" alt="Image 1" width="200"/>
+  <img src="./doc_images/2.webp" alt="Image 2" width="200"/>
+  <img src="./doc_images/3.webp" alt="Image 3" width="200"/>
+</p>
+
 ### ✨ Features:
 
 - Access a comprehensive collection of engineering formulas and calculations.
