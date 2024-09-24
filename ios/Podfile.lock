@@ -14,8 +14,6 @@ PODS:
     - Google-Mobile-Ads-SDK (~> 11.2.0)
     - webview_flutter_wkwebview
   - GoogleUserMessagingPlatform (2.6.0)
-  - in_app_review (0.2.0):
-    - Flutter
   - launch_review (0.0.1):
     - Flutter
   - package_info_plus (0.4.5):
@@ -36,7 +34,6 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_mobile_ads (from `.symlinks/plugins/google_mobile_ads/ios`)
-  - in_app_review (from `.symlinks/plugins/in_app_review/ios`)
   - launch_review (from `.symlinks/plugins/launch_review/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - share (from `.symlinks/plugins/share/ios`)
@@ -61,8 +58,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttertoast/ios"
   google_mobile_ads:
     :path: ".symlinks/plugins/google_mobile_ads/ios"
-  in_app_review:
-    :path: ".symlinks/plugins/in_app_review/ios"
   launch_review:
     :path: ".symlinks/plugins/launch_review/ios"
   package_info_plus:
@@ -84,7 +79,6 @@ SPEC CHECKSUMS:
   Google-Mobile-Ads-SDK: 5a6d005a6cb5b5e8f4c7b69ca05cdea79c181139
   google_mobile_ads: 9379c80fdfa9988fb0e105a407890ff8deb3cf86
   GoogleUserMessagingPlatform: 0c3a08353e53ce8c2feab7addd0b652cde522450
-  in_app_review: 4a97249f7a2f539a0f294c2d9196b7fe35e49541
   launch_review: 75d5a956ba8eaa493e9c9d4bf4c05e505e8d5ed0
   package_info_plus: 58f0028419748fad15bf008b270aaa8e54380b1c
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
