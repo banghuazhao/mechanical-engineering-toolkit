@@ -81,12 +81,12 @@ The circumferential stress σ1 is referred to as the hoop stress.
 The stress parallel to the axis of the tank is called the longitudinal stress or the axial stress σ2.
 The formulas for σ1 and σ2 are as following. 
 Where p is the pressure, r is the radius of the spherical and t is the thickness of the thin wall.
-""", style: Theme.of(context).textTheme.bodyText2),
+""", style: Theme.of(context).textTheme.bodyMedium),
                         Center(
                           child: Math.tex(
                             r'''\sigma_1 = \frac{pr}{t} \quad \sigma_2= \frac{pr}{2t} ''',
                             mathStyle: MathStyle.display,
-                            textStyle: Theme.of(context).textTheme.subtitle1,
+                            textStyle: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                       ],

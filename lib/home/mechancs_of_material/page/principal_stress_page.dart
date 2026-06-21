@@ -74,14 +74,14 @@ class _PrincipalStressPageState extends State<PrincipalStressPage> {
                         ),
                         Text("""
 The principal stresses σ1 and σ2 (The maximum and minimum normal stresses) are:
-""", style: Theme.of(context).textTheme.bodyText2),
+""", style: Theme.of(context).textTheme.bodyMedium),
                         Center(
                           child: Math.tex(
                             r'''
                           \sigma_{1,2} = \frac{\sigma_x + \sigma_y}{2} \pm \sqrt{(\frac{\sigma_x - \sigma_y}{2})^2 + \tau_{xy}^2}
                           ''',
                             mathStyle: MathStyle.display,
-                            textStyle: Theme.of(context).textTheme.subtitle1,
+                            textStyle: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                       ],

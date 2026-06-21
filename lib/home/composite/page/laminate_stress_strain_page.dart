@@ -95,7 +95,7 @@ class _LaminateStressStrainPageState extends State<LaminateStressStrainPage> {
                         Text("""
 Calculate the stress or strain of a laminate.
 The constitutive relations on the material coordinate can be expressed by:""",
-                            style: Theme.of(context).textTheme.bodyText2),
+                            style: Theme.of(context).textTheme.bodyMedium),
                         const SizedBox(
                           height: 12,
                         ),

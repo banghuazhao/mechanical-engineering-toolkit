@@ -21,7 +21,7 @@ class ResultPlaneComplianceMatrix extends StatelessWidget {
           ListTile(
             title: Text(
               S.of(context).Compliance_Matrix_S,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           StaggeredGridView.countBuilder(
@@ -39,7 +39,7 @@ class ResultPlaneComplianceMatrix extends StatelessWidget {
                     child: Center(
                       child: Text(
                         value == 0 ? "0" : value.toStringAsExponential(precs.precision),
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
                   ),

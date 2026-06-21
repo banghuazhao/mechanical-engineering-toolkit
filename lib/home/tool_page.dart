@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:launch_review/launch_review.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_favorites.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
@@ -15,10 +15,10 @@ import 'package:mechanical_engineering_toolkit/more/more_row.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../swiftcomp/lib/more/tool_setting_page.dart';
+
 import 'favorites.dart';
 
 class ToolPage extends StatefulWidget {
@@ -38,7 +38,7 @@ class _ToolPageState extends State<ToolPage> {
     super.initState();
 
     AppOpenAdManager appOpenAdManager = AppOpenAdManager()..loadAd();
-    WidgetsBinding.instance!.addObserver(AppLifecycleReactor(appOpenAdManager: appOpenAdManager));
+    WidgetsBinding.instance.addObserver(AppLifecycleReactor(appOpenAdManager: appOpenAdManager));
   }
 
   @override
@@ -169,8 +169,8 @@ class _ToolPageState extends State<ToolPage> {
                 );
 
                 var url = params.toString();
-                if (await canLaunch(url)) {
-                  await launch(url);
+                if (await canLaunchUrl(Uri.parse(url))) {
+                  await launchUrl(Uri.parse(url));
                 } else {
                   throw 'Could not launch $url';
                 }
@@ -179,10 +179,11 @@ class _ToolPageState extends State<ToolPage> {
             MoreRow(
               title: S.of(context).RatethisApp,
               leadingIcon: Icons.thumb_up_rounded,
-              onTap: () {
-                LaunchReview.launch(
-                    androidAppId: "com.appsbay.mechanical_engineering_toolkit",
-                    iOSAppId: "1601099443");
+              onTap: () async {
+                final InAppReview inAppReview = InAppReview.instance;
+                if (await inAppReview.isAvailable()) {
+                  await inAppReview.openStoreListing();
+                }
               },
             ),
             MoreRow(
@@ -308,7 +309,7 @@ class ToolRowWidget extends StatelessWidget {
             Expanded(
               child: Text(
                 model.title,
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
             IconButton(

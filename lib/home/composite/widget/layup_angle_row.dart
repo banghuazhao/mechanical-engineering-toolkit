@@ -40,7 +40,7 @@ class _LayupAngleRowState extends State<LayupAngleRow> {
           ListTile(
             title: Text(
               widget.title,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           Padding(

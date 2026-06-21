@@ -33,7 +33,7 @@ class _ForceRowState extends State<ForceRow> {
           ListTile(
             title: Text(
               S.of(context).Force,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           Padding(

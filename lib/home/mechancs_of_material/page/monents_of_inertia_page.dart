@@ -78,7 +78,7 @@ Ix: Moments of inertia with respect to the x axis
 Iy: Moments of inertia with respect to the y axis
 Ixy: Product of inertia with respect to the x and y axe
 Ip = Ix + Iy = Polar moment of inertia with respect to the origin of the x and y axes
-""", style: Theme.of(context).textTheme.bodyText2),
+""", style: Theme.of(context).textTheme.bodyMedium),
                         buildMathFormula(context),
                       ],
                     ))
@@ -148,7 +148,7 @@ Ip = Ix + Iy = Polar moment of inertia with respect to the origin of the x and y
       child: Math.tex(
         mathFormula,
         mathStyle: MathStyle.display,
-        textStyle: Theme.of(context).textTheme.subtitle1,
+        textStyle: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }

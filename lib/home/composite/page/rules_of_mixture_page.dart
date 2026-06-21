@@ -76,7 +76,7 @@ Calculate the effective stiffness matrix and engineering constants for different
 1. Voigt Rules of Mixture (Strain field is constant)
 2. Reuss Rules of Mixture (Stress field is constant)
 3. Hybrid Rules of Mixture (A subset of local stress components along with a complementary subset of local strain components are constant)
-""", style: Theme.of(context).textTheme.bodyText2),
+""", style: Theme.of(context).textTheme.bodyMedium),
                       ],
                     ))
                   ][index];

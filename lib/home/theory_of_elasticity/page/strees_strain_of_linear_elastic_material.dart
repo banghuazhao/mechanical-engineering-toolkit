@@ -7,7 +7,7 @@ import 'package:mechanical_engineering_toolkit/home/composite/model/material_mod
 import 'package:mechanical_engineering_toolkit/home/composite/model/mechanical_tensor_model.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/page/strees_strain_of_linear_elastic_material_result.dart';
-import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/widget/LinearElasticStressStrainRow.dart';
+import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/widget/linear_elastic_stress_strain_row.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/widget/material_input_row.dart';
 
 class StressStrainLinearElasticPage extends StatefulWidget {
@@ -101,7 +101,7 @@ class _StressStrainLinearElasticPageState
                       children: [
                         Text("""
 Calculate the stress or strain of linear elastic material:
-""", style: Theme.of(context).textTheme.bodyText2),
+""", style: Theme.of(context).textTheme.bodyMedium),
                         buildMathFormula(context),
                         SizedBox(
                           height: 8,
@@ -121,7 +121,7 @@ Where:
 G = E/(2*(1+ν))
 E = Young’s modulus
 ν = Poisson’s ratio
-""", style: Theme.of(context).textTheme.bodyText2);
+""", style: Theme.of(context).textTheme.bodyMedium);
     } else if (dropValue == S.of(context).Transversely_isotropic_material) {
       return Text("""
 Where:
@@ -129,7 +129,7 @@ G23 = E2/(2*(1+ν23))
 E_i = Young’s modulus in the i-direction
 G_ij = Shear modulus in the i-j plane
 ν_ij = Poisson’s ratio measuring contraction in the j-direction due to uniaxial loading in the i-direction
-""", style: Theme.of(context).textTheme.bodyText2);
+""", style: Theme.of(context).textTheme.bodyMedium);
     } else if (dropValue == S.of(context).Orthotropic_material) {
       return Text("""
 Where:

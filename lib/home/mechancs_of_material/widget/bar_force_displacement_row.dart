@@ -47,7 +47,7 @@ class _LaminaContantsRowState extends State<BarForceDisplacementRow> {
             ListTile(
               title: Text(
                 S.of(context).Inputs,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             Padding(

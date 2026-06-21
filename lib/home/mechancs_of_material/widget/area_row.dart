@@ -35,7 +35,7 @@ class _AreaRowState extends State<AreaRow> {
           ListTile(
             title: Text(
               S.of(context).Area,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           Padding(

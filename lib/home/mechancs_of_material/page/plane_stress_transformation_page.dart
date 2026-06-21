@@ -96,7 +96,7 @@ class _PlaneStressTransformationPageState
                         ),
                         Text("""
 The transformation equations for plane stress are:
-""", style: Theme.of(context).textTheme.bodyText2),
+""", style: Theme.of(context).textTheme.bodyMedium),
                         Center(
                           child: Math.tex(
                             r'''\begin{aligned}
@@ -106,7 +106,7 @@ The transformation equations for plane stress are:
                           \end{aligned}
                           ''',
                             mathStyle: MathStyle.display,
-                            textStyle: Theme.of(context).textTheme.subtitle2,
+                            textStyle: Theme.of(context).textTheme.titleSmall,
                           ),
                         ),
                       ],

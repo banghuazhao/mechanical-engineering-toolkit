@@ -18,7 +18,7 @@ class DescriptionItem extends StatelessWidget {
             ListTile(
               title: Text(
                 S.of(context).Description,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             Padding(

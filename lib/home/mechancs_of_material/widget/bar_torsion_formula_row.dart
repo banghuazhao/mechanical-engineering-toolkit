@@ -45,7 +45,7 @@ class _BarTorsionFormulaRowState extends State<BarTorsionFormulaRow> {
             ListTile(
               title: Text(
                 S.of(context).Inputs,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             Padding(

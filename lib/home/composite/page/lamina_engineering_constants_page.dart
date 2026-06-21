@@ -66,7 +66,7 @@ class _LaminaEngineeringConstantsPageState
                         Text("""
 Calculate the engineering of a lamina that is transversely isotropic for different layup angles.
 The plane stress-strain relations on the material coordinate can be expressed by:""",
-                            style: Theme.of(context).textTheme.bodyText2),
+                            style: Theme.of(context).textTheme.bodyMedium),
                         const SizedBox(
                           height: 12,
                         ),
@@ -86,7 +86,7 @@ The plane stress-strain relations on the material coordinate can be expressed by
   \sigma_{12}
 \end{Bmatrix}''',
                             mathStyle: MathStyle.display,
-                            textStyle: Theme.of(context).textTheme.subtitle1,
+                            textStyle: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                       ],

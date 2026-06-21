@@ -35,7 +35,7 @@ class _PlaneStressRowState extends State<PlaneStressRow> {
             ListTile(
               title: Text(
                 S.of(context).Plane_Stresses,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             Padding(

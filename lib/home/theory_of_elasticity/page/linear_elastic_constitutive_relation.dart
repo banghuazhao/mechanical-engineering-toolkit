@@ -82,7 +82,7 @@ class _LinearElasticConstitutiveRelationPageState
                       children: [
                         Text("""
 Calculate the constitutive relation of linear elastic material by engineering constants:
-""", style: Theme.of(context).textTheme.bodyText2),
+""", style: Theme.of(context).textTheme.bodyMedium),
                         buildMathFormula(context),
                         SizedBox(
                           height: 8,
@@ -102,7 +102,7 @@ Where:
 G = E/(2*(1+ν))
 E = Young’s modulus
 ν = Poisson’s ratio
-""", style: Theme.of(context).textTheme.bodyText2);
+""", style: Theme.of(context).textTheme.bodyMedium);
     } else if (dropValue == S.of(context).Transversely_isotropic_material) {
       return Text("""
 Where:
@@ -110,7 +110,7 @@ G23 = E2/(2*(1+ν23))
 E_i = Young’s modulus in the i-direction
 G_ij = Shear modulus in the i-j plane
 ν_ij = Poisson’s ratio measuring contraction in the j-direction due to uniaxial loading in the i-direction
-""", style: Theme.of(context).textTheme.bodyText2);
+""", style: Theme.of(context).textTheme.bodyMedium);
     } else if (dropValue == S.of(context).Orthotropic_material) {
       return Text("""
 Where:

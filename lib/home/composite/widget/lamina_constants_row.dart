@@ -51,7 +51,7 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
             ListTile(
               title: Text(
                 S.of(context).Lamina_Constants,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             Padding(

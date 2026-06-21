@@ -36,7 +36,7 @@ class _LayupSequenceRowState extends State<LayupSequenceRow> {
           ListTile(
             title: Text(
               S.of(context).Layup_Sequence,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           Padding(

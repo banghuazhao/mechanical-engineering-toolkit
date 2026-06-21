@@ -124,7 +124,7 @@ class MoreAppPage extends StatelessWidget {
         novels_hub,
         nasa_lover,
         MoreAppItem(Image.asset("images/app_icons/appstore.png"), S.of(context).MoreApps, () {
-          launch("https://apps.apple.com/us/developer/%E7%92%90%E7%92%98-%E6%9D%A8/id1599035519");
+          launchUrl(Uri.parse("https://apps.apple.com/us/developer/%E7%92%90%E7%92%98-%E6%9D%A8/id1599035519"));
         })
       ];
     } else {
@@ -144,7 +144,7 @@ class MoreAppPage extends StatelessWidget {
         novels_hub,
         nasa_lover,
         MoreAppItem(Image.asset("images/app_icons/googleplay.png"), S.of(context).MoreApps, () {
-          launch("https://play.google.com/store/apps/developer?id=Lulin+Yang");
+          launchUrl(Uri.parse("https://play.google.com/store/apps/developer?id=Lulin+Yang"));
         })
       ];
     }
@@ -171,24 +171,26 @@ class MoreAppItem {
 }
 
 class MoreAppsRow extends StatelessWidget {
-  late Image appIcon;
-  late IconData trailingIcon;
-  late String title;
-  late void Function() onTap;
+  final Image appIcon;
+  final IconData trailingIcon;
+  final String title;
+  final void Function() onTap;
 
-  MoreAppsRow(
-      {Key? key,
-      this.trailingIcon = Icons.chevron_right_rounded,
-      required this.appIcon,
-      required this.title,
-      required this.onTap})
-      : super(key: key);
+  const MoreAppsRow({
+    Key? key,
+    this.trailingIcon = Icons.chevron_right_rounded,
+    required this.appIcon,
+    required this.title,
+    required this.onTap,
+  }) : super(key: key);
 
-  MoreAppsRow.factory(MoreAppItem moreAppItem) {
-    appIcon = moreAppItem.appIcon;
-    trailingIcon = Icons.chevron_right_rounded;
-    title = moreAppItem.title;
-    onTap = moreAppItem.onTap;
+  factory MoreAppsRow.factory(MoreAppItem moreAppItem) {
+    return MoreAppsRow(
+      appIcon: moreAppItem.appIcon,
+      trailingIcon: Icons.chevron_right_rounded,
+      title: moreAppItem.title,
+      onTap: moreAppItem.onTap,
+    );
   }
 
   @override

@@ -36,7 +36,7 @@ class _VolumeFractionRowState extends State<VolumeFractionRow> {
           ListTile(
             title: Text(
               "Fiber Volume Fraction",
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           Padding(

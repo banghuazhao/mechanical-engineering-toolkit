@@ -74,7 +74,7 @@ class _BeamFlexureFormulaPageState extends State<BeamFlexureFormulaPage> {
                         ),
                         Text("""
 The flexure formula of beam: The stresses on the cross section are directly proportional to the bending moment M and inversely proportional to the moment of inertia I of the cross section. Also, the stresses vary linearly with the distance y from the neutral axis:""",
-                            style: Theme.of(context).textTheme.bodyText2),
+                            style: Theme.of(context).textTheme.bodyMedium),
                         const SizedBox(
                           height: 12,
                         ),
@@ -82,7 +82,7 @@ The flexure formula of beam: The stresses on the cross section are directly prop
                           child: Math.tex(
                             r'''\sigma_x = -\frac{My}{I}''',
                             mathStyle: MathStyle.display,
-                            textStyle: Theme.of(context).textTheme.subtitle1,
+                            textStyle: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                       ],

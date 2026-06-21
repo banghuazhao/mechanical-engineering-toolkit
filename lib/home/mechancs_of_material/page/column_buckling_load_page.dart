@@ -71,7 +71,7 @@ class _ColumnBucklingLoadPageState extends State<ColumnBucklingLoadPage> {
                       children: [
                         Text("""
 The Euler buckling load in the fundamental mode of a slender column can be calculated by the formula below:
-""", style: Theme.of(context).textTheme.bodyText2),
+""", style: Theme.of(context).textTheme.bodyMedium),
                         buildMathFormula(context),
                         SizedBox(
                           height: 8,
@@ -82,7 +82,7 @@ Pcr: Euler buckling load
 E: Young's modulus
 I: Moment of inertia
 L: Length of the column
-""", style: Theme.of(context).textTheme.bodyText2),
+""", style: Theme.of(context).textTheme.bodyMedium),
                       ],
                     ))
                   ][index];
@@ -115,7 +115,7 @@ L: Length of the column
       child: Math.tex(
         mathFormula,
         mathStyle: MathStyle.display,
-        textStyle: Theme.of(context).textTheme.subtitle1,
+        textStyle: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }

@@ -74,7 +74,7 @@ class _BarTorsionFormulaPageState extends State<BarTorsionFormulaPage> {
                         ),
                         Text("""
 The torsion formula of bar: The maximum shear stress which occurs on the outer surface of a bar is proportional to torsional moment T, bar radius r and inversely proportional to the polar moment of inertia of the cross section Ip.""",
-                            style: Theme.of(context).textTheme.bodyText2),
+                            style: Theme.of(context).textTheme.bodyMedium),
                         const SizedBox(
                           height: 12,
                         ),
@@ -82,7 +82,7 @@ The torsion formula of bar: The maximum shear stress which occurs on the outer s
                           child: Math.tex(
                             r'''\tau_{max} = \frac{Tr}{I_p}''',
                             mathStyle: MathStyle.display,
-                            textStyle: Theme.of(context).textTheme.subtitle1,
+                            textStyle: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                       ],

@@ -93,7 +93,7 @@ v': = dv/dx = Slope of the deflection curve
 δ_max: -v_max = Maximum deflection (positive downward)
 θ_A: v'(0) = Angle of rotation at start A of the beam (positive clockwise)
 θ_B: v'(L) = Angle of rotation at end B of the beam (positive counterclockwise)
-""", style: Theme.of(context).textTheme.bodyText2),
+""", style: Theme.of(context).textTheme.bodyMedium),
                       ],
                     ))
                   ][index];
@@ -140,7 +140,7 @@ v': = dv/dx = Slope of the deflection curve
       child: Math.tex(
         mathFormula,
         mathStyle: MathStyle.display,
-        textStyle: Theme.of(context).textTheme.subtitle1,
+        textStyle: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }

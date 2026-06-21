@@ -75,7 +75,7 @@ class _LaminaEngineeringConstantsPageState extends State<GeneralStressPage> {
                         ),
                         Text("""
 Calculate the stress by force (F) and area (A):""",
-                            style: Theme.of(context).textTheme.bodyText2),
+                            style: Theme.of(context).textTheme.bodyMedium),
                         const SizedBox(
                           height: 12,
                         ),
@@ -83,7 +83,7 @@ Calculate the stress by force (F) and area (A):""",
                           child: Math.tex(
                             r'''\sigma = \frac{F}{A}''',
                             mathStyle: MathStyle.display,
-                            textStyle: Theme.of(context).textTheme.subtitle1,
+                            textStyle: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                       ],

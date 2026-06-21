@@ -79,7 +79,7 @@ class _Laminate3DPropertiesPageState extends State<Laminate3DPropertiesPage> {
                         Text("""
 Calculate the 3D properties of a laminate (Effective Solid Stiffness Matrix and Engineering Constants).
 The constitutive relations of the Effective Solid Stiffness Matrix can be expressed by:""",
-                            style: Theme.of(context).textTheme.bodyText2),
+                            style: Theme.of(context).textTheme.bodyMedium),
                         const SizedBox(
                           height: 12,
                         ),

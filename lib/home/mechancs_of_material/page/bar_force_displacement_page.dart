@@ -76,7 +76,7 @@ class _BarForceDisplacementRelationPageState
                         ),
                         Text("""
 The displacement (δ) of prismatic bars subjected to tensile or compressive centroidal loads is proportional to both the load (F) and the length (L) of the bar, and inversely proportional to the axial rigidity (EA) of the bar:""",
-                            style: Theme.of(context).textTheme.bodyText2),
+                            style: Theme.of(context).textTheme.bodyMedium),
                         const SizedBox(
                           height: 12,
                         ),
@@ -84,7 +84,7 @@ The displacement (δ) of prismatic bars subjected to tensile or compressive cent
                           child: Math.tex(
                             r'''\delta = \frac{FL}{EA}''',
                             mathStyle: MathStyle.display,
-                            textStyle: Theme.of(context).textTheme.subtitle1,
+                            textStyle: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                       ],

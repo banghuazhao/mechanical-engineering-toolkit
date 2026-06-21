@@ -83,11 +83,11 @@ class LinearElasticStressStrainWidget extends StatelessWidget {
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.subtitle1,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
             getValue(value, precs.precision),
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyLarge,
           )
         ]),
       );
@@ -115,7 +115,7 @@ class LinearElasticStressStrainWidget extends StatelessWidget {
           ListTile(
             title: Text(
               isStress ? S.of(context).Result_Stress : S.of(context).Result_Strain,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           Container(

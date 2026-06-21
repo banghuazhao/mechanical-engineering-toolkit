@@ -172,7 +172,7 @@ class ToolRowWidget extends StatelessWidget {
             Expanded(
               child: Text(
                 model.title,
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
             IconButton(

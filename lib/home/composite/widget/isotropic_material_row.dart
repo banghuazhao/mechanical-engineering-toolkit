@@ -51,7 +51,7 @@ class _IsotropicMaterialRowState extends State<IsotropicMaterialRow> {
             ListTile(
               title: Text(
                 widget.title,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             Padding(

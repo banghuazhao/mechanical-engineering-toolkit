@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 class MoreRow extends StatelessWidget {
-  IconData leadingIcon;
-  IconData trailingIcon;
-  String title;
-  void Function() onTap;
+  final IconData leadingIcon;
+  final IconData trailingIcon;
+  final String title;
+  final void Function() onTap;
 
-  MoreRow(
-      {Key? key,
-      this.trailingIcon = Icons.chevron_right_rounded,
-      required this.leadingIcon,
-      required this.title,
-      required this.onTap})
-      : super(key: key);
+  const MoreRow({
+    Key? key,
+    this.trailingIcon = Icons.chevron_right_rounded,
+    required this.leadingIcon,
+    required this.title,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -97,7 +97,7 @@ v: Deflection in the y direction (positive upward)
 v': = dv/dx = Slope of the deflection curve
 δ_B: -v(L) = Deflection at end B of the beam (positive downward)
 θ_B: -v'(L) = Angle of rotation at end B of the beam (positive clockwise)
-""", style: Theme.of(context).textTheme.bodyText2),
+""", style: Theme.of(context).textTheme.bodyMedium),
                       ],
                     ))
                   ][index];
@@ -173,7 +173,7 @@ v': = dv/dx = Slope of the deflection curve
       child: Math.tex(
         mathFormula,
         mathStyle: MathStyle.display,
-        textStyle: Theme.of(context).textTheme.subtitle1,
+        textStyle: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }

@@ -7,10 +7,15 @@ abstract class BeamDeflectionSlope {
 }
 
 class BeamDeflectionSlopeModel extends BeamDeflectionSlope {
+  @override
   double? E;
+  @override
   double? I;
+  @override
   double? L;
+  @override
   double? f;
+  @override
   isValid() {
     if (E != null &&
         E! > 0 &&

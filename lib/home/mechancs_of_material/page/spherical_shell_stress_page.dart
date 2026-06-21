@@ -78,12 +78,12 @@ class _SphericalShellStressPageState extends State<SphericalShellStressPage> {
 The wall of a pressurized thin-walled spherical vessel is in a state of biaxial stress with uniform tensile stresses.
 The tensile stresses σ in the wall can be calculated as following.
 Where p is the pressure, r is the radius of the spherical and t is the thickness of the thin wall.
-""", style: Theme.of(context).textTheme.bodyText2),
+""", style: Theme.of(context).textTheme.bodyMedium),
                         Center(
                           child: Math.tex(
                             r'''\sigma = \frac{pr}{2t}''',
                             mathStyle: MathStyle.display,
-                            textStyle: Theme.of(context).textTheme.subtitle1,
+                            textStyle: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
                       ],
