@@ -185,7 +185,7 @@ class _LaminaEngineeringConstantsResultPageState
           children: [
             Text(
               constant,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             SizedBox(
               height: 8,
@@ -203,16 +203,16 @@ class _LaminaEngineeringConstantsResultPageState
             ]),
             lineTouchData: LineTouchData(enabled: false),
             gridData: FlGridData(show: false),
-            titlesData: FlTitlesData(
+            titlesData: const FlTitlesData(
                 show: false,
-                rightTitles: SideTitles(showTitles: false),
-                topTitles: SideTitles(showTitles: false),
-                bottomTitles: SideTitles(showTitles: false)),
+                rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false))),
             // borderData: borderData,
             lineBarsData: [
               LineChartBarData(
                 isCurved: true,
-                colors: [Theme.of(context).colorScheme.primary],
+                color: Theme.of(context).colorScheme.primary,
                 barWidth: 2,
                 isStrokeCapRound: true,
                 dotData: FlDotData(show: false),
@@ -229,7 +229,7 @@ class _LaminaEngineeringConstantsResultPageState
   _getValue(double value) {
     return Consumer<NumberPrecisionHelper>(builder: (context, precs, child) {
       return Text(value.toStringAsExponential(precs.precision),
-          style: Theme.of(context).textTheme.bodyText1);
+          style: Theme.of(context).textTheme.bodyLarge);
     });
   }
 
@@ -243,7 +243,7 @@ class _LaminaEngineeringConstantsResultPageState
           ListTile(
             title: Text(
               "Layup Angle: ${doubleToString(layupAngle, keepDecimal: 0)}",
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           Slider(

@@ -170,11 +170,11 @@ class ResultStressStrainWidget extends StatelessWidget {
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.subtitle1,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
             getValue(value, precs.precision),
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.bodyLarge,
           )
         ]),
       );
@@ -201,7 +201,7 @@ class ResultStressStrainWidget extends StatelessWidget {
           ListTile(
             title: Text(
               S.of(context).Result,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           Container(
@@ -283,7 +283,7 @@ class LaminarStressStrainLineChat extends StatelessWidget {
         ListTile(
           title: Text(
             title,
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
         Container(
@@ -300,27 +300,29 @@ class LaminarStressStrainLineChat extends StatelessWidget {
             ),
             titlesData: FlTitlesData(
               show: true,
-              rightTitles: SideTitles(showTitles: false),
-              topTitles: SideTitles(showTitles: false),
-              leftTitles: SideTitles(
+              rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              leftTitles: AxisTitles(
+                sideTitles: SideTitles(
                   showTitles: true,
                   reservedSize: 50,
                   interval: verticalInterval > 0 ? verticalInterval : null,
-                  getTextStyles: (context, value) => const TextStyle(
-                        fontSize: 10,
-                      ),
-                  getTitles: (value) {
-                    return value.toStringAsExponential(2);
-                  }),
-              bottomTitles: SideTitles(
+                  getTitlesWidget: (value, meta) => Text(
+                    value.toStringAsExponential(2),
+                    style: const TextStyle(fontSize: 10),
+                  ),
+                ),
+              ),
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
                   showTitles: true,
                   interval: horizontalInterval > 0 ? horizontalInterval : null,
-                  getTextStyles: (context, value) => const TextStyle(
-                        fontSize: 10,
-                      ),
-                  getTitles: (value) {
-                    return value.toStringAsExponential(2);
-                  }),
+                  getTitlesWidget: (value, meta) => Text(
+                    value.toStringAsExponential(2),
+                    style: const TextStyle(fontSize: 10),
+                  ),
+                ),
+              ),
             ),
             borderData: FlBorderData(
                 show: true,
@@ -333,7 +335,7 @@ class LaminarStressStrainLineChat extends StatelessWidget {
             lineBarsData: [
               LineChartBarData(
                 isCurved: false,
-                colors: [Theme.of(context).colorScheme.primary],
+                color: Theme.of(context).colorScheme.primary,
                 barWidth: 1,
                 isStrokeCapRound: true,
                 dotData: FlDotData(show: false),
