@@ -56,16 +56,16 @@
 
 This project is built using **Flutter** and **Dart**.
 
-- **Flutter SDK**: `>=3.19.0`
-- **Dart SDK**: `>=3.3.0 <4.0.0`
+- **Flutter SDK**: `3.44.2`
+- **Dart SDK**: `>=3.0.0 <4.0.0`
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
 Before you begin, ensure you have the following installed:
-- [Flutter SDK](https://flutter.dev/docs/get-started/install) (version 3.19.0 or higher)
-- [Dart SDK](https://dart.dev/get-dart) (version 3.3.0 or higher)
+- [Flutter SDK](https://flutter.dev/docs/get-started/install) (version 3.44.2 or higher)
+- [Dart SDK](https://dart.dev/get-dart) (version 3.0.0 or higher)
 - [Android Studio](https://developer.android.com/studio) or [VS Code](https://code.visualstudio.com/)
 - [Git](https://git-scm.com/)
 
