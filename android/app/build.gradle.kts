@@ -78,6 +78,6 @@ flutter {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.21")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.2.20")
     implementation("androidx.multidex:multidex:2.0.1")
 } 
