@@ -30,6 +30,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "Buckling_Load": MessageLookupByLibrary.simpleMessage("Buckling Load"),
         "Buckling_load_of_column":
             MessageLookupByLibrary.simpleMessage("Buckling load of column"),
+        "Thermal_deformation_and_stress": MessageLookupByLibrary.simpleMessage(
+            "Thermal deformation and stress"),
+        "Transverse_shear_stress_in_beam": MessageLookupByLibrary.simpleMessage(
+            "Transverse shear stress in beam"),
+        "Angle_of_twist":
+            MessageLookupByLibrary.simpleMessage("Angle of twist"),
+        "Shaft_power_and_torque":
+            MessageLookupByLibrary.simpleMessage("Shaft power and torque"),
+        "Failure_criteria_von_Mises_Tresca": MessageLookupByLibrary.simpleMessage(
+            "Failure criteria (Von Mises & Tresca)"),
         "Calculate": MessageLookupByLibrary.simpleMessage("Calculate"),
         "Compliance_Matrix_S":
             MessageLookupByLibrary.simpleMessage("Compliance Matrix S"),

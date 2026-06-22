@@ -640,6 +640,56 @@ class S {
     );
   }
 
+  /// `Thermal deformation and stress`
+  String get Thermal_deformation_and_stress {
+    return Intl.message(
+      'Thermal deformation and stress',
+      name: 'Thermal_deformation_and_stress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transverse shear stress in beam`
+  String get Transverse_shear_stress_in_beam {
+    return Intl.message(
+      'Transverse shear stress in beam',
+      name: 'Transverse_shear_stress_in_beam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Angle of twist`
+  String get Angle_of_twist {
+    return Intl.message(
+      'Angle of twist',
+      name: 'Angle_of_twist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shaft power and torque`
+  String get Shaft_power_and_torque {
+    return Intl.message(
+      'Shaft power and torque',
+      name: 'Shaft_power_and_torque',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failure criteria (Von Mises & Tresca)`
+  String get Failure_criteria_von_Mises_Tresca {
+    return Intl.message(
+      'Failure criteria (Von Mises & Tresca)',
+      name: 'Failure_criteria_von_Mises_Tresca',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Constitutive relation of linear elastic material`
   String get Constitutive_relation_of_linear_elastic_material {
     return Intl.message(

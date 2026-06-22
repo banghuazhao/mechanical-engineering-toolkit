@@ -17,10 +17,15 @@ import 'composite/page/laminate_3d_properties_page.dart';
 import 'composite/page/laminate_plane_properties_page.dart';
 import 'composite/page/laminate_stress_strain_page.dart';
 import 'composite/page/rules_of_mixture_page.dart';
+import 'mechancs_of_material/page/angle_of_twist_page.dart';
 import 'mechancs_of_material/page/bar_torsion_formula_page.dart';
+import 'mechancs_of_material/page/failure_criteria_page.dart';
 import 'mechancs_of_material/page/monents_of_inertia_page.dart';
 import 'mechancs_of_material/page/principal_stress_page.dart';
+import 'mechancs_of_material/page/shaft_power_torque_page.dart';
 import 'mechancs_of_material/page/simple_beam_deflections_slopes_page.dart';
+import 'mechancs_of_material/page/thermal_deformation_page.dart';
+import 'mechancs_of_material/page/transverse_shear_stress_page.dart';
 
 enum ToolType { mechanicsOfMaterial, theoryOfElasticity, composite }
 
@@ -183,6 +188,61 @@ class ToolLibrary {
               context,
               MaterialPageRoute(
                   builder: (context) => ColumnBucklingLoadPage(
+                        title: title,
+                      )))),
+      Tool(
+          id: 112,
+          icon: Icons.thermostat_rounded,
+          title: S.of(context).Thermal_deformation_and_stress,
+          type: ToolType.mechanicsOfMaterial,
+          action: (context, title) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ThermalDeformationPage(
+                        title: title,
+                      )))),
+      Tool(
+          id: 113,
+          icon: Icons.cut_rounded,
+          title: S.of(context).Transverse_shear_stress_in_beam,
+          type: ToolType.mechanicsOfMaterial,
+          action: (context, title) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TransverseShearStressPage(
+                        title: title,
+                      )))),
+      Tool(
+          id: 114,
+          icon: Icons.rotate_right_rounded,
+          title: S.of(context).Angle_of_twist,
+          type: ToolType.mechanicsOfMaterial,
+          action: (context, title) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AngleOfTwistPage(
+                        title: title,
+                      )))),
+      Tool(
+          id: 115,
+          icon: Icons.settings_rounded,
+          title: S.of(context).Shaft_power_and_torque,
+          type: ToolType.mechanicsOfMaterial,
+          action: (context, title) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ShaftPowerTorquePage(
+                        title: title,
+                      )))),
+      Tool(
+          id: 116,
+          icon: Icons.warning_amber_rounded,
+          title: S.of(context).Failure_criteria_von_Mises_Tresca,
+          type: ToolType.mechanicsOfMaterial,
+          action: (context, title) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => FailureCriteriaPage(
                         title: title,
                       )))),
       // Theory of Elasticity

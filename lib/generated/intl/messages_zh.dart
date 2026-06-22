@@ -28,6 +28,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "Buckling_Load": MessageLookupByLibrary.simpleMessage("屈曲载荷"),
         "Buckling_load_of_column":
             MessageLookupByLibrary.simpleMessage("杆的屈曲载荷计算"),
+        "Thermal_deformation_and_stress":
+            MessageLookupByLibrary.simpleMessage("热变形与热应力"),
+        "Transverse_shear_stress_in_beam":
+            MessageLookupByLibrary.simpleMessage("梁的横向剪切应力"),
+        "Angle_of_twist": MessageLookupByLibrary.simpleMessage("扭转角"),
+        "Shaft_power_and_torque":
+            MessageLookupByLibrary.simpleMessage("轴功率与转矩"),
+        "Failure_criteria_von_Mises_Tresca": MessageLookupByLibrary.simpleMessage(
+            "失效准则（Von Mises & Tresca）"),
         "Calculate": MessageLookupByLibrary.simpleMessage("计算"),
         "Compliance_Matrix_S": MessageLookupByLibrary.simpleMessage("柔度矩阵 S"),
         "Composite_Material": MessageLookupByLibrary.simpleMessage("复合材料力学"),
