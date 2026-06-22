@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:provider/provider.dart';
@@ -6,87 +7,123 @@ import 'package:provider/provider.dart';
 class BeamFlexureFormulaRowResult extends StatelessWidget {
   final String resultFormula;
   final double? resultValue;
+
   const BeamFlexureFormulaRowResult({
     Key? key,
     required this.resultFormula,
     required this.resultValue,
   }) : super(key: key);
 
-  _propertyFormulaRow(BuildContext context, String title, String value) {
-    return SizedBox(
-      height: 40,
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        Text(
-          value,
-          style: Theme.of(context).textTheme.bodyLarge,
-        )
-      ]),
-    );
-  }
-
-  _propertyRow(BuildContext context, String title, double? value) {
-    return Consumer<NumberPrecisionHelper>(builder: (context, precs, child) {
-      return SizedBox(
-        height: 40,
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            getValue(value, precs.precision),
-            style: Theme.of(context).textTheme.bodyLarge,
-          )
-        ]),
-      );
-    });
-  }
-
   String getValue(double? value, int precision) {
-    String valueString = "";
-    if (value != null) {
-      valueString =
-          value == 0 ? "0" : value.toStringAsExponential(precision).toString();
-    }
-    return valueString;
+    if (value == null) return '';
+    return value == 0 ? '0' : value.toStringAsExponential(precision);
+  }
+
+  void _copyToClipboard(BuildContext context, String value) {
+    Clipboard.setData(ClipboardData(text: value));
+    HapticFeedback.lightImpact();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Copied: $value'),
+        duration: const Duration(seconds: 1),
+        behavior: SnackBarBehavior.floating,
+        width: 220,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    int row = 1;
-    if (resultValue != null) {
-      row += 1;
-    }
+    final primary = Theme.of(context).colorScheme.primary;
+
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ListTile(
-            title: Text(
-              S.of(context).Stress,
-              style: Theme.of(context).textTheme.titleLarge,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+            child: Text(
+              S.of(context).Stress.toUpperCase(),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xffA8866B),
+                    letterSpacing: 0.8,
+                  ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-            height: 40 * row + 20,
-            child: ListView(
-              physics: const NeverScrollableScrollPhysics(),
+          const Divider(height: 14),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _propertyFormulaRow(context, "σx Formula", resultFormula),
-                resultValue != null
-                    ? _propertyRow(context, "σx Value", resultValue)
-                    : Container(),
+                Text(
+                  'σx Formula',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: const Color(0xFF6E6E73),
+                      ),
+                ),
+                Expanded(
+                  child: Text(
+                    resultFormula,
+                    textAlign: TextAlign.right,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ),
               ],
             ),
           ),
+          if (resultValue != null) ...[
+            const Divider(height: 1, indent: 16, endIndent: 16),
+            Consumer<NumberPrecisionHelper>(
+              builder: (context, precs, child) {
+                final valueStr = getValue(resultValue, precs.precision);
+                return InkWell(
+                  onTap: valueStr.isNotEmpty
+                      ? () => _copyToClipboard(context, valueStr)
+                      : null,
+                  borderRadius:
+                      const BorderRadius.vertical(bottom: Radius.circular(14)),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 14),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'σx Value',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                color: const Color(0xFF6E6E73),
+                              ),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              valueStr.isNotEmpty ? valueStr : '—',
+                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    color: primary,
+                                    fontWeight: FontWeight.w600,
+                                    fontFeatures: const [FontFeature.tabularFigures()],
+                                  ),
+                            ),
+                            if (valueStr.isNotEmpty) ...[
+                              const SizedBox(width: 6),
+                              Icon(Icons.copy_rounded, size: 12, color: Colors.grey[400]),
+                            ],
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ] else
+            const SizedBox(height: 4),
         ],
       ),
     );

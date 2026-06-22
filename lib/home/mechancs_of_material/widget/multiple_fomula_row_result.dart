@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MultipleFormulaRowResult extends StatelessWidget {
   final String title;
   final List<String> resultTitles;
   final List<String> resultValues;
+
   const MultipleFormulaRowResult({
     Key? key,
     required this.title,
@@ -11,49 +13,96 @@ class MultipleFormulaRowResult extends StatelessWidget {
     required this.resultValues,
   }) : super(key: key);
 
-  _propertyRow(BuildContext context, String title, String value) {
-    return SizedBox(
-      height: 50,
-      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        Expanded(
-          child: Text(
-            value,
-            textAlign: TextAlign.right,
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-        )
-      ]),
+  void _copyToClipboard(BuildContext context, String value) {
+    Clipboard.setData(ClipboardData(text: value));
+    HapticFeedback.lightImpact();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Copied: $value'),
+        duration: const Duration(seconds: 1),
+        behavior: SnackBarBehavior.floating,
+        width: 220,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final primary = Theme.of(context).colorScheme.primary;
+
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ListTile(
-            title: Text(
-              title,
-              style: Theme.of(context).textTheme.titleLarge,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+            child: Text(
+              title.toUpperCase(),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xffA8866B),
+                    letterSpacing: 0.8,
+                  ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-            height: 50 * resultTitles.length + 20,
-            child: ListView(
-                physics: const NeverScrollableScrollPhysics(),
-                children: List<Widget>.generate(
-                    resultTitles.length,
-                    (index) => _propertyRow(
-                        context, resultTitles[index], resultValues[index]))),
+          const Divider(height: 14),
+          Column(
+            children: List.generate(resultTitles.length, (index) {
+              final valueStr = resultValues[index];
+              final isLast = index == resultTitles.length - 1;
+              return Column(
+                children: [
+                  InkWell(
+                    onTap: valueStr.isNotEmpty
+                        ? () => _copyToClipboard(context, valueStr)
+                        : null,
+                    borderRadius: isLast
+                        ? const BorderRadius.vertical(bottom: Radius.circular(14))
+                        : BorderRadius.zero,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            resultTitles[index],
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: const Color(0xFF6E6E73),
+                                ),
+                          ),
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    valueStr.isNotEmpty ? valueStr : '—',
+                                    textAlign: TextAlign.right,
+                                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                          color: primary,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
+                                ),
+                                if (valueStr.isNotEmpty) ...[
+                                  const SizedBox(width: 6),
+                                  Icon(Icons.copy_rounded, size: 12, color: Colors.grey[400]),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  if (!isLast) const Divider(height: 1, indent: 16, endIndent: 16),
+                ],
+              );
+            }),
           ),
+          const SizedBox(height: 4),
         ],
       ),
     );

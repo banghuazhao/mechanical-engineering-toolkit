@@ -101,7 +101,7 @@ class _BarForceDisplacementResultPageState extends State<BarForceDisplacementRes
                 }),
             if (_anchoredAdaptiveAd != null && _isLoaded)
               Container(
-                color: Colors.green,
+                color: Colors.transparent,
                 width: _anchoredAdaptiveAd!.size.width.toDouble(),
                 height: _anchoredAdaptiveAd!.size.height.toDouble(),
                 child: AdWidget(ad: _anchoredAdaptiveAd!),

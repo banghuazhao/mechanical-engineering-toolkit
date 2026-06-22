@@ -221,7 +221,7 @@ class _ToolPageState extends State<ToolPage> {
           buildContents(context),
           if (_anchoredAdaptiveAd != null && _isLoaded)
             Container(
-              color: Colors.green,
+              color: Colors.transparent,
               width: _anchoredAdaptiveAd!.size.width.toDouble(),
               height: _anchoredAdaptiveAd!.size.height.toDouble(),
               child: AdWidget(ad: _anchoredAdaptiveAd!),
@@ -250,10 +250,15 @@ class _ToolPageState extends State<ToolPage> {
         var model = dataSource[index];
         if (model is String) {
           return Padding(
-            padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+            padding: const EdgeInsets.fromLTRB(0, 16, 0, 4),
             child: Text(
               model,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xff666159)),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: const Color(0xffA8866B),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
+                    letterSpacing: 0.5,
+                  ),
             ),
           );
         } else {
@@ -277,67 +282,58 @@ class ToolRowWidget extends StatelessWidget {
     final favoritesList = context.watch<Favorites>();
     int itemNo = model.id;
     String title = model.title;
+    final isFavorite = favoritesList.items.contains(itemNo);
+    final primary = Theme.of(context).colorScheme.primary;
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
-      ),
       child: InkWell(
         onTap: () {
           model.action(context, title);
         },
+        borderRadius: BorderRadius.circular(14),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(12, 12, 0, 12),
+          padding: const EdgeInsets.fromLTRB(14, 12, 8, 12),
           child: Row(children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4.0),
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5F4F2),
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: model.icon != null
-                  ? Icon(
-                      model.icon,
-                      size: 50,
-                      color: Color(0xffA8A7A6),
-                    )
-                  : Image(
-                      height: 50,
-                      width: 50,
-                      image: model.image!,
-                      fit: BoxFit.fitWidth,
+                  ? Icon(model.icon, size: 26, color: primary)
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image(
+                        height: 48,
+                        width: 48,
+                        image: model.image!,
+                        fit: BoxFit.cover,
+                      ),
                     ),
             ),
-            const SizedBox(
-              width: 12,
-            ),
+            const SizedBox(width: 14),
             Expanded(
               child: Text(
                 model.title,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
             IconButton(
               onPressed: () {
-                !favoritesList.items.contains(itemNo)
-                    ? favoritesList.add(itemNo)
-                    : favoritesList.remove(itemNo);
-
+                !isFavorite ? favoritesList.add(itemNo) : favoritesList.remove(itemNo);
                 Fluttertoast.showToast(
-                    msg: favoritesList.items.contains(itemNo)
-                        ? 'Added to favorites'
-                        : 'Removed from favorites',
+                    msg: !isFavorite ? 'Added to favorites' : 'Removed from favorites',
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.CENTER,
                     timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.black,
+                    backgroundColor: Colors.black87,
                     textColor: Colors.white,
-                    fontSize: 16.0);
+                    fontSize: 14.0);
               },
-              color: Color(0xffA8A7A6),
-              icon: !favoritesList.items.contains(itemNo)
-                  ? Icon(
-                      Icons.star_border_rounded,
-                    )
-                  : Icon(
-                      Icons.star_rounded,
-                    ),
-            )
+              color: isFavorite ? primary : Colors.grey[400],
+              icon: Icon(isFavorite ? Icons.star_rounded : Icons.star_border_rounded),
+            ),
           ]),
         ),
       ),

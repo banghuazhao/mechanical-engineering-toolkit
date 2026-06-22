@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:provider/provider.dart';
 
@@ -6,6 +7,7 @@ class SingleRowResult extends StatelessWidget {
   final String title;
   final String resultTitle;
   final double? resultValue;
+
   const SingleRowResult({
     Key? key,
     required this.title,
@@ -13,57 +15,86 @@ class SingleRowResult extends StatelessWidget {
     required this.resultValue,
   }) : super(key: key);
 
-  _propertyRow(BuildContext context, String title, double? value) {
-    return Consumer<NumberPrecisionHelper>(builder: (context, precs, child) {
-      return SizedBox(
-        height: 40,
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            getValue(value, precs.precision),
-            style: Theme.of(context).textTheme.bodyLarge,
-          )
-        ]),
-      );
-    });
+  String getValue(double? value, int precision) {
+    if (value == null) return '';
+    return value == 0 ? '0' : value.toStringAsExponential(precision);
   }
 
-  String getValue(double? value, int precision) {
-    String valueString = "";
-    if (value != null) {
-      valueString =
-          value == 0 ? "0" : value.toStringAsExponential(precision).toString();
-    }
-    return valueString;
+  void _copyToClipboard(BuildContext context, String value) {
+    Clipboard.setData(ClipboardData(text: value));
+    HapticFeedback.lightImpact();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Copied: $value'),
+        duration: const Duration(seconds: 1),
+        behavior: SnackBarBehavior.floating,
+        width: 220,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final primary = Theme.of(context).colorScheme.primary;
+
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ListTile(
-            title: Text(
-              title,
-              style: Theme.of(context).textTheme.titleLarge,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+            child: Text(
+              title.toUpperCase(),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xffA8866B),
+                    letterSpacing: 0.8,
+                  ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-            height: 40 + 20,
-            child: ListView(
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                _propertyRow(context, resultTitle, resultValue),
-              ],
-            ),
+          const Divider(height: 14),
+          Consumer<NumberPrecisionHelper>(
+            builder: (context, precs, child) {
+              final valueStr = getValue(resultValue, precs.precision);
+              return InkWell(
+                onTap: valueStr.isNotEmpty
+                    ? () => _copyToClipboard(context, valueStr)
+                    : null,
+                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(14)),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        resultTitle,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              color: const Color(0xFF6E6E73),
+                            ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            valueStr.isNotEmpty ? valueStr : '—',
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                  color: primary,
+                                  fontWeight: FontWeight.w700,
+                                  fontFeatures: const [FontFeature.tabularFigures()],
+                                ),
+                          ),
+                          if (valueStr.isNotEmpty) ...[
+                            const SizedBox(width: 8),
+                            Icon(Icons.copy_rounded, size: 14, color: Colors.grey[400]),
+                          ],
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),

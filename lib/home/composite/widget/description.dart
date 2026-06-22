@@ -9,20 +9,24 @@ class DescriptionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              title: Text(
-                S.of(context).Description,
-                style: Theme.of(context).textTheme.titleLarge,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+              child: Text(
+                S.of(context).Description.toUpperCase(),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xffA8866B),
+                      letterSpacing: 0.8,
+                    ),
               ),
             ),
+            const Divider(height: 14),
             Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+              padding: const EdgeInsets.fromLTRB(14, 0, 14, 16),
               child: content,
             )
           ],
