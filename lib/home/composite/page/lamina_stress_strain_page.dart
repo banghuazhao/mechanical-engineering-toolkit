@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'package:composite_calculator/composite_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -7,29 +6,36 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/angle_model.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/mechanical_tensor_model.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/widget/analysis_type_row.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/widget/delta_temperature_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/lamina_constants_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/layup_angle_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/plane_stress_strain_row.dart';
-import 'package:vector_math/vector_math.dart' as VMath;
+import 'package:mechanical_engineering_toolkit/home/composite/widget/thermal_constants_row.dart';
 
 import 'lamina_stress_strain_result_page.dart';
 
 class LaminaStressStrainPage extends StatefulWidget {
   final String title;
-  const LaminaStressStrainPage({Key? key, required this.title})
-      : super(key: key);
+  const LaminaStressStrainPage({Key? key, required this.title}) : super(key: key);
 
   @override
   _LaminaStressStrainPageState createState() => _LaminaStressStrainPageState();
 }
 
 class _LaminaStressStrainPageState extends State<LaminaStressStrainPage> {
-  TransverselyIsotropicMaterial transverselyIsotropicMaterial =
-      TransverselyIsotropicMaterial();
+  AnalysisType analysisType = AnalysisType.elastic;
+  TransverselyIsotropicMaterial material = TransverselyIsotropicMaterial();
   LayupAngle layupAngle = LayupAngle();
   MechanicalTensor mechanicalTensor = PlaneStress();
+  ThermalConstants thermalConstants = ThermalConstants();
+  double? deltaT;
   bool validate = false;
+
+  bool get isThermal => analysisType == AnalysisType.thermalElastic;
+
+  int get _itemCount => isThermal ? 7 : 4;
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +49,7 @@ class _LaminaStressStrainPageState extends State<LaminaStressStrainPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          setState(() {
-            validate = true;
-          });
+          setState(() => validate = true);
           _calculate();
         },
         label: Text(S.of(context).Calculate),
@@ -54,67 +58,61 @@ class _LaminaStressStrainPageState extends State<LaminaStressStrainPage> {
         child: StaggeredGridView.countBuilder(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
-          itemCount: 4,
-          staggeredTileBuilder: (int index) => StaggeredTile.fit(
-              MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          itemCount: _itemCount,
+          staggeredTileBuilder: (_) =>
+              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
-          itemBuilder: (BuildContext context, int index) {
-            return [
+          itemBuilder: (context, index) {
+            final items = [
+              AnalysisTypeRow(
+                value: analysisType,
+                onChanged: (v) => setState(() => analysisType = v),
+              ),
               LaminaContantsRow(
-                material: transverselyIsotropicMaterial,
-                validate: validate,
-                isPlaneStress: true,
-              ),
+                  material: material, validate: validate, isPlaneStress: true),
               LayupAngleRow(
-                layupAngle: layupAngle,
-                validate: validate,
-                title: S.of(context).Layup_Angle,
-              ),
+                  layupAngle: layupAngle,
+                  validate: validate,
+                  title: S.of(context).Layup_Angle),
               PlaneStressStrainRow(
                 mechanicalTensor: mechanicalTensor,
                 validate: validate,
-                callback: (value) {
-                  setState(() {
-                    if (value == S.of(context).Stress) {
-                      mechanicalTensor = PlaneStress();
-                    } else {
-                      mechanicalTensor = PlaneStrain();
-                    }
-                  });
-                },
+                callback: (v) => setState(() {
+                  mechanicalTensor =
+                      v == S.of(context).Stress ? PlaneStress() : PlaneStrain();
+                }),
               ),
+              if (isThermal) ...[
+                ThermalConstantsRow(
+                    thermalConstants: thermalConstants,
+                    validate: validate,
+                    showAlpha12: true),
+                DeltaTemperatureRow(
+                    value: deltaT,
+                    validate: validate,
+                    onChanged: (v) => setState(() => deltaT = v)),
+              ],
               DescriptionItem(
-                  content: Column(
-                children: [
-                  Text('''
-Calculate the stress or strain of a lamina that is transversely isotropic.
-The plane stress-strain relations on the material coordinate can be expressed by:''',
-                      style: Theme.of(context).textTheme.bodyMedium),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Center(
+                content: Column(
+                  children: [
+                    Text(
+                      'Calculate stress or strain of a lamina at a given fiber orientation angle.',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 12),
+                    Center(
                       child: Math.tex(
-                    r'''\begin{Bmatrix}
-  \varepsilon_{11} \\
-  \varepsilon_{22} \\
-  \gamma_{12}
-\end{Bmatrix} = \begin{bmatrix}
-  \frac{1}{E_1} & -\frac{\nu_{12}}{E_1} & 0 \\
-  -\frac{\nu_{12}}{E_1} & \frac{1}{E_2}  & 0 \\
-  0 & 0 & \frac{1}{G_{12}}
-\end{bmatrix} \begin{Bmatrix}
-  \sigma_{11} \\
-  \sigma_{22} \\
-  \sigma_{12}
-\end{Bmatrix}''',
-                    mathStyle: MathStyle.display,
-                    textStyle: Theme.of(context).textTheme.titleMedium,
-                  )),
-                ],
-              ))
-            ][index];
+                        r'''\begin{Bmatrix}\varepsilon_{11}\\\varepsilon_{22}\\\gamma_{12}\end{Bmatrix}=\begin{bmatrix}\frac{1}{E_1}&-\frac{\nu_{12}}{E_1}&0\\-\frac{\nu_{12}}{E_1}&\frac{1}{E_2}&0\\0&0&\frac{1}{G_{12}}\end{bmatrix}\begin{Bmatrix}\sigma_{11}\\\sigma_{22}\\\sigma_{12}\end{Bmatrix}''',
+                        mathStyle: MathStyle.display,
+                        textStyle: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ];
+            return items[index];
           },
         ),
       ),
@@ -122,72 +120,38 @@ The plane stress-strain relations on the material coordinate can be expressed by
   }
 
   void _calculate() {
-    if (transverselyIsotropicMaterial.isValidInPlane() &&
-        layupAngle.isValid() &&
-        mechanicalTensor.isValid()) {
-      double e1 = transverselyIsotropicMaterial.e1!;
-      double e2 = transverselyIsotropicMaterial.e2!;
-      double g12 = transverselyIsotropicMaterial.g12!;
-      double nu12 = transverselyIsotropicMaterial.nu12!;
-      double angleRadian = VMath.radians(layupAngle.value!);
-      var S = VMath.Matrix3.fromList(
-          [1 / e1, -nu12 / e1, 0, -nu12 / e1, 1 / e2, 0, 0, 0, 1 / g12]);
-      var Q = VMath.Matrix3.fromList(
-          [1 / e1, -nu12 / e1, 0, -nu12 / e1, 1 / e2, 0, 0, 0, 1 / g12]);
-      Q.invert();
-      double s = sin(angleRadian);
-      double c = cos(angleRadian);
-      var T_epsilon = VMath.Matrix3.fromList([
-        c * c,
-        s * s,
-        s * c,
-        s * s,
-        c * c,
-        -s * c,
-        -2 * s * c,
-        2 * s * c,
-        c * c - s * s
-      ]);
-      var T_sigma = VMath.Matrix3.fromList([
-        c * c,
-        s * s,
-        2 * s * c,
-        s * s,
-        c * c,
-        -2 * s * c,
-        -s * c,
-        s * c,
-        c * c - s * s
-      ]);
-      var Q_bar = T_epsilon.transposed() * Q * T_epsilon;
-      var S_bar = T_sigma.transposed() * S * T_sigma;
-
-      MechanicalTensor resultTensor;
-      if (mechanicalTensor is PlaneStrain) {
-        double epsilon11 = (mechanicalTensor as PlaneStrain).epsilon11!;
-        double epsilon22 = (mechanicalTensor as PlaneStrain).epsilon22!;
-        double gamma12 = (mechanicalTensor as PlaneStrain).gamma12!;
-        var strainVector = VMath.Vector3.array([epsilon11, epsilon22, gamma12]);
-        var stressVector = Q_bar * strainVector;
-        resultTensor =
-            PlaneStress.from(stressVector[0], stressVector[1], stressVector[2]);
-        // print(stressVector);
-      } else {
-        double sigma11 = (mechanicalTensor as PlaneStress).sigma11!;
-        double sigma22 = (mechanicalTensor as PlaneStress).sigma22!;
-        double sigma12 = (mechanicalTensor as PlaneStress).sigma12!;
-        var stressVector = VMath.Vector3.array([sigma11, sigma22, sigma12]);
-        var strainVector = S_bar * stressVector;
-        resultTensor =
-            PlaneStrain.from(strainVector[0], strainVector[1], strainVector[2]);
-        // print(strainVector);
-      }
-
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => LaminaStressStrainResult(
-                  resultTensor: resultTensor, Q_bar: Q_bar, S_bar: S_bar)));
+    if (!material.isValidInPlane() || !layupAngle.isValid() || !mechanicalTensor.isValid()) {
+      return;
     }
+    if (isThermal && (!thermalConstants.isValid() || deltaT == null)) return;
+
+    final tensorType = mechanicalTensor is PlaneStress ? TensorType.stress : TensorType.strain;
+    final input = LaminaStressStrainInput(
+      analysisType: analysisType,
+      E1: material.e1!,
+      E2: material.e2!,
+      G12: material.g12!,
+      nu12: material.nu12!,
+      layupAngle: layupAngle.value!,
+      alpha11: thermalConstants.alpha11 ?? 0,
+      alpha22: thermalConstants.alpha22 ?? 0,
+      alpha12: thermalConstants.alpha12 ?? 0,
+      deltaT: deltaT ?? 0,
+      tensorType: tensorType,
+      sigma11: mechanicalTensor is PlaneStress ? (mechanicalTensor as PlaneStress).sigma11 ?? 0 : 0,
+      sigma22: mechanicalTensor is PlaneStress ? (mechanicalTensor as PlaneStress).sigma22 ?? 0 : 0,
+      sigma12: mechanicalTensor is PlaneStress ? (mechanicalTensor as PlaneStress).sigma12 ?? 0 : 0,
+      epsilon11: mechanicalTensor is PlaneStrain ? (mechanicalTensor as PlaneStrain).epsilon11 ?? 0 : 0,
+      epsilon22: mechanicalTensor is PlaneStrain ? (mechanicalTensor as PlaneStrain).epsilon22 ?? 0 : 0,
+      gamma12: mechanicalTensor is PlaneStrain ? (mechanicalTensor as PlaneStrain).gamma12 ?? 0 : 0,
+    );
+
+    final output = LaminaStressStrainCalculator.calculate(input);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => LaminaStressStrainResultPage(output: output, analysisType: analysisType),
+      ),
+    );
   }
 }

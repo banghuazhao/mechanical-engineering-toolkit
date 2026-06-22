@@ -73,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.19.1"
+  composite_calculator:
+    dependency: "direct main"
+    description:
+      name: composite_calculator
+      sha256: "5ad9c48d179657a286fd912057b1a850a793cb98bcb80e9db5284de552cb95eb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   cross_file:
     dependency: transitive
     description:

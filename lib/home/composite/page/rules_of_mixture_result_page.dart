@@ -1,104 +1,83 @@
+import 'package:composite_calculator/composite_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:linalg/matrix.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/widget/orthotropic_properties_widget.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/widget/result_6by6_matrix.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/widget/engineering_constants_widget.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/widget/result_list_matrix.dart';
 
 import '../../tool_setting_page.dart';
 
-class RulesOfMixtureResultPage extends StatefulWidget {
-  final Matrix Cv;
-  final Matrix Cr;
-  final Matrix Ch;
-  final OrthotropicMaterial voigtConstants;
-  final OrthotropicMaterial reussConstants;
-  final OrthotropicMaterial hybridConstants;
+class RulesOfMixtureResultPage extends StatelessWidget {
+  final UDFRCRulesOfMixtureOutput output;
+  final AnalysisType analysisType;
 
-  const RulesOfMixtureResultPage(
-      {Key? key,
-      required this.Cv,
-      required this.Cr,
-      required this.Ch,
-      required this.voigtConstants,
-      required this.reussConstants,
-      required this.hybridConstants})
-      : super(key: key);
+  const RulesOfMixtureResultPage({
+    Key? key,
+    required this.output,
+    required this.analysisType,
+  }) : super(key: key);
 
-  @override
-  _RulesOfMixtureResultPageState createState() => _RulesOfMixtureResultPageState();
-}
-
-class _RulesOfMixtureResultPageState extends State<RulesOfMixtureResultPage> {
   @override
   Widget build(BuildContext context) {
+    final models = [
+      ('Voigt Rules of Mixture', output.voigtRulesOfMixture),
+      ('Reuss Rules of Mixture', output.reussRulesOfMixture),
+      ('Hybrid Rules of Mixture', output.hybirdRulesOfMixture),
+    ];
+
+    final items = <Widget>[];
+    for (final (label, m) in models) {
+      items.add(_sectionHeader(context, label));
+      if (m.stiffness.isNotEmpty)
+        items.add(ResultListMatrix(
+            title: 'Effective Stiffness Matrix', matrix: m.stiffness));
+      if (m.compliance.isNotEmpty)
+        items.add(ResultListMatrix(
+            title: 'Effective Compliance Matrix', matrix: m.compliance));
+      if (m.engineeringConstants.isNotEmpty)
+        items.add(EngineeringConstantsWidget(
+            title: 'Engineering Constants',
+            constants: m.engineeringConstants));
+    }
+
     return Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => const ToolSettingPage()));
-              },
-              icon: const Icon(Icons.settings_rounded),
-            ),
-          ],
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          title: Text(S.of(context).Result),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
         ),
-        body: SafeArea(
-          child: StaggeredGridView.countBuilder(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-              crossAxisCount: 8,
-              itemCount: 9,
-              staggeredTileBuilder: (int index) =>
-                  StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              itemBuilder: (BuildContext context, int index) {
-                return [
-                  Text(
-                    "Voigt Rules of Mixture",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  Result6By6Matrix(
-                    matrix: widget.Cv,
-                    title: "Effective Solid Stiffness Matrix",
-                  ),
-                  OrthotropicPropertiesWidget(
-                    title: "Engineering Constants",
-                    orthotropicMaterial: widget.voigtConstants,
-                  ),
-                  Text(
-                    "Reuss Rules of Mixture",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  Result6By6Matrix(
-                    matrix: widget.Cr,
-                    title: "Effective Solid Stiffness Matrix",
-                  ),
-                  OrthotropicPropertiesWidget(
-                    title: "Engineering Constants",
-                    orthotropicMaterial: widget.reussConstants,
-                  ),
-                  Text(
-                    "Hybrid Rules of Mixture",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  Result6By6Matrix(
-                    matrix: widget.Ch,
-                    title: "Effective Solid Stiffness Matrix",
-                  ),
-                  OrthotropicPropertiesWidget(
-                    title: "Engineering Constants",
-                    orthotropicMaterial: widget.hybridConstants,
-                  ),
-                ][index];
-              }),
-        ));
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_rounded),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const ToolSettingPage())),
+          ),
+        ],
+        title: Text(S.of(context).Result),
+      ),
+      body: SafeArea(
+        child: StaggeredGridView.countBuilder(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+          crossAxisCount: 8,
+          itemCount: items.length,
+          staggeredTileBuilder: (_) =>
+              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          itemBuilder: (_, i) => items[i],
+        ),
+      ),
+    );
+  }
+
+  Widget _sectionHeader(BuildContext context, String label) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 8, 4, 0),
+      child: Text(label,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.w700,
+              )),
+    );
   }
 }

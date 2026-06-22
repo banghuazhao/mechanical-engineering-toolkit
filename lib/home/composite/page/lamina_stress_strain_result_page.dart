@@ -1,147 +1,73 @@
+import 'package:composite_calculator/composite_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/model/mechanical_tensor_model.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/widget/result_plane_compliance_matrix.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/widget/result_plane_stiffness_matrix.dart';
-import 'package:mechanical_engineering_toolkit/util/number.dart';
-import 'package:provider/provider.dart';
-import 'package:vector_math/vector_math.dart' as VMath;
+import 'package:mechanical_engineering_toolkit/home/composite/widget/engineering_constants_widget.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/widget/result_list_matrix.dart';
 
 import '../../tool_setting_page.dart';
 
-class LaminaStressStrainResult extends StatefulWidget {
-  final MechanicalTensor resultTensor;
-  final VMath.Matrix3 Q_bar;
-  final VMath.Matrix3 S_bar;
+class LaminaStressStrainResultPage extends StatelessWidget {
+  final LaminaStressStrainOutput output;
+  final AnalysisType analysisType;
 
-  const LaminaStressStrainResult(
-      {Key? key, required this.resultTensor, required this.Q_bar, required this.S_bar})
-      : super(key: key);
-
-  @override
-  _LaminaStressStrainResultState createState() => _LaminaStressStrainResultState();
-}
-
-class _LaminaStressStrainResultState extends State<LaminaStressStrainResult> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => const ToolSettingPage()));
-              },
-              icon: const Icon(Icons.settings_rounded),
-            ),
-          ],
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          title: Text(S.of(context).Result),
-        ),
-        body: SafeArea(
-          child: StaggeredGridView.countBuilder(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-              crossAxisCount: 8,
-              itemCount: 3,
-              staggeredTileBuilder: (int index) =>
-                  StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              itemBuilder: (BuildContext context, int index) {
-                return [
-                  ResultPlaneStressStrainRow(
-                    mechanicalTensor: widget.resultTensor,
-                  ),
-                  ResultPlaneStiffnessMatrix(
-                    Q_bar: widget.Q_bar,
-                  ),
-                  ResultPlaneComplianceMatrix(
-                    S_bar: widget.S_bar,
-                  )
-                ][index];
-              }),
-        ));
-  }
-}
-
-class ResultPlaneStressStrainRow extends StatelessWidget {
-  final MechanicalTensor mechanicalTensor;
-
-  const ResultPlaneStressStrainRow({
+  const LaminaStressStrainResultPage({
     Key? key,
-    required this.mechanicalTensor,
+    required this.output,
+    required this.analysisType,
   }) : super(key: key);
 
-  _propertyRow(BuildContext context, String title, double? value) {
-    return Consumer<NumberPrecisionHelper>(builder: (context, precs, child) {
-      return SizedBox(
-        height: 40,
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            precs.formatValue(value),
-            style: Theme.of(context).textTheme.bodyLarge,
-          )
-        ]),
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    bool isStress = (mechanicalTensor is PlaneStress);
+    final isStress = output.tensorType == TensorType.stress;
 
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
+    final resultConstants = isStress
+        ? <String, double>{
+            'σ11': output.sigma11,
+            'σ22': output.sigma22,
+            'σ12': output.sigma12,
+          }
+        : <String, double>{
+            'ε11': output.epsilon11,
+            'ε22': output.epsilon22,
+            'γ12': output.gamma12,
+          };
+
+    final items = [
+      EngineeringConstantsWidget(
+        title: isStress ? 'Stress Result' : 'Strain Result',
+        constants: resultConstants,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          ListTile(
-            title: Text(
-              S.of(context).Result,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-            height: 40 * 3 + 20,
-            child: ListView(
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                _propertyRow(
-                    context,
-                    isStress ? "σ11" : "ε11",
-                    isStress
-                        ? (mechanicalTensor as PlaneStress).sigma11
-                        : (mechanicalTensor as PlaneStrain).epsilon11),
-                const Divider(height: 1),
-                _propertyRow(
-                    context,
-                    isStress ? "σ22" : "ε22",
-                    isStress
-                        ? (mechanicalTensor as PlaneStress).sigma22
-                        : (mechanicalTensor as PlaneStrain).epsilon22),
-                const Divider(height: 1),
-                _propertyRow(
-                    context,
-                    isStress ? "σ12" : "γ12",
-                    isStress
-                        ? (mechanicalTensor as PlaneStress).sigma12
-                        : (mechanicalTensor as PlaneStrain).gamma12),
-              ],
-            ),
+      ResultListMatrix(title: 'Stiffness Matrix Q̄', matrix: output.Q),
+      ResultListMatrix(title: 'Compliance Matrix S̄', matrix: output.S),
+    ];
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_rounded),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const ToolSettingPage())),
           ),
         ],
+        title: Text(S.of(context).Result),
+      ),
+      body: SafeArea(
+        child: StaggeredGridView.countBuilder(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+          crossAxisCount: 8,
+          itemCount: items.length,
+          staggeredTileBuilder: (_) =>
+              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          itemBuilder: (_, i) => items[i],
+        ),
       ),
     );
   }

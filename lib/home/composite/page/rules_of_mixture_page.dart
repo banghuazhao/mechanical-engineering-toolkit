@@ -1,13 +1,17 @@
+import 'package:composite_calculator/composite_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:linalg/matrix.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/volume_fraction_model.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/page/rules_of_mixture_result_page.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/widget/analysis_type_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/isotropic_material_row.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/widget/lamina_constants_row.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/widget/thermal_constants_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/volume_fraction_row.dart';
+
+import 'rules_of_mixture_result_page.dart';
 
 class RulesOfMixturePage extends StatefulWidget {
   final String title;
@@ -18,257 +22,146 @@ class RulesOfMixturePage extends StatefulWidget {
 }
 
 class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
-  IsotropicMaterial fiberMaterial = IsotropicMaterial();
+  AnalysisType analysisType = AnalysisType.elastic;
+  TransverselyIsotropicMaterial fiberMaterial = TransverselyIsotropicMaterial();
   IsotropicMaterial matrixMaterial = IsotropicMaterial();
   VolumeFraction fiberVolumeFraction = VolumeFraction();
+  ThermalConstants fiberThermal = ThermalConstants();
+  double? matrixAlpha;
   bool validate = false;
+
+  bool get isThermal => analysisType == AnalysisType.thermalElastic;
 
   @override
   Widget build(BuildContext context) {
+    final items = [
+      AnalysisTypeRow(
+          value: analysisType,
+          onChanged: (v) => setState(() => analysisType = v)),
+      LaminaContantsRow(
+          material: fiberMaterial,
+          validate: validate,
+          isPlaneStress: false,
+          title: 'Fiber (Transversely Isotropic)'),
+      if (isThermal)
+        ThermalConstantsRow(
+            thermalConstants: fiberThermal,
+            validate: validate,
+            showAlpha12: false),
+      IsotropicMaterialRow(
+          title: 'Matrix Material',
+          material: matrixMaterial,
+          validate: validate),
+      if (isThermal)
+        _matrixAlphaRow(),
+      VolumeFractionRow(
+          volumeFraction: fiberVolumeFraction, validate: validate),
+      DescriptionItem(
+        content: Text(
+          'Calculate effective stiffness matrix and engineering constants for three micromechanics models:\n'
+          '1. Voigt (uniform strain)\n'
+          '2. Reuss (uniform stress)\n'
+          '3. Hybrid (mixed boundary conditions)',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ),
+    ];
+
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon:
-                const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(widget.title),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          setState(() => validate = true);
+          _calculate();
+        },
+        label: Text(S.of(context).Calculate),
+      ),
+      body: SafeArea(
+        child: StaggeredGridView.countBuilder(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+          crossAxisCount: 8,
+          itemCount: items.length,
+          staggeredTileBuilder: (_) =>
+              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          itemBuilder: (_, i) => items[i],
+        ),
+      ),
+    );
+  }
+
+  Widget _matrixAlphaRow() {
+    final primary = Theme.of(context).colorScheme.primary;
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+            child: Text(
+              'MATRIX CTE',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: primary,
+                    letterSpacing: 0.8,
+                  ),
+            ),
           ),
-          title: Text(widget.title),
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            setState(() {
-              validate = true;
-            });
-            _calculate();
-          },
-          label: Text(S.of(context).Calculate),
-        ),
-        body: SafeArea(
-            child: StaggeredGridView.countBuilder(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-                crossAxisCount: 8,
-                itemCount: 4,
-                staggeredTileBuilder: (int index) => StaggeredTile.fit(
-                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                itemBuilder: (BuildContext context, int index) {
-                  return [
-                    IsotropicMaterialRow(
-                      title: "Fiber Material",
-                      material: fiberMaterial,
-                      validate: validate,
-                    ),
-                    IsotropicMaterialRow(
-                      title: "Matrix Material",
-                      material: matrixMaterial,
-                      validate: validate,
-                    ),
-                    VolumeFractionRow(
-                        volumeFraction: fiberVolumeFraction,
-                        validate: validate),
-                    DescriptionItem(
-                        content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("""
-Calculate the effective stiffness matrix and engineering constants for different rules of mixtures:
-1. Voigt Rules of Mixture (Strain field is constant)
-2. Reuss Rules of Mixture (Stress field is constant)
-3. Hybrid Rules of Mixture (A subset of local stress components along with a complementary subset of local strain components are constant)
-""", style: Theme.of(context).textTheme.bodyMedium),
-                      ],
-                    ))
-                  ][index];
-                })));
+          const Divider(height: 14),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            child: TextField(
+              keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true),
+              decoration: InputDecoration(
+                labelText: 'α (isotropic)',
+                errorText: validate && isThermal && matrixAlpha == null ? 'Required' : null,
+              ),
+              onChanged: (v) => setState(() => matrixAlpha = double.tryParse(v)),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   void _calculate() {
-    if (fiberMaterial.isValid() &&
-        matrixMaterial.isValid() &&
-        fiberVolumeFraction.isValid()) {
-      double Vf = fiberVolumeFraction.value!;
-      double Ef = fiberMaterial.e!;
-      double nuf = fiberMaterial.nu!;
-      double Gf = Ef / (2 * (1 + nuf));
-      double ef1 = Ef;
-      double ef2 = Ef;
-      double ef3 = Ef;
-      double gf12 = Gf;
-      double gf13 = Gf;
-      double gf23 = Gf;
-      double nuf12 = nuf;
-      double nuf13 = nuf;
-      double nuf23 = nuf;
-
-      double Vm = 1 - Vf;
-      double Em = matrixMaterial.e!;
-      double num = matrixMaterial.nu!;
-      double Gm = Em / (2 * (1 + num));
-      double em1 = Em;
-      double em2 = Em;
-      double em3 = Em;
-      double gm12 = Gm;
-      double gm13 = Gm;
-      double gm23 = Gm;
-      double num12 = num;
-      double num13 = num;
-      double num23 = num;
-
-      Matrix Sf = Matrix([
-        [1 / ef1, -nuf12 / ef1, -nuf13 / ef1, 0, 0, 0],
-        [-nuf12 / ef1, 1 / ef2, -nuf23 / ef2, 0, 0, 0],
-        [-nuf12 / ef1, -nuf23 / ef2, 1 / ef3, 0, 0, 0],
-        [0, 0, 0, 1 / gf23, 0, 0],
-        [0, 0, 0, 0, 1 / gf13, 0],
-        [0, 0, 0, 0, 0, 1 / gf12]
-      ]);
-      Matrix SHf_Temp = Matrix([
-        [ef1, nuf12, nuf13, 0, 0, 0],
-        [
-          -nuf12,
-          1 / ef2 - nuf12 * nuf12 / ef1,
-          -nuf23 / ef2 - nuf13 * nuf13 / ef1,
-          0,
-          0,
-          0
-        ],
-        [
-          -nuf23,
-          -nuf23 / ef2 - nuf12 * nuf12 / ef1,
-          1 / ef3 - nuf13 * nuf13 / ef1,
-          0,
-          0,
-          0
-        ],
-        [0, 0, 0, 1 / gf23, 0, 0],
-        [0, 0, 0, 0, 1 / gf13, 0],
-        [0, 0, 0, 0, 0, 1 / gf12]
-      ]);
-
-      Matrix Sm = Matrix([
-        [1 / em1, -num12 / em1, -num13 / em1, 0, 0, 0],
-        [-num12 / em1, 1 / em2, -num23 / em2, 0, 0, 0],
-        [-num12 / em1, -num23 / em2, 1 / em3, 0, 0, 0],
-        [0, 0, 0, 1 / gm23, 0, 0],
-        [0, 0, 0, 0, 1 / gm13, 0],
-        [0, 0, 0, 0, 0, 1 / gm12]
-      ]);
-      Matrix SHm_Temp = Matrix([
-        [em1, num12, num13, 0, 0, 0],
-        [
-          -num12,
-          1 / em2 - num12 * num12 / em1,
-          -num23 / em2 - num13 * num13 / em1,
-          0,
-          0,
-          0
-        ],
-        [
-          -num23,
-          -num23 / em2 - num12 * num12 / em1,
-          1 / em3 - num13 * num13 / em1,
-          0,
-          0,
-          0
-        ],
-        [0, 0, 0, 1 / gm23, 0, 0],
-        [0, 0, 0, 0, 1 / gm13, 0],
-        [0, 0, 0, 0, 0, 1 / gm12]
-      ]);
-
-      Matrix Cf = Sf.inverse();
-      Matrix Cm = Sm.inverse();
-
-      Matrix CVs = Cf * Vf + Cm * Vm;
-      Matrix SVs = CVs.inverse();
-
-      Matrix SRs = Sf * Vf + Sm * Vm;
-      Matrix CRs = SRs.inverse();
-
-      Matrix SHs_Temp = SHf_Temp * Vf + SHm_Temp * Vm;
-
-      OrthotropicMaterial voigtEngineeringConstants = OrthotropicMaterial();
-      voigtEngineeringConstants.e1 = 1 / SVs[0][0];
-      voigtEngineeringConstants.e2 = 1 / SVs[1][1];
-      voigtEngineeringConstants.e3 = 1 / SVs[2][2];
-      voigtEngineeringConstants.g12 = 1 / SVs[5][5];
-      voigtEngineeringConstants.g13 = 1 / SVs[4][4];
-      voigtEngineeringConstants.g23 = 1 / SVs[3][3];
-      voigtEngineeringConstants.nu12 = -1 / SVs[0][0] * SVs[0][1];
-      voigtEngineeringConstants.nu13 = -1 / SVs[0][0] * SVs[0][2];
-      voigtEngineeringConstants.nu23 = -1 / SVs[1][1] * SVs[1][2];
-
-      OrthotropicMaterial reussEngineeringConstants = OrthotropicMaterial();
-      reussEngineeringConstants.e1 = 1 / SRs[0][0];
-      reussEngineeringConstants.e2 = 1 / SRs[1][1];
-      reussEngineeringConstants.e3 = 1 / SRs[2][2];
-      reussEngineeringConstants.g12 = 1 / SRs[5][5];
-      reussEngineeringConstants.g13 = 1 / SRs[4][4];
-      reussEngineeringConstants.g23 = 1 / SRs[3][3];
-      reussEngineeringConstants.nu12 = -1 / SRs[0][0] * SRs[0][1];
-      reussEngineeringConstants.nu13 = -1 / SRs[0][0] * SRs[0][2];
-      reussEngineeringConstants.nu23 = -1 / SRs[1][1] * SRs[1][2];
-
-      OrthotropicMaterial hybridEngineeringConstants = OrthotropicMaterial();
-      hybridEngineeringConstants.e1 = SHs_Temp[0][0];
-
-      hybridEngineeringConstants.nu12 = SHs_Temp[0][1];
-      hybridEngineeringConstants.nu13 = SHs_Temp[0][2];
-
-      hybridEngineeringConstants.g12 = SHs_Temp[5][5];
-      hybridEngineeringConstants.g13 = SHs_Temp[4][4];
-      hybridEngineeringConstants.g23 = SHs_Temp[3][3];
-
-      hybridEngineeringConstants.e2 = 1 /
-          (SHs_Temp[1][1] +
-              hybridEngineeringConstants.nu12! *
-                  hybridEngineeringConstants.nu12! /
-                  hybridEngineeringConstants.e1!);
-
-      hybridEngineeringConstants.e3 = 1 /
-          (SHs_Temp[2][2] +
-              hybridEngineeringConstants.nu13! *
-                  hybridEngineeringConstants.nu13! /
-                  hybridEngineeringConstants.e1!);
-
-      hybridEngineeringConstants.nu23 = -hybridEngineeringConstants.e2! *
-          (SHs_Temp[1][2] +
-              hybridEngineeringConstants.nu12! *
-                  hybridEngineeringConstants.nu12! /
-                  hybridEngineeringConstants.e1!);
-
-      double eh1 = hybridEngineeringConstants.e1!;
-      double eh2 = hybridEngineeringConstants.e2!;
-      double eh3 = hybridEngineeringConstants.e3!;
-      double gh12 = hybridEngineeringConstants.g12!;
-      double gh13 = hybridEngineeringConstants.g13!;
-      double gh23 = hybridEngineeringConstants.g23!;
-      double nuh12 = hybridEngineeringConstants.nu12!;
-      double nuh13 = hybridEngineeringConstants.nu13!;
-      double nuh23 = hybridEngineeringConstants.nu23!;
-
-      Matrix Shs = Matrix([
-        [1 / eh1, -nuh12 / eh1, -nuh13 / eh1, 0, 0, 0],
-        [-nuh12 / eh1, 1 / eh2, -nuh23 / eh2, 0, 0, 0],
-        [-nuh12 / eh1, -nuh23 / eh2, 1 / eh3, 0, 0, 0],
-        [0, 0, 0, 1 / gh23, 0, 0],
-        [0, 0, 0, 0, 1 / gh13, 0],
-        [0, 0, 0, 0, 0, 1 / gh12]
-      ]);
-
-      Matrix Chs = Shs.inverse();
-
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => RulesOfMixtureResultPage(
-                  Cv: CVs,
-                  Cr: CRs,
-                  Ch: Chs,
-                  voigtConstants: voigtEngineeringConstants,
-                  reussConstants: reussEngineeringConstants,
-                  hybridConstants: hybridEngineeringConstants)));
+    if (!fiberMaterial.isValid() ||
+        !matrixMaterial.isValid() ||
+        !fiberVolumeFraction.isValid()) return;
+    if (isThermal) {
+      if (!fiberThermal.isValid(requireAlpha12: false) || matrixAlpha == null) return;
     }
+
+    final input = UDFRCRulesOfMixtureInput(
+      analysisType: analysisType,
+      E1_fiber: fiberMaterial.e1!,
+      E2_fiber: fiberMaterial.e2!,
+      G12_fiber: fiberMaterial.g12!,
+      nu12_fiber: fiberMaterial.nu12!,
+      nu23_fiber: fiberMaterial.nu23!,
+      alpha11_fiber: fiberThermal.alpha11 ?? 0,
+      alpha22_fiber: fiberThermal.alpha22 ?? 0,
+      E_matrix: matrixMaterial.e!,
+      nu_matrix: matrixMaterial.nu!,
+      alpha_matrix: matrixAlpha ?? 0,
+      fiberVolumeFraction: fiberVolumeFraction.value!,
+    );
+
+    final output = UDFRCRulesOfMixtureCalculator.calculate(input);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => RulesOfMixtureResultPage(
+            output: output, analysisType: analysisType),
+      ),
+    );
   }
 }

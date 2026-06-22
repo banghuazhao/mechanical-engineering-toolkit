@@ -1,343 +1,223 @@
 import 'dart:math';
 
+import 'package:composite_calculator/composite_calculator.dart';
+import 'package:composite_calculator/utils/layup_parser.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:linalg/matrix.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/model/mechanical_tensor_model.dart';
-import 'package:mechanical_engineering_toolkit/util/number.dart';
-import 'package:provider/provider.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/widget/engineering_constants_widget.dart';
+import 'package:linalg/matrix.dart';
 
 import '../../tool_setting_page.dart';
 
 class LaminateStressStrainResultPage extends StatefulWidget {
-  final MechanicalTensor inputTensor;
-  final MechanicalTensor resultTensor;
-  final double thickness;
-  final List<Matrix> Q;
+  final LaminarStressStrainOutput output;
+  final LaminarStressStrainInput input;
+  final TransverselyIsotropicMaterial material;
 
-  const LaminateStressStrainResultPage(
-      {Key? key,
-      required this.resultTensor,
-      required this.inputTensor,
-      required this.thickness,
-      required this.Q})
-      : super(key: key);
+  const LaminateStressStrainResultPage({
+    Key? key,
+    required this.output,
+    required this.input,
+    required this.material,
+  }) : super(key: key);
 
   @override
-  _LaminateStressStrainResultPageState createState() => _LaminateStressStrainResultPageState();
+  _LaminateStressStrainResultPageState createState() =>
+      _LaminateStressStrainResultPageState();
 }
 
-class _LaminateStressStrainResultPageState extends State<LaminateStressStrainResultPage> {
-  List<FlSpot> epsilon11_datas = [];
-  List<FlSpot> epsilon22_datas = [];
-  List<FlSpot> epsilon12_datas = [];
-  List<FlSpot> sigma11_datas = [];
-  List<FlSpot> sigma22_datas = [];
-  List<FlSpot> sigma12_datas = [];
-
-  initChartData() {
-    Matrix epsilon = Matrix.fill(3, 1);
-    Matrix kappa = Matrix.fill(3, 1);
-    if (widget.inputTensor is LaminateStrain) {
-      epsilon[0][0] = (widget.inputTensor as LaminateStrain).epsilon11!;
-      epsilon[1][0] = (widget.inputTensor as LaminateStrain).epsilon22!;
-      epsilon[2][0] = (widget.inputTensor as LaminateStrain).epsilon12!;
-      kappa[0][0] = (widget.inputTensor as LaminateStrain).kappa11!;
-      kappa[1][0] = (widget.inputTensor as LaminateStrain).kappa22!;
-      kappa[2][0] = (widget.inputTensor as LaminateStrain).kappa12!;
-    } else {
-      epsilon[0][0] = (widget.resultTensor as LaminateStrain).epsilon11!;
-      epsilon[1][0] = (widget.resultTensor as LaminateStrain).epsilon22!;
-      epsilon[2][0] = (widget.resultTensor as LaminateStrain).epsilon12!;
-      kappa[0][0] = (widget.resultTensor as LaminateStrain).kappa11!;
-      kappa[1][0] = (widget.resultTensor as LaminateStrain).kappa22!;
-      kappa[2][0] = (widget.resultTensor as LaminateStrain).kappa12!;
-    }
-
-    double totalThickness = widget.Q.length * widget.thickness;
-    for (var i = 0; i < widget.Q.length; i++) {
-      print(i);
-      double x3Start = widget.thickness * i - totalThickness / 2;
-      double x3End = widget.thickness * (i + 1) - totalThickness / 2;
-
-      Matrix epsilon_e_Start = epsilon + kappa * x3Start;
-      Matrix epsilon_e_End = epsilon + kappa * x3End;
-
-      Matrix sigma_e_Start = widget.Q[i] * epsilon_e_Start;
-      Matrix sigma_e_End = widget.Q[i] * epsilon_e_End;
-
-      epsilon11_datas.add(FlSpot(x3Start, epsilon_e_Start[0][0]));
-      epsilon11_datas.add(FlSpot(x3End, epsilon_e_End[0][0]));
-
-      epsilon22_datas.add(FlSpot(x3Start, epsilon_e_Start[1][0]));
-      epsilon22_datas.add(FlSpot(x3End, epsilon_e_End[1][0]));
-
-      epsilon12_datas.add(FlSpot(x3Start, epsilon_e_Start[2][0]));
-      epsilon12_datas.add(FlSpot(x3End, epsilon_e_End[2][0]));
-
-      sigma11_datas.add(FlSpot(x3Start, sigma_e_Start[0][0]));
-      sigma11_datas.add(FlSpot(x3End, sigma_e_End[0][0]));
-
-      sigma22_datas.add(FlSpot(x3Start, sigma_e_Start[1][0]));
-      sigma22_datas.add(FlSpot(x3End, sigma_e_End[1][0]));
-
-      sigma12_datas.add(FlSpot(x3Start, sigma_e_Start[2][0]));
-      sigma12_datas.add(FlSpot(x3End, sigma_e_End[2][0]));
-    }
-    print(epsilon11_datas);
-  }
+class _LaminateStressStrainResultPageState
+    extends State<LaminateStressStrainResultPage> {
+  late List<List<FlSpot>> _chartSpots; // indexed: 0=ε11,1=ε22,2=ε12,3=σ11,4=σ22,5=σ12
+  late List<String> _chartTitles;
 
   @override
   void initState() {
     super.initState();
-    initChartData();
-    setState(() {});
+    _buildCharts();
+  }
+
+  void _buildCharts() {
+    final input = widget.input;
+    final output = widget.output;
+    final nPly = LayupParser.parse(input.layupSequence)?.length ?? 0;
+    final thickness = input.layerThickness;
+    final totalThickness = nPly * thickness;
+    final layups = LayupParser.parse(input.layupSequence) ?? [];
+
+    // Compute mid-plane strain/kappa from output
+    final eps0 = [output.epsilon11, output.epsilon22, output.epsilon12];
+    final kappa = [output.kappa11, output.kappa22, output.kappa12];
+    final N = [output.N11, output.N22, output.N12];
+    final M = [output.M11, output.M22, output.M12];
+
+    final e1 = input.E1, e2 = input.E2, g12 = input.G12, nu12 = input.nu12;
+
+    // Build Q_bar for each ply
+    Matrix _buildQ(double angleDeg) {
+      final a = angleDeg * pi / 180;
+      final s = sin(a), c = cos(a);
+      final S = Matrix([[1/e1, -nu12/e1, 0], [-nu12/e1, 1/e2, 0], [0, 0, 1/g12]]);
+      final Q = S.inverse();
+      final Ts = Matrix([[c*c, s*s, -2*s*c], [s*s, c*c, 2*s*c], [s*c, -s*c, c*c-s*s]]);
+      return Ts.transpose() * Q * Ts;
+    }
+
+    // When input is stress: output has strains; when input is strain: output has stresses
+    // The through-thickness distributions require mid-plane strains + curvatures
+    final isStressInput = input.tensorType == TensorType.stress;
+
+    List<FlSpot> e11spots = [], e22spots = [], e12spots = [];
+    List<FlSpot> s11spots = [], s22spots = [], s12spots = [];
+
+    for (int i = 0; i < layups.length; i++) {
+      final z_start = thickness * i - totalThickness / 2;
+      final z_end = z_start + thickness;
+      final Q = _buildQ(layups[i]);
+
+      for (final z in [z_start, z_end]) {
+        // ε = ε0 + z·κ
+        final ex = eps0[0] + z * kappa[0];
+        final ey = eps0[1] + z * kappa[1];
+        final exy = eps0[2] + z * kappa[2];
+        // σ = Q * ε
+        final sx = Q[0][0]*ex + Q[0][1]*ey + Q[0][2]*exy;
+        final sy = Q[1][0]*ex + Q[1][1]*ey + Q[1][2]*exy;
+        final sxy = Q[2][0]*ex + Q[2][1]*ey + Q[2][2]*exy;
+        e11spots.add(FlSpot(z, ex));
+        e22spots.add(FlSpot(z, ey));
+        e12spots.add(FlSpot(z, exy));
+        s11spots.add(FlSpot(z, sx));
+        s22spots.add(FlSpot(z, sy));
+        s12spots.add(FlSpot(z, sxy));
+      }
+    }
+
+    _chartSpots = [e11spots, e22spots, e12spots, s11spots, s22spots, s12spots];
+    _chartTitles = ['ε₁₁', 'ε₂₂', 'ε₁₂', 'σ₁₁', 'σ₂₂', 'σ₁₂'];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => const ToolSettingPage()));
-              },
-              icon: const Icon(Icons.settings_rounded),
-            ),
-          ],
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          title: Text(S.of(context).Result),
-        ),
-        body: SafeArea(
-          child: StaggeredGridView.countBuilder(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-              crossAxisCount: 8,
-              itemCount: 7,
-              staggeredTileBuilder: (int index) =>
-                  StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              itemBuilder: (BuildContext context, int index) {
-                return [
-                  ResultStressStrainWidget(
-                    mechanicalTensor: widget.resultTensor,
-                  ),
-                  LaminarStressStrainLineChat(
-                    title: "ε11 through the thickness",
-                    data: epsilon11_datas,
-                  ),
-                  LaminarStressStrainLineChat(
-                    title: "ε22 through the thickness",
-                    data: epsilon22_datas,
-                  ),
-                  LaminarStressStrainLineChat(
-                    title: "ε12 through the thickness",
-                    data: epsilon12_datas,
-                  ),
-                  LaminarStressStrainLineChat(
-                    title: "σ11 through the thickness",
-                    data: sigma11_datas,
-                  ),
-                  LaminarStressStrainLineChat(
-                    title: "σ22 through the thickness",
-                    data: sigma22_datas,
-                  ),
-                  LaminarStressStrainLineChat(
-                    title: "σ12 through the thickness",
-                    data: sigma12_datas,
-                  )
-                ][index];
-              }),
-        ));
-  }
-}
+    final o = widget.output;
+    final isStress = o.tensorType == TensorType.stress;
 
-class ResultStressStrainWidget extends StatelessWidget {
-  final MechanicalTensor mechanicalTensor;
-  const ResultStressStrainWidget({Key? key, required this.mechanicalTensor}) : super(key: key);
+    final resultMap = isStress
+        ? {'N₁₁': o.N11, 'N₂₂': o.N22, 'N₁₂': o.N12, 'M₁₁': o.M11, 'M₂₂': o.M22, 'M₁₂': o.M12}
+        : {'ε₁₁': o.epsilon11, 'ε₂₂': o.epsilon22, 'ε₁₂': o.epsilon12, 'κ₁₁': o.kappa11, 'κ₂₂': o.kappa22, 'κ₁₂': o.kappa12};
 
-  _propertyRow(BuildContext context, String title, double? value) {
-    return Consumer<NumberPrecisionHelper>(builder: (context, precs, child) {
-      return SizedBox(
-        height: 40,
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Text(
-            precs.formatValue(value),
-            style: Theme.of(context).textTheme.bodyLarge,
-          )
-        ]),
-      );
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    bool isStress = (mechanicalTensor is LaminateStress);
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
+    final items = <Widget>[
+      EngineeringConstantsWidget(
+        title: isStress ? 'Stress Resultants' : 'Mid-plane Strains & Curvatures',
+        constants: resultMap,
       ),
-      child: Column(
-        children: [
-          ListTile(
-            title: Text(
-              S.of(context).Result,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-            height: 240 + 20,
-            child: ListView(
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                _propertyRow(
-                    context,
-                    isStress ? "N11" : "ϵ11",
-                    isStress
-                        ? (mechanicalTensor as LaminateStress).N11
-                        : (mechanicalTensor as LaminateStrain).epsilon11),
-                const Divider(height: 1),
-                _propertyRow(
-                    context,
-                    isStress ? "N22" : "ϵ22",
-                    isStress
-                        ? (mechanicalTensor as LaminateStress).N22
-                        : (mechanicalTensor as LaminateStrain).epsilon22),
-                const Divider(height: 1),
-                _propertyRow(
-                    context,
-                    isStress ? "N12" : "ϵ12",
-                    isStress
-                        ? (mechanicalTensor as LaminateStress).N12
-                        : (mechanicalTensor as LaminateStrain).epsilon12),
-                const Divider(height: 1),
-                _propertyRow(
-                    context,
-                    isStress ? "M11" : "𝞳11",
-                    isStress
-                        ? (mechanicalTensor as LaminateStress).M11
-                        : (mechanicalTensor as LaminateStrain).kappa11),
-                const Divider(height: 1),
-                _propertyRow(
-                    context,
-                    isStress ? "M22" : "𝞳22",
-                    isStress
-                        ? (mechanicalTensor as LaminateStress).M22
-                        : (mechanicalTensor as LaminateStrain).kappa22),
-                const Divider(height: 1),
-                _propertyRow(
-                    context,
-                    isStress ? "M12" : "𝞳12",
-                    isStress
-                        ? (mechanicalTensor as LaminateStress).M12
-                        : (mechanicalTensor as LaminateStrain).kappa12),
-              ],
-            ),
+      ..._chartSpots.asMap().entries.map((e) =>
+          _ThicknessChart(title: _chartTitles[e.key], spots: e.value)),
+    ];
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_rounded),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const ToolSettingPage())),
           ),
         ],
+        title: Text(S.of(context).Result),
+      ),
+      body: SafeArea(
+        child: StaggeredGridView.countBuilder(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+          crossAxisCount: 8,
+          itemCount: items.length,
+          staggeredTileBuilder: (_) =>
+              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          itemBuilder: (_, i) => items[i],
+        ),
       ),
     );
   }
 }
 
-class LaminarStressStrainLineChat extends StatelessWidget {
+class _ThicknessChart extends StatelessWidget {
   final String title;
-  final List<FlSpot> data;
-  const LaminarStressStrainLineChat({Key? key, required this.title, required this.data})
-      : super(key: key);
+  final List<FlSpot> spots;
+
+  const _ThicknessChart({required this.title, required this.spots});
 
   @override
   Widget build(BuildContext context) {
-    double minX = data[0].x;
-    double maxX = data.last.x;
-    double minY = (data.map((e) => e.y)).reduce(min);
-    double maxY = (data.map((e) => e.y)).reduce(max);
-    double horizontalInterval = (maxX - minX) / 4;
-    double verticalInterval = (maxY - minY) / 4;
+    if (spots.isEmpty) return const SizedBox.shrink();
+    final minX = spots.map((s) => s.x).reduce(min);
+    final maxX = spots.map((s) => s.x).reduce(max);
+    var minY = spots.map((s) => s.y).reduce(min);
+    var maxY = spots.map((s) => s.y).reduce(max);
+    if (minY == maxY) { minY -= 1; maxY += 1; }
+    final primary = Theme.of(context).colorScheme.primary;
 
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Column(children: [
-        ListTile(
-          title: Text(
-            title,
-            style: Theme.of(context).textTheme.titleLarge,
+      child: Column(
+        children: [
+          ListTile(title: Text('$title through thickness',
+              style: Theme.of(context).textTheme.titleMedium)),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 24, 12),
+            child: SizedBox(
+              height: 180,
+              child: LineChart(LineChartData(
+                lineTouchData: const LineTouchData(enabled: false),
+                gridData: const FlGridData(show: true),
+                titlesData: FlTitlesData(
+                  show: true,
+                  rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 46,
+                      getTitlesWidget: (v, _) => Text(v.toStringAsExponential(1),
+                          style: const TextStyle(fontSize: 9)),
+                    ),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      getTitlesWidget: (v, _) => Text(v.toStringAsFixed(3),
+                          style: const TextStyle(fontSize: 9)),
+                    ),
+                  ),
+                ),
+                borderData: FlBorderData(
+                    show: true,
+                    border: const Border(
+                        left: BorderSide(color: Colors.grey),
+                        bottom: BorderSide(color: Colors.grey))),
+                minX: minX, maxX: maxX, minY: minY, maxY: maxY,
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: spots,
+                    isCurved: false,
+                    color: primary,
+                    barWidth: 2,
+                    dotData: const FlDotData(show: false),
+                    belowBarData: BarAreaData(show: false),
+                  ),
+                ],
+              )),
+            ),
           ),
-        ),
-        Container(
-          padding: const EdgeInsets.fromLTRB(5, 0, 25, 10),
-          height: 200,
-          child: LineChart(LineChartData(
-            lineTouchData: LineTouchData(enabled: false),
-            gridData: FlGridData(
-              show: true,
-              horizontalInterval: verticalInterval > 0 ? verticalInterval : null,
-              verticalInterval: horizontalInterval > 0 ? horizontalInterval : null,
-              drawHorizontalLine: true,
-              drawVerticalLine: true,
-            ),
-            titlesData: FlTitlesData(
-              show: true,
-              rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-              topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-              leftTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  reservedSize: 50,
-                  interval: verticalInterval > 0 ? verticalInterval : null,
-                  getTitlesWidget: (value, meta) => Text(
-                    value.toStringAsExponential(2),
-                    style: const TextStyle(fontSize: 10),
-                  ),
-                ),
-              ),
-              bottomTitles: AxisTitles(
-                sideTitles: SideTitles(
-                  showTitles: true,
-                  interval: horizontalInterval > 0 ? horizontalInterval : null,
-                  getTitlesWidget: (value, meta) => Text(
-                    value.toStringAsExponential(2),
-                    style: const TextStyle(fontSize: 10),
-                  ),
-                ),
-              ),
-            ),
-            borderData: FlBorderData(
-                show: true,
-                border: const Border(
-                    left: BorderSide(color: Colors.grey), bottom: BorderSide(color: Colors.grey))),
-            minX: minX,
-            maxX: maxX,
-            minY: minY,
-            maxY: maxY,
-            lineBarsData: [
-              LineChartBarData(
-                isCurved: false,
-                color: Theme.of(context).colorScheme.primary,
-                barWidth: 1,
-                isStrokeCapRound: true,
-                dotData: FlDotData(show: false),
-                belowBarData: BarAreaData(show: false),
-                spots: data,
-              ),
-            ],
-          )),
-        )
-      ]),
+        ],
+      ),
     );
   }
 }

@@ -2,9 +2,11 @@ import 'package:flutter/foundation.dart';
 
 class LayupSequence {
   List<double>? layups;
+  String? rawValue;
 
   // set 方法
   set value(String value) {
+    rawValue = value;
     layups = [];
     String baseLayup = "";
     int rBefore = 1;

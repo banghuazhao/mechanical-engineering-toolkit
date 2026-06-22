@@ -6,12 +6,14 @@ class LaminaContantsRow extends StatefulWidget {
   final TransverselyIsotropicMaterial material;
   final bool validate;
   final bool isPlaneStress;
+  final String? title;
 
   const LaminaContantsRow(
       {Key? key,
       required this.material,
       required this.validate,
-      required this.isPlaneStress})
+      required this.isPlaneStress,
+      this.title})
       : super(key: key);
 
   @override
@@ -50,7 +52,7 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
           children: [
             ListTile(
               title: Text(
-                S.of(context).Lamina_Constants,
+                widget.title ?? S.of(context).Lamina_Constants,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
