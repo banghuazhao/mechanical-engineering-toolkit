@@ -105,7 +105,12 @@ Where p is the pressure, r is the radius of the spherical and t is the thickness
           MaterialPageRoute(
               builder: (context) => SphericalShellStressResultPage(
                   titles: ["σ"],
-                  values: [stress.formatted(precs)])));
+                  values: [stress.formatted(precs)],
+                  calculationSteps: [
+                    'σ = p·r / (2t)',
+                    '= ${precs.formatValue(p)} × ${precs.formatValue(r)} / (2 × ${precs.formatValue(t)})',
+                    '= ${precs.formatValue(stress)}',
+                  ])));
     }
   }
 }

@@ -3,9 +3,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
+import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
+import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
 
@@ -200,7 +204,11 @@ class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
       context,
       MaterialPageRoute(
         builder: (_) => _PowerTorqueResultPage(
-            torque: torque, power: power, omega: omega, rpm: _rpm!),
+            torque: torque,
+            power: power,
+            omega: omega,
+            rpm: _rpm!,
+            mode: _mode),
       ),
     );
   }
@@ -208,11 +216,13 @@ class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
 
 class _PowerTorqueResultPage extends StatelessWidget {
   final double torque, power, omega, rpm;
+  final _SolveFor mode;
   const _PowerTorqueResultPage(
       {required this.torque,
       required this.power,
       required this.omega,
-      required this.rpm});
+      required this.rpm,
+      required this.mode});
 
   @override
   Widget build(BuildContext context) {
@@ -235,21 +245,39 @@ class _PowerTorqueResultPage extends StatelessWidget {
         child: StaggeredGridView.countBuilder(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
-          itemCount: 1,
+          itemCount: 2,
           staggeredTileBuilder: (_) =>
               StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
-          itemBuilder: (_, __) => MultipleRowResult(
-            title: 'Shaft Power & Torque',
-            resultTitles: const [
-              'T  (torque, N·m)',
-              'P  (power, W)',
-              'P  (power, kW)',
-              'ω  (angular velocity, rad/s)',
-            ],
-            resultValues: [torque, power, power / 1000, omega],
-          ),
+          itemBuilder: (_, i) {
+            return [
+              MultipleRowResult(
+                title: 'Shaft Power & Torque',
+                resultTitles: const [
+                  'T  (torque, N·m)',
+                  'P  (power, W)',
+                  'P  (power, kW)',
+                  'ω  (angular velocity, rad/s)',
+                ],
+                resultValues: [torque, power, power / 1000, omega],
+              ),
+              Consumer<NumberPrecisionHelper>(
+                builder: (context, precs, _) {
+                  final steps = mode == _SolveFor.torque
+                      ? [
+                          'ω = 2π·n / 60 = 2π × ${precs.formatValue(rpm)} / 60 = ${precs.formatValue(omega)} rad/s',
+                          'T = P / ω = ${precs.formatValue(power)} / ${precs.formatValue(omega)} = ${precs.formatValue(torque)} N·m',
+                        ]
+                      : [
+                          'ω = 2π·n / 60 = 2π × ${precs.formatValue(rpm)} / 60 = ${precs.formatValue(omega)} rad/s',
+                          'P = T × ω = ${precs.formatValue(torque)} × ${precs.formatValue(omega)} = ${precs.formatValue(power)} W',
+                        ];
+                  return CalculationCard(steps: steps);
+                },
+              ),
+            ][i];
+          },
         ),
       ),
     );

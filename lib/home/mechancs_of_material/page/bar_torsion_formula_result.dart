@@ -3,15 +3,27 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/strain_model.dart';
+import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/single_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
+import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
 
 class BarTorsionFormulaResultPage extends StatefulWidget {
   final Strain strain;
+  final double T;
+  final double c;
+  final double J;
 
-  const BarTorsionFormulaResultPage({Key? key, required this.strain}) : super(key: key);
+  const BarTorsionFormulaResultPage({
+    Key? key,
+    required this.strain,
+    required this.T,
+    required this.c,
+    required this.J,
+  }) : super(key: key);
 
   @override
   _BarTorsionFormulaResultPageState createState() => _BarTorsionFormulaResultPageState();
@@ -86,7 +98,7 @@ class _BarTorsionFormulaResultPageState extends State<BarTorsionFormulaResultPag
             StaggeredGridView.countBuilder(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
                 crossAxisCount: 8,
-                itemCount: 1,
+                itemCount: 2,
                 staggeredTileBuilder: (int index) =>
                     StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
                 mainAxisSpacing: 12,
@@ -96,7 +108,14 @@ class _BarTorsionFormulaResultPageState extends State<BarTorsionFormulaResultPag
                     SingleRowResult(
                         title: S.of(context).The_Maximum_Shear_Stress,
                         resultTitle: "𝛕_max",
-                        resultValue: widget.strain.value)
+                        resultValue: widget.strain.value),
+                    Consumer<NumberPrecisionHelper>(
+                      builder: (context, precs, _) => CalculationCard(steps: [
+                        'τ = T·c / J',
+                        '= ${precs.formatValue(widget.T)} × ${precs.formatValue(widget.c)} / ${precs.formatValue(widget.J)}',
+                        '= ${precs.formatValue(widget.strain.value)}',
+                      ]),
+                    ),
                   ][index];
                 }),
             if (_anchoredAdaptiveAd != null && _isLoaded)

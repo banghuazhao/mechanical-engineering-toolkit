@@ -103,19 +103,22 @@ The principal stresses σ1 and σ2 (The maximum and minimum normal stresses) are
       double sigma_2 =
           (s11 + s22) / 2 - sqrt((s11 - s22) / 2 * (s11 - s22) / 2 + s12 * s12);
 
+      final avg = (s11 + s22) / 2;
+      final R = sqrt((s11 - s22) / 2 * (s11 - s22) / 2 + s12 * s12);
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => SphericalShellStressResultPage(
-                      rowTitle: "Principal Stresses",
-                      titles: [
-                        "σ_1",
-                        "σ_2",
-                      ],
-                      values: [
-                        sigma_1.formatted(precs),
-                        sigma_2.formatted(precs)
-                      ])));
+                    rowTitle: "Principal Stresses",
+                    titles: ["σ₁", "σ₂"],
+                    values: [sigma_1.formatted(precs), sigma_2.formatted(precs)],
+                    calculationSteps: [
+                      'σ₁,₂ = (σₓ + σᵧ)/2 ± √((σₓ−σᵧ)²/4 + τ²)',
+                      '= (${precs.formatValue(s11)} + ${precs.formatValue(s22)}) / 2 ± √(((${precs.formatValue(s11)}−${precs.formatValue(s22)})/2)² + ${precs.formatValue(s12)}²)',
+                      '= ${precs.formatValue(avg)} ± ${precs.formatValue(R)}',
+                      'σ₁ = ${precs.formatValue(sigma_1)},  σ₂ = ${precs.formatValue(sigma_2)}',
+                    ],
+                  )));
     }
   }
 }

@@ -127,13 +127,18 @@ L: Length of the column
       double I = columnBucklingLoadModel.I!;
       double L = columnBucklingLoadModel.L!;
 
+      double C = 1.0;
       if (dropValue == "Pinned-pinned column") {
+        C = 1.0;
         Pcr = pi * pi * E * I / (L * L);
       } else if (dropValue == "Fixed-free column") {
+        C = 0.25;
         Pcr = pi * pi * E * I / (4 * L * L);
       } else if (dropValue == "Fixed-fixed column") {
+        C = 4.0;
         Pcr = 4 * pi * pi * E * I / (L * L);
       } else if (dropValue == "Fixed-pinned column") {
+        C = 2.046;
         Pcr = 2.046 * pi * pi * E * I / (L * L);
       }
 
@@ -142,6 +147,11 @@ L: Length of the column
           MaterialPageRoute(
               builder: (context) => ColumnBucklingLoadResultPage(
                     Pcr: Pcr,
+                    E: E,
+                    I: I,
+                    L: L,
+                    endCondition: dropValue,
+                    C: C,
                   )));
     }
   }

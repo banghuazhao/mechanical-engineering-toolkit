@@ -3,7 +3,10 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
+import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/single_row_result.dart';
+import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
 
@@ -145,7 +148,13 @@ class _TransverseShearStressPageState
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => _ShearResultPage(tau: tau),
+        builder: (_) => _ShearResultPage(
+          tau: tau,
+          V: _model.V!,
+          Q: _model.Q!,
+          I: _model.I!,
+          t: _model.t!,
+        ),
       ),
     );
   }
@@ -159,8 +168,13 @@ class _FieldDef {
 }
 
 class _ShearResultPage extends StatelessWidget {
-  final double tau;
-  const _ShearResultPage({required this.tau});
+  final double tau, V, Q, I, t;
+  const _ShearResultPage(
+      {required this.tau,
+      required this.V,
+      required this.Q,
+      required this.I,
+      required this.t});
 
   @override
   Widget build(BuildContext context) {
@@ -183,16 +197,27 @@ class _ShearResultPage extends StatelessWidget {
         child: StaggeredGridView.countBuilder(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
-          itemCount: 1,
+          itemCount: 2,
           staggeredTileBuilder: (_) =>
               StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
-          itemBuilder: (_, __) => SingleRowResult(
-            title: 'Transverse Shear Stress',
-            resultTitle: 'τ = VQ/(It)',
-            resultValue: tau,
-          ),
+          itemBuilder: (_, i) {
+            return [
+              SingleRowResult(
+                title: 'Transverse Shear Stress',
+                resultTitle: 'τ = VQ/(It)',
+                resultValue: tau,
+              ),
+              Consumer<NumberPrecisionHelper>(
+                builder: (context, precs, _) => CalculationCard(steps: [
+                  'τ = V·Q / (I·t)',
+                  '= ${precs.formatValue(V)} × ${precs.formatValue(Q)} / (${precs.formatValue(I)} × ${precs.formatValue(t)})',
+                  '= ${precs.formatValue(tau)}',
+                ]),
+              ),
+            ][i];
+          },
         ),
       ),
     );

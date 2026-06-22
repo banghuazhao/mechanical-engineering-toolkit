@@ -5,7 +5,10 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
+import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
+import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
 
@@ -151,7 +154,14 @@ class _AngleOfTwistPageState extends State<AngleOfTwistPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => _TwistResultPage(phiRad: phiRad, phiDeg: phiDeg),
+        builder: (_) => _TwistResultPage(
+          phiRad: phiRad,
+          phiDeg: phiDeg,
+          T: _model.T!,
+          L: _model.L!,
+          G: _model.G!,
+          J: _model.J!,
+        ),
       ),
     );
   }
@@ -165,9 +175,14 @@ class _FieldDef {
 }
 
 class _TwistResultPage extends StatelessWidget {
-  final double phiRad;
-  final double phiDeg;
-  const _TwistResultPage({required this.phiRad, required this.phiDeg});
+  final double phiRad, phiDeg, T, L, G, J;
+  const _TwistResultPage(
+      {required this.phiRad,
+      required this.phiDeg,
+      required this.T,
+      required this.L,
+      required this.G,
+      required this.J});
 
   @override
   Widget build(BuildContext context) {
@@ -190,16 +205,28 @@ class _TwistResultPage extends StatelessWidget {
         child: StaggeredGridView.countBuilder(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
-          itemCount: 1,
+          itemCount: 2,
           staggeredTileBuilder: (_) =>
               StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
-          itemBuilder: (_, __) => MultipleRowResult(
-            title: 'Angle of Twist',
-            resultTitles: const ['φ  (radians)', 'φ  (degrees)'],
-            resultValues: [phiRad, phiDeg],
-          ),
+          itemBuilder: (_, i) {
+            return [
+              MultipleRowResult(
+                title: 'Angle of Twist',
+                resultTitles: const ['φ  (radians)', 'φ  (degrees)'],
+                resultValues: [phiRad, phiDeg],
+              ),
+              Consumer<NumberPrecisionHelper>(
+                builder: (context, precs, _) => CalculationCard(steps: [
+                  'φ = T·L / (G·J)',
+                  '= ${precs.formatValue(T)} × ${precs.formatValue(L)} / (${precs.formatValue(G)} × ${precs.formatValue(J)})',
+                  '= ${precs.formatValue(phiRad)} rad',
+                  '= ${precs.formatValue(phiDeg)}°',
+                ]),
+              ),
+            ][i];
+          },
         ),
       ),
     );

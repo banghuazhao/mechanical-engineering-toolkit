@@ -136,17 +136,21 @@ The transformation equations for plane stress are:
           context,
           MaterialPageRoute(
               builder: (context) => SphericalShellStressResultPage(
-                      rowTitle: "Principal Stresses",
-                      titles: [
-                        "σ_x1",
-                        "σ_y1",
-                        "𝛕_x1y1"
-                      ],
-                      values: [
-                        sigma_x1.formatted(precs),
-                        sigma_y1.formatted(precs),
-                        sigma_xy.formatted(precs)
-                      ])));
+                    rowTitle: "Transformed Stresses",
+                    titles: ["σ_x'", "σ_y'", "τ_x'y'"],
+                    values: [
+                      sigma_x1.formatted(precs),
+                      sigma_y1.formatted(precs),
+                      sigma_xy.formatted(precs),
+                    ],
+                    calculationSteps: [
+                      'θ = ${precs.formatValue(angle)}°,  2θ = ${precs.formatValue(2 * angle)}°',
+                      'sin2θ = ${precs.formatValue(s)},  cos2θ = ${precs.formatValue(c)}',
+                      'σₓ\' = (σₓ+σᵧ)/2 + (σₓ−σᵧ)/2·cos2θ + τ·sin2θ = ${precs.formatValue(sigma_x1)}',
+                      'σᵧ\' = (σₓ+σᵧ)/2 − (σₓ−σᵧ)/2·cos2θ − τ·sin2θ = ${precs.formatValue(sigma_y1)}',
+                      'τₓ\'ᵧ\' = −(σₓ−σᵧ)/2·sin2θ + τ·cos2θ = ${precs.formatValue(sigma_xy)}',
+                    ],
+                  )));
     }
   }
 }

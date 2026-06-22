@@ -3,15 +3,29 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/displacement_model.dart';
+import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/single_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
+import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
 
 class BarForceDisplacementResultPage extends StatefulWidget {
   final Displacement displacement;
+  final double F;
+  final double L;
+  final double E;
+  final double A;
 
-  const BarForceDisplacementResultPage({Key? key, required this.displacement}) : super(key: key);
+  const BarForceDisplacementResultPage({
+    Key? key,
+    required this.displacement,
+    required this.F,
+    required this.L,
+    required this.E,
+    required this.A,
+  }) : super(key: key);
 
   @override
   _BarForceDisplacementResultPageState createState() => _BarForceDisplacementResultPageState();
@@ -86,7 +100,7 @@ class _BarForceDisplacementResultPageState extends State<BarForceDisplacementRes
             StaggeredGridView.countBuilder(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
                 crossAxisCount: 8,
-                itemCount: 1,
+                itemCount: 2,
                 staggeredTileBuilder: (int index) =>
                     StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
                 mainAxisSpacing: 12,
@@ -96,7 +110,14 @@ class _BarForceDisplacementResultPageState extends State<BarForceDisplacementRes
                     SingleRowResult(
                         title: S.of(context).Displacement,
                         resultTitle: "δ",
-                        resultValue: widget.displacement.value)
+                        resultValue: widget.displacement.value),
+                    Consumer<NumberPrecisionHelper>(
+                      builder: (context, precs, _) => CalculationCard(steps: [
+                        'δ = F·L / (E·A)',
+                        '= ${precs.formatValue(widget.F)} × ${precs.formatValue(widget.L)} / (${precs.formatValue(widget.E)} × ${precs.formatValue(widget.A)})',
+                        '= ${precs.formatValue(widget.displacement.value)}',
+                      ]),
+                    ),
                   ][index];
                 }),
             if (_anchoredAdaptiveAd != null && _isLoaded)

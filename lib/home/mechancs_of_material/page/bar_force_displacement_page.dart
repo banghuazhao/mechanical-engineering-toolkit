@@ -105,6 +105,10 @@ The displacement (δ) of prismatic bars subjected to tensile or compressive cent
           MaterialPageRoute(
               builder: (context) => BarForceDisplacementResultPage(
                     displacement: displacement,
+                    F: p,
+                    L: l,
+                    E: e,
+                    A: area,
                   )));
     }
   }

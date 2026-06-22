@@ -100,6 +100,8 @@ Calculate the stress by force (F) and area (A):""",
           MaterialPageRoute(
               builder: (context) => GeneralStressResultPage(
                     stress: stress,
+                    F: force.value!,
+                    A: area.value!,
                   )));
     }
   }

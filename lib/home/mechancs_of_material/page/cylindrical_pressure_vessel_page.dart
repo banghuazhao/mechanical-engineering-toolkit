@@ -107,13 +107,14 @@ Where p is the pressure, r is the radius of the spherical and t is the thickness
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => SphericalShellStressResultPage(titles: [
-                    "σ1",
-                    "σ2"
-                  ], values: [
-                    stress1.formatted(precs),
-                    stress2.formatted(precs)
-                  ])));
+              builder: (context) => SphericalShellStressResultPage(
+                    titles: ["σ₁  (hoop)", "σ₂  (axial)"],
+                    values: [stress1.formatted(precs), stress2.formatted(precs)],
+                    calculationSteps: [
+                      'σ₁ = p·r / t   = ${precs.formatValue(p)} × ${precs.formatValue(r)} / ${precs.formatValue(t)}   = ${precs.formatValue(stress1)}',
+                      'σ₂ = p·r / (2t) = ${precs.formatValue(p)} × ${precs.formatValue(r)} / (2 × ${precs.formatValue(t)}) = ${precs.formatValue(stress2)}',
+                    ],
+                  )));
     }
   }
 }

@@ -1,11 +1,12 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
+import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
+import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
 
@@ -162,7 +163,14 @@ class _ThermalDeformationPageState extends State<ThermalDeformationPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => _ThermalResultPage(delta: delta, sigma: sigma),
+        builder: (_) => _ThermalResultPage(
+          delta: delta,
+          sigma: sigma,
+          alpha: _model.alpha!,
+          deltaT: _model.deltaT!,
+          length: _model.length!,
+          E: _model.youngsModulus!,
+        ),
       ),
     );
   }
@@ -179,7 +187,17 @@ class _Field {
 class _ThermalResultPage extends StatelessWidget {
   final double delta;
   final double sigma;
-  const _ThermalResultPage({required this.delta, required this.sigma});
+  final double alpha;
+  final double deltaT;
+  final double length;
+  final double E;
+  const _ThermalResultPage(
+      {required this.delta,
+      required this.sigma,
+      required this.alpha,
+      required this.deltaT,
+      required this.length,
+      required this.E});
 
   @override
   Widget build(BuildContext context) {
@@ -199,19 +217,38 @@ class _ThermalResultPage extends StatelessWidget {
         title: Text(S.of(context).Result),
       ),
       body: SafeArea(
-        child: StaggeredGridView.countBuilder(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-          crossAxisCount: 8,
-          itemCount: 1,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          itemBuilder: (_, __) => MultipleRowResult(
-            title: 'Thermal Results',
-            resultTitles: const ['δ_T  (thermal deformation)', 'σ_T  (thermal stress, constrained)'],
-            resultValues: [delta, sigma],
-          ),
+        child: Consumer<NumberPrecisionHelper>(
+          builder: (context, precs, _) {
+            final items = [
+              MultipleRowResult(
+                title: 'Thermal Results',
+                resultTitles: const [
+                  'δ_T  (thermal deformation)',
+                  'σ_T  (thermal stress, constrained)'
+                ],
+                resultValues: [delta, sigma],
+              ),
+              CalculationCard(steps: [
+                'δ_T = α × ΔT × L',
+                '= ${precs.formatValue(alpha)} × ${precs.formatValue(deltaT)} × ${precs.formatValue(length)}',
+                '= ${precs.formatValue(delta)}',
+                '',
+                'σ_T = −E × α × ΔT',
+                '= −${precs.formatValue(E)} × ${precs.formatValue(alpha)} × ${precs.formatValue(deltaT)}',
+                '= ${precs.formatValue(sigma)}',
+              ]),
+            ];
+            return StaggeredGridView.countBuilder(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+              crossAxisCount: 8,
+              itemCount: items.length,
+              staggeredTileBuilder: (_) =>
+                  StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              itemBuilder: (_, i) => items[i],
+            );
+          },
         ),
       ),
     );

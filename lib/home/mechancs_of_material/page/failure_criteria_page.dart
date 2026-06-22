@@ -5,6 +5,7 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
+import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:provider/provider.dart';
@@ -213,6 +214,11 @@ class _FailureCriteriaPageState extends State<FailureCriteriaPage> {
           tresca: tresca,
           tauMax: tauMax,
           yield_: _yield,
+          sx: _sx!,
+          sy: _sy!,
+          txy: _txy!,
+          avg: avg,
+          R: r,
         ),
       ),
     );
@@ -229,6 +235,7 @@ class _FieldSpec {
 
 class _FailureResultPage extends StatelessWidget {
   final double s1, s2, vonMises, tresca, tauMax;
+  final double sx, sy, txy, avg, R;
   final double? yield_;
 
   const _FailureResultPage({
@@ -237,6 +244,11 @@ class _FailureResultPage extends StatelessWidget {
     required this.vonMises,
     required this.tresca,
     required this.tauMax,
+    required this.sx,
+    required this.sy,
+    required this.txy,
+    required this.avg,
+    required this.R,
     this.yield_,
   });
 
@@ -280,7 +292,7 @@ class _FailureResultPage extends StatelessWidget {
         child: StaggeredGridView.countBuilder(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
-          itemCount: hasSy ? 2 : 1,
+          itemCount: hasSy ? 3 : 2,
           staggeredTileBuilder: (_) =>
               StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
@@ -289,14 +301,31 @@ class _FailureResultPage extends StatelessWidget {
             if (i == 0) {
               return MultipleRowResult(
                 title: 'Stress Results',
-                resultTitles: titles.sublist(0, hasSy ? 5 : 5),
-                resultValues: values.sublist(0, hasSy ? 5 : 5),
+                resultTitles: titles.sublist(0, 5),
+                resultValues: values.sublist(0, 5),
               );
             }
-            return MultipleRowResult(
-              title: 'Factor of Safety',
-              resultTitles: titles.sublist(5),
-              resultValues: values.sublist(5),
+            if (hasSy && i == 1) {
+              return MultipleRowResult(
+                title: 'Factor of Safety',
+                resultTitles: titles.sublist(5),
+                resultValues: values.sublist(5),
+              );
+            }
+            return Consumer<NumberPrecisionHelper>(
+              builder: (context, precs, _) => CalculationCard(steps: [
+                'Principal stresses:',
+                'R = √(((σₓ−σᵧ)/2)² + τ²)',
+                '  = √((( ${precs.formatValue(sx)} − ${precs.formatValue(sy)} )/2)² + ${precs.formatValue(txy)}²)',
+                '  = ${precs.formatValue(R)}',
+                'σ₁ = (σₓ+σᵧ)/2 + R = ${precs.formatValue(avg)} + ${precs.formatValue(R)} = ${precs.formatValue(s1)}',
+                'σ₂ = (σₓ+σᵧ)/2 − R = ${precs.formatValue(avg)} − ${precs.formatValue(R)} = ${precs.formatValue(s2)}',
+                '',
+                'Von Mises: σ_VM = √(σ₁²−σ₁σ₂+σ₂²) = ${precs.formatValue(vonMises)}',
+                'Tresca:  σ_eff = |σ₁−σ₂| = ${precs.formatValue(tresca)},  τ_max = ${precs.formatValue(tauMax)}',
+                if (hasSy) 'FS_VM = Sᵧ / σ_VM = ${precs.formatValue(yield_)} / ${precs.formatValue(vonMises)} = ${precs.formatValue(yield_! / vonMises)}',
+                if (hasSy) 'FS_Tresca = Sᵧ / σ_eff = ${precs.formatValue(yield_)} / ${precs.formatValue(tresca)} = ${precs.formatValue(yield_! / tresca)}',
+              ]),
             );
           },
         ),

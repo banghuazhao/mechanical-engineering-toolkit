@@ -102,6 +102,9 @@ The torsion formula of bar: The maximum shear stress which occurs on the outer s
           MaterialPageRoute(
               builder: (context) => BarTorsionFormulaResultPage(
                     strain: strain,
+                    T: T,
+                    c: r,
+                    J: Ip,
                   )));
     }
   }

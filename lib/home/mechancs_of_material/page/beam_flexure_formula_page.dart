@@ -102,6 +102,8 @@ The flexure formula of beam: The stresses on the cross section are directly prop
               builder: (context) => BeamFlexureFormulaResultPage(
                     stress: Stress(-M / I),
                     y: y,
+                    M: M,
+                    I: I,
                   )));
     }
   }
