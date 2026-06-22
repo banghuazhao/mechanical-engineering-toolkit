@@ -6,6 +6,7 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/description
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/single_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -185,6 +186,20 @@ class _ShearResultPage extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.share_rounded),
+            onPressed: () {
+              final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+              shareResult('Transverse Shear Stress', [
+                'τ = ${precs.formatValue(tau)}',
+                '',
+                'Calculation:',
+                'τ = V·Q / (I·t)',
+                '= ${precs.formatValue(V)} × ${precs.formatValue(Q)} / (${precs.formatValue(I)} × ${precs.formatValue(t)})',
+                '= ${precs.formatValue(tau)}',
+              ]);
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.settings_rounded),
             onPressed: () => Navigator.push(context,

@@ -9,6 +9,7 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/description
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -233,6 +234,32 @@ class _PowerTorqueResultPage extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.share_rounded),
+            onPressed: () {
+              final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+              final lines = mode == _SolveFor.torque
+                  ? [
+                      'T = ${precs.formatValue(torque)} N·m',
+                      'P = ${precs.formatValue(power)} W  (${precs.formatValue(power / 1000)} kW)',
+                      'ω = ${precs.formatValue(omega)} rad/s',
+                      '',
+                      'Calculation:',
+                      'ω = 2π·n / 60 = 2π × ${precs.formatValue(rpm)} / 60 = ${precs.formatValue(omega)} rad/s',
+                      'T = P / ω = ${precs.formatValue(power)} / ${precs.formatValue(omega)} = ${precs.formatValue(torque)} N·m',
+                    ]
+                  : [
+                      'P = ${precs.formatValue(power)} W  (${precs.formatValue(power / 1000)} kW)',
+                      'T = ${precs.formatValue(torque)} N·m',
+                      'ω = ${precs.formatValue(omega)} rad/s',
+                      '',
+                      'Calculation:',
+                      'ω = 2π·n / 60 = 2π × ${precs.formatValue(rpm)} / 60 = ${precs.formatValue(omega)} rad/s',
+                      'P = T × ω = ${precs.formatValue(torque)} × ${precs.formatValue(omega)} = ${precs.formatValue(power)} W',
+                    ];
+              shareResult('Shaft Power & Torque', lines);
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.settings_rounded),
             onPressed: () => Navigator.push(context,

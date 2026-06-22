@@ -7,6 +7,7 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/single_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -74,6 +75,20 @@ class _GeneralStressResultPageState extends State<GeneralStressResultPage> {
     return Scaffold(
         appBar: AppBar(
           actions: [
+            IconButton(
+              icon: const Icon(Icons.share_rounded),
+              onPressed: () {
+                final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+                shareResult('General Stress', [
+                  'σ = ${precs.formatValue(widget.stress.value)}',
+                  '',
+                  'Calculation:',
+                  'σ = F / A',
+                  '= ${precs.formatValue(widget.F)} / ${precs.formatValue(widget.A)}',
+                  '= ${precs.formatValue(widget.stress.value)}',
+                ]);
+              },
+            ),
             IconButton(
               onPressed: () {
                 Navigator.push(

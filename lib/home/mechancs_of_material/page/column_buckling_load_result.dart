@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -8,6 +7,7 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/single_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -84,6 +84,21 @@ class _ColumnBucklingLoadResultPageState extends State<ColumnBucklingLoadResultP
     return Scaffold(
         appBar: AppBar(
           actions: [
+            IconButton(
+              icon: const Icon(Icons.share_rounded),
+              onPressed: () {
+                final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+                final cStr = widget.C == 1.0 ? 'π²' : '${precs.formatValue(widget.C)} × π²';
+                shareResult('Column Buckling Load', [
+                  'Pcr = ${precs.formatValue(widget.Pcr)}',
+                  '',
+                  'Calculation:',
+                  'Pcr = C·π²·E·I / L²  (${widget.endCondition})',
+                  '= $cStr × ${precs.formatValue(widget.E)} × ${precs.formatValue(widget.I)} / ${precs.formatValue(widget.L)}²',
+                  '= ${precs.formatValue(widget.Pcr)}',
+                ]);
+              },
+            ),
             IconButton(
               onPressed: () {
                 Navigator.push(

@@ -7,6 +7,7 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/single_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -79,6 +80,20 @@ class _BarTorsionFormulaResultPageState extends State<BarTorsionFormulaResultPag
     return Scaffold(
         appBar: AppBar(
           actions: [
+            IconButton(
+              icon: const Icon(Icons.share_rounded),
+              onPressed: () {
+                final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+                shareResult('Torsion Formula', [
+                  'τ_max = ${precs.formatValue(widget.strain.value)}',
+                  '',
+                  'Calculation:',
+                  'τ = T·c / J',
+                  '= ${precs.formatValue(widget.T)} × ${precs.formatValue(widget.c)} / ${precs.formatValue(widget.J)}',
+                  '= ${precs.formatValue(widget.strain.value)}',
+                ]);
+              },
+            ),
             IconButton(
               onPressed: () {
                 Navigator.push(

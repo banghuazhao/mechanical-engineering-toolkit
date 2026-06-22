@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
+import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
 
@@ -25,6 +28,18 @@ class _MomentsOfInertiaResultPageState extends State<MomentsOfInertiaResultPage>
     return Scaffold(
         appBar: AppBar(
           actions: [
+            IconButton(
+              icon: const Icon(Icons.share_rounded),
+              onPressed: () {
+                final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+                shareResult('Moments of Inertia', [
+                  'Ix = ${precs.formatValue(widget.Ix)}',
+                  'Iy = ${precs.formatValue(widget.Iy)}',
+                  'Ixy = ${precs.formatValue(widget.Ixy)}',
+                  'Ip = ${precs.formatValue(widget.Ip)}',
+                ]);
+              },
+            ),
             IconButton(
               onPressed: () {
                 Navigator.push(

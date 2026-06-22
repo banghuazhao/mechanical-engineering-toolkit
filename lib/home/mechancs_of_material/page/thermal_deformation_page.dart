@@ -6,6 +6,7 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/description
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -208,6 +209,20 @@ class _ThermalResultPage extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.share_rounded),
+            onPressed: () {
+              final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+              shareResult('Thermal Deformation & Stress', [
+                'δ_T = ${precs.formatValue(delta)}',
+                'σ_T = ${precs.formatValue(sigma)}',
+                '',
+                'Calculation:',
+                'δ_T = α × ΔT × L = ${precs.formatValue(alpha)} × ${precs.formatValue(deltaT)} × ${precs.formatValue(length)} = ${precs.formatValue(delta)}',
+                'σ_T = −E × α × ΔT = −${precs.formatValue(E)} × ${precs.formatValue(alpha)} × ${precs.formatValue(deltaT)} = ${precs.formatValue(sigma)}',
+              ]);
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.settings_rounded),
             onPressed: () => Navigator.push(context,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_fomula_row_result.dart';
+import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 
 class CantileverBeamDeflectionsSlopesResultPage extends StatefulWidget {
   final List<String> deflectionTitles;
@@ -33,6 +34,23 @@ class _CantileverBeamDeflectionsSlopesResultPageState
                 const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.share_rounded),
+              onPressed: () {
+                final lines = [
+                  'Deflections:',
+                  for (var i = 0; i < widget.deflectionTitles.length; i++)
+                    '  ${widget.deflectionTitles[i]} = ${widget.deflectionValues[i]}',
+                  '',
+                  'Slopes:',
+                  for (var i = 0; i < widget.slopesTitles.length; i++)
+                    '  ${widget.slopesTitles[i]} = ${widget.slopesValues[i]}',
+                ];
+                shareResult('Beam Deflections & Slopes', lines);
+              },
+            ),
+          ],
           title: Text(S.of(context).Result),
         ),
         body: SafeArea(

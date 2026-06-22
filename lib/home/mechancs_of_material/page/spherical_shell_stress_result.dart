@@ -3,6 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_fomula_row_result.dart';
+import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 
 class SphericalShellStressResultPage extends StatefulWidget {
   final List<String> titles;
@@ -36,6 +37,21 @@ class _SphericalShellStressResultPageState
             icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.share_rounded),
+              onPressed: () {
+                final lines = [
+                  for (var i = 0; i < widget.titles.length; i++)
+                    '${widget.titles[i]} = ${widget.values[i]}',
+                  if (hasCalc) '',
+                  if (hasCalc) 'Calculation:',
+                  if (hasCalc) ...widget.calculationSteps!,
+                ];
+                shareResult(widget.rowTitle, lines);
+              },
+            ),
+          ],
           title: Text(S.of(context).Result),
         ),
         body: SafeArea(

@@ -8,6 +8,7 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/description
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -280,6 +281,27 @@ class _FailureResultPage extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.share_rounded),
+            onPressed: () {
+              final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+              shareResult('Failure Criteria', [
+                'σ₁ = ${precs.formatValue(s1)},  σ₂ = ${precs.formatValue(s2)}',
+                'σ_VM = ${precs.formatValue(vonMises)}',
+                'σ_Tresca = ${precs.formatValue(tresca)},  τ_max = ${precs.formatValue(tauMax)}',
+                if (yield_ != null && yield_! > 0) ...[
+                  'FS_VM = ${precs.formatValue(yield_! / vonMises)}',
+                  'FS_Tresca = ${precs.formatValue(yield_! / tresca)}',
+                ],
+                '',
+                'Calculation:',
+                'R = √(((σₓ−σᵧ)/2)² + τ²) = ${precs.formatValue(R)}',
+                'σ₁ = ${precs.formatValue(avg)} + ${precs.formatValue(R)} = ${precs.formatValue(s1)}',
+                'σ₂ = ${precs.formatValue(avg)} − ${precs.formatValue(R)} = ${precs.formatValue(s2)}',
+                'σ_VM = √(σ₁²−σ₁σ₂+σ₂²) = ${precs.formatValue(vonMises)}',
+              ]);
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.settings_rounded),
             onPressed: () => Navigator.push(context,

@@ -5,6 +5,7 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/s
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/beam_flexure_formula_row_result.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:provider/provider.dart';
 
 class BeamFlexureFormulaResultPage extends StatefulWidget {
@@ -36,6 +37,31 @@ class _BeamFlexureFormulaResultPageState
             icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.share_rounded),
+              onPressed: () {
+                final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+                final lines = widget.y != null
+                    ? [
+                        'σ = ${precs.formatValue(widget.stress.value! * widget.y!)}',
+                        '',
+                        'Calculation:',
+                        'σ = M·y / I',
+                        '= ${precs.formatValue(widget.M)} × ${precs.formatValue(widget.y)} / ${precs.formatValue(widget.I)}',
+                        '= ${precs.formatValue(widget.stress.value! * widget.y!)}',
+                      ]
+                    : [
+                        'σ(y) = ${precs.formatValue(widget.stress.value)} × y',
+                        '',
+                        'Calculation:',
+                        'σ(y) = M·y / I = ${precs.formatValue(widget.M)} × y / ${precs.formatValue(widget.I)}',
+                        '= ${precs.formatValue(widget.stress.value)} × y',
+                      ];
+                shareResult('Beam Flexure Formula', lines);
+              },
+            ),
+          ],
           title: Text(S.of(context).Result),
         ),
         body: SafeArea(
