@@ -87,20 +87,12 @@ class ResultPlaneStressStrainRow extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            getValue(value, precs.precision),
+            precs.formatValue(value),
             style: Theme.of(context).textTheme.bodyLarge,
           )
         ]),
       );
     });
-  }
-
-  String getValue(double? value, int precision) {
-    String valueString = "";
-    if (value != null) {
-      valueString = value == 0 ? "0" : value.toStringAsExponential(precision).toString();
-    }
-    return valueString;
   }
 
   @override

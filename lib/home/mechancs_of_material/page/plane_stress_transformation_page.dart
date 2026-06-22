@@ -117,7 +117,7 @@ The transformation equations for plane stress are:
 
   void _calculate() {
     if (planeStress.isValid() && layupAngle.isValid()) {
-      int precision = NumberPrecisionHelper().precision;
+      final precs = NumberPrecisionHelper();
 
       double s11 = planeStress.sigma11!;
       double s22 = planeStress.sigma22!;
@@ -143,9 +143,9 @@ The transformation equations for plane stress are:
                         "𝛕_x1y1"
                       ],
                       values: [
-                        sigma_x1.toStringAsExponential(precision),
-                        sigma_y1.toStringAsExponential(precision),
-                        sigma_xy.toStringAsExponential(precision)
+                        sigma_x1.formatted(precs),
+                        sigma_y1.formatted(precs),
+                        sigma_xy.formatted(precs)
                       ])));
     }
   }

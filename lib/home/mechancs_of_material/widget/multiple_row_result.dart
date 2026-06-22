@@ -15,11 +15,6 @@ class MultipleRowResult extends StatelessWidget {
     required this.resultValues,
   }) : super(key: key);
 
-  String getValue(double? value, int precision) {
-    if (value == null) return '';
-    return value == 0 ? '0' : value.toStringAsExponential(precision);
-  }
-
   void _copyToClipboard(BuildContext context, String value) {
     Clipboard.setData(ClipboardData(text: value));
     HapticFeedback.lightImpact();
@@ -59,7 +54,7 @@ class MultipleRowResult extends StatelessWidget {
             builder: (context, precs, child) {
               return Column(
                 children: List.generate(resultTitles.length, (index) {
-                  final valueStr = getValue(resultValues[index], precs.precision);
+                  final valueStr = precs.formatValue(resultValues[index]);
                   final isLast = index == resultTitles.length - 1;
                   return Column(
                     children: [

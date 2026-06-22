@@ -92,7 +92,7 @@ The principal stresses σ1 and σ2 (The maximum and minimum normal stresses) are
 
   void _calculate() {
     if (planeStress.isValid()) {
-      int precision = NumberPrecisionHelper().precision;
+      final precs = NumberPrecisionHelper();
 
       double s11 = planeStress.sigma11!;
       double s22 = planeStress.sigma22!;
@@ -113,8 +113,8 @@ The principal stresses σ1 and σ2 (The maximum and minimum normal stresses) are
                         "σ_2",
                       ],
                       values: [
-                        sigma_1.toStringAsExponential(precision),
-                        sigma_2.toStringAsExponential(precision)
+                        sigma_1.formatted(precs),
+                        sigma_2.formatted(precs)
                       ])));
     }
   }

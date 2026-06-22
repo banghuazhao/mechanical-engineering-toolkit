@@ -38,7 +38,7 @@ class Result6By6Matrix extends StatelessWidget {
                 return Center(
                   child: Container(
                     height: 30,
-                    child: Text(value == 0 ? "0" : value.toStringAsExponential(precs.precision),
+                    child: Text(precs.formatValue(value),
                         style: TextStyle(fontSize: 11), maxLines: 2),
                   ),
                 );

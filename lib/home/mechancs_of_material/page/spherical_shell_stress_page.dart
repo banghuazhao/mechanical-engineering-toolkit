@@ -94,7 +94,7 @@ Where p is the pressure, r is the radius of the spherical and t is the thickness
 
   void _calculate() {
     if (sphericalShellStressModel.isValid()) {
-      int precision = NumberPrecisionHelper().precision;
+      final precs = NumberPrecisionHelper();
 
       double p = sphericalShellStressModel.p!;
       double r = sphericalShellStressModel.r!;
@@ -105,7 +105,7 @@ Where p is the pressure, r is the radius of the spherical and t is the thickness
           MaterialPageRoute(
               builder: (context) => SphericalShellStressResultPage(
                   titles: ["σ"],
-                  values: [stress.toStringAsExponential(precision)])));
+                  values: [stress.formatted(precs)])));
     }
   }
 }

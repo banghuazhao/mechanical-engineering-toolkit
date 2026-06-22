@@ -180,7 +180,7 @@ v': = dv/dx = Slope of the deflection curve
 
   void _calculate() {
     if (beamDeflectionSlope.isValid()) {
-      int precision = NumberPrecisionHelper().precision;
+      final precs = NumberPrecisionHelper();
 
       double E = beamDeflectionSlope.E!;
       double I = beamDeflectionSlope.I!;
@@ -202,138 +202,138 @@ v': = dv/dx = Slope of the deflection curve
         slopeTitles = ["v'", "θ_B"];
         double first = -f / (6 * E * I);
         deflectionValues = [
-          (first * 3 * L).toStringAsExponential(precision) +
+          (first * 3 * L).formatted(precs) +
               "x^2" +
               " + " +
-              (-first).toStringAsExponential(precision) +
+              (-first).formatted(precs) +
               "x^3",
-          (f * L * L * L / (3 * E * I)).toStringAsExponential(precision)
+          (f * L * L * L / (3 * E * I)).formatted(precs)
         ];
         double second = -f / (2 * E * I);
         slopeValues = [
-          (second * 2 * L).toStringAsExponential(precision) +
+          (second * 2 * L).formatted(precs) +
               "x" +
               " + " +
-              (-second).toStringAsExponential(precision) +
+              (-second).formatted(precs) +
               "x^2",
-          (f * L * L / (2 * E * I)).toStringAsExponential(precision)
+          (f * L * L / (2 * E * I)).formatted(precs)
         ];
       } else if (dropValue == "Point force") {
         deflectionTitles = ["v (0<=x<=a)", "v (a<=x<=L)", "δ_B"];
         slopeTitles = ["v' (0<=x<=a)", "v' (a<=x<=L)", "θ_B"];
         double first = -f / (6 * E * I);
         deflectionValues = [
-          (first * 3 * a).toStringAsExponential(precision) +
+          (first * 3 * a).formatted(precs) +
               "x^2" +
               " + " +
-              (-first).toStringAsExponential(precision) +
+              (-first).formatted(precs) +
               "x^3",
-          (first * 3 * a * a).toStringAsExponential(precision) +
+          (first * 3 * a * a).formatted(precs) +
               "x" +
               " + " +
-              (-first * a * a * a).toStringAsExponential(precision),
+              (-first * a * a * a).formatted(precs),
           (f * a * a / (6 * E * I) * (3 * L - a))
-              .toStringAsExponential(precision)
+              .formatted(precs)
         ];
         double second = -f / (2 * E * I);
         slopeValues = [
-          (second * 2 * a).toStringAsExponential(precision) +
+          (second * 2 * a).formatted(precs) +
               "x" +
               " + " +
-              (second).toStringAsExponential(precision) +
+              (second).formatted(precs) +
               "x^2",
-          (second * a * a).toStringAsExponential(precision),
-          (f * a * a / (2 * E * I)).toStringAsExponential(precision)
+          (second * a * a).formatted(precs),
+          (f * a * a / (2 * E * I)).formatted(precs)
         ];
       } else if (dropValue == "Distributed force evenly") {
         deflectionTitles = ["v", "δ_B"];
         slopeTitles = ["v'", "θ_B"];
         double first = -f / (24 * E * I);
         deflectionValues = [
-          (first * 6 * L * L).toStringAsExponential(precision) +
+          (first * 6 * L * L).formatted(precs) +
               "x^2" +
               " + " +
-              (-first * 4 * L).toStringAsExponential(precision) +
+              (-first * 4 * L).formatted(precs) +
               "x^3" +
               " + " +
-              (first).toStringAsExponential(precision) +
+              (first).formatted(precs) +
               "x^4",
-          (f * L * L * L * L / (8 * E * I)).toStringAsExponential(precision)
+          (f * L * L * L * L / (8 * E * I)).formatted(precs)
         ];
         double second = -f / (6 * E * I);
         slopeValues = [
-          (second * 3 * L * L).toStringAsExponential(precision) +
+          (second * 3 * L * L).formatted(precs) +
               "x" +
               " + " +
-              (-second * 3 * L).toStringAsExponential(precision) +
+              (-second * 3 * L).formatted(precs) +
               "x^2" +
               " + " +
-              (second).toStringAsExponential(precision) +
+              (second).formatted(precs) +
               "x^3",
-          (f * L * L * L / (6 * E * I)).toStringAsExponential(precision)
+          (f * L * L * L / (6 * E * I)).formatted(precs)
         ];
       } else if (dropValue == "Distributed force") {
         deflectionTitles = ["v (0<=x<=a)", "v (a<=x<=L)", "δ_B"];
         slopeTitles = ["v' (0<=x<=a)", "v' (a<=x<=L)", "θ_B"];
         double first = -f / (24 * E * I);
         deflectionValues = [
-          (first * 6 * a * a).toStringAsExponential(precision) +
+          (first * 6 * a * a).formatted(precs) +
               "x^2" +
               " + " +
-              (-first * 4 * a).toStringAsExponential(precision) +
+              (-first * 4 * a).formatted(precs) +
               "x^3" +
               " + " +
-              (first).toStringAsExponential(precision) +
+              (first).formatted(precs) +
               "x^4",
-          (first * 4 * a * a * a).toStringAsExponential(precision) +
+          (first * 4 * a * a * a).formatted(precs) +
               "x" +
               " + " +
-              (-first * a * a * a * a).toStringAsExponential(precision),
-          (-first * a * a * a * (4 * L - a)).toStringAsExponential(precision)
+              (-first * a * a * a * a).formatted(precs),
+          (-first * a * a * a * (4 * L - a)).formatted(precs)
         ];
         double second = -f / (6 * E * I);
         slopeValues = [
-          (second * 3 * a * a).toStringAsExponential(precision) +
+          (second * 3 * a * a).formatted(precs) +
               "x" +
               " + " +
-              (-second * 3 * a).toStringAsExponential(precision) +
+              (-second * 3 * a).formatted(precs) +
               "x^2" +
               " + " +
-              (second).toStringAsExponential(precision) +
+              (second).formatted(precs) +
               "x^3",
-          (second * a * a * a).toStringAsExponential(precision),
-          (f * a * a * a / (6 * E * I)).toStringAsExponential(precision)
+          (second * a * a * a).formatted(precs),
+          (f * a * a * a / (6 * E * I)).formatted(precs)
         ];
       } else if (dropValue == "Moment at end") {
         deflectionTitles = ["v", "δ_B"];
         slopeTitles = ["v'", "θ_B"];
         double first = -f / (2 * E * I);
         deflectionValues = [
-          (first).toStringAsExponential(precision) + "x^2",
-          (-first * L * L).toStringAsExponential(precision)
+          (first).formatted(precs) + "x^2",
+          (-first * L * L).formatted(precs)
         ];
         double second = -f / (E * I);
         slopeValues = [
-          (second).toStringAsExponential(precision) + "x",
-          (-second * L).toStringAsExponential(precision)
+          (second).formatted(precs) + "x",
+          (-second * L).formatted(precs)
         ];
       } else if (dropValue == "Moment") {
         deflectionTitles = ["v (0<=x<=a)", "v (a<=x<=L)", "δ_B"];
         slopeTitles = ["v' (0<=x<=a)", "v' (a<=x<=L)", "θ_B"];
         double first = -f / (2 * E * I);
         deflectionValues = [
-          (first).toStringAsExponential(precision) + "x^2",
-          (first * 2 * a).toStringAsExponential(precision) +
+          (first).formatted(precs) + "x^2",
+          (first * 2 * a).formatted(precs) +
               "x" +
               " + " +
-              (-first * a * a).toStringAsExponential(precision),
-          (-first * a * (2 * L - a)).toStringAsExponential(precision)
+              (-first * a * a).formatted(precs),
+          (-first * a * (2 * L - a)).formatted(precs)
         ];
         double second = -f / (E * I);
         slopeValues = [
-          (second).toStringAsExponential(precision) + "x",
-          (second * a).toStringAsExponential(precision),
-          (-second * a).toStringAsExponential(precision)
+          (second).formatted(precs) + "x",
+          (second * a).formatted(precs),
+          (-second * a).formatted(precs)
         ];
       }
 

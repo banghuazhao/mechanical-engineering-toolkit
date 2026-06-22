@@ -14,11 +14,6 @@ class BeamFlexureFormulaRowResult extends StatelessWidget {
     required this.resultValue,
   }) : super(key: key);
 
-  String getValue(double? value, int precision) {
-    if (value == null) return '';
-    return value == 0 ? '0' : value.toStringAsExponential(precision);
-  }
-
   void _copyToClipboard(BuildContext context, String value) {
     Clipboard.setData(ClipboardData(text: value));
     HapticFeedback.lightImpact();
@@ -82,7 +77,7 @@ class BeamFlexureFormulaRowResult extends StatelessWidget {
             const Divider(height: 1, indent: 16, endIndent: 16),
             Consumer<NumberPrecisionHelper>(
               builder: (context, precs, child) {
-                final valueStr = getValue(resultValue, precs.precision);
+                final valueStr = precs.formatValue(resultValue);
                 return InkWell(
                   onTap: valueStr.isNotEmpty
                       ? () => _copyToClipboard(context, valueStr)

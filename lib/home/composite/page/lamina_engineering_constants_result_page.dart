@@ -228,7 +228,7 @@ class _LaminaEngineeringConstantsResultPageState
 
   _getValue(double value) {
     return Consumer<NumberPrecisionHelper>(builder: (context, precs, child) {
-      return Text(value.toStringAsExponential(precs.precision),
+      return Text(precs.formatValue(value),
           style: Theme.of(context).textTheme.bodyLarge);
     });
   }

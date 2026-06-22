@@ -23,33 +23,26 @@ class _ToolSettingPageState extends State<ToolSettingPage> {
   }
 
   Future<void> _loadAd() async {
-    // Get an AnchoredAdaptiveBannerAdSize before loading the ad.
     final AnchoredAdaptiveBannerAdSize? size =
         await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
             MediaQuery.of(context).size.width.truncate());
 
     if (size == null) {
-      print('Unable to get height of anchored banner.');
       return;
     }
 
     _anchoredAdaptiveAd = BannerAd(
-      // TODO: replace these test ad units with your own ad unit.
       adUnitId: AdsManager.bannerAdUnitId,
       size: size,
       request: AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (Ad ad) {
-          print('$ad loaded: ${ad.responseInfo}');
           setState(() {
-            // When the ad is loaded, get the ad size and use it to set
-            // the height of the ad container.
             _anchoredAdaptiveAd = ad as BannerAd;
             _isLoaded = true;
           });
         },
         onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          print('Anchored adaptive banner failedToLoad: $error');
           ad.dispose();
         },
       ),
@@ -59,50 +52,156 @@ class _ToolSettingPageState extends State<ToolSettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final primary = Theme.of(context).colorScheme.primary;
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).Settings),
       ),
       body: Consumer<NumberPrecisionHelper>(
-          builder: (context, value, child) => SafeArea(
+          builder: (context, precs, child) => SafeArea(
                 child: Stack(alignment: AlignmentDirectional.bottomCenter, children: [
                   ListView(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
                     children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      ListTile(
-                        title: Text(S.of(context).Result_Precision),
-                        subtitle: Text(123456789.toStringAsExponential(value.precision)),
-                        trailing: SizedBox(
-                          width: 140,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.remove),
-                                onPressed: () => setState(() {
-                                  if (value.precision > 1) {
-                                    value.set(value.precision - 1);
-                                  }
-                                }),
+                      // --- Precision ---
+                      Card(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+                              child: Text(
+                                'PRECISION',
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: primary,
+                                      letterSpacing: 0.8,
+                                    ),
                               ),
-                              Container(
-                                  width: 40,
-                                  child: Text(
-                                    value.precision.toString(),
-                                    textAlign: TextAlign.center,
-                                  )),
-                              IconButton(
-                                icon: Icon(Icons.add),
-                                onPressed: () => setState(() {
-                                  if (value.precision < 9) {
-                                    value.set(value.precision + 1);
-                                  }
-                                }),
-                              )
-                            ],
-                          ),
+                            ),
+                            const Divider(height: 14),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 4, 12, 14),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        S.of(context).Result_Precision,
+                                        style: Theme.of(context).textTheme.titleMedium,
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        'Preview: ${precs.formatValue(123456.789)}',
+                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                              color: const Color(0xFF6E6E73),
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      _stepButton(
+                                        icon: Icons.remove,
+                                        onTap: precs.precision > 1
+                                            ? () => precs.set(precs.precision - 1)
+                                            : null,
+                                      ),
+                                      SizedBox(
+                                        width: 36,
+                                        child: Text(
+                                          precs.precision.toString(),
+                                          textAlign: TextAlign.center,
+                                          style: Theme.of(context).textTheme.titleMedium,
+                                        ),
+                                      ),
+                                      _stepButton(
+                                        icon: Icons.add,
+                                        onTap: precs.precision < 9
+                                            ? () => precs.set(precs.precision + 1)
+                                            : null,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      // --- Display Format ---
+                      Card(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+                              child: Text(
+                                'DISPLAY FORMAT',
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: primary,
+                                      letterSpacing: 0.8,
+                                    ),
+                              ),
+                            ),
+                            const Divider(height: 14),
+                            ...NumberDisplayFormat.values.asMap().entries.map((entry) {
+                              final fmt = entry.value;
+                              final isLast = entry.key == NumberDisplayFormat.values.length - 1;
+                              final isSelected = precs.displayFormat == fmt;
+                              return Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () => precs.setFormat(fmt),
+                                    borderRadius: isLast
+                                        ? const BorderRadius.vertical(bottom: Radius.circular(14))
+                                        : BorderRadius.zero,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  fmt.label,
+                                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                                        color: isSelected ? primary : null,
+                                                        fontWeight: isSelected ? FontWeight.w600 : null,
+                                                      ),
+                                                ),
+                                                const SizedBox(height: 2),
+                                                Text(
+                                                  fmt.example(precs.precision),
+                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                                        color: const Color(0xFF6E6E73),
+                                                        fontFamily: 'monospace',
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          if (isSelected)
+                                            Icon(Icons.check_circle_rounded, color: primary, size: 20),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  if (!isLast) const Divider(height: 1, indent: 16, endIndent: 16),
+                                ],
+                              );
+                            }),
+                            const SizedBox(height: 4),
+                          ],
                         ),
                       ),
                     ],
@@ -116,6 +215,24 @@ class _ToolSettingPageState extends State<ToolSettingPage> {
                     )
                 ]),
               )),
+    );
+  }
+
+  Widget _stepButton({required IconData icon, VoidCallback? onTap}) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Icon(
+            icon,
+            size: 20,
+            color: onTap != null ? Theme.of(context).colorScheme.primary : Colors.grey[350],
+          ),
+        ),
+      ),
     );
   }
 }

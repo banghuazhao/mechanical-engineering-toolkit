@@ -38,7 +38,7 @@ class ResultPlaneStiffnessMatrix extends StatelessWidget {
                     height: 40,
                     child: Center(
                       child: Text(
-                        value == 0 ? "0" : value.toStringAsExponential(precs.precision),
+                        precs.formatValue(value),
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
