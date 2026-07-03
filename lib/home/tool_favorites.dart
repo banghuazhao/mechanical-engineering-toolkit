@@ -8,6 +8,7 @@ import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:provider/provider.dart';
 
 import 'favorites.dart';
+import 'history.dart';
 
 class ToolFavoritesPage extends StatefulWidget {
   const ToolFavoritesPage({Key? key}) : super(key: key);
@@ -146,6 +147,7 @@ class ToolRowWidget extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
+          context.read<ToolHistory>().record(itemNo);
           model.action(context, title);
         },
         child: Padding(

@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import 'generated/l10n.dart';
 import 'home/favorites.dart';
+import 'home/history.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => Favorites()),
-        ChangeNotifierProvider(create: (context) => NumberPrecisionHelper())
+        ChangeNotifierProvider(create: (context) => NumberPrecisionHelper()),
+        ChangeNotifierProvider(create: (context) => ToolHistory()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

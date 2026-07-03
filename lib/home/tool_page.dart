@@ -20,6 +20,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 
 import 'favorites.dart';
+import 'history.dart';
+import 'tool_history_page.dart';
 
 class ToolPage extends StatefulWidget {
   const ToolPage({Key? key}) : super(key: key);
@@ -61,6 +63,16 @@ class _ToolPageState extends State<ToolPage> {
     dataSource.addAll(ToolLibrary.shared
         .getTools(context)
         .where((element) => element.type == ToolType.composite)
+        .toList());
+    dataSource.add('Structural / Statics');
+    dataSource.addAll(ToolLibrary.shared
+        .getTools(context)
+        .where((element) => element.type == ToolType.statics)
+        .toList());
+    dataSource.add('Utilities');
+    dataSource.addAll(ToolLibrary.shared
+        .getTools(context)
+        .where((element) => element.type == ToolType.utilities)
         .toList());
   }
 
@@ -105,6 +117,13 @@ class _ToolPageState extends State<ToolPage> {
       appBar: AppBar(
         title: Text(S.of(context).ME_Toolkit),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => const ToolHistoryPage()));
+            },
+            icon: const Icon(Icons.history_rounded),
+          ),
           IconButton(
             onPressed: () {
               Navigator.push(
@@ -287,6 +306,7 @@ class ToolRowWidget extends StatelessWidget {
     return Card(
       child: InkWell(
         onTap: () {
+          context.read<ToolHistory>().record(itemNo);
           model.action(context, title);
         },
         borderRadius: BorderRadius.circular(14),

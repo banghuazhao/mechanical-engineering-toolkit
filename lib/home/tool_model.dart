@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
+import 'package:mechanical_engineering_toolkit/home/statics/page/beam_reactions_page.dart';
+import 'package:mechanical_engineering_toolkit/home/statics/page/centroid_page.dart';
+import 'package:mechanical_engineering_toolkit/home/statics/page/resultant_force_page.dart';
+import 'package:mechanical_engineering_toolkit/home/unit_converter/unit_converter_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/bar_force_displacement_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/beam_flexure_formula_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/cantilever_beam_deflections_slopes_page.dart';
@@ -27,7 +31,7 @@ import 'mechancs_of_material/page/simple_beam_deflections_slopes_page.dart';
 import 'mechancs_of_material/page/thermal_deformation_page.dart';
 import 'mechancs_of_material/page/transverse_shear_stress_page.dart';
 
-enum ToolType { mechanicsOfMaterial, theoryOfElasticity, composite }
+enum ToolType { mechanicsOfMaterial, theoryOfElasticity, composite, statics, utilities }
 
 class Tool {
   final int id;
@@ -334,7 +338,45 @@ class ToolLibrary {
               MaterialPageRoute(
                   builder: (context) => RulesOfMixturePage(
                         title: title,
-                      ))))
+                      )))),
+      // Statics
+      Tool(
+          id: 400,
+          icon: Icons.arrow_outward_rounded,
+          title: 'Resultant of Forces (2D)',
+          type: ToolType.statics,
+          action: (context, title) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ResultantForcePage(title: title)))),
+      Tool(
+          id: 401,
+          icon: Icons.horizontal_rule_rounded,
+          title: 'Beam Support Reactions',
+          type: ToolType.statics,
+          action: (context, title) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BeamReactionsPage(title: title)))),
+      Tool(
+          id: 402,
+          icon: Icons.crop_free_rounded,
+          title: 'Centroid of Composite Area',
+          type: ToolType.statics,
+          action: (context, title) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CentroidPage(title: title)))),
+      // Utilities
+      Tool(
+          id: 500,
+          icon: Icons.swap_horiz_rounded,
+          title: 'Unit Converter',
+          type: ToolType.utilities,
+          action: (context, title) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const UnitConverterPage()))),
     ];
   }
 
