@@ -969,6 +969,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Truss / Statics`
+  String get Truss_Statics {
+    return Intl.message(
+      'Truss / Statics',
+      name: 'Truss_Statics',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Utilities`
+  String get Utilities {
+    return Intl.message(
+      'Utilities',
+      name: 'Utilities',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

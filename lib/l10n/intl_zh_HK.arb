@@ -91,7 +91,7 @@
   "Transversely_isotropic_material" : "橫向各向同性材料",
   "Orthotropic_material" : "正交各向異性材料",
   "Monoclinic_material" : "單斜材料",
-  "Anisotropic_material" : "各向異性材料"
-
-
+  "Anisotropic_material" : "各向異性材料",
+  "Truss_Statics": "桁架 / 靜力學",
+  "Utilities": "常用工具"
 }

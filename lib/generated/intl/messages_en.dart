@@ -168,6 +168,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Torsion formula of bar"),
         "Transversely_isotropic_material": MessageLookupByLibrary.simpleMessage(
             "Transversely isotropic material"),
+        "Truss_Statics": MessageLookupByLibrary.simpleMessage("Truss / Statics"),
+        "Utilities": MessageLookupByLibrary.simpleMessage("Utilities"),
         "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
         "World_Weather_Live":
             MessageLookupByLibrary.simpleMessage("World Weather Live"),

@@ -92,5 +92,7 @@
   "Transversely_isotropic_material" : "Transversely isotropic material",
   "Orthotropic_material" : "Orthotropic material",
   "Monoclinic_material" : "Monoclinic material",
-  "Anisotropic_material" : "Anisotropic material"
+  "Anisotropic_material" : "Anisotropic material",
+  "Truss_Statics": "Truss / Statics",
+  "Utilities": "Utilities"
 }

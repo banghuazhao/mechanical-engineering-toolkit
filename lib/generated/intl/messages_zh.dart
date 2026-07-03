@@ -138,6 +138,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("杆的扭力公式"),
         "Transversely_isotropic_material":
             MessageLookupByLibrary.simpleMessage("横向各向同性材料"),
+        "Truss_Statics": MessageLookupByLibrary.simpleMessage("桁架 / 静力学"),
+        "Utilities": MessageLookupByLibrary.simpleMessage("常用工具"),
         "Water_Tracker": MessageLookupByLibrary.simpleMessage("喝水吧"),
         "World_Weather_Live": MessageLookupByLibrary.simpleMessage("极简天气"),
         "Yes_Habit": MessageLookupByLibrary.simpleMessage("签签习惯")

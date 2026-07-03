@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 
 import 'favorites.dart';
 import 'history.dart';
-import 'tool_page.dart' show ToolViewMode, ToolViewModePreference, ToolGridTile;
 
 class ToolFavoritesPage extends StatefulWidget {
   const ToolFavoritesPage({Key? key}) : super(key: key);
@@ -21,25 +20,16 @@ class ToolFavoritesPage extends StatefulWidget {
 class _ToolFavoritesPageState extends State<ToolFavoritesPage> {
   BannerAd? _anchoredAdaptiveAd;
   bool _isLoaded = false;
-  late ToolViewMode _viewMode;
 
   @override
   void initState() {
     super.initState();
-    _viewMode = ToolViewModePreference.get();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _loadAd();
-  }
-
-  void _toggleViewMode() {
-    setState(() {
-      _viewMode = _viewMode == ToolViewMode.list ? ToolViewMode.grid : ToolViewMode.list;
-    });
-    ToolViewModePreference.set(_viewMode);
   }
 
   Future<void> _loadAd() async {
@@ -82,15 +72,6 @@ class _ToolFavoritesPageState extends State<ToolFavoritesPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).Favorites),
-        actions: [
-          IconButton(
-            onPressed: _toggleViewMode,
-            tooltip: _viewMode == ToolViewMode.list ? 'Grid view' : 'List view',
-            icon: Icon(_viewMode == ToolViewMode.list
-                ? Icons.grid_view_rounded
-                : Icons.view_list_rounded),
-          ),
-        ],
       ),
       body: Consumer<Favorites>(
         builder: (context, value, child) => value.items.isNotEmpty
@@ -98,9 +79,7 @@ class _ToolFavoritesPageState extends State<ToolFavoritesPage> {
                 child: Stack(
                     alignment: AlignmentDirectional.bottomCenter,
                     children: [
-                      _viewMode == ToolViewMode.grid
-                          ? buildGridView(value, context)
-                          : buildStaggeredGridView(value, context),
+                      buildListView(value, context),
                       if (_anchoredAdaptiveAd != null && _isLoaded)
                         Container(
                           color: Colors.transparent,
@@ -117,78 +96,17 @@ class _ToolFavoritesPageState extends State<ToolFavoritesPage> {
     );
   }
 
-  StaggeredGridView buildStaggeredGridView(
-      Favorites value, BuildContext context) {
-    return StaggeredGridView.countBuilder(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-      crossAxisCount: 8,
-      itemCount: value.items.length,
-      staggeredTileBuilder: (int index) {
-        var model = ToolLibrary.shared.item(value.items[index], context);
-        if (model is String) {
-          return StaggeredTile.fit(8);
-        } else {
-          return StaggeredTile.fit(
-              MediaQuery.of(context).size.width > 600 ? 4 : 8);
-        }
-      },
-      mainAxisSpacing: 4,
-      crossAxisSpacing: 8,
-      itemBuilder: (BuildContext context, int index) {
-        var model = ToolLibrary.shared.item(value.items[index], context);
-        if (model is String) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-            child: Text(
-              model as String,
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff666159)),
-            ),
-          );
-        } else {
-          return ToolRowWidget(model: model);
-        }
-      },
-    );
-  }
+  double get _bottomPadding => _isLoaded && _anchoredAdaptiveAd != null
+      ? _anchoredAdaptiveAd!.size.height.toDouble() + 30
+      : 120.0;
 
-  StaggeredGridView buildGridView(Favorites value, BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final columns = width > 900
-        ? 5
-        : width > 600
-            ? 4
-            : 3;
-    return StaggeredGridView.countBuilder(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 100),
-      crossAxisCount: columns,
+  Widget buildListView(Favorites value, BuildContext context) {
+    return ListView.builder(
+      padding: EdgeInsets.fromLTRB(20, 20, 20, _bottomPadding),
       itemCount: value.items.length,
-      staggeredTileBuilder: (int index) {
-        var model = ToolLibrary.shared.item(value.items[index], context);
-        if (model is String) {
-          return StaggeredTile.fit(columns);
-        } else {
-          return const StaggeredTile.fit(1);
-        }
-      },
-      mainAxisSpacing: 10,
-      crossAxisSpacing: 10,
       itemBuilder: (BuildContext context, int index) {
         var model = ToolLibrary.shared.item(value.items[index], context);
-        if (model is String) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-            child: Text(
-              model as String,
-              style: const TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xff666159)),
-            ),
-          );
-        } else {
-          return ToolGridTile(model: model);
-        }
+        return ToolRowWidget(model: model);
       },
     );
   }

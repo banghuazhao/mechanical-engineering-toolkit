@@ -40,6 +40,12 @@ class ToolViewModePreference {
   }
 }
 
+class ToolSection {
+  final String title;
+  final List<Tool> tools;
+  ToolSection(this.title, this.tools);
+}
+
 class ToolPage extends StatefulWidget {
   const ToolPage({Key? key}) : super(key: key);
 
@@ -48,7 +54,7 @@ class ToolPage extends StatefulWidget {
 }
 
 class _ToolPageState extends State<ToolPage> {
-  List dataSource = [];
+  List<ToolSection> sections = [];
   BannerAd? _anchoredAdaptiveAd;
   bool _isLoaded = false;
   late ToolViewMode _viewMode;
@@ -75,32 +81,33 @@ class _ToolPageState extends State<ToolPage> {
     super.didChangeDependencies();
     _loadAd();
 
-    dataSource = [];
-    dataSource.add(S.of(context).Mechanics_of_Material);
-    dataSource.addAll(ToolLibrary.shared
-        .getTools(context)
-        .where((element) => element.type == ToolType.mechanicsOfMaterial)
-        .toList());
-    dataSource.add(S.of(context).Theory_of_Elasticity);
-    dataSource.addAll(ToolLibrary.shared
-        .getTools(context)
-        .where((element) => element.type == ToolType.theoryOfElasticity)
-        .toList());
-    dataSource.add(S.of(context).Composite_Material);
-    dataSource.addAll(ToolLibrary.shared
-        .getTools(context)
-        .where((element) => element.type == ToolType.composite)
-        .toList());
-    dataSource.add('Structural / Statics');
-    dataSource.addAll(ToolLibrary.shared
-        .getTools(context)
-        .where((element) => element.type == ToolType.statics)
-        .toList());
-    dataSource.add('Utilities');
-    dataSource.addAll(ToolLibrary.shared
-        .getTools(context)
-        .where((element) => element.type == ToolType.utilities)
-        .toList());
+    sections = [];
+    final allTools = ToolLibrary.shared.getTools(context);
+
+    sections.add(ToolSection(
+      S.of(context).Mechanics_of_Material,
+      allTools.where((e) => e.type == ToolType.mechanicsOfMaterial).toList(),
+    ));
+
+    sections.add(ToolSection(
+      S.of(context).Truss_Statics,
+      allTools.where((e) => e.type == ToolType.statics).toList(),
+    ));
+
+    sections.add(ToolSection(
+      S.of(context).Theory_of_Elasticity,
+      allTools.where((e) => e.type == ToolType.theoryOfElasticity).toList(),
+    ));
+
+    sections.add(ToolSection(
+      S.of(context).Composite_Material,
+      allTools.where((e) => e.type == ToolType.composite).toList(),
+    ));
+
+    sections.add(ToolSection(
+      S.of(context).Utilities,
+      allTools.where((e) => e.type == ToolType.utilities).toList(),
+    ));
   }
 
   Future<void> _loadAd() async {
@@ -284,65 +291,66 @@ class _ToolPageState extends State<ToolPage> {
     );
   }
 
+  double get _bottomPadding => _isLoaded && _anchoredAdaptiveAd != null
+      ? _anchoredAdaptiveAd!.size.height.toDouble() + 30
+      : 120.0;
+
   Widget buildContents(BuildContext context) {
-    return _viewMode == ToolViewMode.grid ? _buildGrid(context) : _buildList(context);
-  }
-
-  StaggeredGridView _buildList(BuildContext context) {
-    return StaggeredGridView.countBuilder(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-      crossAxisCount: 8,
-      itemCount: dataSource.length,
-      staggeredTileBuilder: (int index) {
-        var model = dataSource[index];
-        if (model is String) {
-          return StaggeredTile.fit(8);
-        } else {
-          return StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8);
-        }
-      },
-      mainAxisSpacing: 4,
-      crossAxisSpacing: 8,
-      itemBuilder: (BuildContext context, int index) {
-        var model = dataSource[index];
-        if (model is String) {
-          return _buildSectionHeader(context, model);
-        } else {
-          return ToolRowWidget(model: model);
-        }
-      },
-    );
-  }
-
-  StaggeredGridView _buildGrid(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final columns = width > 900
         ? 5
         : width > 600
             ? 4
             : 3;
-    return StaggeredGridView.countBuilder(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 100),
-      crossAxisCount: columns,
-      itemCount: dataSource.length,
-      staggeredTileBuilder: (int index) {
-        var model = dataSource[index];
-        if (model is String) {
-          return StaggeredTile.fit(columns);
-        } else {
-          return const StaggeredTile.fit(1);
-        }
-      },
-      mainAxisSpacing: 10,
-      crossAxisSpacing: 10,
-      itemBuilder: (BuildContext context, int index) {
-        var model = dataSource[index];
-        if (model is String) {
-          return _buildSectionHeader(context, model);
-        } else {
-          return ToolGridTile(model: model);
-        }
-      },
+
+    return CustomScrollView(
+      slivers: [
+        for (var section in sections) ...[
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: _buildSectionHeader(context, section.title),
+            ),
+          ),
+          if (_viewMode == ToolViewMode.list)
+            _buildListSliver(context, section.tools)
+          else
+            _buildGridSliver(context, section.tools, columns),
+        ],
+        SliverToBoxAdapter(
+          child: SizedBox(height: _bottomPadding),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildListSliver(BuildContext context, List<Tool> tools) {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) => ToolRowWidget(model: tools[index]),
+          childCount: tools.length,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGridSliver(BuildContext context, List<Tool> tools, int columns) {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      sliver: SliverGrid(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: columns,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: 0.8, // Increased height slightly to prevent overflow
+        ),
+        delegate: SliverChildBuilderDelegate(
+          (context, index) => ToolGridTile(model: tools[index]),
+          childCount: tools.length,
+        ),
+      ),
     );
   }
 
@@ -503,11 +511,14 @@ class ToolGridTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
-                model.title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12.5),
+              Expanded(
+                child: Text(
+                  model.title,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12.5),
+                ),
               ),
             ],
           ),
