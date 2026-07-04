@@ -67,53 +67,72 @@ class ToolHistoryPage extends StatelessWidget {
               }
               final timeLabel = _formatTime(entry.timestamp);
               final primary = Theme.of(context).colorScheme.primary;
-              return ListTile(
-                leading: Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF5F4F2),
-                    borderRadius: BorderRadius.circular(10),
+              return Dismissible(
+                key: Key(entry.timestamp.toIso8601String() + entry.toolId.toString()),
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  color: Colors.red,
+                  child: const Icon(Icons.delete_rounded, color: Colors.white),
+                ),
+                onDismissed: (direction) {
+                  history.deleteAt(index);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('${tool!.title} removed from history'),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                },
+                child: ListTile(
+                  leading: Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF5F4F2),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: tool.icon != null
+                        ? Icon(tool.icon, size: 22, color: primary)
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image(
+                              height: 44,
+                              width: 44,
+                              image: tool.image!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                   ),
-                  child: tool.icon != null
-                      ? Icon(tool.icon, size: 22, color: primary)
-                      : ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image(
-                            height: 44,
-                            width: 44,
-                            image: tool.image!,
-                            fit: BoxFit.cover,
+                  title: Text(tool.title, style: Theme.of(context).textTheme.bodyLarge),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (entry.inputs != null && entry.inputs!.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4, bottom: 2),
+                          child: Text(
+                            entry.inputs!.entries
+                                .map((e) => '${e.key}: ${e.value}')
+                                .join(', '),
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: primary.withOpacity(0.7),
+                                  fontWeight: FontWeight.w500,
+                                ),
                           ),
                         ),
-                ),
-                title: Text(tool.title, style: Theme.of(context).textTheme.bodyLarge),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (entry.inputs != null && entry.inputs!.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4, bottom: 2),
-                        child: Text(
-                          entry.inputs!.entries
-                              .map((e) => '${e.key}: ${e.value}')
-                              .join(', '),
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: primary.withOpacity(0.7),
-                                fontWeight: FontWeight.w500,
-                              ),
-                        ),
+                      Text(
+                        timeLabel,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Colors.grey[500], fontSize: 12),
                       ),
-                    Text(
-                      timeLabel,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(color: Colors.grey[500], fontSize: 12),
-                    ),
-                  ],
+                    ],
+                  ),
+                  onTap: () => tool!.action(context, tool.title, entry.toolId, initialInputs: entry.inputs),
                 ),
-                onTap: () => tool!.action(context, tool.title, entry.toolId, initialInputs: entry.inputs),
               );
             },
           );

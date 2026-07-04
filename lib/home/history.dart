@@ -48,4 +48,15 @@ class ToolHistory extends ChangeNotifier {
     SharedPreferencesHelper.localStorage.remove(_key);
     notifyListeners();
   }
+
+  void deleteAt(int uiIndex) {
+    final raw = SharedPreferencesHelper.localStorage.getStringList(_key) ?? [];
+    if (uiIndex >= 0 && uiIndex < raw.length) {
+      // The entries getter reverses the list, so UI index 'i' is raw index 'length - 1 - i'
+      int storageIndex = raw.length - 1 - uiIndex;
+      raw.removeAt(storageIndex);
+      SharedPreferencesHelper.localStorage.setStringList(_key, raw);
+      notifyListeners();
+    }
+  }
 }
