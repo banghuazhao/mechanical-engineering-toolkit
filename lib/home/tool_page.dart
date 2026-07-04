@@ -31,7 +31,7 @@ class ToolViewModePreference {
 
   static ToolViewMode get() {
     final raw = SharedPreferencesHelper.localStorage.getString(_key);
-    return raw == 'grid' ? ToolViewMode.grid : ToolViewMode.list;
+    return raw == 'list' ? ToolViewMode.list : ToolViewMode.grid;
   }
 
   static void set(ToolViewMode mode) {
@@ -329,7 +329,10 @@ class _ToolPageState extends State<ToolPage> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
-          (context, index) => ToolRowWidget(model: tools[index]),
+          (context, index) => Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: ToolRowWidget(model: tools[index]),
+          ),
           childCount: tools.length,
         ),
       ),

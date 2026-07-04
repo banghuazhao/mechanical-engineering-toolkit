@@ -106,7 +106,10 @@ class _ToolFavoritesPageState extends State<ToolFavoritesPage> {
       itemCount: value.items.length,
       itemBuilder: (BuildContext context, int index) {
         var model = ToolLibrary.shared.item(value.items[index], context);
-        return ToolRowWidget(model: model);
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: ToolRowWidget(model: model),
+        );
       },
     );
   }
