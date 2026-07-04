@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/bar_force_displacement_model.dart';
@@ -10,7 +12,13 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 
 class BarForceDisplacementRelationPage extends StatefulWidget {
   final String title;
-  const BarForceDisplacementRelationPage({Key? key, required this.title})
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const BarForceDisplacementRelationPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
       : super(key: key);
 
   @override
@@ -22,6 +30,21 @@ class _BarForceDisplacementRelationPageState
     extends State<BarForceDisplacementRelationPage> {
   BarTorsionFormulaModel barForceDisplacementModel = BarTorsionFormulaModel();
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      barForceDisplacementModel.p =
+          double.tryParse(widget.initialInputs![S.current.Force] ?? "");
+      barForceDisplacementModel.l =
+          double.tryParse(widget.initialInputs!["L"] ?? "");
+      barForceDisplacementModel.e =
+          double.tryParse(widget.initialInputs!["E"] ?? "");
+      barForceDisplacementModel.area =
+          double.tryParse(widget.initialInputs![S.current.Area] ?? "");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +123,12 @@ The displacement (δ) of prismatic bars subjected to tensile or compressive cent
       double e = barForceDisplacementModel.e!;
       double area = barForceDisplacementModel.area!;
       Displacement displacement = Displacement(p * l / (e * area));
+      context.read<ToolHistory>().record(widget.toolId, inputs: {
+        S.of(context).Force: p.toString(),
+        "L": l.toString(),
+        "E": e.toString(),
+        S.of(context).Area: area.toString(),
+      });
       Navigator.push(
           context,
           MaterialPageRoute(

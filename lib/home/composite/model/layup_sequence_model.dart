@@ -4,6 +4,8 @@ class LayupSequence {
   List<double>? layups;
   String? rawValue;
 
+  String get value => rawValue ?? '';
+
   // set 方法
   set value(String value) {
     rawValue = value;

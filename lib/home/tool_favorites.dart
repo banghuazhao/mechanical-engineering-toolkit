@@ -130,8 +130,7 @@ class ToolRowWidget extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          context.read<ToolHistory>().record(itemNo);
-          model.action(context, title);
+          model.action(context, title, itemNo);
         },
         child: Padding(
           padding: const EdgeInsets.fromLTRB(12, 12, 0, 12),

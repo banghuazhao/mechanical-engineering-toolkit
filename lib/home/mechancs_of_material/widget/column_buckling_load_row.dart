@@ -21,9 +21,35 @@ class ColumnBucklingLoadRow extends StatefulWidget {
 class _ColumnBucklingLoadRowState extends State<ColumnBucklingLoadRow> {
   String dropValue = "Pinned-pinned column";
 
-  TextEditingController textEditingController1 = TextEditingController();
-  TextEditingController textEditingController2 = TextEditingController();
-  TextEditingController textEditingController3 = TextEditingController();
+  late TextEditingController textEditingController1;
+  late TextEditingController textEditingController2;
+  late TextEditingController textEditingController3;
+
+  @override
+  void initState() {
+    super.initState();
+    textEditingController1 = TextEditingController();
+    textEditingController2 = TextEditingController();
+    textEditingController3 = TextEditingController();
+    _updateControllers();
+  }
+
+  @override
+  void dispose() {
+    textEditingController1.dispose();
+    textEditingController2.dispose();
+    textEditingController3.dispose();
+    super.dispose();
+  }
+
+  void _updateControllers() {
+    textEditingController1.text =
+        widget.columnBucklingLoadModel.E?.toString() ?? '';
+    textEditingController2.text =
+        widget.columnBucklingLoadModel.I?.toString() ?? '';
+    textEditingController3.text =
+        widget.columnBucklingLoadModel.L?.toString() ?? '';
+  }
 
   validateModulus(double? value) {
     if (value == null) {
@@ -63,9 +89,7 @@ class _ColumnBucklingLoadRowState extends State<ColumnBucklingLoadRow> {
                     setState(() {
                       dropValue = newValue!;
                       widget.callback(dropValue);
-                      textEditingController1.clear();
-                      textEditingController2.clear();
-                      textEditingController3.clear();
+                      _updateControllers();
                     });
                   },
                   items: <String>[

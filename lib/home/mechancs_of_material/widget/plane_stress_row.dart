@@ -15,6 +15,29 @@ class PlaneStressRow extends StatefulWidget {
 }
 
 class _PlaneStressRowState extends State<PlaneStressRow> {
+  late TextEditingController _sigmaXController;
+  late TextEditingController _sigmaYController;
+  late TextEditingController _tauXYController;
+
+  @override
+  void initState() {
+    super.initState();
+    _sigmaXController = TextEditingController(
+        text: widget.planeStress.sigma11?.toString() ?? '');
+    _sigmaYController = TextEditingController(
+        text: widget.planeStress.sigma22?.toString() ?? '');
+    _tauXYController = TextEditingController(
+        text: widget.planeStress.sigma12?.toString() ?? '');
+  }
+
+  @override
+  void dispose() {
+    _sigmaXController.dispose();
+    _sigmaYController.dispose();
+    _tauXYController.dispose();
+    super.dispose();
+  }
+
   validateForce(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -47,6 +70,7 @@ class _PlaneStressRowState extends State<PlaneStressRow> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _sigmaXController,
                           keyboardType: const TextInputType.numberWithOptions(
                               signed: true, decimal: true),
                           decoration: InputDecoration(
@@ -56,7 +80,8 @@ class _PlaneStressRowState extends State<PlaneStressRow> {
                               labelText: "σx",
                               errorText: widget.validate
                                   ? validateForce(widget.planeStress.sigma11)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.planeStress.sigma11 = double.tryParse(value);
                           },
@@ -65,6 +90,7 @@ class _PlaneStressRowState extends State<PlaneStressRow> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: TextField(
+                          controller: _sigmaYController,
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           decoration: InputDecoration(
@@ -74,7 +100,8 @@ class _PlaneStressRowState extends State<PlaneStressRow> {
                               labelText: "σy",
                               errorText: widget.validate
                                   ? validateForce(widget.planeStress.sigma22)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.planeStress.sigma22 = double.tryParse(value);
                           },
@@ -87,6 +114,7 @@ class _PlaneStressRowState extends State<PlaneStressRow> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _tauXYController,
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           decoration: InputDecoration(
@@ -96,7 +124,8 @@ class _PlaneStressRowState extends State<PlaneStressRow> {
                               labelText: "𝛕xy",
                               errorText: widget.validate
                                   ? validateForce(widget.planeStress.sigma12)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.planeStress.sigma12 = double.tryParse(value);
                           },

@@ -15,6 +15,21 @@ class VolumeFractionRow extends StatefulWidget {
 }
 
 class _VolumeFractionRowState extends State<VolumeFractionRow> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(
+        text: widget.volumeFraction.value?.toString() ?? '');
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   validateLayupAngle(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -42,6 +57,7 @@ class _VolumeFractionRowState extends State<VolumeFractionRow> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
             child: TextField(
+              controller: _controller,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(
                   isDense: true,

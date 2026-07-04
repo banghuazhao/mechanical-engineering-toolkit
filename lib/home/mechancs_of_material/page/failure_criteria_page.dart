@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
@@ -15,7 +17,14 @@ import '../../tool_setting_page.dart';
 
 class FailureCriteriaPage extends StatefulWidget {
   final String title;
-  const FailureCriteriaPage({Key? key, required this.title}) : super(key: key);
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const FailureCriteriaPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
+      : super(key: key);
 
   @override
   _FailureCriteriaPageState createState() => _FailureCriteriaPageState();
@@ -24,6 +33,17 @@ class FailureCriteriaPage extends StatefulWidget {
 class _FailureCriteriaPageState extends State<FailureCriteriaPage> {
   double? _sx, _sy, _txy, _yield;
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      _sx = double.tryParse(widget.initialInputs!["σ_x"] ?? "");
+      _sy = double.tryParse(widget.initialInputs!["σ_y"] ?? "");
+      _txy = double.tryParse(widget.initialInputs!["τ_xy"] ?? "");
+      _yield = double.tryParse(widget.initialInputs!["S_y"] ?? "");
+    }
+  }
 
   bool get _inputsReady => _sx != null && _sy != null && _txy != null;
 
@@ -204,6 +224,13 @@ class _FailureCriteriaPageState extends State<FailureCriteriaPage> {
     final vonMises = sqrt(s1 * s1 - s1 * s2 + s2 * s2);
     final tresca = (s1 - s2).abs();
     final tauMax = tresca / 2;
+
+    context.read<ToolHistory>().record(widget.toolId, inputs: {
+      "σ_x": sx.toString(),
+      "σ_y": sy.toString(),
+      "τ_xy": txy.toString(),
+      "S_y": _yield?.toString() ?? "",
+    });
 
     Navigator.push(
       context,

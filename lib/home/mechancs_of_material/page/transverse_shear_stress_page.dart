@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
@@ -18,7 +20,13 @@ class _ShearModel {
 
 class TransverseShearStressPage extends StatefulWidget {
   final String title;
-  const TransverseShearStressPage({Key? key, required this.title})
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const TransverseShearStressPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
       : super(key: key);
 
   @override
@@ -30,6 +38,17 @@ class _TransverseShearStressPageState
     extends State<TransverseShearStressPage> {
   final _model = _ShearModel();
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      _model.V = double.tryParse(widget.initialInputs!["V"] ?? "");
+      _model.Q = double.tryParse(widget.initialInputs!["Q"] ?? "");
+      _model.I = double.tryParse(widget.initialInputs!["I"] ?? "");
+      _model.t = double.tryParse(widget.initialInputs!["t"] ?? "");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +165,12 @@ class _TransverseShearStressPageState
   void _calculate() {
     if (!_model.isValid()) return;
     final tau = _model.V! * _model.Q! / (_model.I! * _model.t!);
+    context.read<ToolHistory>().record(widget.toolId, inputs: {
+      "V": _model.V!.toString(),
+      "Q": _model.Q!.toString(),
+      "I": _model.I!.toString(),
+      "t": _model.t!.toString(),
+    });
     Navigator.push(
       context,
       MaterialPageRoute(

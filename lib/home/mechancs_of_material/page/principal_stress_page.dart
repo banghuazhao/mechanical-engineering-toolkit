@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/mechanical_tensor_model.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
@@ -12,7 +14,14 @@ import 'package:mechanical_engineering_toolkit/util/number.dart';
 
 class PrincipalStressPage extends StatefulWidget {
   final String title;
-  const PrincipalStressPage({Key? key, required this.title}) : super(key: key);
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const PrincipalStressPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
+      : super(key: key);
 
   @override
   _PrincipalStressPageState createState() => _PrincipalStressPageState();
@@ -21,6 +30,16 @@ class PrincipalStressPage extends StatefulWidget {
 class _PrincipalStressPageState extends State<PrincipalStressPage> {
   PlaneStress planeStress = PlaneStress();
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      planeStress.sigma11 = double.tryParse(widget.initialInputs!["σ_x"] ?? "");
+      planeStress.sigma22 = double.tryParse(widget.initialInputs!["σ_y"] ?? "");
+      planeStress.sigma12 = double.tryParse(widget.initialInputs!["τ_xy"] ?? "");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +124,11 @@ The principal stresses σ1 and σ2 (The maximum and minimum normal stresses) are
 
       final avg = (s11 + s22) / 2;
       final R = sqrt((s11 - s22) / 2 * (s11 - s22) / 2 + s12 * s12);
+      context.read<ToolHistory>().record(widget.toolId, inputs: {
+        "σ_x": s11.toString(),
+        "σ_y": s22.toString(),
+        "τ_xy": s12.toString(),
+      });
       Navigator.push(
           context,
           MaterialPageRoute(

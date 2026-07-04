@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
@@ -20,7 +22,13 @@ class _ThermalModel {
 
 class ThermalDeformationPage extends StatefulWidget {
   final String title;
-  const ThermalDeformationPage({Key? key, required this.title})
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const ThermalDeformationPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
       : super(key: key);
 
   @override
@@ -30,6 +38,17 @@ class ThermalDeformationPage extends StatefulWidget {
 class _ThermalDeformationPageState extends State<ThermalDeformationPage> {
   final _model = _ThermalModel();
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      _model.alpha = double.tryParse(widget.initialInputs!["α"] ?? "");
+      _model.deltaT = double.tryParse(widget.initialInputs!["ΔT"] ?? "");
+      _model.length = double.tryParse(widget.initialInputs!["L"] ?? "");
+      _model.youngsModulus = double.tryParse(widget.initialInputs!["E"] ?? "");
+    }
+  }
 
   Widget _inputCard(String cardTitle, List<_Field> fields) {
     final primary = Theme.of(context).colorScheme.primary;
@@ -161,6 +180,12 @@ class _ThermalDeformationPageState extends State<ThermalDeformationPage> {
     if (!_model.isValid()) return;
     final delta = _model.alpha! * _model.deltaT! * _model.length!;
     final sigma = -_model.youngsModulus! * _model.alpha! * _model.deltaT!;
+    context.read<ToolHistory>().record(widget.toolId, inputs: {
+      "α": _model.alpha!.toString(),
+      "ΔT": _model.deltaT!.toString(),
+      "L": _model.length!.toString(),
+      "E": _model.youngsModulus!.toString(),
+    });
     Navigator.push(
       context,
       MaterialPageRoute(

@@ -23,12 +23,55 @@ class _LinearElasticStressStrainRowState
     extends State<LinearElasticStressStrainRow> {
   String dropValue = "Stress";
 
-  TextEditingController textEditingController1 = TextEditingController();
-  TextEditingController textEditingController2 = TextEditingController();
-  TextEditingController textEditingController3 = TextEditingController();
-  TextEditingController textEditingController4 = TextEditingController();
-  TextEditingController textEditingController5 = TextEditingController();
-  TextEditingController textEditingController6 = TextEditingController();
+  late TextEditingController textEditingController1;
+  late TextEditingController textEditingController2;
+  late TextEditingController textEditingController3;
+  late TextEditingController textEditingController4;
+  late TextEditingController textEditingController5;
+  late TextEditingController textEditingController6;
+
+  @override
+  void initState() {
+    super.initState();
+    textEditingController1 = TextEditingController();
+    textEditingController2 = TextEditingController();
+    textEditingController3 = TextEditingController();
+    textEditingController4 = TextEditingController();
+    textEditingController5 = TextEditingController();
+    textEditingController6 = TextEditingController();
+    _updateControllers();
+  }
+
+  @override
+  void dispose() {
+    textEditingController1.dispose();
+    textEditingController2.dispose();
+    textEditingController3.dispose();
+    textEditingController4.dispose();
+    textEditingController5.dispose();
+    textEditingController6.dispose();
+    super.dispose();
+  }
+
+  void _updateControllers() {
+    if (widget.mechanicalTensor is LinearStress) {
+      LinearStress stress = (widget.mechanicalTensor as LinearStress);
+      textEditingController1.text = stress.s11?.toString() ?? '';
+      textEditingController2.text = stress.s22?.toString() ?? '';
+      textEditingController3.text = stress.s33?.toString() ?? '';
+      textEditingController4.text = stress.s23?.toString() ?? '';
+      textEditingController5.text = stress.s13?.toString() ?? '';
+      textEditingController6.text = stress.s12?.toString() ?? '';
+    } else {
+      LinearStrain strain = (widget.mechanicalTensor as LinearStrain);
+      textEditingController1.text = strain.epsilon11?.toString() ?? '';
+      textEditingController2.text = strain.epsilon22?.toString() ?? '';
+      textEditingController3.text = strain.epsilon33?.toString() ?? '';
+      textEditingController4.text = strain.epsilon23?.toString() ?? '';
+      textEditingController5.text = strain.epsilon13?.toString() ?? '';
+      textEditingController6.text = strain.epsilon12?.toString() ?? '';
+    }
+  }
 
   validateTensor(double? value) {
     if (value == null) {
@@ -76,12 +119,7 @@ class _LinearElasticStressStrainRowState
                     setState(() {
                       dropValue = newValue!;
                       widget.callback(dropValue);
-                      textEditingController1.clear();
-                      textEditingController2.clear();
-                      textEditingController3.clear();
-                      textEditingController4.clear();
-                      textEditingController5.clear();
-                      textEditingController6.clear();
+                      _updateControllers();
                     });
                   },
                   items: <String>[S.of(context).Stress, S.of(context).Strain]

@@ -199,7 +199,10 @@ double _rad2deg(double v) => v * 180 / pi;
 double _id(double v) => v;
 
 class UnitConverterPage extends StatefulWidget {
-  const UnitConverterPage({Key? key}) : super(key: key);
+  final String? title;
+  final int? toolId;
+  final Map<String, String>? initialInputs;
+  const UnitConverterPage({Key? key, this.title, this.toolId, this.initialInputs}) : super(key: key);
 
   @override
   State<UnitConverterPage> createState() => _UnitConverterPageState();

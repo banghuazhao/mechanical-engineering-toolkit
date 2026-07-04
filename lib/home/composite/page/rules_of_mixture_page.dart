@@ -10,12 +10,21 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/isotropic_m
 import 'package:mechanical_engineering_toolkit/home/composite/widget/lamina_constants_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/thermal_constants_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/volume_fraction_row.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 
 import 'rules_of_mixture_result_page.dart';
 
 class RulesOfMixturePage extends StatefulWidget {
   final String title;
-  const RulesOfMixturePage({Key? key, required this.title}) : super(key: key);
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const RulesOfMixturePage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
+      : super(key: key);
 
   @override
   _RulesOfMixturePageState createState() => _RulesOfMixturePageState();
@@ -23,12 +32,49 @@ class RulesOfMixturePage extends StatefulWidget {
 
 class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
   AnalysisType analysisType = AnalysisType.elastic;
-  TransverselyIsotropicMaterial fiberMaterial = TransverselyIsotropicMaterial();
+  TransverselyIsotropicMaterial fiberMaterial =
+      TransverselyIsotropicMaterial();
   IsotropicMaterial matrixMaterial = IsotropicMaterial();
   VolumeFraction fiberVolumeFraction = VolumeFraction();
   ThermalConstants fiberThermal = ThermalConstants();
   double? matrixAlpha;
+  late TextEditingController _matrixAlphaController;
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _matrixAlphaController = TextEditingController();
+    if (widget.initialInputs != null) {
+      final inputs = widget.initialInputs!;
+      if (inputs.containsKey('Analysis Type')) {
+        analysisType = AnalysisType.values.firstWhere(
+            (e) => e.toString().split('.').last == inputs['Analysis Type'],
+            orElse: () => AnalysisType.elastic);
+      }
+      fiberMaterial.e1 = double.tryParse(inputs['E1 (fiber)'] ?? '');
+      fiberMaterial.e2 = double.tryParse(inputs['E2 (fiber)'] ?? '');
+      fiberMaterial.g12 = double.tryParse(inputs['G12 (fiber)'] ?? '');
+      fiberMaterial.nu12 = double.tryParse(inputs['ν12 (fiber)'] ?? '');
+      fiberMaterial.nu23 = double.tryParse(inputs['ν23 (fiber)'] ?? '');
+      matrixMaterial.e = double.tryParse(inputs['E (matrix)'] ?? '');
+      matrixMaterial.nu = double.tryParse(inputs['ν (matrix)'] ?? '');
+      fiberVolumeFraction.value =
+          double.tryParse(inputs['Fiber Volume Fraction'] ?? '');
+      if (isThermal) {
+        fiberThermal.alpha11 = double.tryParse(inputs['α11 (fiber)'] ?? '');
+        fiberThermal.alpha22 = double.tryParse(inputs['α22 (fiber)'] ?? '');
+        matrixAlpha = double.tryParse(inputs['α (matrix)'] ?? '');
+        _matrixAlphaController.text = matrixAlpha?.toString() ?? '';
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _matrixAlphaController.dispose();
+    super.dispose();
+  }
 
   bool get isThermal => analysisType == AnalysisType.thermalElastic;
 
@@ -119,6 +165,7 @@ class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: TextField(
+              controller: _matrixAlphaController,
               keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true),
               decoration: InputDecoration(
                 labelText: 'α (isotropic)',
@@ -139,6 +186,24 @@ class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
     if (isThermal) {
       if (!fiberThermal.isValid(requireAlpha12: false) || matrixAlpha == null) return;
     }
+
+    final Map<String, String> inputs = {
+      'Analysis Type': analysisType.toString().split('.').last,
+      'E1 (fiber)': fiberMaterial.e1.toString(),
+      'E2 (fiber)': fiberMaterial.e2.toString(),
+      'G12 (fiber)': fiberMaterial.g12.toString(),
+      'ν12 (fiber)': fiberMaterial.nu12.toString(),
+      'ν23 (fiber)': fiberMaterial.nu23.toString(),
+      'E (matrix)': matrixMaterial.e.toString(),
+      'ν (matrix)': matrixMaterial.nu.toString(),
+      'Fiber Volume Fraction': fiberVolumeFraction.value.toString(),
+    };
+    if (isThermal) {
+      inputs['α11 (fiber)'] = fiberThermal.alpha11.toString();
+      inputs['α22 (fiber)'] = fiberThermal.alpha22.toString();
+      inputs['α (matrix)'] = matrixAlpha.toString();
+    }
+    context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
 
     final input = UDFRCRulesOfMixtureInput(
       analysisType: analysisType,

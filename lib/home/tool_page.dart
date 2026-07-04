@@ -388,8 +388,7 @@ class ToolRowWidget extends StatelessWidget {
     return Card(
       child: InkWell(
         onTap: () {
-          context.read<ToolHistory>().record(itemNo);
-          model.action(context, title);
+          model.action(context, title, itemNo);
         },
         borderRadius: BorderRadius.circular(14),
         child: Padding(
@@ -461,8 +460,7 @@ class ToolGridTile extends StatelessWidget {
     return Card(
       child: InkWell(
         onTap: () {
-          context.read<ToolHistory>().record(itemNo);
-          model.action(context, title);
+          model.action(context, title, itemNo);
         },
         borderRadius: BorderRadius.circular(14),
         child: Padding(

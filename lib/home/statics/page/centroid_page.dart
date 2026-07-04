@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:provider/provider.dart';
 
 enum _ShapeType { rectangle, circle, triangle, semicircle }
 
@@ -17,7 +19,14 @@ class _Shape {
 
 class CentroidPage extends StatefulWidget {
   final String title;
-  const CentroidPage({Key? key, required this.title}) : super(key: key);
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const CentroidPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
+      : super(key: key);
 
   @override
   State<CentroidPage> createState() => _CentroidPageState();
@@ -25,6 +34,44 @@ class CentroidPage extends StatefulWidget {
 
 class _CentroidPageState extends State<CentroidPage> {
   final List<_Shape> _shapes = [_Shape(), _Shape()];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      final inputs = widget.initialInputs!;
+      int maxI = 0;
+      inputs.forEach((key, value) {
+        if (key.startsWith('Shape ')) {
+          final match = RegExp(r'Shape (\d+)').firstMatch(key);
+          if (match != null) {
+            maxI = max(maxI, int.parse(match.group(1)!));
+          }
+        }
+      });
+
+      if (maxI > 0) {
+        for (var s in _shapes) s.dispose();
+        _shapes.clear();
+        for (int i = 0; i < maxI; i++) {
+          final s = _Shape();
+          final prefix = 'Shape ${i + 1}';
+          if (inputs.containsKey('$prefix Type')) {
+            final typeStr = inputs['$prefix Type']!;
+            s.type = _ShapeType.values.firstWhere(
+                (t) => _shapeLabel(t) == typeStr,
+                orElse: () => _ShapeType.rectangle);
+          }
+          s.dim1.text = inputs['$prefix Dim1'] ?? '';
+          s.dim2.text = inputs['$prefix Dim2'] ?? '';
+          s.xRef.text = inputs['$prefix xRef'] ?? '';
+          s.yRef.text = inputs['$prefix yRef'] ?? '';
+          s.subtract = inputs['$prefix Subtract'] == 'true';
+          _shapes.add(s);
+        }
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -172,6 +219,7 @@ class _CentroidPageState extends State<CentroidPage> {
   void _calculate() {
     double totalA = 0, sumAx = 0, sumAy = 0;
     final steps = <String>[];
+    final Map<String, String> inputs = {};
 
     for (int i = 0; i < _shapes.length; i++) {
       final s = _shapes[i];
@@ -179,6 +227,16 @@ class _CentroidPageState extends State<CentroidPage> {
       if (d1 == null || d1 <= 0) { _showError('Enter dimension for shape ${i + 1}'); return; }
       final xRef = double.tryParse(s.xRef.text) ?? 0;
       final yRef = double.tryParse(s.yRef.text) ?? 0;
+
+      final prefix = 'Shape ${i + 1}';
+      inputs['$prefix Type'] = _shapeLabel(s.type);
+      inputs['$prefix Dim1'] = d1.toString();
+      inputs['$prefix xRef'] = xRef.toString();
+      inputs['$prefix yRef'] = yRef.toString();
+      if (s.type == _ShapeType.rectangle || s.type == _ShapeType.triangle) {
+        inputs['$prefix Dim2'] = s.dim2.text;
+      }
+      inputs['$prefix Subtract'] = s.subtract.toString();
 
       double A, cx, cy;
       switch (s.type) {
@@ -218,6 +276,7 @@ class _CentroidPageState extends State<CentroidPage> {
     }
 
     if (totalA == 0) { _showError('Total area is zero'); return; }
+    context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
     final xBar = sumAx / totalA;
     final yBar = sumAy / totalA;
 

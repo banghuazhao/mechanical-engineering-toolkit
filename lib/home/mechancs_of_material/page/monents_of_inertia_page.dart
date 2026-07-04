@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/cross_section_model.dart';
@@ -11,7 +13,14 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 
 class MonentsOfInertiaPage extends StatefulWidget {
   final String title;
-  const MonentsOfInertiaPage({Key? key, required this.title}) : super(key: key);
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const MonentsOfInertiaPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
+      : super(key: key);
 
   @override
   _MonentsOfInertiaPageState createState() => _MonentsOfInertiaPageState();
@@ -21,6 +30,27 @@ class _MonentsOfInertiaPageState extends State<MonentsOfInertiaPage> {
   CrossSectionModel crossSectionModel = CrossSectionBHModel();
   String dropValue = "Rectangle (Origin of axes at centroid)";
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      dropValue = widget.initialInputs!["Type"] ??
+          "Rectangle (Origin of axes at centroid)";
+      if (dropValue == "Circle (Origin at center)" ||
+          dropValue == "Semicircle (Origin at centroid)") {
+        crossSectionModel = CrossSectionRModel();
+        (crossSectionModel as CrossSectionRModel).r =
+            double.tryParse(widget.initialInputs!["r"] ?? "");
+      } else {
+        crossSectionModel = CrossSectionBHModel();
+        (crossSectionModel as CrossSectionBHModel).b =
+            double.tryParse(widget.initialInputs!["b"] ?? "");
+        (crossSectionModel as CrossSectionBHModel).h =
+            double.tryParse(widget.initialInputs!["h"] ?? "");
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,9 +190,12 @@ Ip = Ix + Iy = Polar moment of inertia with respect to the origin of the x and y
       double Ixy = 0;
       double Ip = 0;
 
+      Map<String, String> inputs = {"Type": dropValue};
+
       if (dropValue == "Circle (Origin at center)" ||
           dropValue == "Semicircle (Origin at centroid)") {
         double r = (crossSectionModel as CrossSectionRModel).r!;
+        inputs["r"] = r.toString();
 
         if (dropValue == "Circle (Origin at center)") {
           Ix = pi * r * r * r * r / 4;
@@ -178,6 +211,8 @@ Ip = Ix + Iy = Polar moment of inertia with respect to the origin of the x and y
       } else {
         double b = (crossSectionModel as CrossSectionBHModel).b!;
         double h = (crossSectionModel as CrossSectionBHModel).h!;
+        inputs["b"] = b.toString();
+        inputs["h"] = h.toString();
 
         if (dropValue == "Rectangle (Origin of axes at centroid)") {
           Ix = b * h * h * h / 12;
@@ -201,6 +236,8 @@ Ip = Ix + Iy = Polar moment of inertia with respect to the origin of the x and y
           Ip = Ix + Iy;
         }
       }
+
+      context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
 
       Navigator.push(
           context,

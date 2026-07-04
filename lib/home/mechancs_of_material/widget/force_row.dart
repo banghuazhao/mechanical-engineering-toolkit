@@ -14,6 +14,20 @@ class ForceRow extends StatefulWidget {
 }
 
 class _ForceRowState extends State<ForceRow> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.force.value?.toString() ?? '');
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   validateLayupAngle(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -39,6 +53,7 @@ class _ForceRowState extends State<ForceRow> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
             child: TextField(
+              controller: _controller,
               keyboardType:
                   TextInputType.numberWithOptions(signed: true, decimal: true),
               decoration: InputDecoration(

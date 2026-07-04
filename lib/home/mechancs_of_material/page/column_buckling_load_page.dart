@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/column_buckling_load_model.dart';
@@ -12,7 +14,13 @@ import 'column_buckling_load_result.dart';
 
 class ColumnBucklingLoadPage extends StatefulWidget {
   final String title;
-  const ColumnBucklingLoadPage({Key? key, required this.title})
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const ColumnBucklingLoadPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
       : super(key: key);
 
   @override
@@ -23,6 +31,17 @@ class _ColumnBucklingLoadPageState extends State<ColumnBucklingLoadPage> {
   ColumnBucklingLoadModel columnBucklingLoadModel = ColumnBucklingLoadModel();
   String dropValue = "Pinned-pinned column";
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      columnBucklingLoadModel.E = double.tryParse(widget.initialInputs!["E"] ?? "");
+      columnBucklingLoadModel.I = double.tryParse(widget.initialInputs!["I"] ?? "");
+      columnBucklingLoadModel.L = double.tryParse(widget.initialInputs!["L"] ?? "");
+      dropValue = widget.initialInputs!["End Condition"] ?? "Pinned-pinned column";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +160,13 @@ L: Length of the column
         C = 2.046;
         Pcr = 2.046 * pi * pi * E * I / (L * L);
       }
+
+      context.read<ToolHistory>().record(widget.toolId, inputs: {
+        "E": E.toString(),
+        "I": I.toString(),
+        "L": L.toString(),
+        "End Condition": dropValue,
+      });
 
       Navigator.push(
           context,

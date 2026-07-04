@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
@@ -18,7 +20,14 @@ enum _SolveFor { torque, power }
 
 class ShaftPowerTorquePage extends StatefulWidget {
   final String title;
-  const ShaftPowerTorquePage({Key? key, required this.title}) : super(key: key);
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const ShaftPowerTorquePage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
+      : super(key: key);
 
   @override
   _ShaftPowerTorquePageState createState() => _ShaftPowerTorquePageState();
@@ -30,6 +39,18 @@ class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
   double? _torque;  // in N·m
   double? _rpm;
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      String modeStr = widget.initialInputs!["Mode"] ?? "torque";
+      _mode = modeStr == "power" ? _SolveFor.power : _SolveFor.torque;
+      _power = double.tryParse(widget.initialInputs!["P"] ?? "");
+      _torque = double.tryParse(widget.initialInputs!["T"] ?? "");
+      _rpm = double.tryParse(widget.initialInputs!["n"] ?? "");
+    }
+  }
 
   bool get _inputsReady {
     if (_mode == _SolveFor.torque) return _power != null && _rpm != null && _rpm! > 0;
@@ -201,6 +222,12 @@ class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
       torque = _torque!;
       power = torque * omega;
     }
+    context.read<ToolHistory>().record(widget.toolId, inputs: {
+      "Mode": _mode.toString().split('.').last,
+      "P": _power?.toString() ?? "",
+      "T": _torque?.toString() ?? "",
+      "n": _rpm!.toString(),
+    });
     Navigator.push(
       context,
       MaterialPageRoute(

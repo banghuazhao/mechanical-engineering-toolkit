@@ -15,6 +15,20 @@ class LayupSequenceRow extends StatefulWidget {
 }
 
 class _LayupSequenceRowState extends State<LayupSequenceRow> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.layupSequence.value);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   validateLayupSequence(List<double>? layups) {
     if (layups == null) {
       return "Wrong layup sequence";
@@ -42,6 +56,7 @@ class _LayupSequenceRowState extends State<LayupSequenceRow> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
             child: TextField(
+              controller: _controller,
               decoration: InputDecoration(
                   isDense: true,
                   contentPadding: const EdgeInsets.all(12),

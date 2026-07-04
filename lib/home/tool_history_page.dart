@@ -88,14 +88,32 @@ class ToolHistoryPage extends StatelessWidget {
                         ),
                 ),
                 title: Text(tool.title, style: Theme.of(context).textTheme.bodyLarge),
-                subtitle: Text(
-                  timeLabel,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Colors.grey[500], fontSize: 12),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (entry.inputs != null && entry.inputs!.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4, bottom: 2),
+                        child: Text(
+                          entry.inputs!.entries
+                              .map((e) => '${e.key}: ${e.value}')
+                              .join(', '),
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: primary.withOpacity(0.7),
+                                fontWeight: FontWeight.w500,
+                              ),
+                        ),
+                      ),
+                    Text(
+                      timeLabel,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: Colors.grey[500], fontSize: 12),
+                    ),
+                  ],
                 ),
-                onTap: () => tool!.action(context, tool.title),
+                onTap: () => tool!.action(context, tool.title, entry.toolId, initialInputs: entry.inputs),
               );
             },
           );

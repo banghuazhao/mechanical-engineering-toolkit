@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/angle_model.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/mechanical_tensor_model.dart';
@@ -14,7 +16,13 @@ import 'package:mechanical_engineering_toolkit/util/number.dart';
 
 class PlaneStressTransformationPage extends StatefulWidget {
   final String title;
-  const PlaneStressTransformationPage({Key? key, required this.title})
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const PlaneStressTransformationPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
       : super(key: key);
 
   @override
@@ -27,6 +35,17 @@ class _PlaneStressTransformationPageState
   PlaneStress planeStress = PlaneStress();
   LayupAngle layupAngle = LayupAngle();
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      planeStress.sigma11 = double.tryParse(widget.initialInputs!["σ_x"] ?? "");
+      planeStress.sigma22 = double.tryParse(widget.initialInputs!["σ_y"] ?? "");
+      planeStress.sigma12 = double.tryParse(widget.initialInputs!["τ_xy"] ?? "");
+      layupAngle.value = double.tryParse(widget.initialInputs!["θ"] ?? "");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +150,13 @@ The transformation equations for plane stress are:
       double sigma_x1 = (s11 + s22) / 2 + (s11 - s22) / 2 * c + s12 * s;
       double sigma_y1 = (s11 + s22) / 2 - (s11 - s22) / 2 * c - s12 * s;
       double sigma_xy = -(s11 - s22) / 2 * s + s12 * c;
+
+      context.read<ToolHistory>().record(widget.toolId, inputs: {
+        "σ_x": s11.toString(),
+        "σ_y": s22.toString(),
+        "τ_xy": s12.toString(),
+        "θ": angle.toString(),
+      });
 
       Navigator.push(
           context,

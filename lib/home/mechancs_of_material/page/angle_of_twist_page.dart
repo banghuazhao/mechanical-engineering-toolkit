@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
@@ -21,7 +23,14 @@ class _TwistModel {
 
 class AngleOfTwistPage extends StatefulWidget {
   final String title;
-  const AngleOfTwistPage({Key? key, required this.title}) : super(key: key);
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const AngleOfTwistPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
+      : super(key: key);
 
   @override
   _AngleOfTwistPageState createState() => _AngleOfTwistPageState();
@@ -30,6 +39,17 @@ class AngleOfTwistPage extends StatefulWidget {
 class _AngleOfTwistPageState extends State<AngleOfTwistPage> {
   final _model = _TwistModel();
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      _model.T = double.tryParse(widget.initialInputs!["T"] ?? "");
+      _model.L = double.tryParse(widget.initialInputs!["L"] ?? "");
+      _model.G = double.tryParse(widget.initialInputs!["G"] ?? "");
+      _model.J = double.tryParse(widget.initialInputs!["J"] ?? "");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,6 +172,12 @@ class _AngleOfTwistPageState extends State<AngleOfTwistPage> {
     if (!_model.isValid()) return;
     final phiRad = _model.T! * _model.L! / (_model.G! * _model.J!);
     final phiDeg = phiRad * 180 / pi;
+    context.read<ToolHistory>().record(widget.toolId, inputs: {
+      "T": _model.T!.toString(),
+      "L": _model.L!.toString(),
+      "G": _model.G!.toString(),
+      "J": _model.J!.toString(),
+    });
     Navigator.push(
       context,
       MaterialPageRoute(

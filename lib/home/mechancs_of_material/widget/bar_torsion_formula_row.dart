@@ -15,6 +15,29 @@ class BarTorsionFormulaRow extends StatefulWidget {
 }
 
 class _BarTorsionFormulaRowState extends State<BarTorsionFormulaRow> {
+  late TextEditingController _tController;
+  late TextEditingController _rController;
+  late TextEditingController _ipController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tController = TextEditingController(
+        text: widget.barTorsionFormulaModel.T?.toString() ?? '');
+    _rController = TextEditingController(
+        text: widget.barTorsionFormulaModel.r?.toString() ?? '');
+    _ipController = TextEditingController(
+        text: widget.barTorsionFormulaModel.Ip?.toString() ?? '');
+  }
+
+  @override
+  void dispose() {
+    _tController.dispose();
+    _rController.dispose();
+    _ipController.dispose();
+    super.dispose();
+  }
+
   validateModulus(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -57,6 +80,7 @@ class _BarTorsionFormulaRowState extends State<BarTorsionFormulaRow> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _tController,
                           keyboardType: const TextInputType.numberWithOptions(
                               signed: true, decimal: true),
                           decoration: InputDecoration(
@@ -67,7 +91,8 @@ class _BarTorsionFormulaRowState extends State<BarTorsionFormulaRow> {
                               errorText: widget.validate
                                   ? validateForce(
                                       widget.barTorsionFormulaModel.T)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.barTorsionFormulaModel.T =
                                 double.tryParse(value);
@@ -77,6 +102,7 @@ class _BarTorsionFormulaRowState extends State<BarTorsionFormulaRow> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: TextField(
+                          controller: _rController,
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           decoration: InputDecoration(
@@ -87,7 +113,8 @@ class _BarTorsionFormulaRowState extends State<BarTorsionFormulaRow> {
                               errorText: widget.validate
                                   ? validateModulus(
                                       widget.barTorsionFormulaModel.r)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.barTorsionFormulaModel.r =
                                 double.tryParse(value);
@@ -101,6 +128,7 @@ class _BarTorsionFormulaRowState extends State<BarTorsionFormulaRow> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _ipController,
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           decoration: InputDecoration(
@@ -111,7 +139,8 @@ class _BarTorsionFormulaRowState extends State<BarTorsionFormulaRow> {
                               errorText: widget.validate
                                   ? validateModulus(
                                       widget.barTorsionFormulaModel.Ip)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.barTorsionFormulaModel.Ip =
                                 double.tryParse(value);

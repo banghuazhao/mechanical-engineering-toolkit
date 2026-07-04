@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:provider/provider.dart';
 
 enum _LoadType { pointLoad, udl, both }
 
 class BeamReactionsPage extends StatefulWidget {
   final String title;
-  const BeamReactionsPage({Key? key, required this.title}) : super(key: key);
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const BeamReactionsPage(
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
+      : super(key: key);
 
   @override
   State<BeamReactionsPage> createState() => _BeamReactionsPageState();
@@ -19,6 +25,23 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
   final _pCtrl = TextEditingController();
   final _aCtrl = TextEditingController();
   final _wCtrl = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      final inputs = widget.initialInputs!;
+      _spanCtrl.text = inputs['Span L'] ?? '';
+      if (inputs.containsKey('Load Type')) {
+        _loadType = _LoadType.values.firstWhere(
+            (e) => e.toString().split('.').last == inputs['Load Type'],
+            orElse: () => _LoadType.pointLoad);
+      }
+      _pCtrl.text = inputs['P (load)'] ?? '';
+      _aCtrl.text = inputs['a (from A)'] ?? '';
+      _wCtrl.text = inputs['w (intensity)'] ?? '';
+    }
+  }
 
   @override
   void dispose() {
@@ -138,6 +161,19 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
       w = double.tryParse(_wCtrl.text);
       if (w == null) { _showError('Enter w'); return; }
     }
+
+    final Map<String, String> inputs = {
+      'Span L': L.toString(),
+      'Load Type': _loadType.toString().split('.').last,
+    };
+    if (hasPoint) {
+      inputs['P (load)'] = P.toString();
+      inputs['a (from A)'] = a.toString();
+    }
+    if (hasUdl) {
+      inputs['w (intensity)'] = w.toString();
+    }
+    context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
 
     double Ra = 0, Rb = 0, maxM = 0;
     final steps = <String>[];

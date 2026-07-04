@@ -15,6 +15,29 @@ class BeamFlexureFormulaRow extends StatefulWidget {
 }
 
 class _LaminaContantsRowState extends State<BeamFlexureFormulaRow> {
+  late TextEditingController _mController;
+  late TextEditingController _iController;
+  late TextEditingController _yController;
+
+  @override
+  void initState() {
+    super.initState();
+    _mController = TextEditingController(
+        text: widget.beamFlexureFormulaModel.M?.toString() ?? '');
+    _iController = TextEditingController(
+        text: widget.beamFlexureFormulaModel.I?.toString() ?? '');
+    _yController = TextEditingController(
+        text: widget.beamFlexureFormulaModel.y?.toString() ?? '');
+  }
+
+  @override
+  void dispose() {
+    _mController.dispose();
+    _iController.dispose();
+    _yController.dispose();
+    super.dispose();
+  }
+
   validateModulus(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -57,6 +80,7 @@ class _LaminaContantsRowState extends State<BeamFlexureFormulaRow> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _mController,
                           keyboardType: const TextInputType.numberWithOptions(
                               signed: true, decimal: true),
                           decoration: InputDecoration(
@@ -67,7 +91,8 @@ class _LaminaContantsRowState extends State<BeamFlexureFormulaRow> {
                               errorText: widget.validate
                                   ? validateForce(
                                       widget.beamFlexureFormulaModel.M)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.beamFlexureFormulaModel.M =
                                 double.tryParse(value);
@@ -77,6 +102,7 @@ class _LaminaContantsRowState extends State<BeamFlexureFormulaRow> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: TextField(
+                          controller: _iController,
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           decoration: InputDecoration(
@@ -87,7 +113,8 @@ class _LaminaContantsRowState extends State<BeamFlexureFormulaRow> {
                               errorText: widget.validate
                                   ? validateModulus(
                                       widget.beamFlexureFormulaModel.I)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.beamFlexureFormulaModel.I =
                                 double.tryParse(value);
@@ -101,14 +128,19 @@ class _LaminaContantsRowState extends State<BeamFlexureFormulaRow> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _yController,
                           keyboardType: const TextInputType.numberWithOptions(
                               signed: true, decimal: true),
                           decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: const EdgeInsets.all(12),
-                            border: const OutlineInputBorder(),
-                            labelText: "y (optional)",
-                          ),
+                              isDense: true,
+                              contentPadding: const EdgeInsets.all(12),
+                              border: const OutlineInputBorder(),
+                              labelText: "y",
+                              errorText: widget.validate
+                                  ? validateForce(
+                                      widget.beamFlexureFormulaModel.y)
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.beamFlexureFormulaModel.y =
                                 double.tryParse(value);

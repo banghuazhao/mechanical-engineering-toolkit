@@ -21,11 +21,46 @@ class SimpleBeamDeflectionsSlopesRow extends StatefulWidget {
 class _MonentsOfInertiaRowState extends State<SimpleBeamDeflectionsSlopesRow> {
   String dropValue = "Point force at middle";
 
-  TextEditingController textEditingController1 = TextEditingController();
-  TextEditingController textEditingController2 = TextEditingController();
-  TextEditingController textEditingController3 = TextEditingController();
-  TextEditingController textEditingController4 = TextEditingController();
-  TextEditingController textEditingController5 = TextEditingController();
+  late TextEditingController textEditingController1;
+  late TextEditingController textEditingController2;
+  late TextEditingController textEditingController3;
+  late TextEditingController textEditingController4;
+  late TextEditingController textEditingController5;
+
+  @override
+  void initState() {
+    super.initState();
+    textEditingController1 = TextEditingController();
+    textEditingController2 = TextEditingController();
+    textEditingController3 = TextEditingController();
+    textEditingController4 = TextEditingController();
+    textEditingController5 = TextEditingController();
+    _updateControllers();
+  }
+
+  @override
+  void dispose() {
+    textEditingController1.dispose();
+    textEditingController2.dispose();
+    textEditingController3.dispose();
+    textEditingController4.dispose();
+    textEditingController5.dispose();
+    super.dispose();
+  }
+
+  void _updateControllers() {
+    textEditingController1.text = widget.beamDeflectionSlope.E?.toString() ?? '';
+    textEditingController2.text = widget.beamDeflectionSlope.I?.toString() ?? '';
+    textEditingController3.text = widget.beamDeflectionSlope.L?.toString() ?? '';
+    textEditingController4.text = widget.beamDeflectionSlope.f?.toString() ?? '';
+    if (widget.beamDeflectionSlope is BeamDeflectionSlopeABModel) {
+      textEditingController5.text =
+          (widget.beamDeflectionSlope as BeamDeflectionSlopeABModel)
+                  .a
+                  ?.toString() ??
+              '';
+    }
+  }
 
   validateForce(double? value) {
     if (value == null) {
@@ -83,11 +118,7 @@ class _MonentsOfInertiaRowState extends State<SimpleBeamDeflectionsSlopesRow> {
                     setState(() {
                       dropValue = newValue!;
                       widget.callback(dropValue);
-                      textEditingController1.clear();
-                      textEditingController2.clear();
-                      textEditingController3.clear();
-                      textEditingController4.clear();
-                      textEditingController5.clear();
+                      _updateControllers();
                     });
                   },
                   items: <String>[

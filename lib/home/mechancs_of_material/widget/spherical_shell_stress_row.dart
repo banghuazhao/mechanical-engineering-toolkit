@@ -17,6 +17,29 @@ class SphericalShellStressRow extends StatefulWidget {
 }
 
 class _LaminaContantsRowState extends State<SphericalShellStressRow> {
+  late TextEditingController _pController;
+  late TextEditingController _rController;
+  late TextEditingController _tController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pController = TextEditingController(
+        text: widget.sphericalShellStressModel.p?.toString() ?? '');
+    _rController = TextEditingController(
+        text: widget.sphericalShellStressModel.r?.toString() ?? '');
+    _tController = TextEditingController(
+        text: widget.sphericalShellStressModel.t?.toString() ?? '');
+  }
+
+  @override
+  void dispose() {
+    _pController.dispose();
+    _rController.dispose();
+    _tController.dispose();
+    super.dispose();
+  }
+
   validateModulus(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -59,17 +82,19 @@ class _LaminaContantsRowState extends State<SphericalShellStressRow> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _pController,
                           keyboardType: const TextInputType.numberWithOptions(
                               signed: true, decimal: true),
                           decoration: InputDecoration(
                               isDense: true,
                               contentPadding: const EdgeInsets.all(12),
                               border: const OutlineInputBorder(),
-                              labelText: "p",
+                              labelText: "P",
                               errorText: widget.validate
                                   ? validateForce(
                                       widget.sphericalShellStressModel.p)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.sphericalShellStressModel.p =
                                 double.tryParse(value);
@@ -79,6 +104,7 @@ class _LaminaContantsRowState extends State<SphericalShellStressRow> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: TextField(
+                          controller: _rController,
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           decoration: InputDecoration(
@@ -89,7 +115,8 @@ class _LaminaContantsRowState extends State<SphericalShellStressRow> {
                               errorText: widget.validate
                                   ? validateModulus(
                                       widget.sphericalShellStressModel.r)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.sphericalShellStressModel.r =
                                 double.tryParse(value);
@@ -103,6 +130,7 @@ class _LaminaContantsRowState extends State<SphericalShellStressRow> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _tController,
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           decoration: InputDecoration(
@@ -113,7 +141,8 @@ class _LaminaContantsRowState extends State<SphericalShellStressRow> {
                               errorText: widget.validate
                                   ? validateModulus(
                                       widget.sphericalShellStressModel.t)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.sphericalShellStressModel.t =
                                 double.tryParse(value);

@@ -15,6 +15,21 @@ class LayerThicknessPage extends StatefulWidget {
 }
 
 class _LayerThicknessPageState extends State<LayerThicknessPage> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(
+        text: widget.layerThickness.value?.toString() ?? '');
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   validate(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -40,6 +55,7 @@ class _LayerThicknessPageState extends State<LayerThicknessPage> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
             child: TextField(
+              controller: _controller,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(

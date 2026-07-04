@@ -21,9 +21,37 @@ class MonentsOfInertiaRow extends StatefulWidget {
 class _MonentsOfInertiaRowState extends State<MonentsOfInertiaRow> {
   String dropValue = "Rectangle (Origin of axes at centroid)";
 
-  TextEditingController textEditingController1 = TextEditingController();
-  TextEditingController textEditingController2 = TextEditingController();
-  TextEditingController textEditingController3 = TextEditingController();
+  late TextEditingController textEditingController1;
+  late TextEditingController textEditingController2;
+  late TextEditingController textEditingController3;
+
+  @override
+  void initState() {
+    super.initState();
+    textEditingController1 = TextEditingController();
+    textEditingController2 = TextEditingController();
+    textEditingController3 = TextEditingController();
+    _updateControllers();
+  }
+
+  @override
+  void dispose() {
+    textEditingController1.dispose();
+    textEditingController2.dispose();
+    textEditingController3.dispose();
+    super.dispose();
+  }
+
+  void _updateControllers() {
+    if (widget.crossSectionModel is CrossSectionBHModel) {
+      CrossSectionBHModel model = (widget.crossSectionModel as CrossSectionBHModel);
+      textEditingController1.text = model.b?.toString() ?? '';
+      textEditingController2.text = model.h?.toString() ?? '';
+    } else if (widget.crossSectionModel is CrossSectionRModel) {
+      CrossSectionRModel model = (widget.crossSectionModel as CrossSectionRModel);
+      textEditingController1.text = model.r?.toString() ?? '';
+    }
+  }
 
   validateModulus(double? value) {
     if (value == null) {
@@ -63,8 +91,7 @@ class _MonentsOfInertiaRowState extends State<MonentsOfInertiaRow> {
                     setState(() {
                       dropValue = newValue!;
                       widget.callback(dropValue);
-                      textEditingController1.clear();
-                      textEditingController2.clear();
+                      _updateControllers();
                     });
                   },
                   items: <String>[

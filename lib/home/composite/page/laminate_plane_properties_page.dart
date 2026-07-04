@@ -12,12 +12,20 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/lamina_cons
 import 'package:mechanical_engineering_toolkit/home/composite/widget/layer_thickness_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/layup_sequence_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/thermal_constants_row.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 
 import 'laminate_plane_properties_result_page.dart';
 
 class LaminatePlanePropertiesPage extends StatefulWidget {
   final String title;
-  const LaminatePlanePropertiesPage({Key? key, required this.title})
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const LaminatePlanePropertiesPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
       : super(key: key);
 
   @override
@@ -33,6 +41,35 @@ class _LaminatePlanePropertiesPageState
   LayerThickness layerThickness = LayerThickness();
   ThermalConstants thermalConstants = ThermalConstants();
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      final inputs = widget.initialInputs!;
+      final s = S.current;
+      if (inputs.containsKey('Analysis Type')) {
+        analysisType = AnalysisType.values.firstWhere(
+            (e) => e.toString().split('.').last == inputs['Analysis Type'],
+            orElse: () => AnalysisType.elastic);
+      }
+      material.e1 = double.tryParse(inputs['E1'] ?? '');
+      material.e2 = double.tryParse(inputs['E2'] ?? '');
+      material.g12 = double.tryParse(inputs['G12'] ?? '');
+      material.nu12 = double.tryParse(inputs['ν12'] ?? '');
+      if (inputs.containsKey(s.Layup_Sequence)) {
+        layupSequence.rawValue = inputs[s.Layup_Sequence];
+      }
+      if (inputs.containsKey(s.Layer_Thickness)) {
+        layerThickness.value = double.tryParse(inputs[s.Layer_Thickness]!);
+      }
+      if (isThermal) {
+        thermalConstants.alpha11 = double.tryParse(inputs['α11'] ?? '');
+        thermalConstants.alpha22 = double.tryParse(inputs['α22'] ?? '');
+        thermalConstants.alpha12 = double.tryParse(inputs['α12'] ?? '');
+      }
+    }
+  }
 
   bool get isThermal => analysisType == AnalysisType.thermalElastic;
 
@@ -107,6 +144,22 @@ class _LaminatePlanePropertiesPageState
         !layupSequence.isValid() ||
         !layerThickness.isValid()) return;
     if (isThermal && !thermalConstants.isValid()) return;
+
+    final Map<String, String> inputs = {
+      'Analysis Type': analysisType.toString().split('.').last,
+      'E1': material.e1.toString(),
+      'E2': material.e2.toString(),
+      'G12': material.g12.toString(),
+      'ν12': material.nu12.toString(),
+      S.of(context).Layup_Sequence: layupSequence.rawValue.toString(),
+      S.of(context).Layer_Thickness: layerThickness.value.toString(),
+    };
+    if (isThermal) {
+      inputs['α11'] = thermalConstants.alpha11.toString();
+      inputs['α22'] = thermalConstants.alpha22.toString();
+      inputs['α12'] = thermalConstants.alpha12.toString();
+    }
+    context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
 
     final input = LaminatePlatePropertiesInput(
       analysisType: analysisType,

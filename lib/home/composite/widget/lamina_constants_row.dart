@@ -21,6 +21,37 @@ class LaminaContantsRow extends StatefulWidget {
 }
 
 class _LaminaContantsRowState extends State<LaminaContantsRow> {
+  late TextEditingController _e1Controller;
+  late TextEditingController _e2Controller;
+  late TextEditingController _g12Controller;
+  late TextEditingController _nu12Controller;
+  late TextEditingController _nu23Controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _e1Controller =
+        TextEditingController(text: widget.material.e1?.toString() ?? '');
+    _e2Controller =
+        TextEditingController(text: widget.material.e2?.toString() ?? '');
+    _g12Controller =
+        TextEditingController(text: widget.material.g12?.toString() ?? '');
+    _nu12Controller =
+        TextEditingController(text: widget.material.nu12?.toString() ?? '');
+    _nu23Controller =
+        TextEditingController(text: widget.material.nu23?.toString() ?? '');
+  }
+
+  @override
+  void dispose() {
+    _e1Controller.dispose();
+    _e2Controller.dispose();
+    _g12Controller.dispose();
+    _nu12Controller.dispose();
+    _nu23Controller.dispose();
+    super.dispose();
+  }
+
   validateModulus(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -65,6 +96,7 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _e1Controller,
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           decoration: InputDecoration(
@@ -74,7 +106,8 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                               labelText: "E1",
                               errorText: widget.validate
                                   ? validateModulus(widget.material.e1)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.material.e1 = double.tryParse(value);
                           },
@@ -83,6 +116,7 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: TextField(
+                          controller: _e2Controller,
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           decoration: InputDecoration(
@@ -92,7 +126,8 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                               labelText: "E2",
                               errorText: widget.validate
                                   ? validateModulus(widget.material.e2)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.material.e2 = double.tryParse(value);
                           },
@@ -105,6 +140,7 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _g12Controller,
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           decoration: InputDecoration(
@@ -114,7 +150,8 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                               labelText: "G12",
                               errorText: widget.validate
                                   ? validateModulus(widget.material.g12)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.material.g12 = double.tryParse(value);
                           },
@@ -123,6 +160,7 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: TextField(
+                          controller: _nu12Controller,
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           decoration: InputDecoration(
@@ -132,7 +170,8 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                               labelText: "ν12",
                               errorText: widget.validate
                                   ? validatePoissonRatio(widget.material.nu12)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.material.nu12 = double.tryParse(value);
                           },
@@ -149,6 +188,7 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                           children: [
                             Expanded(
                               child: TextField(
+                                controller: _nu23Controller,
                                 keyboardType:
                                     const TextInputType.numberWithOptions(
                                         decimal: true),
@@ -160,7 +200,8 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                                     errorText: widget.validate
                                         ? validatePoissonRatio(
                                             widget.material.nu23)
-                                        : null),
+                                        : null,
+                                    errorStyle: const TextStyle(fontSize: 10)),
                                 onChanged: (value) {
                                   widget.material.nu23 = double.tryParse(value);
                                 },

@@ -17,6 +17,33 @@ class BarForceDisplacementRow extends StatefulWidget {
 }
 
 class _LaminaContantsRowState extends State<BarForceDisplacementRow> {
+  late TextEditingController _pController;
+  late TextEditingController _lController;
+  late TextEditingController _eController;
+  late TextEditingController _aController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pController = TextEditingController(
+        text: widget.barForceDisplacementModel.p?.toString() ?? '');
+    _lController = TextEditingController(
+        text: widget.barForceDisplacementModel.l?.toString() ?? '');
+    _eController = TextEditingController(
+        text: widget.barForceDisplacementModel.e?.toString() ?? '');
+    _aController = TextEditingController(
+        text: widget.barForceDisplacementModel.area?.toString() ?? '');
+  }
+
+  @override
+  void dispose() {
+    _pController.dispose();
+    _lController.dispose();
+    _eController.dispose();
+    _aController.dispose();
+    super.dispose();
+  }
+
   validateModulus(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -59,6 +86,7 @@ class _LaminaContantsRowState extends State<BarForceDisplacementRow> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _pController,
                           keyboardType: const TextInputType.numberWithOptions(
                               signed: true, decimal: true),
                           decoration: InputDecoration(
@@ -69,7 +97,8 @@ class _LaminaContantsRowState extends State<BarForceDisplacementRow> {
                               errorText: widget.validate
                                   ? validateForce(
                                       widget.barForceDisplacementModel.p)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.barForceDisplacementModel.p =
                                 double.tryParse(value);
@@ -79,6 +108,7 @@ class _LaminaContantsRowState extends State<BarForceDisplacementRow> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: TextField(
+                          controller: _lController,
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           decoration: InputDecoration(
@@ -89,7 +119,8 @@ class _LaminaContantsRowState extends State<BarForceDisplacementRow> {
                               errorText: widget.validate
                                   ? validateModulus(
                                       widget.barForceDisplacementModel.l)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.barForceDisplacementModel.l =
                                 double.tryParse(value);
@@ -103,6 +134,7 @@ class _LaminaContantsRowState extends State<BarForceDisplacementRow> {
                     children: [
                       Expanded(
                         child: TextField(
+                          controller: _eController,
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           decoration: InputDecoration(
@@ -113,7 +145,8 @@ class _LaminaContantsRowState extends State<BarForceDisplacementRow> {
                               errorText: widget.validate
                                   ? validateModulus(
                                       widget.barForceDisplacementModel.e)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.barForceDisplacementModel.e =
                                 double.tryParse(value);
@@ -123,17 +156,19 @@ class _LaminaContantsRowState extends State<BarForceDisplacementRow> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: TextField(
+                          controller: _aController,
                           keyboardType: const TextInputType.numberWithOptions(
                               decimal: true),
                           decoration: InputDecoration(
                               isDense: true,
                               contentPadding: const EdgeInsets.all(12),
                               border: const OutlineInputBorder(),
-                              labelText: "A",
+                              labelText: "Area",
                               errorText: widget.validate
                                   ? validateModulus(
                                       widget.barForceDisplacementModel.area)
-                                  : null),
+                                  : null,
+                              errorStyle: const TextStyle(fontSize: 10)),
                           onChanged: (value) {
                             widget.barForceDisplacementModel.area =
                                 double.tryParse(value);

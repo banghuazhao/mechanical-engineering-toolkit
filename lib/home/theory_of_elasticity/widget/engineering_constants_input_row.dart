@@ -23,19 +23,98 @@ class _EngineeringConstantsInputRowState
     extends State<EngineeringConstantsInputRow> {
   String dropValue = "Isotropic material";
 
-  TextEditingController textEditingController1 = TextEditingController();
-  TextEditingController textEditingController2 = TextEditingController();
-  TextEditingController textEditingController3 = TextEditingController();
-  TextEditingController textEditingController4 = TextEditingController();
-  TextEditingController textEditingController5 = TextEditingController();
-  TextEditingController textEditingController6 = TextEditingController();
-  TextEditingController textEditingController7 = TextEditingController();
-  TextEditingController textEditingController8 = TextEditingController();
-  TextEditingController textEditingController9 = TextEditingController();
-  TextEditingController textEditingController10 = TextEditingController();
-  TextEditingController textEditingController11 = TextEditingController();
-  TextEditingController textEditingController12 = TextEditingController();
-  TextEditingController textEditingController13 = TextEditingController();
+  late TextEditingController textEditingController1;
+  late TextEditingController textEditingController2;
+  late TextEditingController textEditingController3;
+  late TextEditingController textEditingController4;
+  late TextEditingController textEditingController5;
+  late TextEditingController textEditingController6;
+  late TextEditingController textEditingController7;
+  late TextEditingController textEditingController8;
+  late TextEditingController textEditingController9;
+  late TextEditingController textEditingController10;
+  late TextEditingController textEditingController11;
+  late TextEditingController textEditingController12;
+  late TextEditingController textEditingController13;
+
+  @override
+  void initState() {
+    super.initState();
+    textEditingController1 = TextEditingController();
+    textEditingController2 = TextEditingController();
+    textEditingController3 = TextEditingController();
+    textEditingController4 = TextEditingController();
+    textEditingController5 = TextEditingController();
+    textEditingController6 = TextEditingController();
+    textEditingController7 = TextEditingController();
+    textEditingController8 = TextEditingController();
+    textEditingController9 = TextEditingController();
+    textEditingController10 = TextEditingController();
+    textEditingController11 = TextEditingController();
+    textEditingController12 = TextEditingController();
+    textEditingController13 = TextEditingController();
+    _updateControllers();
+  }
+
+  @override
+  void dispose() {
+    textEditingController1.dispose();
+    textEditingController2.dispose();
+    textEditingController3.dispose();
+    textEditingController4.dispose();
+    textEditingController5.dispose();
+    textEditingController6.dispose();
+    textEditingController7.dispose();
+    textEditingController8.dispose();
+    textEditingController9.dispose();
+    textEditingController10.dispose();
+    textEditingController11.dispose();
+    textEditingController12.dispose();
+    textEditingController13.dispose();
+    super.dispose();
+  }
+
+  void _updateControllers() {
+    if (widget.material is IsotropicMaterial) {
+      IsotropicMaterial material = (widget.material as IsotropicMaterial);
+      textEditingController1.text = material.e?.toString() ?? '';
+      textEditingController2.text = material.nu?.toString() ?? '';
+    } else if (widget.material is TransverselyIsotropicMaterial) {
+      TransverselyIsotropicMaterial material =
+          (widget.material as TransverselyIsotropicMaterial);
+      textEditingController1.text = material.e1?.toString() ?? '';
+      textEditingController2.text = material.e2?.toString() ?? '';
+      textEditingController3.text = material.g12?.toString() ?? '';
+      textEditingController4.text = material.nu12?.toString() ?? '';
+      textEditingController5.text = material.nu23?.toString() ?? '';
+    } else if (widget.material is OrthotropicMaterial) {
+      OrthotropicMaterial material = (widget.material as OrthotropicMaterial);
+      textEditingController1.text = material.e1?.toString() ?? '';
+      textEditingController2.text = material.e2?.toString() ?? '';
+      textEditingController3.text = material.e3?.toString() ?? '';
+      textEditingController4.text = material.g12?.toString() ?? '';
+      textEditingController5.text = material.g13?.toString() ?? '';
+      textEditingController6.text = material.g23?.toString() ?? '';
+      textEditingController7.text = material.nu12?.toString() ?? '';
+      textEditingController8.text = material.nu13?.toString() ?? '';
+      textEditingController9.text = material.nu23?.toString() ?? '';
+    } else if (widget.material is MonoclinicMaterial) {
+      MonoclinicMaterial material = (widget.material as MonoclinicMaterial);
+      textEditingController1.text = material.e1?.toString() ?? '';
+      textEditingController2.text = material.e2?.toString() ?? '';
+      textEditingController3.text = material.e3?.toString() ?? '';
+      textEditingController4.text = material.g12?.toString() ?? '';
+      textEditingController5.text = material.g13?.toString() ?? '';
+      textEditingController6.text = material.g23?.toString() ?? '';
+      textEditingController7.text = material.nu12?.toString() ?? '';
+      textEditingController8.text = material.nu13?.toString() ?? '';
+      textEditingController9.text = material.nu23?.toString() ?? '';
+      textEditingController10.text = material.eta1_12?.toString() ?? '';
+      textEditingController11.text = material.eta2_12?.toString() ?? '';
+      textEditingController12.text = material.eta3_12?.toString() ?? '';
+      textEditingController13.text = material.eta13_23?.toString() ?? '';
+    }
+  }
 
   validateNumber(double? value) {
     if (value == null) {
@@ -99,19 +178,7 @@ class _EngineeringConstantsInputRowState
                           setState(() {
                             dropValue = newValue!;
                             widget.callback(dropValue);
-                            textEditingController1.clear();
-                            textEditingController2.clear();
-                            textEditingController3.clear();
-                            textEditingController4.clear();
-                            textEditingController5.clear();
-                            textEditingController6.clear();
-                            textEditingController7.clear();
-                            textEditingController8.clear();
-                            textEditingController9.clear();
-                            textEditingController10.clear();
-                            textEditingController11.clear();
-                            textEditingController12.clear();
-                            textEditingController13.clear();
+                            _updateControllers();
                           });
                         },
                         items: <String>[

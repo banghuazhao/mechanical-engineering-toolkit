@@ -13,12 +13,21 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/lamina_cons
 import 'package:mechanical_engineering_toolkit/home/composite/widget/layup_angle_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/plane_stress_strain_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/thermal_constants_row.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 
 import 'lamina_stress_strain_result_page.dart';
 
 class LaminaStressStrainPage extends StatefulWidget {
   final String title;
-  const LaminaStressStrainPage({Key? key, required this.title}) : super(key: key);
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const LaminaStressStrainPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
+      : super(key: key);
 
   @override
   _LaminaStressStrainPageState createState() => _LaminaStressStrainPageState();
@@ -32,6 +41,49 @@ class _LaminaStressStrainPageState extends State<LaminaStressStrainPage> {
   ThermalConstants thermalConstants = ThermalConstants();
   double? deltaT;
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      final inputs = widget.initialInputs!;
+      final s = S.current;
+      if (inputs.containsKey('Analysis Type')) {
+        analysisType = AnalysisType.values.firstWhere(
+            (e) => e.toString().split('.').last == inputs['Analysis Type'],
+            orElse: () => AnalysisType.elastic);
+      }
+      material.e1 = double.tryParse(inputs['E1'] ?? '');
+      material.e2 = double.tryParse(inputs['E2'] ?? '');
+      material.g12 = double.tryParse(inputs['G12'] ?? '');
+      material.nu12 = double.tryParse(inputs['ν12'] ?? '');
+      if (inputs.containsKey(s.Layup_Angle)) {
+        layupAngle.value = double.tryParse(inputs[s.Layup_Angle]!);
+      }
+      if (inputs.containsKey('Input Type')) {
+        final inputType = inputs['Input Type']!;
+        if (inputType == s.Stress) {
+          mechanicalTensor = PlaneStress();
+          final t = mechanicalTensor as PlaneStress;
+          t.sigma11 = double.tryParse(inputs['σ11'] ?? '');
+          t.sigma22 = double.tryParse(inputs['σ22'] ?? '');
+          t.sigma12 = double.tryParse(inputs['σ12'] ?? '');
+        } else if (inputType == s.Strain) {
+          mechanicalTensor = PlaneStrain();
+          final t = mechanicalTensor as PlaneStrain;
+          t.epsilon11 = double.tryParse(inputs['ε11'] ?? '');
+          t.epsilon22 = double.tryParse(inputs['ε22'] ?? '');
+          t.gamma12 = double.tryParse(inputs['γ12'] ?? '');
+        }
+      }
+      if (isThermal) {
+        thermalConstants.alpha11 = double.tryParse(inputs['α11'] ?? '');
+        thermalConstants.alpha22 = double.tryParse(inputs['α22'] ?? '');
+        thermalConstants.alpha12 = double.tryParse(inputs['α12'] ?? '');
+        deltaT = double.tryParse(inputs['ΔT'] ?? '');
+      }
+    }
+  }
 
   bool get isThermal => analysisType == AnalysisType.thermalElastic;
 
@@ -124,6 +176,34 @@ class _LaminaStressStrainPageState extends State<LaminaStressStrainPage> {
       return;
     }
     if (isThermal && (!thermalConstants.isValid() || deltaT == null)) return;
+
+    final Map<String, String> inputs = {
+      'Analysis Type': analysisType.toString().split('.').last,
+      'E1': material.e1.toString(),
+      'E2': material.e2.toString(),
+      'G12': material.g12.toString(),
+      'ν12': material.nu12.toString(),
+      S.of(context).Layup_Angle: layupAngle.value.toString(),
+      'Input Type': mechanicalTensor is PlaneStress ? S.of(context).Stress : S.of(context).Strain,
+    };
+    if (mechanicalTensor is PlaneStress) {
+      final t = mechanicalTensor as PlaneStress;
+      inputs['σ11'] = t.sigma11.toString();
+      inputs['σ22'] = t.sigma22.toString();
+      inputs['σ12'] = t.sigma12.toString();
+    } else if (mechanicalTensor is PlaneStrain) {
+      final t = mechanicalTensor as PlaneStrain;
+      inputs['ε11'] = t.epsilon11.toString();
+      inputs['ε22'] = t.epsilon22.toString();
+      inputs['γ12'] = t.gamma12.toString();
+    }
+    if (isThermal) {
+      inputs['α11'] = thermalConstants.alpha11.toString();
+      inputs['α22'] = thermalConstants.alpha22.toString();
+      inputs['α12'] = thermalConstants.alpha12.toString();
+      inputs['ΔT'] = deltaT.toString();
+    }
+    context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
 
     final tensorType = mechanicalTensor is PlaneStress ? TensorType.stress : TensorType.strain;
     final input = LaminaStressStrainInput(

@@ -12,12 +12,20 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/lamina_cons
 import 'package:mechanical_engineering_toolkit/home/composite/widget/laminate_stress_strain_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/layer_thickness_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/layup_sequence_row.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 
 import 'laminate_stress_strain_result_page.dart';
 
 class LaminateStressStrainPage extends StatefulWidget {
   final String title;
-  const LaminateStressStrainPage({Key? key, required this.title})
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const LaminateStressStrainPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
       : super(key: key);
 
   @override
@@ -31,6 +39,47 @@ class _LaminateStressStrainPageState extends State<LaminateStressStrainPage> {
   LayerThickness layerThickness = LayerThickness();
   MechanicalTensor mechanicalTensor = LaminateStress();
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      final inputs = widget.initialInputs!;
+      final s = S.current;
+      material.e1 = double.tryParse(inputs['E1'] ?? '');
+      material.e2 = double.tryParse(inputs['E2'] ?? '');
+      material.g12 = double.tryParse(inputs['G12'] ?? '');
+      material.nu12 = double.tryParse(inputs['ν12'] ?? '');
+      if (inputs.containsKey(s.Layup_Sequence)) {
+        layupSequence.rawValue = inputs[s.Layup_Sequence];
+      }
+      if (inputs.containsKey(s.Layer_Thickness)) {
+        layerThickness.value = double.tryParse(inputs[s.Layer_Thickness]!);
+      }
+      if (inputs.containsKey('Input Type')) {
+        final inputType = inputs['Input Type']!;
+        if (inputType == 'Stress Resultant') {
+          mechanicalTensor = LaminateStress();
+          final t = mechanicalTensor as LaminateStress;
+          t.N11 = double.tryParse(inputs['N11'] ?? '');
+          t.N22 = double.tryParse(inputs['N22'] ?? '');
+          t.N12 = double.tryParse(inputs['N12'] ?? '');
+          t.M11 = double.tryParse(inputs['M11'] ?? '');
+          t.M22 = double.tryParse(inputs['M22'] ?? '');
+          t.M12 = double.tryParse(inputs['M12'] ?? '');
+        } else if (inputType == 'Mid-plane Strain') {
+          mechanicalTensor = LaminateStrain();
+          final t = mechanicalTensor as LaminateStrain;
+          t.epsilon11 = double.tryParse(inputs['ε011'] ?? '');
+          t.epsilon22 = double.tryParse(inputs['ε022'] ?? '');
+          t.epsilon12 = double.tryParse(inputs['γ012'] ?? '');
+          t.kappa11 = double.tryParse(inputs['κ11'] ?? '');
+          t.kappa22 = double.tryParse(inputs['κ22'] ?? '');
+          t.kappa12 = double.tryParse(inputs['κ12'] ?? '');
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +152,26 @@ class _LaminateStressStrainPageState extends State<LaminateStressStrainPage> {
         !layupSequence.isValid() ||
         !layerThickness.isValid() ||
         !mechanicalTensor.isValid()) return;
+
+    final Map<String, String> inputs = {
+      'E1': material.e1.toString(),
+      'E2': material.e2.toString(),
+      'G12': material.g12.toString(),
+      'ν12': material.nu12.toString(),
+      S.of(context).Layup_Sequence: layupSequence.rawValue.toString(),
+      S.of(context).Layer_Thickness: layerThickness.value.toString(),
+      'Input Type': mechanicalTensor is LaminateStress ? 'Stress Resultant' : 'Mid-plane Strain',
+    };
+    if (mechanicalTensor is LaminateStress) {
+      final t = mechanicalTensor as LaminateStress;
+      inputs['N11'] = t.N11.toString(); inputs['N22'] = t.N22.toString(); inputs['N12'] = t.N12.toString();
+      inputs['M11'] = t.M11.toString(); inputs['M22'] = t.M22.toString(); inputs['M12'] = t.M12.toString();
+    } else if (mechanicalTensor is LaminateStrain) {
+      final t = mechanicalTensor as LaminateStrain;
+      inputs['ε011'] = t.epsilon11.toString(); inputs['ε022'] = t.epsilon22.toString(); inputs['γ012'] = t.epsilon12.toString();
+      inputs['κ11'] = t.kappa11.toString(); inputs['κ22'] = t.kappa22.toString(); inputs['κ12'] = t.kappa12.toString();
+    }
+    context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
 
     final tensorType =
         mechanicalTensor is LaminateStress ? TensorType.stress : TensorType.strain;

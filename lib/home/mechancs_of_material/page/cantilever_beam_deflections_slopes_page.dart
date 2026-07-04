@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/beam_deflection_slope_model.dart';
@@ -10,7 +12,13 @@ import 'package:mechanical_engineering_toolkit/util/number.dart';
 
 class CantileverBeamDeflectionsSlopesPage extends StatefulWidget {
   final String title;
-  const CantileverBeamDeflectionsSlopesPage({Key? key, required this.title})
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const CantileverBeamDeflectionsSlopesPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
       : super(key: key);
 
   @override
@@ -23,6 +31,27 @@ class _CantileverBeamDeflectionsSlopesPageState
   BeamDeflectionSlope beamDeflectionSlope = BeamDeflectionSlopeModel();
   String dropValue = "Point force at end";
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      dropValue = widget.initialInputs!["Type"] ?? "Point force at end";
+      if (dropValue == "Point force at end" ||
+          dropValue == "Distributed force evenly" ||
+          dropValue == "Moment at end") {
+        beamDeflectionSlope = BeamDeflectionSlopeModel();
+      } else {
+        beamDeflectionSlope = BeamDeflectionSlopeABModel();
+        (beamDeflectionSlope as BeamDeflectionSlopeABModel).a =
+            double.tryParse(widget.initialInputs!["a"] ?? "");
+      }
+      beamDeflectionSlope.E = double.tryParse(widget.initialInputs!["E"] ?? "");
+      beamDeflectionSlope.I = double.tryParse(widget.initialInputs!["I"] ?? "");
+      beamDeflectionSlope.L = double.tryParse(widget.initialInputs!["L"] ?? "");
+      beamDeflectionSlope.f = double.tryParse(widget.initialInputs!["f"] ?? "");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -336,6 +365,15 @@ v': = dv/dx = Slope of the deflection curve
           (-second * a).formatted(precs)
         ];
       }
+
+      context.read<ToolHistory>().record(widget.toolId, inputs: {
+        "E": E.toString(),
+        "I": I.toString(),
+        "L": L.toString(),
+        "f": f.toString(),
+        "a": a.toString(),
+        "Type": dropValue,
+      });
 
       Navigator.push(
           context,

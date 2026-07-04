@@ -39,7 +39,7 @@ class Tool {
   AssetImage? image;
   final String title;
   final ToolType type;
-  final Function(BuildContext, String) action;
+  final Function(BuildContext context, String title, int toolId, {Map<String, String>? initialInputs}) action;
 
   Tool(
       {required this.id,
@@ -63,55 +63,65 @@ class ToolLibrary {
           image: AssetImage("images/icon_bar_force.png"),
           title: S.of(context).General_stress_calculation,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => GeneralStressPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 101,
           image: AssetImage("images/icon_bar_force.png"),
           title: S.of(context).Force_displacement_relation_of_bar,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => BarForceDisplacementRelationPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 102,
           image: AssetImage("images/cross_section/icon_cs_rectangle.png"),
           title: S.of(context).Moments_of_inertia_of_plane_areas,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => MonentsOfInertiaPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 103,
           image: AssetImage("images/icon_bar_torsion.png"),
           title: S.of(context).Torsion_formula_of_bar,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => BarTorsionFormulaPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 104,
           image: AssetImage("images/icon_beam_bending.png"),
           title: S.of(context).Flexure_formula_of_beam,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => BeamFlexureFormulaPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 105,
@@ -119,11 +129,13 @@ class ToolLibrary {
               "images/cantilever_beam/icon_cantilever_beam_point_force_end.png"),
           title: S.of(context).Deflections_and_slopes_of_cantilever_beams,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => CantileverBeamDeflectionsSlopesPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 106,
@@ -131,44 +143,52 @@ class ToolLibrary {
               "images/simple_beam/icon_simple_beam_distributed_force_evenly.png"),
           title: S.of(context).Deflections_and_slopes_of_simple_beams,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => SimpleBeamDeflectionsSlopesPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 107,
           image: AssetImage("images/icon_stress_element_inclined.png"),
           title: S.of(context).Plane_stresses_transformation,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => PlaneStressTransformationPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 108,
           image: AssetImage("images/icon_stress_element.png"),
           title: S.of(context).Principal_stresses_and_plane,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => PrincipalStressPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 109,
           image: AssetImage("images/icon_spherical_shell_stress.png"),
           title: S.of(context).Stresses_in_the_wall_of_a_spherical_shell,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => SphericalShellStressPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 110,
@@ -177,77 +197,91 @@ class ToolLibrary {
               .of(context)
               .Stresses_in_a_thin_walled_cylindrical_pressure_vessel,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => CylindricalPressureVesselPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 111,
           image: AssetImage("images/buckling/icon_buckling_pinned_pinned.png"),
           title: S.of(context).Buckling_load_of_column,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => ColumnBucklingLoadPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 112,
           icon: Icons.thermostat_rounded,
           title: S.of(context).Thermal_deformation_and_stress,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => ThermalDeformationPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 113,
           icon: Icons.cut_rounded,
           title: S.of(context).Transverse_shear_stress_in_beam,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => TransverseShearStressPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 114,
           icon: Icons.rotate_right_rounded,
           title: S.of(context).Angle_of_twist,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => AngleOfTwistPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 115,
           icon: Icons.settings_rounded,
           title: S.of(context).Shaft_power_and_torque,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => ShaftPowerTorquePage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 116,
           icon: Icons.warning_amber_rounded,
           title: S.of(context).Failure_criteria_von_Mises_Tresca,
           type: ToolType.mechanicsOfMaterial,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => FailureCriteriaPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       // Theory of Elasticity
       Tool(
@@ -255,22 +289,26 @@ class ToolLibrary {
           icon: Icons.calculate_rounded,
           title: S.of(context).Constitutive_relation_of_linear_elastic_material,
           type: ToolType.theoryOfElasticity,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => LinearElasticConstitutiveRelationPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 201,
           icon: Icons.calculate_rounded,
           title: S.of(context).Stressstrain_of_linear_elastic_material,
           type: ToolType.theoryOfElasticity,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => StressStrainLinearElasticPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       // Composite Material
       Tool(
@@ -278,66 +316,78 @@ class ToolLibrary {
           image: AssetImage("images/lamina.png"),
           title: S.of(context).Lamina_stressstrain,
           type: ToolType.composite,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => LaminaStressStrainPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 301,
           image: AssetImage("images/lamina.png"),
           title: S.of(context).Lamina_engineering_constants,
           type: ToolType.composite,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => LaminaEngineeringConstantsPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 302,
           image: AssetImage("images/laminate.png"),
           title: S.of(context).Laminate_stressstrain,
           type: ToolType.composite,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => LaminateStressStrainPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 303,
           image: AssetImage("images/laminate.png"),
           title: S.of(context).Laminate_plane_properties,
           type: ToolType.composite,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => LaminatePlanePropertiesPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 304,
           image: AssetImage("images/laminate.png"),
           title: S.of(context).Laminate_3D_properties,
           type: ToolType.composite,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => Laminate3DPropertiesPage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       Tool(
           id: 305,
           image: AssetImage("images/square_pack.png"),
           title: S.of(context).Rule_of_mixtures,
           type: ToolType.composite,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => RulesOfMixturePage(
                         title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
                       )))),
       // Statics
       Tool(
@@ -345,38 +395,38 @@ class ToolLibrary {
           icon: Icons.arrow_outward_rounded,
           title: 'Resultant of Forces (2D)',
           type: ToolType.statics,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ResultantForcePage(title: title)))),
+                  builder: (context) => ResultantForcePage(title: title, toolId: toolId, initialInputs: initialInputs)))),
       Tool(
           id: 401,
           icon: Icons.horizontal_rule_rounded,
           title: 'Beam Support Reactions',
           type: ToolType.statics,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => BeamReactionsPage(title: title)))),
+                  builder: (context) => BeamReactionsPage(title: title, toolId: toolId, initialInputs: initialInputs)))),
       Tool(
           id: 402,
           icon: Icons.crop_free_rounded,
           title: 'Centroid of Composite Area',
           type: ToolType.statics,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CentroidPage(title: title)))),
+                  builder: (context) => CentroidPage(title: title, toolId: toolId, initialInputs: initialInputs)))),
       // Utilities
       Tool(
           id: 500,
           icon: Icons.swap_horiz_rounded,
           title: 'Unit Converter',
           type: ToolType.utilities,
-          action: (context, title) => Navigator.push(
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const UnitConverterPage()))),
+                  builder: (context) => UnitConverterPage(title: title, toolId: toolId, initialInputs: initialInputs)))),
     ];
   }
 

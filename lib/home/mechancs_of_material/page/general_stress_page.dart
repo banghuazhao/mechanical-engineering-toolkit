@@ -3,16 +3,20 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/area_model.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/force_model.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/stress_model.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/general_stress_result.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/area_row.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/force_row.dart';
+import 'package:provider/provider.dart';
 
 class GeneralStressPage extends StatefulWidget {
   final String title;
-  const GeneralStressPage({Key? key, required this.title}) : super(key: key);
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const GeneralStressPage({Key? key, required this.title, required this.toolId, this.initialInputs}) : super(key: key);
 
   @override
   _LaminaEngineeringConstantsPageState createState() =>
@@ -23,6 +27,15 @@ class _LaminaEngineeringConstantsPageState extends State<GeneralStressPage> {
   Force force = Force();
   Area area = Area();
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      force.value = double.tryParse(widget.initialInputs![S.current.Force] ?? '');
+      area.value = double.tryParse(widget.initialInputs![S.current.Area] ?? '');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +107,10 @@ Calculate the stress by force (F) and area (A):""",
 
   void _calculate() {
     if (force.isValid() && area.isValid()) {
+      context.read<ToolHistory>().record(widget.toolId, inputs: {
+        S.of(context).Force: force.value!.toString(),
+        S.of(context).Area: area.value!.toString(),
+      });
       Stress stress = Stress(force.value! / area.value!);
       Navigator.push(
           context,

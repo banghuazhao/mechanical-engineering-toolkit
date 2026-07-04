@@ -5,12 +5,20 @@ import 'package:linalg/matrix.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/page/linear_elastic_consitutive_relation_result.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/widget/engineering_constants_input_row.dart';
+import 'package:provider/provider.dart';
 
 class LinearElasticConstitutiveRelationPage extends StatefulWidget {
   final String title;
-  const LinearElasticConstitutiveRelationPage({Key? key, required this.title})
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const LinearElasticConstitutiveRelationPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
       : super(key: key);
 
   @override
@@ -23,6 +31,62 @@ class _LinearElasticConstitutiveRelationPageState
   MechanicalMaterial material = IsotropicMaterial();
   String dropValue = "Isotropic material";
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      final inputs = widget.initialInputs!;
+      final s = S.current;
+      if (inputs.containsKey('Material Type')) {
+        dropValue = inputs['Material Type']!;
+        if (dropValue == s.Isotropic_material ||
+            dropValue == "Isotropic material") {
+          material = IsotropicMaterial();
+          (material as IsotropicMaterial).e =
+              double.tryParse(inputs['E'] ?? '');
+          (material as IsotropicMaterial).nu =
+              double.tryParse(inputs['ν'] ?? '');
+        } else if (dropValue == s.Transversely_isotropic_material) {
+          material = TransverselyIsotropicMaterial();
+          final m = material as TransverselyIsotropicMaterial;
+          m.e1 = double.tryParse(inputs['E1'] ?? '');
+          m.e2 = double.tryParse(inputs['E2'] ?? '');
+          m.g12 = double.tryParse(inputs['G12'] ?? '');
+          m.nu12 = double.tryParse(inputs['ν12'] ?? '');
+          m.nu23 = double.tryParse(inputs['ν23'] ?? '');
+        } else if (dropValue == s.Orthotropic_material) {
+          material = OrthotropicMaterial();
+          final m = material as OrthotropicMaterial;
+          m.e1 = double.tryParse(inputs['E1'] ?? '');
+          m.e2 = double.tryParse(inputs['E2'] ?? '');
+          m.e3 = double.tryParse(inputs['E3'] ?? '');
+          m.g12 = double.tryParse(inputs['G12'] ?? '');
+          m.g13 = double.tryParse(inputs['G13'] ?? '');
+          m.g23 = double.tryParse(inputs['G23'] ?? '');
+          m.nu12 = double.tryParse(inputs['ν12'] ?? '');
+          m.nu13 = double.tryParse(inputs['ν13'] ?? '');
+          m.nu23 = double.tryParse(inputs['ν23'] ?? '');
+        } else if (dropValue == s.Monoclinic_material) {
+          material = MonoclinicMaterial();
+          final m = material as MonoclinicMaterial;
+          m.e1 = double.tryParse(inputs['E1'] ?? '');
+          m.e2 = double.tryParse(inputs['E2'] ?? '');
+          m.e3 = double.tryParse(inputs['E3'] ?? '');
+          m.g12 = double.tryParse(inputs['G12'] ?? '');
+          m.g13 = double.tryParse(inputs['G13'] ?? '');
+          m.g23 = double.tryParse(inputs['G23'] ?? '');
+          m.nu12 = double.tryParse(inputs['ν12'] ?? '');
+          m.nu13 = double.tryParse(inputs['ν13'] ?? '');
+          m.nu23 = double.tryParse(inputs['ν23'] ?? '');
+          m.eta1_12 = double.tryParse(inputs['η1,12'] ?? '');
+          m.eta2_12 = double.tryParse(inputs['η2,12'] ?? '');
+          m.eta3_12 = double.tryParse(inputs['η3,12'] ?? '');
+          m.eta13_23 = double.tryParse(inputs['η13,23'] ?? '');
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -283,6 +347,48 @@ G_ij = Shear modulus in the i-j plane
   void _calculate() {
     print(dropValue);
     if (material.isValid()) {
+      final Map<String, String> inputs = {
+        'Material Type': dropValue,
+      };
+      if (material is IsotropicMaterial) {
+        inputs['E'] = (material as IsotropicMaterial).e.toString();
+        inputs['ν'] = (material as IsotropicMaterial).nu.toString();
+      } else if (material is TransverselyIsotropicMaterial) {
+        final m = material as TransverselyIsotropicMaterial;
+        inputs['E1'] = m.e1.toString();
+        inputs['E2'] = m.e2.toString();
+        inputs['G12'] = m.g12.toString();
+        inputs['ν12'] = m.nu12.toString();
+        inputs['ν23'] = m.nu23.toString();
+      } else if (material is OrthotropicMaterial) {
+        final m = material as OrthotropicMaterial;
+        inputs['E1'] = m.e1.toString();
+        inputs['E2'] = m.e2.toString();
+        inputs['E3'] = m.e3.toString();
+        inputs['G12'] = m.g12.toString();
+        inputs['G13'] = m.g13.toString();
+        inputs['G23'] = m.g23.toString();
+        inputs['ν12'] = m.nu12.toString();
+        inputs['ν13'] = m.nu13.toString();
+        inputs['ν23'] = m.nu23.toString();
+      } else if (material is MonoclinicMaterial) {
+        final m = material as MonoclinicMaterial;
+        inputs['E1'] = m.e1.toString();
+        inputs['E2'] = m.e2.toString();
+        inputs['E3'] = m.e3.toString();
+        inputs['G12'] = m.g12.toString();
+        inputs['G13'] = m.g13.toString();
+        inputs['G23'] = m.g23.toString();
+        inputs['ν12'] = m.nu12.toString();
+        inputs['ν13'] = m.nu13.toString();
+        inputs['ν23'] = m.nu23.toString();
+        inputs['η1,12'] = m.eta1_12.toString();
+        inputs['η2,12'] = m.eta2_12.toString();
+        inputs['η3,12'] = m.eta3_12.toString();
+        inputs['η13,23'] = m.eta13_23.toString();
+      }
+      context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
+
       double s11 = 0;
       double s12 = 0;
       double s13 = 0;

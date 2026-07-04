@@ -1,11 +1,17 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:provider/provider.dart';
 
 class ResultantForcePage extends StatefulWidget {
   final String title;
-  const ResultantForcePage({Key? key, required this.title}) : super(key: key);
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const ResultantForcePage(
+      {Key? key, required this.toolId, required this.title, this.initialInputs})
+      : super(key: key);
 
   @override
   State<ResultantForcePage> createState() => _ResultantForcePageState();
@@ -14,11 +20,44 @@ class ResultantForcePage extends StatefulWidget {
 class _ForceEntry {
   final TextEditingController fx = TextEditingController();
   final TextEditingController fy = TextEditingController();
-  void dispose() { fx.dispose(); fy.dispose(); }
+  void dispose() {
+    fx.dispose();
+    fy.dispose();
+  }
 }
 
 class _ResultantForcePageState extends State<ResultantForcePage> {
   final List<_ForceEntry> _forces = [_ForceEntry(), _ForceEntry()];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      final inputs = widget.initialInputs!;
+      int maxI = 0;
+      inputs.forEach((key, value) {
+        if (key.startsWith('F')) {
+          final match = RegExp(r'F(\d+)').firstMatch(key);
+          if (match != null) {
+            maxI = max(maxI, int.parse(match.group(1)!));
+          }
+        }
+      });
+
+      if (maxI > 0) {
+        for (var f in _forces) f.dispose();
+        _forces.clear();
+        for (int i = 0; i < maxI; i++) {
+          final entry = _ForceEntry();
+          final fxKey = 'F${i + 1} Fx';
+          final fyKey = 'F${i + 1} Fy';
+          if (inputs.containsKey(fxKey)) entry.fx.text = inputs[fxKey]!;
+          if (inputs.containsKey(fyKey)) entry.fy.text = inputs[fyKey]!;
+          _forces.add(entry);
+        }
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -108,14 +147,22 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
   void _calculate() {
     double sumFx = 0, sumFy = 0;
     bool hasValue = false;
-    for (final f in _forces) {
+    final Map<String, String> inputs = {};
+    for (int i = 0; i < _forces.length; i++) {
+      final f = _forces[i];
       final fx = double.tryParse(f.fx.text) ?? 0;
       final fy = double.tryParse(f.fy.text) ?? 0;
-      if (f.fx.text.isNotEmpty || f.fy.text.isNotEmpty) hasValue = true;
+      if (f.fx.text.isNotEmpty || f.fy.text.isNotEmpty) {
+        hasValue = true;
+        inputs['F${i + 1} Fx'] = fx.toString();
+        inputs['F${i + 1} Fy'] = fy.toString();
+      }
       sumFx += fx;
       sumFy += fy;
     }
     if (!hasValue) return;
+
+    context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
 
     final R = sqrt(sumFx * sumFx + sumFy * sumFy);
     final theta = atan2(sumFy, sumFx) * 180 / pi;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/bar_torsion_formula_model.dart';
@@ -10,7 +12,13 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 
 class BarTorsionFormulaPage extends StatefulWidget {
   final String title;
-  const BarTorsionFormulaPage({Key? key, required this.title})
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const BarTorsionFormulaPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
       : super(key: key);
 
   @override
@@ -20,6 +28,17 @@ class BarTorsionFormulaPage extends StatefulWidget {
 class _BarTorsionFormulaPageState extends State<BarTorsionFormulaPage> {
   BarTorsionFormulaModel barTorsionFormulaModel = BarTorsionFormulaModel();
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      barTorsionFormulaModel.T = double.tryParse(widget.initialInputs!["T"] ?? "");
+      barTorsionFormulaModel.r = double.tryParse(widget.initialInputs!["r"] ?? "");
+      barTorsionFormulaModel.Ip =
+          double.tryParse(widget.initialInputs!["Ip"] ?? "");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +116,11 @@ The torsion formula of bar: The maximum shear stress which occurs on the outer s
       double r = barTorsionFormulaModel.r!;
       double Ip = barTorsionFormulaModel.Ip!;
       Strain strain = Strain(T * r / Ip);
+      context.read<ToolHistory>().record(widget.toolId, inputs: {
+        "T": T.toString(),
+        "r": r.toString(),
+        "Ip": Ip.toString(),
+      });
       Navigator.push(
           context,
           MaterialPageRoute(

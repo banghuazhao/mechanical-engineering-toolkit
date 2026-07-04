@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/spherical_shell_stress_model.dart';
@@ -10,7 +12,13 @@ import 'package:mechanical_engineering_toolkit/util/number.dart';
 
 class CylindricalPressureVesselPage extends StatefulWidget {
   final String title;
-  const CylindricalPressureVesselPage({Key? key, required this.title})
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const CylindricalPressureVesselPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
       : super(key: key);
 
   @override
@@ -23,6 +31,19 @@ class _CylindricalPressureVesselPageState
   SphericalShellStressModel sphericalShellStressModel =
       SphericalShellStressModel();
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      sphericalShellStressModel.p =
+          double.tryParse(widget.initialInputs!["p"] ?? "");
+      sphericalShellStressModel.r =
+          double.tryParse(widget.initialInputs!["r"] ?? "");
+      sphericalShellStressModel.t =
+          double.tryParse(widget.initialInputs!["t"] ?? "");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +125,11 @@ Where p is the pressure, r is the radius of the spherical and t is the thickness
       double t = sphericalShellStressModel.t!;
       double stress1 = p * r / (t);
       double stress2 = p * r / (2 * t);
+      context.read<ToolHistory>().record(widget.toolId, inputs: {
+        "p": p.toString(),
+        "r": r.toString(),
+        "t": t.toString(),
+      });
       Navigator.push(
           context,
           MaterialPageRoute(

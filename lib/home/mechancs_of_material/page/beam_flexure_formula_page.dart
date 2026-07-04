@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/beam_flexure_formula_model.dart';
@@ -10,7 +12,13 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 
 class BeamFlexureFormulaPage extends StatefulWidget {
   final String title;
-  const BeamFlexureFormulaPage({Key? key, required this.title})
+  final int toolId;
+  final Map<String, String>? initialInputs;
+  const BeamFlexureFormulaPage(
+      {Key? key,
+      required this.title,
+      required this.toolId,
+      this.initialInputs})
       : super(key: key);
 
   @override
@@ -20,6 +28,16 @@ class BeamFlexureFormulaPage extends StatefulWidget {
 class _BeamFlexureFormulaPageState extends State<BeamFlexureFormulaPage> {
   BeamFlexureFormulaModel beamFlexureFormulaModel = BeamFlexureFormulaModel();
   bool validate = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialInputs != null) {
+      beamFlexureFormulaModel.M = double.tryParse(widget.initialInputs!["M"] ?? "");
+      beamFlexureFormulaModel.y = double.tryParse(widget.initialInputs!["y"] ?? "");
+      beamFlexureFormulaModel.I = double.tryParse(widget.initialInputs!["I"] ?? "");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +114,11 @@ The flexure formula of beam: The stresses on the cross section are directly prop
       double M = beamFlexureFormulaModel.M!;
       double? y = beamFlexureFormulaModel.y;
       double I = beamFlexureFormulaModel.I!;
+      context.read<ToolHistory>().record(widget.toolId, inputs: {
+        "M": M.toString(),
+        "y": y?.toString() ?? "",
+        "I": I.toString(),
+      });
       Navigator.push(
           context,
           MaterialPageRoute(
