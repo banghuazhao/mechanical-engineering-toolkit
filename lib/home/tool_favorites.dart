@@ -33,6 +33,8 @@ class _ToolFavoritesPageState extends State<ToolFavoritesPage> {
   }
 
   Future<void> _loadAd() async {
+    if (!await AdsManager.canRequestAds() || !mounted) return;
+
     // Get an AnchoredAdaptiveBannerAdSize before loading the ad.
     final AnchoredAdaptiveBannerAdSize? size =
         await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(

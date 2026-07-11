@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -9,9 +10,52 @@ class AdsManager {
   static bool disableAllAdsForScreenshot = false;
   static String bannerAdUnitIdIOS = Secrets.bannerAdUnitIdIOS;
   static String openAdUnitIDIOS = Secrets.openAdUnitIDIOS;
-  static String bannerAdUnitIdAndroid =
-      Secrets.bannerAdUnitIdAndroid;
+  static String bannerAdUnitIdAndroid = Secrets.bannerAdUnitIdAndroid;
   static String openAdUnitIDAndroid = Secrets.openAdUnitIDAndroid;
+  static Future<bool>? _consentFuture;
+  static Future<InitializationStatus>? _mobileAdsInitialization;
+
+  /// Updates UMP consent on every app launch and only enables ads after all
+  /// required consent messages have been handled.
+  static Future<bool> canRequestAds() {
+    return _consentFuture ??= _requestConsent();
+  }
+
+  static Future<bool> _requestConsent() {
+    final completer = Completer<bool>();
+    final parameters = ConsentRequestParameters();
+
+    ConsentInformation.instance.requestConsentInfoUpdate(
+      parameters,
+      () {
+        ConsentForm.loadAndShowConsentFormIfRequired((formError) async {
+          if (formError != null) {
+            debugPrint('Unable to show the consent form: $formError');
+          }
+          await _finishConsentRequest(completer);
+        });
+      },
+      (error) async {
+        // A previously stored valid choice may still permit ad requests when
+        // refreshing consent information temporarily fails.
+        debugPrint('Unable to update consent information: $error');
+        await _finishConsentRequest(completer);
+      },
+    );
+
+    return completer.future;
+  }
+
+  static Future<void> _finishConsentRequest(Completer<bool> completer) async {
+    if (completer.isCompleted) return;
+
+    final allowed = await ConsentInformation.instance.canRequestAds();
+    if (allowed) {
+      _mobileAdsInitialization ??= MobileAds.instance.initialize();
+      await _mobileAdsInitialization;
+    }
+    if (!completer.isCompleted) completer.complete(allowed);
+  }
 
   static String get bannerAdUnitId {
     if (Platform.isAndroid) {
@@ -87,7 +131,9 @@ class AppOpenAdManager {
   DateTime? _appOpenLoadTime;
 
   /// Load an AppOpenAd.
-  void loadAd() {
+  Future<void> loadAd() async {
+    if (!await AdsManager.canRequestAds()) return;
+
     AppOpenAd.load(
       adUnitId: AdsManager.openAdUnitID,
       request: AdRequest(),

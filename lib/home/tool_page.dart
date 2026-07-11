@@ -19,7 +19,6 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 import 'favorites.dart';
 import 'history.dart';
 import 'tool_history_page.dart';
@@ -66,12 +65,15 @@ class _ToolPageState extends State<ToolPage> {
     _viewMode = ToolViewModePreference.get();
 
     AppOpenAdManager appOpenAdManager = AppOpenAdManager()..loadAd();
-    WidgetsBinding.instance.addObserver(AppLifecycleReactor(appOpenAdManager: appOpenAdManager));
+    WidgetsBinding.instance
+        .addObserver(AppLifecycleReactor(appOpenAdManager: appOpenAdManager));
   }
 
   void _toggleViewMode() {
     setState(() {
-      _viewMode = _viewMode == ToolViewMode.list ? ToolViewMode.grid : ToolViewMode.list;
+      _viewMode = _viewMode == ToolViewMode.list
+          ? ToolViewMode.grid
+          : ToolViewMode.list;
     });
     ToolViewModePreference.set(_viewMode);
   }
@@ -111,6 +113,8 @@ class _ToolPageState extends State<ToolPage> {
   }
 
   Future<void> _loadAd() async {
+    if (!await AdsManager.canRequestAds() || !mounted) return;
+
     // Get an AnchoredAdaptiveBannerAdSize before loading the ad.
     final AnchoredAdaptiveBannerAdSize? size =
         await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
@@ -161,14 +165,18 @@ class _ToolPageState extends State<ToolPage> {
           IconButton(
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => const ToolHistoryPage()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ToolHistoryPage()));
             },
             icon: const Icon(Icons.history_rounded),
           ),
           IconButton(
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => const ToolFavoritesPage()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ToolFavoritesPage()));
             },
             icon: const Icon(Icons.star_border_rounded),
           ),
@@ -192,7 +200,9 @@ class _ToolPageState extends State<ToolPage> {
                 leadingIcon: Icons.settings_rounded,
                 onTap: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => const ToolSettingPage()));
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ToolSettingPage()));
                 }),
             MoreRow(
               title: S.of(context).Feedback,
@@ -253,7 +263,8 @@ class _ToolPageState extends State<ToolPage> {
                 final Size size = MediaQuery.of(context).size;
                 if (Platform.isIOS) {
                   Share.share("http://itunes.apple.com/app/id${"1601099443"}",
-                      sharePositionOrigin: Rect.fromLTWH(0, 0, size.width, size.height / 2));
+                      sharePositionOrigin:
+                          Rect.fromLTWH(0, 0, size.width, size.height / 2));
                 } else {
                   AppOpenAdManager.bypassShowAd = true;
                   Share.share("https://play.google.com/store/apps/details?id=" +
@@ -347,7 +358,8 @@ class _ToolPageState extends State<ToolPage> {
           crossAxisCount: columns,
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
-          childAspectRatio: 0.8, // Increased height slightly to prevent overflow
+          childAspectRatio:
+              0.8, // Increased height slightly to prevent overflow
         ),
         delegate: SliverChildBuilderDelegate(
           (context, index) => ToolGridTile(model: tools[index]),
@@ -425,9 +437,13 @@ class ToolRowWidget extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                !isFavorite ? favoritesList.add(itemNo) : favoritesList.remove(itemNo);
+                !isFavorite
+                    ? favoritesList.add(itemNo)
+                    : favoritesList.remove(itemNo);
                 Fluttertoast.showToast(
-                    msg: !isFavorite ? 'Added to favorites' : 'Removed from favorites',
+                    msg: !isFavorite
+                        ? 'Added to favorites'
+                        : 'Removed from favorites',
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.CENTER,
                     timeInSecForIosWeb: 1,
@@ -436,7 +452,8 @@ class ToolRowWidget extends StatelessWidget {
                     fontSize: 14.0);
               },
               color: isFavorite ? primary : Colors.grey[400],
-              icon: Icon(isFavorite ? Icons.star_rounded : Icons.star_border_rounded),
+              icon: Icon(
+                  isFavorite ? Icons.star_rounded : Icons.star_border_rounded),
             ),
           ]),
         ),
@@ -477,12 +494,16 @@ class ToolGridTile extends StatelessWidget {
                   InkWell(
                     borderRadius: BorderRadius.circular(12),
                     onTap: () {
-                      !isFavorite ? favoritesList.add(itemNo) : favoritesList.remove(itemNo);
+                      !isFavorite
+                          ? favoritesList.add(itemNo)
+                          : favoritesList.remove(itemNo);
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(2),
                       child: Icon(
-                        isFavorite ? Icons.star_rounded : Icons.star_border_rounded,
+                        isFavorite
+                            ? Icons.star_rounded
+                            : Icons.star_border_rounded,
                         size: 18,
                         color: isFavorite ? primary : Colors.grey[350],
                       ),
@@ -518,7 +539,10 @@ class ToolGridTile extends StatelessWidget {
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12.5),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontSize: 12.5),
                 ),
               ),
             ],

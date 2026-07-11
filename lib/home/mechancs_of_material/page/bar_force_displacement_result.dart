@@ -29,10 +29,12 @@ class BarForceDisplacementResultPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _BarForceDisplacementResultPageState createState() => _BarForceDisplacementResultPageState();
+  _BarForceDisplacementResultPageState createState() =>
+      _BarForceDisplacementResultPageState();
 }
 
-class _BarForceDisplacementResultPageState extends State<BarForceDisplacementResultPage> {
+class _BarForceDisplacementResultPageState
+    extends State<BarForceDisplacementResultPage> {
   BannerAd? _anchoredAdaptiveAd;
   bool _isLoaded = false;
 
@@ -43,6 +45,8 @@ class _BarForceDisplacementResultPageState extends State<BarForceDisplacementRes
   }
 
   Future<void> _loadAd() async {
+    if (!await AdsManager.canRequestAds() || !mounted) return;
+
     // Get an AnchoredAdaptiveBannerAdSize before loading the ad.
     final AnchoredAdaptiveBannerAdSize? size =
         await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
@@ -85,7 +89,8 @@ class _BarForceDisplacementResultPageState extends State<BarForceDisplacementRes
             IconButton(
               icon: const Icon(Icons.share_rounded),
               onPressed: () {
-                final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+                final precs =
+                    Provider.of<NumberPrecisionHelper>(context, listen: false);
                 shareResult('Bar Force & Displacement', [
                   'δ = ${precs.formatValue(widget.displacement.value)}',
                   '',
@@ -99,13 +104,16 @@ class _BarForceDisplacementResultPageState extends State<BarForceDisplacementRes
             IconButton(
               onPressed: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => const ToolSettingPage()));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ToolSettingPage()));
               },
               icon: const Icon(Icons.settings_rounded),
             ),
           ],
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
+            icon:
+                const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
           ),
           title: Text(S.of(context).Result),
@@ -116,8 +124,8 @@ class _BarForceDisplacementResultPageState extends State<BarForceDisplacementRes
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
                 crossAxisCount: 8,
                 itemCount: 2,
-                staggeredTileBuilder: (int index) =>
-                    StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+                staggeredTileBuilder: (int index) => StaggeredTile.fit(
+                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
                 itemBuilder: (BuildContext context, int index) {

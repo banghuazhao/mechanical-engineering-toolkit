@@ -1,7 +1,5 @@
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_page.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/in_app_reviewer_helper.dart';
@@ -15,10 +13,6 @@ import 'home/history.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  AppTrackingTransparency.requestTrackingAuthorization();
-
-  MobileAds.instance.initialize();
 
   AdsManager.debugPrintID();
 
@@ -85,7 +79,8 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: const Color(0xffF5F4F2),
           cardTheme: CardThemeData(
             elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             color: Colors.white,
             margin: EdgeInsets.zero,
             shadowColor: Colors.transparent,
@@ -93,7 +88,8 @@ class MyApp extends StatelessWidget {
           inputDecorationTheme: InputDecorationTheme(
             filled: true,
             fillColor: const Color(0xFFF8F7F6),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(color: Color(0xFFDDDAD6)),
@@ -115,7 +111,8 @@ class MyApp extends StatelessWidget {
               borderSide: const BorderSide(color: Color(0xFFE05252), width: 2),
             ),
             labelStyle: const TextStyle(color: Color(0xFF888888), fontSize: 14),
-            floatingLabelStyle: const TextStyle(color: Color(0xffA8866B), fontSize: 13),
+            floatingLabelStyle:
+                const TextStyle(color: Color(0xffA8866B), fontSize: 13),
             errorStyle: const TextStyle(color: Color(0xFFE05252), fontSize: 12),
           ),
           floatingActionButtonTheme: const FloatingActionButtonThemeData(

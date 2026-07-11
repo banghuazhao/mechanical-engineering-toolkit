@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -31,10 +30,12 @@ class ColumnBucklingLoadResultPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ColumnBucklingLoadResultPageState createState() => _ColumnBucklingLoadResultPageState();
+  _ColumnBucklingLoadResultPageState createState() =>
+      _ColumnBucklingLoadResultPageState();
 }
 
-class _ColumnBucklingLoadResultPageState extends State<ColumnBucklingLoadResultPage> {
+class _ColumnBucklingLoadResultPageState
+    extends State<ColumnBucklingLoadResultPage> {
   BannerAd? _anchoredAdaptiveAd;
   bool _isLoaded = false;
 
@@ -45,6 +46,8 @@ class _ColumnBucklingLoadResultPageState extends State<ColumnBucklingLoadResultP
   }
 
   Future<void> _loadAd() async {
+    if (!await AdsManager.canRequestAds() || !mounted) return;
+
     // Get an AnchoredAdaptiveBannerAdSize before loading the ad.
     final AnchoredAdaptiveBannerAdSize? size =
         await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
@@ -87,8 +90,11 @@ class _ColumnBucklingLoadResultPageState extends State<ColumnBucklingLoadResultP
             IconButton(
               icon: const Icon(Icons.share_rounded),
               onPressed: () {
-                final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
-                final cStr = widget.C == 1.0 ? 'π²' : '${precs.formatValue(widget.C)} × π²';
+                final precs =
+                    Provider.of<NumberPrecisionHelper>(context, listen: false);
+                final cStr = widget.C == 1.0
+                    ? 'π²'
+                    : '${precs.formatValue(widget.C)} × π²';
                 shareResult('Column Buckling Load', [
                   'Pcr = ${precs.formatValue(widget.Pcr)}',
                   '',
@@ -102,13 +108,16 @@ class _ColumnBucklingLoadResultPageState extends State<ColumnBucklingLoadResultP
             IconButton(
               onPressed: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => const ToolSettingPage()));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ToolSettingPage()));
               },
               icon: const Icon(Icons.settings_rounded),
             ),
           ],
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
+            icon:
+                const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
           ),
           title: Text(S.of(context).Result),
@@ -119,8 +128,8 @@ class _ColumnBucklingLoadResultPageState extends State<ColumnBucklingLoadResultP
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
                 crossAxisCount: 8,
                 itemCount: 2,
-                staggeredTileBuilder: (int index) =>
-                    StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+                staggeredTileBuilder: (int index) => StaggeredTile.fit(
+                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
                 itemBuilder: (BuildContext context, int index) {
