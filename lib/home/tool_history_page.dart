@@ -1,11 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class ToolHistoryPage extends StatelessWidget {
-  const ToolHistoryPage({Key? key}) : super(key: key);
+  const ToolHistoryPage({super.key});
+
+  Future<void> _confirmClear(
+    BuildContext context,
+    ToolHistory history,
+  ) async {
+    final shouldClear = await showAdaptiveDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog.adaptive(
+        icon: const Icon(Icons.delete_sweep_rounded),
+        title: const Text('Clear history?'),
+        content: const Text(
+          'This removes every saved calculation from this device.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: const Text('Clear'),
+          ),
+        ],
+      ),
+    );
+    if (shouldClear == true) {
+      await HapticFeedback.mediumImpact();
+      history.clear();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,34 +47,13 @@ class ToolHistoryPage extends StatelessWidget {
         title: const Text('History'),
         actions: [
           Consumer<ToolHistory>(
-            builder: (context, history, _) => history.entries.isNotEmpty
-                ? IconButton(
+            builder: (context, history, _) => history.entries.isEmpty
+                ? const SizedBox.shrink()
+                : IconButton(
                     icon: const Icon(Icons.delete_sweep_rounded),
                     tooltip: 'Clear history',
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (ctx) => AlertDialog(
-                          title: const Text('Clear History'),
-                          content: const Text('Remove all history entries?'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(ctx),
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                history.clear();
-                                Navigator.pop(ctx);
-                              },
-                              child: const Text('Clear'),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  )
-                : const SizedBox.shrink(),
+                    onPressed: () => _confirmClear(context, history),
+                  ),
           ),
         ],
       ),
@@ -49,105 +61,150 @@ class ToolHistoryPage extends StatelessWidget {
         builder: (context, history, _) {
           final entries = history.entries;
           if (entries.isEmpty) {
-            return const Center(
-              child: Text('No history yet'),
+            return const AppEmptyState(
+              icon: Icons.history_rounded,
+              title: 'No history yet',
+              message:
+                  'Completed calculations will appear here for quick access.',
             );
           }
-          return ListView.separated(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            itemCount: entries.length,
-            separatorBuilder: (_, __) => const Divider(height: 1, indent: 72),
-            itemBuilder: (context, index) {
-              final entry = entries[index];
-              Tool? tool;
-              try {
-                tool = ToolLibrary.shared.item(entry.toolId, context);
-              } catch (_) {
-                return const SizedBox.shrink();
-              }
-              final timeLabel = _formatTime(entry.timestamp);
-              final primary = Theme.of(context).colorScheme.primary;
-              return Dismissible(
-                key: Key(entry.timestamp.toIso8601String() + entry.toolId.toString()),
-                direction: DismissDirection.endToStart,
-                background: Container(
-                  alignment: Alignment.centerRight,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  color: Colors.red,
-                  child: const Icon(Icons.delete_rounded, color: Colors.white),
-                ),
-                onDismissed: (direction) {
-                  history.deleteAt(index);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('${tool!.title} removed from history'),
-                      duration: const Duration(seconds: 2),
+          return AppContent(
+            padding: EdgeInsets.symmetric(vertical: context.tokens.space2),
+            child: ListView.separated(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              itemCount: entries.length,
+              separatorBuilder: (context, index) =>
+                  SizedBox(height: context.tokens.space2),
+              itemBuilder: (context, index) {
+                final entry = entries[index];
+                Tool? tool;
+                try {
+                  tool = ToolLibrary.shared.item(entry.toolId, context);
+                } catch (_) {
+                  return const SizedBox.shrink();
+                }
+                final resolvedTool = tool;
+                return Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: Dismissible(
+                    key: ValueKey('${entry.timestamp}-${entry.toolId}'),
+                    direction: DismissDirection.endToStart,
+                    background: Container(
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: context.tokens.space5,
+                      ),
+                      color: Theme.of(context).colorScheme.errorContainer,
+                      child: Icon(
+                        Icons.delete_rounded,
+                        color: Theme.of(context).colorScheme.onErrorContainer,
+                      ),
                     ),
-                  );
-                },
-                child: ListTile(
-                  leading: Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF5F4F2),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: tool.icon != null
-                        ? Icon(tool.icon, size: 22, color: primary)
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image(
-                              height: 44,
-                              width: 44,
-                              image: tool.image!,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                  ),
-                  title: Text(tool.title, style: Theme.of(context).textTheme.bodyLarge),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (entry.inputs != null && entry.inputs!.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4, bottom: 2),
-                          child: Text(
-                            entry.inputs!.entries
-                                .map((e) => '${e.key}: ${e.value}')
-                                .join(', '),
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: primary.withOpacity(0.7),
-                                  fontWeight: FontWeight.w500,
-                                ),
+                    onDismissed: (_) {
+                      history.deleteAt(index);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            '${resolvedTool.title} removed from history',
                           ),
                         ),
-                      Text(
-                        timeLabel,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: Colors.grey[500], fontSize: 12),
+                      );
+                    },
+                    child: ListTile(
+                      leading: _ToolIcon(tool: resolvedTool),
+                      title: Text(resolvedTool.title),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (entry.inputs case final inputs?
+                              when inputs.isNotEmpty)
+                            Padding(
+                              padding:
+                                  EdgeInsets.only(top: context.tokens.space1),
+                              child: Text(
+                                inputs.entries
+                                    .map((item) => '${item.key}: ${item.value}')
+                                    .join(', '),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    ),
+                              ),
+                            ),
+                          Text(
+                            _formatTime(entry.timestamp),
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                    ),
+                          ),
+                        ],
                       ),
-                    ],
+                      trailing: const Icon(Icons.chevron_right_rounded),
+                      onTap: () => resolvedTool.action(
+                        context,
+                        resolvedTool.title,
+                        entry.toolId,
+                        initialInputs: entry.inputs,
+                      ),
+                    ),
                   ),
-                  onTap: () => tool!.action(context, tool.title, entry.toolId, initialInputs: entry.inputs),
-                ),
-              );
-            },
+                );
+              },
+            ),
           );
         },
       ),
     );
   }
 
-  String _formatTime(DateTime dt) {
-    final now = DateTime.now();
-    final diff = now.difference(dt);
-    if (diff.inMinutes < 1) return 'Just now';
-    if (diff.inHours < 1) return '${diff.inMinutes}m ago';
-    if (diff.inDays < 1) return '${diff.inHours}h ago';
-    if (diff.inDays < 7) return '${diff.inDays}d ago';
-    return DateFormat('MMM d, yyyy').format(dt);
+  String _formatTime(DateTime dateTime) {
+    final difference = DateTime.now().difference(dateTime);
+    if (difference.inMinutes < 1) return 'Just now';
+    if (difference.inHours < 1) return '${difference.inMinutes}m ago';
+    if (difference.inDays < 1) return '${difference.inHours}h ago';
+    if (difference.inDays < 7) return '${difference.inDays}d ago';
+    return DateFormat('MMM d, yyyy').format(dateTime);
+  }
+}
+
+class _ToolIcon extends StatelessWidget {
+  const _ToolIcon({required this.tool});
+
+  final Tool tool;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final radius = BorderRadius.circular(context.tokens.radiusMedium);
+    return Semantics(
+      image: true,
+      label: '${tool.title} icon',
+      child: Container(
+        width: 48,
+        height: 48,
+        decoration: BoxDecoration(
+          color: scheme.primaryContainer,
+          borderRadius: radius,
+        ),
+        child: tool.icon != null
+            ? Icon(tool.icon, color: scheme.onPrimaryContainer)
+            : ClipRRect(
+                borderRadius: radius,
+                child: Image(
+                  image: tool.image!,
+                  fit: BoxFit.cover,
+                  excludeFromSemantics: true,
+                ),
+              ),
+      ),
+    );
   }
 }

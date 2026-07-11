@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
-import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
@@ -15,7 +14,8 @@ import '../../tool_setting_page.dart';
 
 class _ShearModel {
   double? V, Q, I, t;
-  bool isValid() => V != null && Q != null && I != null && t != null && I! != 0 && t! != 0;
+  bool isValid() =>
+      V != null && Q != null && I != null && t != null && I! != 0 && t! != 0;
 }
 
 class TransverseShearStressPage extends StatefulWidget {
@@ -23,10 +23,7 @@ class TransverseShearStressPage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const TransverseShearStressPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -34,8 +31,7 @@ class TransverseShearStressPage extends StatefulWidget {
       _TransverseShearStressPageState();
 }
 
-class _TransverseShearStressPageState
-    extends State<TransverseShearStressPage> {
+class _TransverseShearStressPageState extends State<TransverseShearStressPage> {
   final _model = _ShearModel();
   bool validate = false;
 
@@ -54,10 +50,14 @@ class _TransverseShearStressPageState
   Widget build(BuildContext context) {
     final primary = Theme.of(context).colorScheme.primary;
     final fields = <_FieldDef>[
-      _FieldDef('V  (transverse shear force, N)', (v) => _model.V = v, () => _model.V),
-      _FieldDef('Q  (first moment of area, m³)', (v) => _model.Q = v, () => _model.Q),
-      _FieldDef('I  (moment of inertia, m⁴)', (v) => _model.I = v, () => _model.I),
-      _FieldDef('t  (width at point of interest, m)', (v) => _model.t = v, () => _model.t),
+      _FieldDef('V  (transverse shear force, N)', (v) => _model.V = v,
+          () => _model.V),
+      _FieldDef(
+          'Q  (first moment of area, m³)', (v) => _model.Q = v, () => _model.Q),
+      _FieldDef(
+          'I  (moment of inertia, m⁴)', (v) => _model.I = v, () => _model.I),
+      _FieldDef('t  (width at point of interest, m)', (v) => _model.t = v,
+          () => _model.t),
     ];
 
     final items = [
@@ -152,8 +152,8 @@ class _TransverseShearStressPageState
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
           itemCount: items.length,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          staggeredTileBuilder: (_) => StaggeredTile.fit(
+              MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           itemBuilder: (_, i) => items[i],
@@ -214,7 +214,8 @@ class _ShearResultPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.share_rounded),
             onPressed: () {
-              final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+              final precs =
+                  Provider.of<NumberPrecisionHelper>(context, listen: false);
               shareResult('Transverse Shear Stress', [
                 'τ = ${precs.formatValue(tau)}',
                 '',
@@ -238,8 +239,8 @@ class _ShearResultPage extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
           itemCount: 2,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          staggeredTileBuilder: (_) => StaggeredTile.fit(
+              MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           itemBuilder: (_, i) {

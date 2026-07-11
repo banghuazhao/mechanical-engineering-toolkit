@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
-import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
@@ -17,7 +16,10 @@ class _ThermalModel {
   double? alpha, deltaT, length, youngsModulus;
 
   bool isValid() =>
-      alpha != null && deltaT != null && length != null && youngsModulus != null;
+      alpha != null &&
+      deltaT != null &&
+      length != null &&
+      youngsModulus != null;
 }
 
 class ThermalDeformationPage extends StatefulWidget {
@@ -25,10 +27,7 @@ class ThermalDeformationPage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const ThermalDeformationPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -105,12 +104,12 @@ class _ThermalDeformationPageState extends State<ThermalDeformationPage> {
       _inputCard('Thermal Properties', [
         _Field('α  (coefficient of thermal expansion, 1/°C or 1/K)',
             () => _model.alpha, (v) => _model.alpha = v),
-        _Field('ΔT  (temperature change, °C or K)',
-            () => _model.deltaT, (v) => _model.deltaT = v),
-        _Field('L  (original length, m)',
-            () => _model.length, (v) => _model.length = v),
-        _Field('E  (Young\'s modulus, Pa)',
-            () => _model.youngsModulus, (v) => _model.youngsModulus = v),
+        _Field('ΔT  (temperature change, °C or K)', () => _model.deltaT,
+            (v) => _model.deltaT = v),
+        _Field('L  (original length, m)', () => _model.length,
+            (v) => _model.length = v),
+        _Field('E  (Young\'s modulus, Pa)', () => _model.youngsModulus,
+            (v) => _model.youngsModulus = v),
       ]),
       DescriptionItem(
         content: Column(
@@ -166,8 +165,8 @@ class _ThermalDeformationPageState extends State<ThermalDeformationPage> {
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
           itemCount: items.length,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          staggeredTileBuilder: (_) => StaggeredTile.fit(
+              MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           itemBuilder: (_, i) => items[i],
@@ -237,7 +236,8 @@ class _ThermalResultPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.share_rounded),
             onPressed: () {
-              final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+              final precs =
+                  Provider.of<NumberPrecisionHelper>(context, listen: false);
               shareResult('Thermal Deformation & Stress', [
                 'δ_T = ${precs.formatValue(delta)}',
                 'σ_T = ${precs.formatValue(sigma)}',
@@ -282,8 +282,8 @@ class _ThermalResultPage extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
               crossAxisCount: 8,
               itemCount: items.length,
-              staggeredTileBuilder: (_) =>
-                  StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+              staggeredTileBuilder: (_) => StaggeredTile.fit(
+                  MediaQuery.of(context).size.width > 600 ? 4 : 8),
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,
               itemBuilder: (_, i) => items[i],

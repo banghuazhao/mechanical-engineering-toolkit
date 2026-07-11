@@ -7,12 +7,12 @@ class MoreRow extends StatelessWidget {
   final void Function() onTap;
 
   const MoreRow({
-    Key? key,
+    super.key,
     this.trailingIcon = Icons.chevron_right_rounded,
     required this.leadingIcon,
     required this.title,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class MoreRow extends StatelessWidget {
               width: 36,
               height: 36,
               decoration: BoxDecoration(
-                color: primary.withOpacity(0.1),
+                color: Theme.of(context).colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(leadingIcon, color: primary, size: 20),
@@ -36,7 +36,11 @@ class MoreRow extends StatelessWidget {
             Expanded(
               child: Text(title, style: Theme.of(context).textTheme.bodyLarge),
             ),
-            Icon(trailingIcon, color: Colors.grey[400], size: 20),
+            Icon(
+              trailingIcon,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              size: 20,
+            ),
           ],
         ),
       ),

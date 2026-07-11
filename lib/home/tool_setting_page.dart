@@ -1,57 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:provider/provider.dart';
 
 class ToolSettingPage extends StatefulWidget {
-  const ToolSettingPage({Key? key}) : super(key: key);
+  const ToolSettingPage({super.key});
 
   @override
-  _ToolSettingPageState createState() => _ToolSettingPageState();
+  State<ToolSettingPage> createState() => _ToolSettingPageState();
 }
 
 class _ToolSettingPageState extends State<ToolSettingPage> {
-  BannerAd? _anchoredAdaptiveAd;
-  bool _isLoaded = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _loadAd();
-  }
-
-  Future<void> _loadAd() async {
-    if (!await AdsManager.canRequestAds() || !mounted) return;
-
-    final AnchoredAdaptiveBannerAdSize? size =
-        await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-            MediaQuery.of(context).size.width.truncate());
-
-    if (size == null) {
-      return;
-    }
-
-    _anchoredAdaptiveAd = BannerAd(
-      adUnitId: AdsManager.bannerAdUnitId,
-      size: size,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (Ad ad) {
-          setState(() {
-            _anchoredAdaptiveAd = ad as BannerAd;
-            _isLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          ad.dispose();
-        },
-      ),
-    );
-    return _anchoredAdaptiveAd!.load();
-  }
-
   @override
   Widget build(BuildContext context) {
     final primary = Theme.of(context).colorScheme.primary;
@@ -59,6 +21,7 @@ class _ToolSettingPageState extends State<ToolSettingPage> {
       appBar: AppBar(
         title: Text(S.of(context).Settings),
       ),
+      bottomNavigationBar: const AppBannerAd(),
       body: Consumer<NumberPrecisionHelper>(
           builder: (context, precs, child) => SafeArea(
                 child: Stack(
@@ -113,8 +76,9 @@ class _ToolSettingPageState extends State<ToolSettingPage> {
                                                 .textTheme
                                                 .bodySmall
                                                 ?.copyWith(
-                                                  color:
-                                                      const Color(0xFF6E6E73),
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurfaceVariant,
                                                 ),
                                           ),
                                         ],
@@ -228,8 +192,10 @@ class _ToolSettingPageState extends State<ToolSettingPage> {
                                                           .textTheme
                                                           .bodySmall
                                                           ?.copyWith(
-                                                            color: const Color(
-                                                                0xFF6E6E73),
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .onSurfaceVariant,
                                                             fontFamily:
                                                                 'monospace',
                                                           ),
@@ -256,15 +222,45 @@ class _ToolSettingPageState extends State<ToolSettingPage> {
                               ],
                             ),
                           ),
+                          const SizedBox(height: 12),
+                          FutureBuilder<bool>(
+                            future: AdsManager.isPrivacyOptionsRequired(),
+                            builder: (context, snapshot) {
+                              if (snapshot.data != true) {
+                                return const SizedBox.shrink();
+                              }
+                              return AppSectionCard(
+                                title: 'Privacy',
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  leading:
+                                      const Icon(Icons.privacy_tip_rounded),
+                                  title: const Text('Privacy choices'),
+                                  subtitle: const Text(
+                                    'Review or change your advertising consent.',
+                                  ),
+                                  trailing:
+                                      const Icon(Icons.chevron_right_rounded),
+                                  onTap: () async {
+                                    final error =
+                                        await AdsManager.showPrivacyOptions();
+                                    if (!context.mounted || error == null) {
+                                      return;
+                                    }
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'Privacy choices are unavailable. Try again later.',
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
                         ],
                       ),
-                      if (_anchoredAdaptiveAd != null && _isLoaded)
-                        Container(
-                          color: Colors.transparent,
-                          width: _anchoredAdaptiveAd!.size.width.toDouble(),
-                          height: _anchoredAdaptiveAd!.size.height.toDouble(),
-                          child: AdWidget(ad: _anchoredAdaptiveAd!),
-                        )
                     ]),
               )),
     );
@@ -272,7 +268,7 @@ class _ToolSettingPageState extends State<ToolSettingPage> {
 
   Widget _stepButton({required IconData icon, VoidCallback? onTap}) {
     return Material(
-      color: Colors.transparent,
+      color: Theme.of(context).colorScheme.surface.withValues(alpha: 0),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(20),
@@ -283,7 +279,7 @@ class _ToolSettingPageState extends State<ToolSettingPage> {
             size: 20,
             color: onTap != null
                 ? Theme.of(context).colorScheme.primary
-                : Colors.grey[350],
+                : Theme.of(context).disabledColor,
           ),
         ),
       ),

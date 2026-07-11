@@ -14,7 +14,12 @@ class _Shape {
   final TextEditingController dim2 = TextEditingController(); // height
   final TextEditingController xRef = TextEditingController();
   final TextEditingController yRef = TextEditingController();
-  void dispose() { dim1.dispose(); dim2.dispose(); xRef.dispose(); yRef.dispose(); }
+  void dispose() {
+    dim1.dispose();
+    dim2.dispose();
+    xRef.dispose();
+    yRef.dispose();
+  }
 }
 
 class CentroidPage extends StatefulWidget {
@@ -22,10 +27,7 @@ class CentroidPage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const CentroidPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -81,10 +83,14 @@ class _CentroidPageState extends State<CentroidPage> {
 
   String _shapeLabel(_ShapeType t) {
     switch (t) {
-      case _ShapeType.rectangle: return 'Rectangle';
-      case _ShapeType.circle: return 'Circle';
-      case _ShapeType.triangle: return 'Right Triangle';
-      case _ShapeType.semicircle: return 'Semicircle (up)';
+      case _ShapeType.rectangle:
+        return 'Rectangle';
+      case _ShapeType.circle:
+        return 'Circle';
+      case _ShapeType.triangle:
+        return 'Right Triangle';
+      case _ShapeType.semicircle:
+        return 'Semicircle (up)';
     }
   }
 
@@ -101,7 +107,10 @@ class _CentroidPageState extends State<CentroidPage> {
               child: Text(
                 'Rectangles/Triangles: enter bottom-left corner (x, y).\n'
                 'Circles/Semicircles: enter center (x, y). Mark shapes as "subtract" for holes.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Colors.grey[600]),
               ),
             ),
           ),
@@ -119,7 +128,8 @@ class _CentroidPageState extends State<CentroidPage> {
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
             ),
             child: const Text('Calculate', style: TextStyle(fontSize: 16)),
           ),
@@ -130,10 +140,20 @@ class _CentroidPageState extends State<CentroidPage> {
 
   Widget _buildShapeCard(int i) {
     final s = _shapes[i];
-    final showDim2 = s.type == _ShapeType.rectangle || s.type == _ShapeType.triangle;
-    final dim1Label = (s.type == _ShapeType.circle || s.type == _ShapeType.semicircle) ? 'Radius r' : 'Width b';
-    final xLabel = (s.type == _ShapeType.circle || s.type == _ShapeType.semicircle) ? 'x center' : 'x (bottom-left)';
-    final yLabel = (s.type == _ShapeType.circle || s.type == _ShapeType.semicircle) ? 'y center' : 'y (bottom-left)';
+    final showDim2 =
+        s.type == _ShapeType.rectangle || s.type == _ShapeType.triangle;
+    final dim1Label =
+        (s.type == _ShapeType.circle || s.type == _ShapeType.semicircle)
+            ? 'Radius r'
+            : 'Width b';
+    final xLabel =
+        (s.type == _ShapeType.circle || s.type == _ShapeType.semicircle)
+            ? 'x center'
+            : 'x (bottom-left)';
+    final yLabel =
+        (s.type == _ShapeType.circle || s.type == _ShapeType.semicircle)
+            ? 'y center'
+            : 'y (bottom-left)';
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -144,7 +164,8 @@ class _CentroidPageState extends State<CentroidPage> {
           children: [
             Row(
               children: [
-                Text('Shape ${i + 1}', style: Theme.of(context).textTheme.titleSmall),
+                Text('Shape ${i + 1}',
+                    style: Theme.of(context).textTheme.titleSmall),
                 const Spacer(),
                 const Text('Subtract'),
                 Switch(
@@ -152,19 +173,23 @@ class _CentroidPageState extends State<CentroidPage> {
                   onChanged: (v) => setState(() => s.subtract = v),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.remove_circle_outline_rounded, color: Colors.red),
-                  onPressed: _shapes.length > 1 ? () {
-                    s.dispose();
-                    setState(() => _shapes.removeAt(i));
-                  } : null,
+                  icon: const Icon(Icons.remove_circle_outline_rounded,
+                      color: Colors.red),
+                  onPressed: _shapes.length > 1
+                      ? () {
+                          s.dispose();
+                          setState(() => _shapes.removeAt(i));
+                        }
+                      : null,
                 ),
               ],
             ),
             DropdownButtonFormField<_ShapeType>(
-              value: s.type,
+              initialValue: s.type,
               decoration: const InputDecoration(labelText: 'Shape type'),
               items: _ShapeType.values
-                  .map((t) => DropdownMenuItem(value: t, child: Text(_shapeLabel(t))))
+                  .map((t) =>
+                      DropdownMenuItem(value: t, child: Text(_shapeLabel(t))))
                   .toList(),
               onChanged: (v) => setState(() => s.type = v!),
             ),
@@ -174,8 +199,10 @@ class _CentroidPageState extends State<CentroidPage> {
                 Expanded(
                   child: TextField(
                     controller: s.dim1,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(labelText: dim1Label, suffixText: 'm'),
+                    keyboardType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    decoration:
+                        InputDecoration(labelText: dim1Label, suffixText: 'm'),
                   ),
                 ),
                 if (showDim2) ...[
@@ -183,8 +210,10 @@ class _CentroidPageState extends State<CentroidPage> {
                   Expanded(
                     child: TextField(
                       controller: s.dim2,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(labelText: 'Height h', suffixText: 'm'),
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      decoration: const InputDecoration(
+                          labelText: 'Height h', suffixText: 'm'),
                     ),
                   ),
                 ],
@@ -196,16 +225,20 @@ class _CentroidPageState extends State<CentroidPage> {
                 Expanded(
                   child: TextField(
                     controller: s.xRef,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true),
-                    decoration: InputDecoration(labelText: xLabel, suffixText: 'm'),
+                    keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true, signed: true),
+                    decoration:
+                        InputDecoration(labelText: xLabel, suffixText: 'm'),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: TextField(
                     controller: s.yRef,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true),
-                    decoration: InputDecoration(labelText: yLabel, suffixText: 'm'),
+                    keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true, signed: true),
+                    decoration:
+                        InputDecoration(labelText: yLabel, suffixText: 'm'),
                   ),
                 ),
               ],
@@ -224,7 +257,10 @@ class _CentroidPageState extends State<CentroidPage> {
     for (int i = 0; i < _shapes.length; i++) {
       final s = _shapes[i];
       final d1 = double.tryParse(s.dim1.text);
-      if (d1 == null || d1 <= 0) { _showError('Enter dimension for shape ${i + 1}'); return; }
+      if (d1 == null || d1 <= 0) {
+        _showError('Enter dimension for shape ${i + 1}');
+        return;
+      }
       final xRef = double.tryParse(s.xRef.text) ?? 0;
       final yRef = double.tryParse(s.yRef.text) ?? 0;
 
@@ -242,7 +278,10 @@ class _CentroidPageState extends State<CentroidPage> {
       switch (s.type) {
         case _ShapeType.rectangle:
           final h = double.tryParse(s.dim2.text);
-          if (h == null || h <= 0) { _showError('Enter height for shape ${i + 1}'); return; }
+          if (h == null || h <= 0) {
+            _showError('Enter height for shape ${i + 1}');
+            return;
+          }
           A = d1 * h;
           cx = xRef + d1 / 2;
           cy = yRef + h / 2;
@@ -254,7 +293,10 @@ class _CentroidPageState extends State<CentroidPage> {
           break;
         case _ShapeType.triangle:
           final h = double.tryParse(s.dim2.text);
-          if (h == null || h <= 0) { _showError('Enter height for shape ${i + 1}'); return; }
+          if (h == null || h <= 0) {
+            _showError('Enter height for shape ${i + 1}');
+            return;
+          }
           A = 0.5 * d1 * h;
           cx = xRef + d1 / 3;
           cy = yRef + h / 3;
@@ -272,10 +314,14 @@ class _CentroidPageState extends State<CentroidPage> {
       sumAy += sign * A * cy;
 
       final tag = s.subtract ? '(subtract)' : '';
-      steps.add('Shape ${i + 1} $tag  A=${_fmt(A)} m²  cx=${_fmt(cx)}  cy=${_fmt(cy)}');
+      steps.add(
+          'Shape ${i + 1} $tag  A=${_fmt(A)} m²  cx=${_fmt(cx)}  cy=${_fmt(cy)}');
     }
 
-    if (totalA == 0) { _showError('Total area is zero'); return; }
+    if (totalA == 0) {
+      _showError('Total area is zero');
+      return;
+    }
     context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
     final xBar = sumAx / totalA;
     final yBar = sumAy / totalA;
@@ -291,7 +337,9 @@ class _CentroidPageState extends State<CentroidPage> {
       MaterialPageRoute(
         builder: (_) => _ResultPage(
           title: widget.title,
-          totalA: totalA, xBar: xBar, yBar: yBar,
+          totalA: totalA,
+          xBar: xBar,
+          yBar: yBar,
           steps: steps,
         ),
       ),
@@ -301,8 +349,10 @@ class _CentroidPageState extends State<CentroidPage> {
   void _showError(String msg) =>
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
 
-  String _fmt(double v) =>
-      v.toStringAsFixed(4).replaceAll(RegExp(r'0+$'), '').replaceAll(RegExp(r'\.$'), '');
+  String _fmt(double v) => v
+      .toStringAsFixed(4)
+      .replaceAll(RegExp(r'0+$'), '')
+      .replaceAll(RegExp(r'\.$'), '');
 }
 
 class _ResultPage extends StatelessWidget {
@@ -318,8 +368,10 @@ class _ResultPage extends StatelessWidget {
     required this.steps,
   });
 
-  String _fmt(double v) =>
-      v.toStringAsFixed(4).replaceAll(RegExp(r'0+$'), '').replaceAll(RegExp(r'\.$'), '');
+  String _fmt(double v) => v
+      .toStringAsFixed(4)
+      .replaceAll(RegExp(r'0+$'), '')
+      .replaceAll(RegExp(r'\.$'), '');
 
   @override
   Widget build(BuildContext context) {

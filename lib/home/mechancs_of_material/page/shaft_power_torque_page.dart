@@ -5,7 +5,6 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:mechanical_engineering_toolkit/home/history.dart';
-import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
@@ -23,10 +22,7 @@ class ShaftPowerTorquePage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const ShaftPowerTorquePage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -35,8 +31,8 @@ class ShaftPowerTorquePage extends StatefulWidget {
 
 class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
   _SolveFor _mode = _SolveFor.torque;
-  double? _power;   // in kW
-  double? _torque;  // in N·m
+  double? _power; // in kW
+  double? _torque; // in N·m
   double? _rpm;
   bool validate = false;
 
@@ -53,7 +49,8 @@ class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
   }
 
   bool get _inputsReady {
-    if (_mode == _SolveFor.torque) return _power != null && _rpm != null && _rpm! > 0;
+    if (_mode == _SolveFor.torque)
+      return _power != null && _rpm != null && _rpm! > 0;
     return _torque != null && _rpm != null && _rpm! > 0;
   }
 
@@ -128,7 +125,8 @@ class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
                     _field('T  (torque, N·m)', validate && _torque == null,
                         (v) => setState(() => _torque = double.tryParse(v))),
                   const SizedBox(height: 12),
-                  _field('n  (rotational speed, RPM)',
+                  _field(
+                      'n  (rotational speed, RPM)',
                       validate && (_rpm == null || _rpm == 0),
                       (v) => setState(() => _rpm = double.tryParse(v))),
                 ],
@@ -186,8 +184,8 @@ class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
           itemCount: items.length,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          staggeredTileBuilder: (_) => StaggeredTile.fit(
+              MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           itemBuilder: (_, i) => items[i],
@@ -264,7 +262,8 @@ class _PowerTorqueResultPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.share_rounded),
             onPressed: () {
-              final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+              final precs =
+                  Provider.of<NumberPrecisionHelper>(context, listen: false);
               final lines = mode == _SolveFor.torque
                   ? [
                       'T = ${precs.formatValue(torque)} N·m',
@@ -300,8 +299,8 @@ class _PowerTorqueResultPage extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
           itemCount: 2,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          staggeredTileBuilder: (_) => StaggeredTile.fit(
+              MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           itemBuilder: (_, i) {

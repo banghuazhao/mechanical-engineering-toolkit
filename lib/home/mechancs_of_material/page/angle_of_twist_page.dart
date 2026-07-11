@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
-import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
@@ -26,10 +25,7 @@ class AngleOfTwistPage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const AngleOfTwistPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -56,10 +52,12 @@ class _AngleOfTwistPageState extends State<AngleOfTwistPage> {
     final primary = Theme.of(context).colorScheme.primary;
 
     final fields = <_FieldDef>[
-      _FieldDef('T  (applied torque, N·m)', (v) => _model.T = v, () => _model.T),
+      _FieldDef(
+          'T  (applied torque, N·m)', (v) => _model.T = v, () => _model.T),
       _FieldDef('L  (shaft length, m)', (v) => _model.L = v, () => _model.L),
       _FieldDef('G  (shear modulus, Pa)', (v) => _model.G = v, () => _model.G),
-      _FieldDef('J  (polar moment of inertia, m⁴)', (v) => _model.J = v, () => _model.J),
+      _FieldDef('J  (polar moment of inertia, m⁴)', (v) => _model.J = v,
+          () => _model.J),
     ];
 
     final items = [
@@ -158,8 +156,8 @@ class _AngleOfTwistPageState extends State<AngleOfTwistPage> {
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
           itemCount: items.length,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          staggeredTileBuilder: (_) => StaggeredTile.fit(
+              MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           itemBuilder: (_, i) => items[i],
@@ -223,7 +221,8 @@ class _TwistResultPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.share_rounded),
             onPressed: () {
-              final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+              final precs =
+                  Provider.of<NumberPrecisionHelper>(context, listen: false);
               shareResult('Angle of Twist', [
                 'φ = ${precs.formatValue(phiRad)} rad  (${precs.formatValue(phiDeg)}°)',
                 '',
@@ -247,8 +246,8 @@ class _TwistResultPage extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
           itemCount: 2,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          staggeredTileBuilder: (_) => StaggeredTile.fit(
+              MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           itemBuilder: (_, i) {

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
-import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
@@ -20,10 +19,7 @@ class FailureCriteriaPage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const FailureCriteriaPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -85,11 +81,11 @@ class _FailureCriteriaPageState extends State<FailureCriteriaPage> {
                   isDense: true,
                   contentPadding: const EdgeInsets.all(12),
                   border: const OutlineInputBorder(),
-                  labelText: 'S_y  (tensile yield strength — for factor of safety)',
+                  labelText:
+                      'S_y  (tensile yield strength — for factor of safety)',
                   helperText: 'Leave blank to skip safety factor calculation',
                 ),
-                onChanged: (v) =>
-                    setState(() => _yield = double.tryParse(v)),
+                onChanged: (v) => setState(() => _yield = double.tryParse(v)),
               ),
             ),
           ],
@@ -153,8 +149,8 @@ class _FailureCriteriaPageState extends State<FailureCriteriaPage> {
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
           itemCount: items.length,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          staggeredTileBuilder: (_) => StaggeredTile.fit(
+              MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           itemBuilder: (_, i) => items[i],
@@ -196,9 +192,10 @@ class _FailureCriteriaPageState extends State<FailureCriteriaPage> {
                             contentPadding: const EdgeInsets.all(12),
                             border: const OutlineInputBorder(),
                             labelText: f.label,
-                            errorText: validate && f.required && f.getter() == null
-                                ? S.of(context).Not_a_number
-                                : null,
+                            errorText:
+                                validate && f.required && f.getter() == null
+                                    ? S.of(context).Not_a_number
+                                    : null,
                           ),
                           onChanged: (v) =>
                               setState(() => f.setter(double.tryParse(v))),
@@ -296,7 +293,11 @@ class _FailureResultPage extends StatelessWidget {
       if (hasSy) 'FS_Tresca  (factor of safety — Tresca)',
     ];
     final values = [
-      s1, s2, vonMises, tauMax, tresca,
+      s1,
+      s2,
+      vonMises,
+      tauMax,
+      tresca,
       if (hasSy) fsSy!,
       if (hasSy) fsTresca!,
     ];
@@ -311,7 +312,8 @@ class _FailureResultPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.share_rounded),
             onPressed: () {
-              final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+              final precs =
+                  Provider.of<NumberPrecisionHelper>(context, listen: false);
               shareResult('Failure Criteria', [
                 'σ₁ = ${precs.formatValue(s1)},  σ₂ = ${precs.formatValue(s2)}',
                 'σ_VM = ${precs.formatValue(vonMises)}',
@@ -342,8 +344,8 @@ class _FailureResultPage extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
           itemCount: hasSy ? 3 : 2,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          staggeredTileBuilder: (_) => StaggeredTile.fit(
+              MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           itemBuilder: (_, i) {
@@ -372,8 +374,10 @@ class _FailureResultPage extends StatelessWidget {
                 '',
                 'Von Mises: σ_VM = √(σ₁²−σ₁σ₂+σ₂²) = ${precs.formatValue(vonMises)}',
                 'Tresca:  σ_eff = |σ₁−σ₂| = ${precs.formatValue(tresca)},  τ_max = ${precs.formatValue(tauMax)}',
-                if (hasSy) 'FS_VM = Sᵧ / σ_VM = ${precs.formatValue(yield_)} / ${precs.formatValue(vonMises)} = ${precs.formatValue(yield_! / vonMises)}',
-                if (hasSy) 'FS_Tresca = Sᵧ / σ_eff = ${precs.formatValue(yield_)} / ${precs.formatValue(tresca)} = ${precs.formatValue(yield_! / tresca)}',
+                if (hasSy)
+                  'FS_VM = Sᵧ / σ_VM = ${precs.formatValue(yield_)} / ${precs.formatValue(vonMises)} = ${precs.formatValue(yield_! / vonMises)}',
+                if (hasSy)
+                  'FS_Tresca = Sᵧ / σ_eff = ${precs.formatValue(yield_)} / ${precs.formatValue(tresca)} = ${precs.formatValue(yield_! / tresca)}',
               ]),
             );
           },

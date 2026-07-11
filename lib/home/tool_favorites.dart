@@ -1,186 +1,95 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
+import 'package:mechanical_engineering_toolkit/home/favorites.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
-import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:provider/provider.dart';
 
-import 'favorites.dart';
-import 'history.dart';
-
-class ToolFavoritesPage extends StatefulWidget {
-  const ToolFavoritesPage({Key? key}) : super(key: key);
-
-  @override
-  _ToolFavoritesPageState createState() => _ToolFavoritesPageState();
-}
-
-class _ToolFavoritesPageState extends State<ToolFavoritesPage> {
-  BannerAd? _anchoredAdaptiveAd;
-  bool _isLoaded = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _loadAd();
-  }
-
-  Future<void> _loadAd() async {
-    if (!await AdsManager.canRequestAds() || !mounted) return;
-
-    // Get an AnchoredAdaptiveBannerAdSize before loading the ad.
-    final AnchoredAdaptiveBannerAdSize? size =
-        await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-            MediaQuery.of(context).size.width.truncate());
-
-    if (size == null) {
-      print('Unable to get height of anchored banner.');
-      return;
-    }
-
-    _anchoredAdaptiveAd = BannerAd(
-      // TODO: replace these test ad units with your own ad unit.
-      adUnitId: AdsManager.bannerAdUnitId,
-      size: size,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (Ad ad) {
-          print('$ad loaded: ${ad.responseInfo}');
-          setState(() {
-            // When the ad is loaded, get the ad size and use it to set
-            // the height of the ad container.
-            _anchoredAdaptiveAd = ad as BannerAd;
-            _isLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          print('Anchored adaptive banner failedToLoad: $error');
-          ad.dispose();
-        },
-      ),
-    );
-    return _anchoredAdaptiveAd!.load();
-  }
+class ToolFavoritesPage extends StatelessWidget {
+  const ToolFavoritesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).Favorites),
-      ),
+      appBar: AppBar(title: Text(S.of(context).Favorites)),
+      bottomNavigationBar: const AppBannerAd(),
       body: Consumer<Favorites>(
-        builder: (context, value, child) => value.items.isNotEmpty
-            ? SafeArea(
-                child: Stack(
-                    alignment: AlignmentDirectional.bottomCenter,
-                    children: [
-                      buildListView(value, context),
-                      if (_anchoredAdaptiveAd != null && _isLoaded)
-                        Container(
-                          color: Colors.transparent,
-                          width: _anchoredAdaptiveAd!.size.width.toDouble(),
-                          height: _anchoredAdaptiveAd!.size.height.toDouble(),
-                          child: AdWidget(ad: _anchoredAdaptiveAd!),
-                        )
-                    ]),
-              )
-            : const Center(
-                child: Text('No favorites added'),
-              ),
+        builder: (context, favorites, _) {
+          if (favorites.items.isEmpty) {
+            return const AppEmptyState(
+              icon: Icons.star_outline_rounded,
+              title: 'No favorites yet',
+              message: 'Save frequently used tools to keep them close at hand.',
+            );
+          }
+          return AppContent(
+            padding: EdgeInsets.symmetric(vertical: context.tokens.space2),
+            child: ListView.separated(
+              itemCount: favorites.items.length,
+              separatorBuilder: (context, index) =>
+                  SizedBox(height: context.tokens.space2),
+              itemBuilder: (context, index) {
+                final tool = ToolLibrary.shared.item(
+                  favorites.items[index],
+                  context,
+                );
+                return _FavoriteToolCard(tool: tool);
+              },
+            ),
+          );
+        },
       ),
-    );
-  }
-
-  double get _bottomPadding => _isLoaded && _anchoredAdaptiveAd != null
-      ? _anchoredAdaptiveAd!.size.height.toDouble() + 30
-      : 120.0;
-
-  Widget buildListView(Favorites value, BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.fromLTRB(20, 20, 20, _bottomPadding),
-      itemCount: value.items.length,
-      itemBuilder: (BuildContext context, int index) {
-        var model = ToolLibrary.shared.item(value.items[index], context);
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: ToolRowWidget(model: model),
-        );
-      },
     );
   }
 }
 
-class ToolRowWidget extends StatelessWidget {
-  const ToolRowWidget({
-    Key? key,
-    required this.model,
-  }) : super(key: key);
+class _FavoriteToolCard extends StatelessWidget {
+  const _FavoriteToolCard({required this.tool});
 
-  final Tool model;
+  final Tool tool;
 
   @override
   Widget build(BuildContext context) {
-    int itemNo = model.id;
-    String title = model.title;
+    final scheme = Theme.of(context).colorScheme;
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: InkWell(
-        onTap: () {
-          model.action(context, title, itemNo);
-        },
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(12, 12, 0, 12),
-          child: Row(children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4.0),
-              child: model.icon != null
-                  ? Icon(
-                      model.icon,
-                      size: 50,
-                      color: Color(0xffA8A7A6),
-                    )
-                  : Image(
-                      height: 50,
-                      width: 50,
-                      image: model.image!,
-                      fit: BoxFit.fitWidth,
-                    ),
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            Expanded(
-              child: Text(
-                model.title,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-            IconButton(
-              onPressed: () {
-                context.read<Favorites>().remove(itemNo);
-                Fluttertoast.showToast(
-                    msg: 'Removed from favorites',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.black,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
-              },
-              color: Color(0xffA8A7A6),
-              icon: const Icon(Icons.close),
-            )
-          ]),
+      clipBehavior: Clip.antiAlias,
+      child: ListTile(
+        leading: Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            color: scheme.primaryContainer,
+            borderRadius: BorderRadius.circular(context.tokens.radiusMedium),
+          ),
+          child: tool.icon != null
+              ? Icon(tool.icon, color: scheme.onPrimaryContainer)
+              : ClipRRect(
+                  borderRadius:
+                      BorderRadius.circular(context.tokens.radiusMedium),
+                  child: Image(
+                    image: tool.image!,
+                    fit: BoxFit.cover,
+                    semanticLabel: '${tool.title} icon',
+                  ),
+                ),
         ),
+        title: Text(tool.title),
+        trailing: IconButton(
+          tooltip: 'Remove ${tool.title} from favorites',
+          icon: const Icon(Icons.close_rounded),
+          onPressed: () async {
+            await HapticFeedback.selectionClick();
+            if (!context.mounted) return;
+            context.read<Favorites>().remove(tool.id);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Removed from favorites')),
+            );
+          },
+        ),
+        onTap: () => tool.action(context, tool.title, tool.id),
       ),
     );
   }

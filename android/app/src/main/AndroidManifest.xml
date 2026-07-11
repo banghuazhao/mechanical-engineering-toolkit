@@ -2,7 +2,8 @@
     package="com.appsbay.mechanical_engineering_toolkit">
    <application
         android:label="@string/app_name"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/launcher_icon"
+        android:enableOnBackInvokedCallback="true">
 
        <meta-data
            android:name="com.google.android.gms.ads.APPLICATION_ID"

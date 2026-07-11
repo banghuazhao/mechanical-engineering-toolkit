@@ -41,7 +41,7 @@ class _GeneralStressResultPageState extends State<GeneralStressResultPage> {
 
     // Get an AnchoredAdaptiveBannerAdSize before loading the ad.
     final AnchoredAdaptiveBannerAdSize? size =
-        await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+        await AdSize.getLargeAnchoredAdaptiveBannerAdSize(
             MediaQuery.of(context).size.width.truncate());
 
     if (size == null) {

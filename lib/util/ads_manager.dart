@@ -21,6 +21,19 @@ class AdsManager {
     return _consentFuture ??= _requestConsent();
   }
 
+  static Future<bool> isPrivacyOptionsRequired() async {
+    await canRequestAds();
+    return await ConsentInformation.instance
+            .getPrivacyOptionsRequirementStatus() ==
+        PrivacyOptionsRequirementStatus.required;
+  }
+
+  static Future<FormError?> showPrivacyOptions() async {
+    final completer = Completer<FormError?>();
+    await ConsentForm.showPrivacyOptionsForm(completer.complete);
+    return completer.future;
+  }
+
   static Future<bool> _requestConsent() {
     final completer = Completer<bool>();
     final parameters = ConsentRequestParameters();
@@ -81,7 +94,7 @@ class AdsManager {
         return bannerAdUnitIdIOS;
       }
     } else {
-      throw new UnsupportedError("Unsupported platform");
+      throw UnsupportedError("Unsupported platform");
     }
   }
 
@@ -109,13 +122,15 @@ class AdsManager {
         return openAdUnitIDIOS;
       }
     } else {
-      throw new UnsupportedError("Unsupported platform");
+      throw UnsupportedError("Unsupported platform");
     }
   }
 
   static void debugPrintID() {
-    print("bannerAdUnitId: ${AdsManager.bannerAdUnitId}");
-    print("openAdUnitID: ${AdsManager.openAdUnitID}");
+    if (kDebugMode) {
+      debugPrint("bannerAdUnitId: ${AdsManager.bannerAdUnitId}");
+      debugPrint("openAdUnitID: ${AdsManager.openAdUnitID}");
+    }
   }
 }
 
@@ -125,7 +140,7 @@ class AppOpenAdManager {
   static bool bypassShowAd = false;
 
   /// Maximum duration allowed between loading and showing the ad.
-  final Duration maxCacheDuration = Duration(hours: 4);
+  final Duration maxCacheDuration = const Duration(hours: 4);
 
   /// Keep track of load time so we don't show an expired ad.
   DateTime? _appOpenLoadTime;
@@ -136,15 +151,15 @@ class AppOpenAdManager {
 
     AppOpenAd.load(
       adUnitId: AdsManager.openAdUnitID,
-      request: AdRequest(),
+      request: const AdRequest(),
       adLoadCallback: AppOpenAdLoadCallback(
         onAdLoaded: (ad) {
-          print('$ad loaded');
+          debugPrint('$ad loaded');
           _appOpenLoadTime = DateTime.now();
           _appOpenAd = ad;
         },
         onAdFailedToLoad: (error) {
-          print('AppOpenAd failed to load: $error');
+          debugPrint('AppOpenAd failed to load: $error');
           // Handle the error.
         },
       ),
@@ -162,16 +177,16 @@ class AppOpenAdManager {
       return;
     }
     if (!isAdAvailable) {
-      print('Tried to show ad before available.');
+      debugPrint('Tried to show ad before available.');
       loadAd();
       return;
     }
     if (_isShowingAd) {
-      print('Tried to show ad while already showing an ad.');
+      debugPrint('Tried to show ad while already showing an ad.');
       return;
     }
     if (DateTime.now().subtract(maxCacheDuration).isAfter(_appOpenLoadTime!)) {
-      print('Maximum cache duration exceeded. Loading another ad.');
+      debugPrint('Maximum cache duration exceeded. Loading another ad.');
       _appOpenAd!.dispose();
       _appOpenAd = null;
       loadAd();
@@ -182,16 +197,16 @@ class AppOpenAdManager {
     _appOpenAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
         _isShowingAd = true;
-        print('$ad onAdShowedFullScreenContent');
+        debugPrint('$ad onAdShowedFullScreenContent');
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
-        print('$ad onAdFailedToShowFullScreenContent: $error');
+        debugPrint('$ad onAdFailedToShowFullScreenContent: $error');
         _isShowingAd = false;
         ad.dispose();
         _appOpenAd = null;
       },
       onAdDismissedFullScreenContent: (ad) {
-        print('$ad onAdDismissedFullScreenContent');
+        debugPrint('$ad onAdDismissedFullScreenContent');
         _isShowingAd = false;
         ad.dispose();
         _appOpenAd = null;
@@ -212,7 +227,7 @@ class AppLifecycleReactor extends WidgetsBindingObserver {
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     // Try to show an app open ad if the app is being resumed and
     // we're not already showing an app open ad.
-    print("didChangeAppLifecycleState: $state");
+    debugPrint("didChangeAppLifecycleState: $state");
     if (state == AppLifecycleState.resumed) {
       appOpenAdManager.showAdIfAvailable();
     }

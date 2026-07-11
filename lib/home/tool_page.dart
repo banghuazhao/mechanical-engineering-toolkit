@@ -2,9 +2,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:flutter/services.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_favorites.dart';
@@ -12,6 +10,8 @@ import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/more/more_app_page.dart';
 import 'package:mechanical_engineering_toolkit/more/more_row.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/others.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -20,7 +20,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'favorites.dart';
-import 'history.dart';
 import 'tool_history_page.dart';
 
 enum ToolViewMode { list, grid }
@@ -46,16 +45,14 @@ class ToolSection {
 }
 
 class ToolPage extends StatefulWidget {
-  const ToolPage({Key? key}) : super(key: key);
+  const ToolPage({super.key});
 
   @override
-  _ToolPageState createState() => _ToolPageState();
+  State<ToolPage> createState() => _ToolPageState();
 }
 
 class _ToolPageState extends State<ToolPage> {
   List<ToolSection> sections = [];
-  BannerAd? _anchoredAdaptiveAd;
-  bool _isLoaded = false;
   late ToolViewMode _viewMode;
 
   @override
@@ -81,8 +78,6 @@ class _ToolPageState extends State<ToolPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _loadAd();
-
     sections = [];
     final allTools = ToolLibrary.shared.getTools(context);
 
@@ -110,43 +105,6 @@ class _ToolPageState extends State<ToolPage> {
       S.of(context).Utilities,
       allTools.where((e) => e.type == ToolType.utilities).toList(),
     ));
-  }
-
-  Future<void> _loadAd() async {
-    if (!await AdsManager.canRequestAds() || !mounted) return;
-
-    // Get an AnchoredAdaptiveBannerAdSize before loading the ad.
-    final AnchoredAdaptiveBannerAdSize? size =
-        await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-            MediaQuery.of(context).size.width.truncate());
-
-    if (size == null) {
-      print('Unable to get height of anchored banner.');
-      return;
-    }
-
-    _anchoredAdaptiveAd = BannerAd(
-      // TODO: replace these test ad units with your own ad unit.
-      adUnitId: AdsManager.bannerAdUnitId,
-      size: size,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (Ad ad) {
-          print('$ad loaded: ${ad.responseInfo}');
-          setState(() {
-            // When the ad is loaded, get the ad size and use it to set
-            // the height of the ad container.
-            _anchoredAdaptiveAd = ad as BannerAd;
-            _isLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          print('Anchored adaptive banner failedToLoad: $error');
-          ad.dispose();
-        },
-      ),
-    );
-    return _anchoredAdaptiveAd!.load();
   }
 
   @override
@@ -185,8 +143,8 @@ class _ToolPageState extends State<ToolPage> {
       drawer: Drawer(
         child: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
               child: Center(
                 child: Image(
                   height: 150,
@@ -259,16 +217,20 @@ class _ToolPageState extends State<ToolPage> {
             MoreRow(
               title: S.of(context).SharethisApp,
               leadingIcon: Icons.share_rounded,
-              onTap: () {
+              onTap: () async {
                 final Size size = MediaQuery.of(context).size;
                 if (Platform.isIOS) {
-                  Share.share("http://itunes.apple.com/app/id${"1601099443"}",
-                      sharePositionOrigin:
-                          Rect.fromLTWH(0, 0, size.width, size.height / 2));
+                  await SharePlus.instance.share(ShareParams(
+                    text: 'http://itunes.apple.com/app/id1601099443',
+                    sharePositionOrigin:
+                        Rect.fromLTWH(0, 0, size.width, size.height / 2),
+                  ));
                 } else {
                   AppOpenAdManager.bypassShowAd = true;
-                  Share.share("https://play.google.com/store/apps/details?id=" +
-                      "com.appsbay.mechanical_engineering_toolkit");
+                  await SharePlus.instance.share(ShareParams(
+                    text:
+                        'https://play.google.com/store/apps/details?id=com.appsbay.mechanical_engineering_toolkit',
+                  ));
                 }
               },
             ),
@@ -279,7 +241,7 @@ class _ToolPageState extends State<ToolPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => MoreAppPage(),
+                    builder: (BuildContext context) => const MoreAppPage(),
                   ),
                 );
               },
@@ -287,51 +249,35 @@ class _ToolPageState extends State<ToolPage> {
           ],
         ),
       ),
-      body: SafeArea(
-        child: Stack(alignment: AlignmentDirectional.bottomCenter, children: [
-          buildContents(context),
-          if (_anchoredAdaptiveAd != null && _isLoaded)
-            Container(
-              color: Colors.transparent,
-              width: _anchoredAdaptiveAd!.size.width.toDouble(),
-              height: _anchoredAdaptiveAd!.size.height.toDouble(),
-              child: AdWidget(ad: _anchoredAdaptiveAd!),
-            )
-        ]),
-      ),
+      body: SafeArea(child: buildContents(context)),
+      bottomNavigationBar: const AppBannerAd(),
     );
   }
 
-  double get _bottomPadding => _isLoaded && _anchoredAdaptiveAd != null
-      ? _anchoredAdaptiveAd!.size.height.toDouble() + 30
-      : 120.0;
-
   Widget buildContents(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final columns = width > 900
-        ? 5
-        : width > 600
-            ? 4
-            : 3;
-
-    return CustomScrollView(
-      slivers: [
-        for (var section in sections) ...[
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: _buildSectionHeader(context, section.title),
+    return Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: context.tokens.contentMaxWidth),
+        child: CustomScrollView(
+          slivers: [
+            for (var section in sections) ...[
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: _buildSectionHeader(context, section.title),
+                ),
+              ),
+              if (_viewMode == ToolViewMode.list)
+                _buildListSliver(context, section.tools)
+              else
+                _buildGridSliver(context, section.tools),
+            ],
+            SliverToBoxAdapter(
+              child: SizedBox(height: context.tokens.space4),
             ),
-          ),
-          if (_viewMode == ToolViewMode.list)
-            _buildListSliver(context, section.tools)
-          else
-            _buildGridSliver(context, section.tools, columns),
-        ],
-        SliverToBoxAdapter(
-          child: SizedBox(height: _bottomPadding),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -350,16 +296,15 @@ class _ToolPageState extends State<ToolPage> {
     );
   }
 
-  Widget _buildGridSliver(BuildContext context, List<Tool> tools, int columns) {
+  Widget _buildGridSliver(BuildContext context, List<Tool> tools) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       sliver: SliverGrid(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: columns,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio:
-              0.8, // Increased height slightly to prevent overflow
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 128,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          childAspectRatio: 0.82,
         ),
         delegate: SliverChildBuilderDelegate(
           (context, index) => ToolGridTile(model: tools[index]),
@@ -375,9 +320,8 @@ class _ToolPageState extends State<ToolPage> {
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: const Color(0xffA8866B),
+              color: Theme.of(context).colorScheme.primary,
               fontWeight: FontWeight.w700,
-              fontSize: 13,
               letterSpacing: 0.5,
             ),
       ),
@@ -387,9 +331,9 @@ class _ToolPageState extends State<ToolPage> {
 
 class ToolRowWidget extends StatelessWidget {
   const ToolRowWidget({
-    Key? key,
+    super.key,
     required this.model,
-  }) : super(key: key);
+  });
 
   final Tool model;
 
@@ -405,7 +349,7 @@ class ToolRowWidget extends StatelessWidget {
         onTap: () {
           model.action(context, title, itemNo);
         },
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(context.tokens.radiusLarge),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(14, 12, 8, 12),
           child: Row(children: [
@@ -413,13 +357,15 @@ class ToolRowWidget extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: const Color(0xFFF5F4F2),
-                borderRadius: BorderRadius.circular(10),
+                color: Theme.of(context).colorScheme.primaryContainer,
+                borderRadius:
+                    BorderRadius.circular(context.tokens.radiusMedium),
               ),
               child: model.icon != null
                   ? Icon(model.icon, size: 26, color: primary)
                   : ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius:
+                          BorderRadius.circular(context.tokens.radiusMedium),
                       child: Image(
                         height: 48,
                         width: 48,
@@ -436,22 +382,23 @@ class ToolRowWidget extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {
+              tooltip:
+                  isFavorite ? 'Remove from favorites' : 'Add to favorites',
+              onPressed: () async {
+                await HapticFeedback.selectionClick();
                 !isFavorite
                     ? favoritesList.add(itemNo)
                     : favoritesList.remove(itemNo);
-                Fluttertoast.showToast(
-                    msg: !isFavorite
-                        ? 'Added to favorites'
-                        : 'Removed from favorites',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.black87,
-                    textColor: Colors.white,
-                    fontSize: 14.0);
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(!isFavorite
+                      ? 'Added to favorites'
+                      : 'Removed from favorites'),
+                ));
               },
-              color: isFavorite ? primary : Colors.grey[400],
+              color: isFavorite
+                  ? primary
+                  : Theme.of(context).colorScheme.onSurfaceVariant,
               icon: Icon(
                   isFavorite ? Icons.star_rounded : Icons.star_border_rounded),
             ),
@@ -464,9 +411,9 @@ class ToolRowWidget extends StatelessWidget {
 
 class ToolGridTile extends StatelessWidget {
   const ToolGridTile({
-    Key? key,
+    super.key,
     required this.model,
-  }) : super(key: key);
+  });
 
   final Tool model;
 
@@ -482,67 +429,73 @@ class ToolGridTile extends StatelessWidget {
         onTap: () {
           model.action(context, title, itemNo);
         },
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(context.tokens.radiusLarge),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 8),
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+              Stack(
+                alignment: Alignment.center,
                 children: [
-                  InkWell(
-                    borderRadius: BorderRadius.circular(12),
-                    onTap: () {
-                      !isFavorite
-                          ? favoritesList.add(itemNo)
-                          : favoritesList.remove(itemNo);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(2),
-                      child: Icon(
+                  Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius:
+                          BorderRadius.circular(context.tokens.radiusSmall),
+                    ),
+                    child: model.icon != null
+                        ? Icon(model.icon, size: 21, color: primary)
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                context.tokens.radiusSmall),
+                            child: Image(
+                              image: model.image!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                  ),
+                  Positioned(
+                    top: -6,
+                    right: -6,
+                    child: IconButton(
+                      constraints: const BoxConstraints.tightFor(
+                        width: 40,
+                        height: 40,
+                      ),
+                      padding: EdgeInsets.zero,
+                      tooltip: isFavorite
+                          ? 'Remove from favorites'
+                          : 'Add to favorites',
+                      onPressed: () async {
+                        await HapticFeedback.selectionClick();
+                        !isFavorite
+                            ? favoritesList.add(itemNo)
+                            : favoritesList.remove(itemNo);
+                      },
+                      icon: Icon(
                         isFavorite
                             ? Icons.star_rounded
                             : Icons.star_border_rounded,
                         size: 18,
-                        color: isFavorite ? primary : Colors.grey[350],
+                        color: isFavorite
+                            ? primary
+                            : Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ),
                 ],
               ),
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF5F4F2),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: model.icon != null
-                      ? Icon(model.icon, size: 22, color: primary)
-                      : ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image(
-                            height: 40,
-                            width: 40,
-                            image: model.image!,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                ),
-              ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Expanded(
                 child: Text(
                   model.title,
-                  maxLines: 3,
+                  maxLines: 4,
                   overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontSize: 12.5),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
             ],
