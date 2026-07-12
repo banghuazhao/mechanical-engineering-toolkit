@@ -263,7 +263,7 @@ class ToolSettingPage extends StatelessWidget {
     );
   }
 
-x`  Widget _stepButton(
+  Widget _stepButton(
     BuildContext context, {
     required IconData icon,
     VoidCallback? onTap,
