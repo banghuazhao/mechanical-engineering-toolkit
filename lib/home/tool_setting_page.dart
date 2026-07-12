@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:provider/provider.dart';
 
-class ToolSettingPage extends StatefulWidget {
+class ToolSettingPage extends StatelessWidget {
   const ToolSettingPage({super.key});
-
-  @override
-  State<ToolSettingPage> createState() => _ToolSettingPageState();
-}
-
-class _ToolSettingPageState extends State<ToolSettingPage> {
-  RemoveAdsStatus? _lastNotifiedStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +81,7 @@ class _ToolSettingPageState extends State<ToolSettingPage> {
                                       Row(
                                         children: [
                                           _stepButton(
+                                            context,
                                             icon: Icons.remove,
                                             onTap: precs.precision > 1
                                                 ? () => precs
@@ -106,6 +99,7 @@ class _ToolSettingPageState extends State<ToolSettingPage> {
                                             ),
                                           ),
                                           _stepButton(
+                                            context,
                                             icon: Icons.add,
                                             onTap: precs.precision < 9
                                                 ? () => precs
@@ -226,18 +220,6 @@ class _ToolSettingPageState extends State<ToolSettingPage> {
                             ),
                           ),
                           const SizedBox(height: 12),
-                          Consumer<RemoveAdsService>(
-                            builder: (context, purchases, _) {
-                              if (!purchases.isSupported) {
-                                return const SizedBox.shrink();
-                              }
-                              _notifyPurchaseStatus(context, purchases.status);
-                              return RemoveAdsSettingsSection(
-                                  service: purchases);
-                            },
-                          ),
-                          if (context.read<RemoveAdsService>().isSupported)
-                            const SizedBox(height: 12),
                           FutureBuilder<bool>(
                             future: AdsManager.isPrivacyOptionsRequired(),
                             builder: (context, snapshot) {
@@ -281,43 +263,11 @@ class _ToolSettingPageState extends State<ToolSettingPage> {
     );
   }
 
-  void _notifyPurchaseStatus(
-    BuildContext context,
-    RemoveAdsStatus status,
-  ) {
-    if (_lastNotifiedStatus == status ||
-        const {
-          RemoveAdsStatus.idle,
-          RemoveAdsStatus.loading,
-          RemoveAdsStatus.ready,
-          RemoveAdsStatus.purchasing,
-          RemoveAdsStatus.restoring,
-        }.contains(status)) {
-      return;
-    }
-    _lastNotifiedStatus = status;
-    final strings = S.of(context);
-    final message = switch (status) {
-      RemoveAdsStatus.unavailable => strings.Purchase_Unavailable,
-      RemoveAdsStatus.notFound => strings.Product_Not_Found,
-      RemoveAdsStatus.failed => strings.Purchase_Failed,
-      RemoveAdsStatus.cancelled => strings.Purchase_Cancelled,
-      RemoveAdsStatus.pending => strings.Purchase_Pending,
-      RemoveAdsStatus.purchased => strings.Purchase_Success,
-      RemoveAdsStatus.restored => strings.Restore_Success,
-      RemoveAdsStatus.restoreNotFound => strings.Restore_Not_Found,
-      _ => null,
-    };
-    if (message == null) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text(message)));
-    });
-  }
-
-  Widget _stepButton({required IconData icon, VoidCallback? onTap}) {
+x`  Widget _stepButton(
+    BuildContext context, {
+    required IconData icon,
+    VoidCallback? onTap,
+  }) {
     return Material(
       color: Theme.of(context).colorScheme.surface.withValues(alpha: 0),
       child: InkWell(
@@ -333,90 +283,6 @@ class _ToolSettingPageState extends State<ToolSettingPage> {
                 : Theme.of(context).disabledColor,
           ),
         ),
-      ),
-    );
-  }
-}
-
-class RemoveAdsSettingsSection extends StatelessWidget {
-  const RemoveAdsSettingsSection({super.key, required this.service});
-
-  final RemoveAdsService service;
-
-  @override
-  Widget build(BuildContext context) {
-    final strings = S.of(context);
-    final scheme = Theme.of(context).colorScheme;
-    if (service.isAdsRemoved) {
-      return AppSectionCard(
-        title: strings.Remove_Ads,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Icon(
-                Icons.verified_rounded,
-                color: scheme.secondary,
-              ),
-              title: Text(strings.Ads_Removed),
-              subtitle: Text(strings.Ads_Removed_Description),
-            ),
-            TextButton.icon(
-              onPressed: service.isBusy ? null : service.restorePurchases,
-              icon: const Icon(Icons.restore_rounded),
-              label: Text(
-                service.status == RemoveAdsStatus.restoring
-                    ? strings.Restoring
-                    : strings.Restore_Purchases,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    final price = service.localizedPrice;
-    final canBuy = price != null && !service.isBusy;
-    return AppSectionCard(
-      title: strings.Remove_Ads,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.block_rounded),
-            title: Text(strings.Remove_Ads),
-            subtitle: Text(strings.Remove_Ads_Description),
-          ),
-          FilledButton.icon(
-            onPressed: canBuy ? service.buyRemoveAds : null,
-            icon: service.isBusy
-                ? const SizedBox.square(
-                    dimension: 18,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : const Icon(Icons.shopping_bag_rounded),
-            label: Text(
-              service.status == RemoveAdsStatus.purchasing
-                  ? strings.Purchasing
-                  : service.status == RemoveAdsStatus.pending
-                      ? strings.Purchase_Pending
-                      : price == null
-                          ? strings.Purchase_Unavailable
-                          : '${strings.Remove_Ads} — $price',
-            ),
-          ),
-          TextButton.icon(
-            onPressed: service.isBusy ? null : service.restorePurchases,
-            icon: const Icon(Icons.restore_rounded),
-            label: Text(
-              service.status == RemoveAdsStatus.restoring
-                  ? strings.Restoring
-                  : strings.Restore_Purchases,
-            ),
-          ),
-        ],
       ),
     );
   }

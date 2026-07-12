@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/home/statics/page/beam_reactions_page.dart';
+import 'package:mechanical_engineering_toolkit/home/beam/page/beam_calculator_page.dart';
+import 'package:mechanical_engineering_toolkit/home/beam/page/beam_section_properties_page.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/page/centroid_page.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/page/resultant_force_page.dart';
 import 'package:mechanical_engineering_toolkit/home/unit_converter/unit_converter_page.dart';
@@ -31,7 +32,14 @@ import 'mechancs_of_material/page/simple_beam_deflections_slopes_page.dart';
 import 'mechancs_of_material/page/thermal_deformation_page.dart';
 import 'mechancs_of_material/page/transverse_shear_stress_page.dart';
 
-enum ToolType { mechanicsOfMaterial, theoryOfElasticity, composite, statics, utilities }
+enum ToolType {
+  mechanicsOfMaterial,
+  beamEngineering,
+  theoryOfElasticity,
+  composite,
+  statics,
+  utilities,
+}
 
 class Tool {
   final int id;
@@ -39,7 +47,8 @@ class Tool {
   AssetImage? image;
   final String title;
   final ToolType type;
-  final Function(BuildContext context, String title, int toolId, {Map<String, String>? initialInputs}) action;
+  final Function(BuildContext context, String title, int toolId,
+      {Map<String, String>? initialInputs}) action;
 
   Tool(
       {required this.id,
@@ -88,7 +97,7 @@ class ToolLibrary {
           id: 102,
           image: AssetImage("images/cross_section/icon_cs_rectangle.png"),
           title: S.of(context).Moments_of_inertia_of_plane_areas,
-          type: ToolType.mechanicsOfMaterial,
+          type: ToolType.beamEngineering,
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -114,7 +123,7 @@ class ToolLibrary {
           id: 104,
           image: AssetImage("images/icon_beam_bending.png"),
           title: S.of(context).Flexure_formula_of_beam,
-          type: ToolType.mechanicsOfMaterial,
+          type: ToolType.beamEngineering,
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -128,7 +137,7 @@ class ToolLibrary {
           image: AssetImage(
               "images/cantilever_beam/icon_cantilever_beam_point_force_end.png"),
           title: S.of(context).Deflections_and_slopes_of_cantilever_beams,
-          type: ToolType.mechanicsOfMaterial,
+          type: ToolType.beamEngineering,
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -142,7 +151,7 @@ class ToolLibrary {
           image: AssetImage(
               "images/simple_beam/icon_simple_beam_distributed_force_evenly.png"),
           title: S.of(context).Deflections_and_slopes_of_simple_beams,
-          type: ToolType.mechanicsOfMaterial,
+          type: ToolType.beamEngineering,
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -235,7 +244,7 @@ class ToolLibrary {
           id: 113,
           icon: Icons.cut_rounded,
           title: S.of(context).Transverse_shear_stress_in_beam,
-          type: ToolType.mechanicsOfMaterial,
+          type: ToolType.beamEngineering,
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -279,6 +288,19 @@ class ToolLibrary {
               context,
               MaterialPageRoute(
                   builder: (context) => FailureCriteriaPage(
+                        title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
+                      )))),
+      Tool(
+          id: 117,
+          icon: Icons.view_agenda_outlined,
+          title: 'Beam Section Properties',
+          type: ToolType.beamEngineering,
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BeamSectionPropertiesPage(
                         title: title,
                         toolId: toolId,
                         initialInputs: initialInputs,
@@ -398,16 +420,22 @@ class ToolLibrary {
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ResultantForcePage(title: title, toolId: toolId, initialInputs: initialInputs)))),
+                  builder: (context) => ResultantForcePage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
       Tool(
           id: 401,
-          icon: Icons.horizontal_rule_rounded,
-          title: 'Beam Support Reactions',
-          type: ToolType.statics,
+          icon: Icons.multiline_chart_rounded,
+          title: 'Beam Load Analysis',
+          type: ToolType.beamEngineering,
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => BeamReactionsPage(title: title, toolId: toolId, initialInputs: initialInputs)))),
+                  builder: (context) => BeamCalculatorPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
       Tool(
           id: 402,
           icon: Icons.crop_free_rounded,
@@ -416,7 +444,10 @@ class ToolLibrary {
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CentroidPage(title: title, toolId: toolId, initialInputs: initialInputs)))),
+                  builder: (context) => CentroidPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
       // Utilities
       Tool(
           id: 500,
@@ -426,7 +457,10 @@ class ToolLibrary {
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => UnitConverterPage(title: title, toolId: toolId, initialInputs: initialInputs)))),
+                  builder: (context) => UnitConverterPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
     ];
   }
 

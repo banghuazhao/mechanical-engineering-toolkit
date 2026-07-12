@@ -10,6 +10,7 @@ import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/more/more_app_page.dart';
 import 'package:mechanical_engineering_toolkit/more/more_row.dart';
+import 'package:mechanical_engineering_toolkit/purchase/remove_ads_page.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
@@ -84,6 +85,11 @@ class _ToolPageState extends State<ToolPage> {
     sections.add(ToolSection(
       S.of(context).Mechanics_of_Material,
       allTools.where((e) => e.type == ToolType.mechanicsOfMaterial).toList(),
+    ));
+
+    sections.add(ToolSection(
+      'Beam Engineering',
+      allTools.where((e) => e.type == ToolType.beamEngineering).toList(),
     ));
 
     sections.add(ToolSection(
@@ -182,6 +188,26 @@ class _ToolPageState extends State<ToolPage> {
                       MaterialPageRoute(
                           builder: (context) => const ToolSettingPage()));
                 }),
+            Consumer<RemoveAdsService>(
+              builder: (context, purchases, _) {
+                if (!purchases.isSupported) return const SizedBox.shrink();
+                return MoreRow(
+                  title: S.of(context).Remove_Ads,
+                  leadingIcon: purchases.isAdsRemoved
+                      ? Icons.verified_rounded
+                      : Icons.block_rounded,
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RemoveAdsPage(),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
             MoreRow(
               title: S.of(context).Feedback,
               leadingIcon: Icons.chat_rounded,
@@ -324,7 +350,7 @@ class _ToolPageState extends State<ToolPage> {
           maxCrossAxisExtent: 128,
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
-          childAspectRatio: 0.82,
+          mainAxisExtent: 126,
         ),
         delegate: SliverChildBuilderDelegate(
           (context, index) => ToolGridTile(model: tools[index]),
@@ -365,6 +391,13 @@ class ToolRowWidget extends StatelessWidget {
     final isFavorite = favoritesList.items.contains(itemNo);
     final primary = Theme.of(context).colorScheme.primary;
     return Card(
+      color: Theme.of(context).colorScheme.surfaceContainerLow,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(context.tokens.radiusLarge),
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.outlineVariant,
+        ),
+      ),
       child: InkWell(
         onTap: () {
           model.action(context, title, itemNo);
@@ -445,6 +478,13 @@ class ToolGridTile extends StatelessWidget {
     final isFavorite = favoritesList.items.contains(itemNo);
     final primary = Theme.of(context).colorScheme.primary;
     return Card(
+      color: Theme.of(context).colorScheme.surfaceContainerLow,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(context.tokens.radiusLarge),
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.outlineVariant,
+        ),
+      ),
       child: InkWell(
         onTap: () {
           model.action(context, title, itemNo);
@@ -512,7 +552,7 @@ class ToolGridTile extends StatelessWidget {
               Expanded(
                 child: Text(
                   model.title,
-                  maxLines: 4,
+                  maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodySmall,

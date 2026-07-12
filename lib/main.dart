@@ -47,6 +47,16 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ToolHistory()),
       ],
       child: MaterialApp(
+        builder: (context, child) => NotificationListener<ScrollNotification>(
+          onNotification: (notification) {
+            if (notification is ScrollStartNotification &&
+                notification.dragDetails != null) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            }
+            return false;
+          },
+          child: child ?? const SizedBox.shrink(),
+        ),
         debugShowCheckedModeBanner: false,
         localizationsDelegates: const [
           S.delegate,
