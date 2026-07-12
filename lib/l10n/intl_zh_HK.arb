@@ -93,5 +93,20 @@
   "Monoclinic_material" : "單斜材料",
   "Anisotropic_material" : "各向異性材料",
   "Truss_Statics": "桁架 / 靜力學",
-  "Utilities": "常用工具"
+  "Utilities": "常用工具",
+  "Remove_Ads": "移除廣告",
+  "Remove_Ads_Description": "永久移除此應用程式中的廣告。",
+  "Ads_Removed": "廣告已移除",
+  "Ads_Removed_Description": "感謝您支持工程工具箱。",
+  "Restore_Purchases": "恢復購買",
+  "Purchase_Unavailable": "目前無法進行購買。",
+  "Product_Not_Found": "App Store 暫未提供移除廣告項目。",
+  "Purchase_Failed": "購買未能完成，請重試。",
+  "Purchase_Cancelled": "購買已取消，未作任何更改。",
+  "Purchase_Pending": "購買正在等待批准。",
+  "Purchase_Success": "廣告已永久移除。",
+  "Restore_Success": "已恢復您的移除廣告購買。",
+  "Restore_Not_Found": "未找到以前的移除廣告購買。",
+  "Purchasing": "正在購買…",
+  "Restoring": "正在恢復…"
 }

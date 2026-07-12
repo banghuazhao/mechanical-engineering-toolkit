@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
+import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
+import 'package:provider/provider.dart';
 
 class AppBannerAd extends StatefulWidget {
   const AppBannerAd({super.key});
@@ -56,6 +58,21 @@ class _AppBannerAdState extends State<AppBannerAd> {
 
   @override
   Widget build(BuildContext context) {
+    final adsRemoved = context.watch<RemoveAdsService>().isAdsRemoved;
+    if (adsRemoved) {
+      if (_ad != null || _size != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _ad?.dispose();
+          if (mounted) {
+            setState(() {
+              _ad = null;
+              _size = null;
+            });
+          }
+        });
+      }
+      return const SizedBox.shrink();
+    }
     return SafeArea(
       top: false,
       child: LayoutBuilder(

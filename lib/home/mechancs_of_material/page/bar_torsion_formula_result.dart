@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
+import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/strain_model.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/single_row_result.dart';
@@ -81,6 +82,8 @@ class _BarTorsionFormulaResultPageState
 
   @override
   Widget build(BuildContext context) {
+    final adsRemoved = context.watch<RemoveAdsService>().isAdsRemoved;
+    _disposeBannerWhenPurchased(adsRemoved);
     return Scaffold(
         appBar: AppBar(
           actions: [
@@ -119,7 +122,7 @@ class _BarTorsionFormulaResultPageState
         body: SafeArea(
           child: Stack(alignment: AlignmentDirectional.bottomCenter, children: [
             StaggeredGridView.countBuilder(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+                padding: EdgeInsets.fromLTRB(20, 20, 20, adsRemoved ? 20 : 100),
                 crossAxisCount: 8,
                 itemCount: 2,
                 staggeredTileBuilder: (int index) => StaggeredTile.fit(
@@ -141,7 +144,7 @@ class _BarTorsionFormulaResultPageState
                     ),
                   ][index];
                 }),
-            if (_anchoredAdaptiveAd != null && _isLoaded)
+            if (!adsRemoved && _anchoredAdaptiveAd != null && _isLoaded)
               Container(
                 color: Colors.transparent,
                 width: _anchoredAdaptiveAd!.size.width.toDouble(),
@@ -150,5 +153,14 @@ class _BarTorsionFormulaResultPageState
               )
           ]),
         ));
+  }
+
+  void _disposeBannerWhenPurchased(bool adsRemoved) {
+    if (!adsRemoved || _anchoredAdaptiveAd == null) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _anchoredAdaptiveAd?.dispose();
+      _anchoredAdaptiveAd = null;
+      _isLoaded = false;
+    });
   }
 }

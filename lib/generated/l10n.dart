@@ -18,8 +18,10 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(
+      _current != null,
+      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
+    );
     return _current!;
   }
 
@@ -41,8 +43,10 @@ class S {
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -52,12 +56,7 @@ class S {
 
   /// `More`
   String get More {
-    return Intl.message(
-      'More',
-      name: 'More',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('More', name: 'More', desc: '', args: []);
   }
 
   /// `My Favourite`
@@ -72,12 +71,7 @@ class S {
 
   /// `Feedback`
   String get Feedback {
-    return Intl.message(
-      'Feedback',
-      name: 'Feedback',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Feedback', name: 'Feedback', desc: '', args: []);
   }
 
   /// `Rate this App`
@@ -102,12 +96,7 @@ class S {
 
   /// `More Apps`
   String get MoreApps {
-    return Intl.message(
-      'More Apps',
-      name: 'MoreApps',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('More Apps', name: 'MoreApps', desc: '', args: []);
   }
 
   /// `Countdown Days`
@@ -132,32 +121,17 @@ class S {
 
   /// `Novels Hub`
   String get NovelsHub {
-    return Intl.message(
-      'Novels Hub',
-      name: 'NovelsHub',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Novels Hub', name: 'NovelsHub', desc: '', args: []);
   }
 
   /// `Finance Go`
   String get FinanceGo {
-    return Intl.message(
-      'Finance Go',
-      name: 'FinanceGo',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Finance Go', name: 'FinanceGo', desc: '', args: []);
   }
 
   /// `NASA Lover`
   String get NASALover {
-    return Intl.message(
-      'NASA Lover',
-      name: 'NASALover',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('NASA Lover', name: 'NASALover', desc: '', args: []);
   }
 
   /// `World Weather Live`
@@ -172,12 +146,7 @@ class S {
 
   /// `Image Guru`
   String get Image_Guru {
-    return Intl.message(
-      'Image Guru',
-      name: 'Image_Guru',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Image Guru', name: 'Image_Guru', desc: '', args: []);
   }
 
   /// `Mint Translate`
@@ -192,22 +161,12 @@ class S {
 
   /// `Relaxing Up`
   String get Relaxing_Up {
-    return Intl.message(
-      'Relaxing Up',
-      name: 'Relaxing_Up',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Relaxing Up', name: 'Relaxing_Up', desc: '', args: []);
   }
 
   /// `Yes Habit`
   String get Yes_Habit {
-    return Intl.message(
-      'Yes Habit',
-      name: 'Yes_Habit',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Yes Habit', name: 'Yes_Habit', desc: '', args: []);
   }
 
   /// `Metronome Go`
@@ -262,22 +221,12 @@ class S {
 
   /// `Onlynote`
   String get Onlynote {
-    return Intl.message(
-      'Onlynote',
-      name: 'Onlynote',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Onlynote', name: 'Onlynote', desc: '', args: []);
   }
 
   /// `Novels Hub`
   String get Novels_Hub {
-    return Intl.message(
-      'Novels Hub',
-      name: 'Novels_Hub',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Novels Hub', name: 'Novels_Hub', desc: '', args: []);
   }
 
   /// `Simple Calculator`
@@ -292,12 +241,7 @@ class S {
 
   /// `Shows`
   String get Shows {
-    return Intl.message(
-      'Shows',
-      name: 'Shows',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Shows', name: 'Shows', desc: '', args: []);
   }
 
   /// `Water Tracker`
@@ -332,22 +276,12 @@ class S {
 
   /// `Settings`
   String get Settings {
-    return Intl.message(
-      'Settings',
-      name: 'Settings',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Settings', name: 'Settings', desc: '', args: []);
   }
 
   /// `Result`
   String get Result {
-    return Intl.message(
-      'Result',
-      name: 'Result',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Result', name: 'Result', desc: '', args: []);
   }
 
   /// `Result Precision`
@@ -382,32 +316,17 @@ class S {
 
   /// `Calculate`
   String get Calculate {
-    return Intl.message(
-      'Calculate',
-      name: 'Calculate',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Calculate', name: 'Calculate', desc: '', args: []);
   }
 
   /// `Stress`
   String get Stress {
-    return Intl.message(
-      'Stress',
-      name: 'Stress',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Stress', name: 'Stress', desc: '', args: []);
   }
 
   /// `Strain`
   String get Strain {
-    return Intl.message(
-      'Strain',
-      name: 'Strain',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Strain', name: 'Strain', desc: '', args: []);
   }
 
   /// `Buckling Load`
@@ -422,12 +341,7 @@ class S {
 
   /// `Deflection`
   String get Deflection {
-    return Intl.message(
-      'Deflection',
-      name: 'Deflection',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Deflection', name: 'Deflection', desc: '', args: []);
   }
 
   /// `The Maximum Shear Stress`
@@ -492,22 +406,12 @@ class S {
 
   /// `Area`
   String get Area {
-    return Intl.message(
-      'Area',
-      name: 'Area',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Area', name: 'Area', desc: '', args: []);
   }
 
   /// `Inputs`
   String get Inputs {
-    return Intl.message(
-      'Inputs',
-      name: 'Inputs',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Inputs', name: 'Inputs', desc: '', args: []);
   }
 
   /// `Engineering Constants`
@@ -802,22 +706,12 @@ class S {
 
   /// `Description`
   String get Description {
-    return Intl.message(
-      'Description',
-      name: 'Description',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Description', name: 'Description', desc: '', args: []);
   }
 
   /// `Force`
   String get Force {
-    return Intl.message(
-      'Force',
-      name: 'Force',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Force', name: 'Force', desc: '', args: []);
   }
 
   /// `Angle of Rotation`
@@ -872,32 +766,17 @@ class S {
 
   /// `ME Toolkit`
   String get ME_Toolkit {
-    return Intl.message(
-      'ME Toolkit',
-      name: 'ME_Toolkit',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('ME Toolkit', name: 'ME_Toolkit', desc: '', args: []);
   }
 
   /// `Favorites`
   String get Favorites {
-    return Intl.message(
-      'Favorites',
-      name: 'Favorites',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Favorites', name: 'Favorites', desc: '', args: []);
   }
 
   /// `Slope`
   String get Slope {
-    return Intl.message(
-      'Slope',
-      name: 'Slope',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Slope', name: 'Slope', desc: '', args: []);
   }
 
   /// `Not a number`
@@ -912,12 +791,7 @@ class S {
 
   /// `Layup Angle`
   String get Layup_Angle {
-    return Intl.message(
-      'Layup Angle',
-      name: 'Layup_Angle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Layup Angle', name: 'Layup_Angle', desc: '', args: []);
   }
 
   /// `Isotropic material`
@@ -982,12 +856,137 @@ class S {
 
   /// `Utilities`
   String get Utilities {
+    return Intl.message('Utilities', name: 'Utilities', desc: '', args: []);
+  }
+
+  /// `Remove Ads`
+  String get Remove_Ads {
+    return Intl.message('Remove Ads', name: 'Remove_Ads', desc: '', args: []);
+  }
+
+  /// `Remove ads permanently from this app.`
+  String get Remove_Ads_Description {
     return Intl.message(
-      'Utilities',
-      name: 'Utilities',
+      'Remove ads permanently from this app.',
+      name: 'Remove_Ads_Description',
       desc: '',
       args: [],
     );
+  }
+
+  /// `Ads removed`
+  String get Ads_Removed {
+    return Intl.message('Ads removed', name: 'Ads_Removed', desc: '', args: []);
+  }
+
+  /// `Thank you for supporting ME Toolkit.`
+  String get Ads_Removed_Description {
+    return Intl.message(
+      'Thank you for supporting ME Toolkit.',
+      name: 'Ads_Removed_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore Purchases`
+  String get Restore_Purchases {
+    return Intl.message(
+      'Restore Purchases',
+      name: 'Restore_Purchases',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchases are currently unavailable.`
+  String get Purchase_Unavailable {
+    return Intl.message(
+      'Purchases are currently unavailable.',
+      name: 'Purchase_Unavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove Ads is not available from the App Store yet.`
+  String get Product_Not_Found {
+    return Intl.message(
+      'Remove Ads is not available from the App Store yet.',
+      name: 'Product_Not_Found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The purchase could not be completed. Please try again.`
+  String get Purchase_Failed {
+    return Intl.message(
+      'The purchase could not be completed. Please try again.',
+      name: 'Purchase_Failed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase cancelled. No changes were made.`
+  String get Purchase_Cancelled {
+    return Intl.message(
+      'Purchase cancelled. No changes were made.',
+      name: 'Purchase_Cancelled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchase pending approval.`
+  String get Purchase_Pending {
+    return Intl.message(
+      'Purchase pending approval.',
+      name: 'Purchase_Pending',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ads have been removed permanently.`
+  String get Purchase_Success {
+    return Intl.message(
+      'Ads have been removed permanently.',
+      name: 'Purchase_Success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your Remove Ads purchase was restored.`
+  String get Restore_Success {
+    return Intl.message(
+      'Your Remove Ads purchase was restored.',
+      name: 'Restore_Success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No previous Remove Ads purchase was found.`
+  String get Restore_Not_Found {
+    return Intl.message(
+      'No previous Remove Ads purchase was found.',
+      name: 'Restore_Not_Found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Purchasing…`
+  String get Purchasing {
+    return Intl.message('Purchasing…', name: 'Purchasing', desc: '', args: []);
+  }
+
+  /// `Restoring…`
+  String get Restoring {
+    return Intl.message('Restoring…', name: 'Restoring', desc: '', args: []);
   }
 }
 

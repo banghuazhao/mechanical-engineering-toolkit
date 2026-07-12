@@ -94,5 +94,20 @@
   "Monoclinic_material" : "Monoclinic material",
   "Anisotropic_material" : "Anisotropic material",
   "Truss_Statics": "Truss / Statics",
-  "Utilities": "Utilities"
+  "Utilities": "Utilities",
+  "Remove_Ads": "Remove Ads",
+  "Remove_Ads_Description": "Remove ads permanently from this app.",
+  "Ads_Removed": "Ads removed",
+  "Ads_Removed_Description": "Thank you for supporting ME Toolkit.",
+  "Restore_Purchases": "Restore Purchases",
+  "Purchase_Unavailable": "Purchases are currently unavailable.",
+  "Product_Not_Found": "Remove Ads is not available from the App Store yet.",
+  "Purchase_Failed": "The purchase could not be completed. Please try again.",
+  "Purchase_Cancelled": "Purchase cancelled. No changes were made.",
+  "Purchase_Pending": "Purchase pending approval.",
+  "Purchase_Success": "Ads have been removed permanently.",
+  "Restore_Success": "Your Remove Ads purchase was restored.",
+  "Restore_Not_Found": "No previous Remove Ads purchase was found.",
+  "Purchasing": "Purchasing…",
+  "Restoring": "Restoring…"
 }

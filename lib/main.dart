@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_page.dart';
+import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/in_app_reviewer_helper.dart';
@@ -15,22 +16,32 @@ import 'home/history.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  AdsManager.debugPrintID();
-
   InAppReviewHelper.checkAndAskForReview();
 
   await SharedPreferencesHelper.init();
 
-  runApp(const MyApp());
+  final removeAdsService = RemoveAdsService();
+  await removeAdsService.init();
+  AdsManager.setAdsRemoved(removeAdsService.isAdsRemoved);
+  removeAdsService.addListener(
+    () => AdsManager.setAdsRemoved(removeAdsService.isAdsRemoved),
+  );
+
+  AdsManager.debugPrintID();
+
+  runApp(MyApp(removeAdsService: removeAdsService));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.removeAdsService});
+
+  final RemoveAdsService removeAdsService;
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: removeAdsService),
         ChangeNotifierProvider(create: (context) => Favorites()),
         ChangeNotifierProvider(create: (context) => NumberPrecisionHelper()),
         ChangeNotifierProvider(create: (context) => ToolHistory()),

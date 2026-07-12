@@ -14,10 +14,25 @@ class AdsManager {
   static String openAdUnitIDAndroid = Secrets.openAdUnitIDAndroid;
   static Future<bool>? _consentFuture;
   static Future<InitializationStatus>? _mobileAdsInitialization;
+  static bool _adsRemoved = false;
+  static final Set<AppOpenAdManager> _appOpenManagers = {};
+
+  static bool get adsRemoved => _adsRemoved;
+
+  static void setAdsRemoved(bool value) {
+    if (_adsRemoved == value) return;
+    _adsRemoved = value;
+    if (value) {
+      for (final manager in _appOpenManagers.toList()) {
+        manager.dispose();
+      }
+    }
+  }
 
   /// Updates UMP consent on every app launch and only enables ads after all
   /// required consent messages have been handled.
   static Future<bool> canRequestAds() {
+    if (_adsRemoved) return Future.value(false);
     return _consentFuture ??= _requestConsent();
   }
 
@@ -62,7 +77,8 @@ class AdsManager {
   static Future<void> _finishConsentRequest(Completer<bool> completer) async {
     if (completer.isCompleted) return;
 
-    final allowed = await ConsentInformation.instance.canRequestAds();
+    final allowed =
+        !_adsRemoved && await ConsentInformation.instance.canRequestAds();
     if (allowed) {
       _mobileAdsInitialization ??= MobileAds.instance.initialize();
       await _mobileAdsInitialization;
@@ -135,6 +151,10 @@ class AdsManager {
 }
 
 class AppOpenAdManager {
+  AppOpenAdManager() {
+    AdsManager._appOpenManagers.add(this);
+  }
+
   AppOpenAd? _appOpenAd;
   bool _isShowingAd = false;
   static bool bypassShowAd = false;
@@ -172,6 +192,10 @@ class AppOpenAdManager {
   }
 
   void showAdIfAvailable() {
+    if (AdsManager.adsRemoved) {
+      dispose();
+      return;
+    }
     if (bypassShowAd) {
       bypassShowAd = false;
       return;
@@ -214,6 +238,12 @@ class AppOpenAdManager {
       },
     );
     _appOpenAd!.show();
+  }
+
+  void dispose() {
+    _appOpenAd?.dispose();
+    _appOpenAd = null;
+    _appOpenLoadTime = null;
   }
 }
 

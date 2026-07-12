@@ -1,5 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.appsbay.mechanical_engineering_toolkit">
+   <uses-permission
+       android:name="com.android.vending.BILLING"
+       tools:node="remove" />
    <application
         android:label="@string/app_name"
         android:icon="@mipmap/launcher_icon"

@@ -10,6 +10,7 @@ import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/more/more_app_page.dart';
 import 'package:mechanical_engineering_toolkit/more/more_row.dart';
+import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
@@ -54,16 +55,14 @@ class ToolPage extends StatefulWidget {
 class _ToolPageState extends State<ToolPage> {
   List<ToolSection> sections = [];
   late ToolViewMode _viewMode;
+  AppOpenAdManager? _appOpenAdManager;
+  AppLifecycleReactor? _appLifecycleReactor;
 
   @override
   void initState() {
     super.initState();
 
     _viewMode = ToolViewModePreference.get();
-
-    AppOpenAdManager appOpenAdManager = AppOpenAdManager()..loadAd();
-    WidgetsBinding.instance
-        .addObserver(AppLifecycleReactor(appOpenAdManager: appOpenAdManager));
   }
 
   void _toggleViewMode() {
@@ -78,6 +77,7 @@ class _ToolPageState extends State<ToolPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    _configureAppOpenAds();
     sections = [];
     final allTools = ToolLibrary.shared.getTools(context);
 
@@ -105,6 +105,26 @@ class _ToolPageState extends State<ToolPage> {
       S.of(context).Utilities,
       allTools.where((e) => e.type == ToolType.utilities).toList(),
     ));
+  }
+
+  void _configureAppOpenAds() {
+    if (_appOpenAdManager != null ||
+        context.read<RemoveAdsService>().isAdsRemoved) {
+      return;
+    }
+    _appOpenAdManager = AppOpenAdManager()..loadAd();
+    _appLifecycleReactor = AppLifecycleReactor(
+      appOpenAdManager: _appOpenAdManager!,
+    );
+    WidgetsBinding.instance.addObserver(_appLifecycleReactor!);
+  }
+
+  @override
+  void dispose() {
+    final reactor = _appLifecycleReactor;
+    if (reactor != null) WidgetsBinding.instance.removeObserver(reactor);
+    _appOpenAdManager?.dispose();
+    super.dispose();
   }
 
   @override
