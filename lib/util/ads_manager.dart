@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -49,7 +50,9 @@ class AdsManager {
     return completer.future;
   }
 
-  static Future<bool> _requestConsent() {
+  static Future<bool> _requestConsent() async {
+    if (!await _requestTrackingAuthorizationIfNeeded()) return false;
+
     final completer = Completer<bool>();
     final parameters = ConsentRequestParameters();
 
@@ -72,6 +75,45 @@ class AdsManager {
     );
 
     return completer.future;
+  }
+
+  /// Requests iOS App Tracking Transparency permission before UMP or Mobile
+  /// Ads performs any work. The system prompt is only available while the app
+  /// is active and only while the authorization state is not determined.
+  static Future<bool> _requestTrackingAuthorizationIfNeeded() async {
+    if (!Platform.isIOS) return true;
+
+    try {
+      var status = await AppTrackingTransparency.trackingAuthorizationStatus;
+      if (status != TrackingStatus.notDetermined) return true;
+
+      await _waitUntilAppIsResumed();
+      // Allow the first frame and launch transition to settle before asking
+      // iOS to present its native permission sheet.
+      await Future<void>.delayed(const Duration(milliseconds: 350));
+      status = await AppTrackingTransparency.requestTrackingAuthorization();
+      return status != TrackingStatus.notDetermined;
+    } catch (error) {
+      debugPrint(
+          'Unable to request App Tracking Transparency permission: $error');
+      // Do not initialize or request ads if the ATT request could not finish.
+      return false;
+    }
+  }
+
+  static Future<void> _waitUntilAppIsResumed() async {
+    if (WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed) {
+      return;
+    }
+
+    final completer = Completer<void>();
+    final observer = _AppResumeObserver(completer);
+    WidgetsBinding.instance.addObserver(observer);
+    if (WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed) {
+      observer.complete();
+    }
+    await completer.future;
+    WidgetsBinding.instance.removeObserver(observer);
   }
 
   static Future<void> _finishConsentRequest(Completer<bool> completer) async {
@@ -147,6 +189,21 @@ class AdsManager {
       debugPrint("bannerAdUnitId: ${AdsManager.bannerAdUnitId}");
       debugPrint("openAdUnitID: ${AdsManager.openAdUnitID}");
     }
+  }
+}
+
+class _AppResumeObserver with WidgetsBindingObserver {
+  _AppResumeObserver(this.completer);
+
+  final Completer<void> completer;
+
+  void complete() {
+    if (!completer.isCompleted) completer.complete();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) complete();
   }
 }
 

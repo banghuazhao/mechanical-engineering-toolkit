@@ -7,3 +7,4 @@
 - Added certified consent handling and privacy choices for advertising in supported regions.
 - Redesigned the app with responsive list and grid views, clearer calculator cards, and improved navigation.
 - Improved calculation result consistency, keyboard dismissal, accessibility, history, and sharing behavior.
+- Fixed the iOS App Tracking Transparency prompt so it appears before consent and advertising initialization on a fresh install.
