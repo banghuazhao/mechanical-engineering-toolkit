@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/cross_section_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class MonentsOfInertiaRow extends StatefulWidget {
   final CrossSectionModel crossSectionModel;
@@ -20,38 +22,6 @@ class MonentsOfInertiaRow extends StatefulWidget {
 
 class _MonentsOfInertiaRowState extends State<MonentsOfInertiaRow> {
   String dropValue = "Rectangle (Origin of axes at centroid)";
-
-  late TextEditingController textEditingController1;
-  late TextEditingController textEditingController2;
-  late TextEditingController textEditingController3;
-
-  @override
-  void initState() {
-    super.initState();
-    textEditingController1 = TextEditingController();
-    textEditingController2 = TextEditingController();
-    textEditingController3 = TextEditingController();
-    _updateControllers();
-  }
-
-  @override
-  void dispose() {
-    textEditingController1.dispose();
-    textEditingController2.dispose();
-    textEditingController3.dispose();
-    super.dispose();
-  }
-
-  void _updateControllers() {
-    if (widget.crossSectionModel is CrossSectionBHModel) {
-      CrossSectionBHModel model = (widget.crossSectionModel as CrossSectionBHModel);
-      textEditingController1.text = model.b?.toString() ?? '';
-      textEditingController2.text = model.h?.toString() ?? '';
-    } else if (widget.crossSectionModel is CrossSectionRModel) {
-      CrossSectionRModel model = (widget.crossSectionModel as CrossSectionRModel);
-      textEditingController1.text = model.r?.toString() ?? '';
-    }
-  }
 
   validateModulus(double? value) {
     if (value == null) {
@@ -91,7 +61,6 @@ class _MonentsOfInertiaRowState extends State<MonentsOfInertiaRow> {
                     setState(() {
                       dropValue = newValue!;
                       widget.callback(dropValue);
-                      _updateControllers();
                     });
                   },
                   items: <String>[
@@ -124,39 +93,32 @@ class _MonentsOfInertiaRowState extends State<MonentsOfInertiaRow> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController1,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText: (dropValue == "Circle (Origin at center)" ||
-                                dropValue == "Semicircle (Origin at centroid)")
-                            ? "r"
-                            : "b",
-                        errorText: widget.validate
-                            ? validateModulus(
-                                (dropValue == "Circle (Origin at center)" ||
-                                        dropValue ==
-                                            "Semicircle (Origin at centroid)")
-                                    ? (widget.crossSectionModel
-                                            as CrossSectionRModel)
-                                        .r
-                                    : (widget.crossSectionModel
-                                            as CrossSectionBHModel)
-                                        .b)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
+                  child: UnitField(
+                    key: ValueKey('first-$dropValue'),
+                    label: (dropValue == "Circle (Origin at center)" ||
+                            dropValue == "Semicircle (Origin at centroid)")
+                        ? "r"
+                        : "b",
+                    category: UnitCategory.length,
+                    initialSI: (dropValue == "Circle (Origin at center)" ||
+                            dropValue == "Semicircle (Origin at centroid)")
+                        ? (widget.crossSectionModel as CrossSectionRModel).r
+                        : (widget.crossSectionModel as CrossSectionBHModel).b,
+                    signed: false,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: (value) =>
+                        widget.validate ? validateModulus(value) : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
                       if (dropValue == "Circle (Origin at center)" ||
                           dropValue == "Semicircle (Origin at centroid)") {
                         (widget.crossSectionModel as CrossSectionRModel).r =
-                            double.tryParse(value);
+                            value;
                       } else {
                         (widget.crossSectionModel as CrossSectionBHModel).b =
-                            double.tryParse(value);
+                            value;
                       }
                     },
                   ),
@@ -168,24 +130,24 @@ class _MonentsOfInertiaRowState extends State<MonentsOfInertiaRow> {
                   child: (dropValue == "Circle (Origin at center)" ||
                           dropValue == "Semicircle (Origin at centroid)")
                       ? Container()
-                      : TextField(
-                          controller: textEditingController2,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "h",
-                              errorText: widget.validate
-                                  ? validateModulus((widget.crossSectionModel
-                                          as CrossSectionBHModel)
-                                      .h)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
+                      : UnitField(
+                          key: ValueKey('h-$dropValue'),
+                          label: "h",
+                          category: UnitCategory.length,
+                          initialSI: (widget.crossSectionModel
+                                  as CrossSectionBHModel)
+                              .h,
+                          signed: false,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validateModulus(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
                             (widget.crossSectionModel as CrossSectionBHModel)
-                                .h = double.tryParse(value);
+                                .h = value;
                           },
                         ),
                 ),

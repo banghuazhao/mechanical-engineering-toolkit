@@ -8,6 +8,9 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/single_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -50,14 +53,14 @@ class _TransverseShearStressPageState extends State<TransverseShearStressPage> {
   Widget build(BuildContext context) {
     final primary = Theme.of(context).colorScheme.primary;
     final fields = <_FieldDef>[
-      _FieldDef('V  (transverse shear force, N)', (v) => _model.V = v,
-          () => _model.V),
-      _FieldDef(
-          'Q  (first moment of area, m³)', (v) => _model.Q = v, () => _model.Q),
-      _FieldDef(
-          'I  (moment of inertia, m⁴)', (v) => _model.I = v, () => _model.I),
-      _FieldDef('t  (width at point of interest, m)', (v) => _model.t = v,
-          () => _model.t),
+      _FieldDef('V  (transverse shear force)', (v) => _model.V = v,
+          () => _model.V, UnitCategory.force),
+      _FieldDef('Q  (first moment of area)', (v) => _model.Q = v,
+          () => _model.Q, UnitCategory.sectionModulus),
+      _FieldDef('I  (moment of inertia)', (v) => _model.I = v, () => _model.I,
+          UnitCategory.momentOfInertia),
+      _FieldDef('t  (width at point of interest)', (v) => _model.t = v,
+          () => _model.t, UnitCategory.length),
     ];
 
     final items = [
@@ -84,20 +87,17 @@ class _TransverseShearStressPageState extends State<TransverseShearStressPage> {
                 children: fields
                     .map((f) => Padding(
                           padding: const EdgeInsets.only(bottom: 12),
-                          child: TextField(
-                            keyboardType: const TextInputType.numberWithOptions(
-                                decimal: true, signed: true),
-                            decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: f.label,
-                              errorText: validate && f.getter() == null
-                                  ? S.of(context).Not_a_number
-                                  : null,
-                            ),
-                            onChanged: (v) =>
-                                setState(() => f.setter(double.tryParse(v))),
+                          child: UnitField(
+                            label: f.label,
+                            category: f.category,
+                            initialSI: f.getter(),
+                            isDense: true,
+                            contentPadding: const EdgeInsets.all(12),
+                            border: const OutlineInputBorder(),
+                            errorText: (value) => validate && value == null
+                                ? S.of(context).Not_a_number
+                                : null,
+                            onChangedSI: (v) => setState(() => f.setter(v)),
                           ),
                         ))
                     .toList(),
@@ -190,7 +190,8 @@ class _FieldDef {
   final String label;
   final void Function(double?) setter;
   final double? Function() getter;
-  _FieldDef(this.label, this.setter, this.getter);
+  final UnitCategory? category;
+  _FieldDef(this.label, this.setter, this.getter, this.category);
 }
 
 class _ShearResultPage extends StatelessWidget {
@@ -202,8 +203,17 @@ class _ShearResultPage extends StatelessWidget {
       required this.I,
       required this.t});
 
+  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
+    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+    final system =
+        Provider.of<UnitSystemPreference>(context, listen: false).system;
+    final display = valueSI == null ? null : fromSI(valueSI, category, system);
+    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
+  }
+
   @override
   Widget build(BuildContext context) {
+    context.watch<UnitSystemPreference>();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -214,15 +224,13 @@ class _ShearResultPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.share_rounded),
             onPressed: () {
-              final precs =
-                  Provider.of<NumberPrecisionHelper>(context, listen: false);
               shareResult('Transverse Shear Stress', [
-                'τ = ${precs.formatValue(tau)}',
+                'τ = ${_fv(context, tau, UnitCategory.stress)}',
                 '',
                 'Calculation:',
                 'τ = V·Q / (I·t)',
-                '= ${precs.formatValue(V)} × ${precs.formatValue(Q)} / (${precs.formatValue(I)} × ${precs.formatValue(t)})',
-                '= ${precs.formatValue(tau)}',
+                '= ${_fv(context, V, UnitCategory.force)} × ${_fv(context, Q, UnitCategory.sectionModulus)} / (${_fv(context, I, UnitCategory.momentOfInertia)} × ${_fv(context, t, UnitCategory.length)})',
+                '= ${_fv(context, tau, UnitCategory.stress)}',
               ]);
             },
           ),
@@ -249,14 +257,13 @@ class _ShearResultPage extends StatelessWidget {
                 title: 'Transverse Shear Stress',
                 resultTitle: 'τ = VQ/(It)',
                 resultValue: tau,
+                category: UnitCategory.stress,
               ),
-              Consumer<NumberPrecisionHelper>(
-                builder: (context, precs, _) => CalculationCard(steps: [
-                  'τ = V·Q / (I·t)',
-                  '= ${precs.formatValue(V)} × ${precs.formatValue(Q)} / (${precs.formatValue(I)} × ${precs.formatValue(t)})',
-                  '= ${precs.formatValue(tau)}',
-                ]),
-              ),
+              CalculationCard(steps: [
+                'τ = V·Q / (I·t)',
+                '= ${_fv(context, V, UnitCategory.force)} × ${_fv(context, Q, UnitCategory.sectionModulus)} / (${_fv(context, I, UnitCategory.momentOfInertia)} × ${_fv(context, t, UnitCategory.length)})',
+                '= ${_fv(context, tau, UnitCategory.stress)}',
+              ]),
             ][i];
           },
         ),

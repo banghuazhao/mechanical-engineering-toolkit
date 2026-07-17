@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/force_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class ForceRow extends StatefulWidget {
   final Force force;
@@ -14,20 +16,6 @@ class ForceRow extends StatefulWidget {
 }
 
 class _ForceRowState extends State<ForceRow> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController(text: widget.force.value?.toString() ?? '');
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   validateLayupAngle(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -52,20 +40,17 @@ class _ForceRowState extends State<ForceRow> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
-            child: TextField(
-              controller: _controller,
-              keyboardType:
-                  TextInputType.numberWithOptions(signed: true, decimal: true),
-              decoration: InputDecoration(
-                  isDense: true,
-                  contentPadding: EdgeInsets.all(12),
-                  border: OutlineInputBorder(),
-                  labelText: "F",
-                  errorText: widget.validate
-                      ? validateLayupAngle(widget.force.value)
-                      : null),
-              onChanged: (value) {
-                widget.force.value = double.tryParse(value);
+            child: UnitField(
+              label: "F",
+              category: UnitCategory.force,
+              initialSI: widget.force.value,
+              isDense: true,
+              contentPadding: const EdgeInsets.all(12),
+              border: const OutlineInputBorder(),
+              errorText: (value) =>
+                  widget.validate ? validateLayupAngle(value) : null,
+              onChangedSI: (value) {
+                widget.force.value = value;
               },
             ),
           )

@@ -6,6 +6,8 @@ import 'package:mechanical_engineering_toolkit/home/beam/page/beam_section_prope
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class BeamSectionPropertiesPage extends StatefulWidget {
@@ -27,11 +29,11 @@ class BeamSectionPropertiesPage extends StatefulWidget {
 
 class _BeamSectionPropertiesPageState extends State<BeamSectionPropertiesPage> {
   BeamSectionType _type = BeamSectionType.rectangle;
-  final _width = TextEditingController();
-  final _height = TextEditingController();
-  final _wall = TextEditingController();
-  final _flange = TextEditingController();
-  final _web = TextEditingController();
+  double? _width;
+  double? _height;
+  double? _wall;
+  double? _flange;
+  double? _web;
 
   @override
   void initState() {
@@ -42,21 +44,11 @@ class _BeamSectionPropertiesPageState extends State<BeamSectionPropertiesPage> {
       (value) => value.name == inputs['Section type'],
       orElse: () => BeamSectionType.rectangle,
     );
-    _width.text = inputs['Width / diameter (mm)'] ?? '';
-    _height.text = inputs['Height (mm)'] ?? '';
-    _wall.text = inputs['Wall thickness (mm)'] ?? '';
-    _flange.text = inputs['Flange thickness (mm)'] ?? '';
-    _web.text = inputs['Web thickness (mm)'] ?? '';
-  }
-
-  @override
-  void dispose() {
-    _width.dispose();
-    _height.dispose();
-    _wall.dispose();
-    _flange.dispose();
-    _web.dispose();
-    super.dispose();
+    _width = double.tryParse(inputs['Width / diameter (mm)'] ?? '');
+    _height = double.tryParse(inputs['Height (mm)'] ?? '');
+    _wall = double.tryParse(inputs['Wall thickness (mm)'] ?? '');
+    _flange = double.tryParse(inputs['Flange thickness (mm)'] ?? '');
+    _web = double.tryParse(inputs['Web thickness (mm)'] ?? '');
   }
 
   @override
@@ -106,15 +98,40 @@ class _BeamSectionPropertiesPageState extends State<BeamSectionPropertiesPage> {
                   SizedBox(height: context.tokens.space3),
                   AdaptiveFieldGrid(
                     children: [
-                      _field(
-                        _width,
-                        isCircular ? 'Outside diameter' : 'Overall width',
+                      UnitField(
+                        label:
+                            isCircular ? 'Outside diameter' : 'Overall width',
+                        category: UnitCategory.length,
+                        initialSI: _width,
+                        onChangedSI: (v) => _width = v,
                       ),
-                      if (!isCircular) _field(_height, 'Overall height'),
-                      if (isHollow) _field(_wall, 'Wall thickness'),
+                      if (!isCircular)
+                        UnitField(
+                          label: 'Overall height',
+                          category: UnitCategory.length,
+                          initialSI: _height,
+                          onChangedSI: (v) => _height = v,
+                        ),
+                      if (isHollow)
+                        UnitField(
+                          label: 'Wall thickness',
+                          category: UnitCategory.length,
+                          initialSI: _wall,
+                          onChangedSI: (v) => _wall = v,
+                        ),
                       if (isISection) ...[
-                        _field(_flange, 'Flange thickness'),
-                        _field(_web, 'Web thickness'),
+                        UnitField(
+                          label: 'Flange thickness',
+                          category: UnitCategory.length,
+                          initialSI: _flange,
+                          onChangedSI: (v) => _flange = v,
+                        ),
+                        UnitField(
+                          label: 'Web thickness',
+                          category: UnitCategory.length,
+                          initialSI: _web,
+                          onChangedSI: (v) => _web = v,
+                        ),
                       ],
                     ],
                   ),
@@ -128,7 +145,7 @@ class _BeamSectionPropertiesPageState extends State<BeamSectionPropertiesPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Calculates centroidal geometric properties used in beam bending and stress calculations. Dimensions are entered in millimetres. The x-axis is horizontal through the centroid and the y-axis is vertical through the centroid.',
+                    'Calculates centroidal geometric properties used in beam bending and stress calculations. The x-axis is horizontal through the centroid and the y-axis is vertical through the centroid.',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   SizedBox(height: context.tokens.space4),
@@ -151,37 +168,31 @@ class _BeamSectionPropertiesPageState extends State<BeamSectionPropertiesPage> {
     );
   }
 
-  Widget _field(TextEditingController controller, String label) => TextField(
-        controller: controller,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        decoration: InputDecoration(labelText: label, suffixText: 'mm'),
-      );
-
   void _calculate() {
     try {
-      final width = double.tryParse(_width.text) ?? 0;
+      final width = _width ?? 0;
       final height = {
         BeamSectionType.circle,
         BeamSectionType.hollowCircle,
       }.contains(_type)
           ? width
-          : double.tryParse(_height.text) ?? 0;
+          : _height ?? 0;
       final input = BeamSectionInput(
         type: _type,
         width: width,
         height: height,
-        wallThickness: double.tryParse(_wall.text) ?? 0,
-        flangeThickness: double.tryParse(_flange.text) ?? 0,
-        webThickness: double.tryParse(_web.text) ?? 0,
+        wallThickness: _wall ?? 0,
+        flangeThickness: _flange ?? 0,
+        webThickness: _web ?? 0,
       );
       final result = BeamSectionCalculator.calculate(input);
       final inputs = <String, String>{
         'Section type': _type.name,
-        'Width / diameter (mm)': _width.text,
-        if (_height.text.isNotEmpty) 'Height (mm)': _height.text,
-        if (_wall.text.isNotEmpty) 'Wall thickness (mm)': _wall.text,
-        if (_flange.text.isNotEmpty) 'Flange thickness (mm)': _flange.text,
-        if (_web.text.isNotEmpty) 'Web thickness (mm)': _web.text,
+        'Width / diameter (mm)': '${_width ?? ''}',
+        if (_height != null) 'Height (mm)': '$_height',
+        if (_wall != null) 'Wall thickness (mm)': '$_wall',
+        if (_flange != null) 'Flange thickness (mm)': '$_flange',
+        if (_web != null) 'Web thickness (mm)': '$_web',
       };
       context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
       Navigator.push(

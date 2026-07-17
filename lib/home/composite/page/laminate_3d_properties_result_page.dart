@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/engineering_constants_widget.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/result_list_matrix.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 import '../../tool_setting_page.dart';
 
@@ -17,6 +18,11 @@ class Laminate3DPropertiesResultPage extends StatelessWidget {
     required this.analysisType,
   }) : super(key: key);
 
+  static UnitCategory? _categoryForKey(String key) {
+    if (key.startsWith('E') || key.startsWith('G')) return UnitCategory.modulus;
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final ec = output.engineeringConstants;
@@ -24,7 +30,9 @@ class Laminate3DPropertiesResultPage extends StatelessWidget {
       ResultListMatrix(title: 'Effective 3D Stiffness Matrix', matrix: output.stiffness),
       ResultListMatrix(title: 'Effective 3D Compliance Matrix', matrix: output.compliance),
       EngineeringConstantsWidget(
-          title: 'Engineering Constants', constants: ec),
+          title: 'Engineering Constants',
+          constants: ec,
+          categoryForKey: _categoryForKey),
     ];
 
     return Scaffold(

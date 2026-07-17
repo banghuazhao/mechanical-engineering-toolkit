@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/area_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class AreaRow extends StatefulWidget {
   final Area area;
@@ -14,21 +16,6 @@ class AreaRow extends StatefulWidget {
 }
 
 class _AreaRowState extends State<AreaRow> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller =
-        TextEditingController(text: widget.area.value?.toString() ?? '');
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   validateLayupAngle(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -55,19 +42,18 @@ class _AreaRowState extends State<AreaRow> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
-            child: TextField(
-              controller: _controller,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(
-                  isDense: true,
-                  contentPadding: EdgeInsets.all(12),
-                  border: OutlineInputBorder(),
-                  labelText: "A (> 0)",
-                  errorText: widget.validate
-                      ? validateLayupAngle(widget.area.value)
-                      : null),
-              onChanged: (value) {
-                widget.area.value = double.tryParse(value);
+            child: UnitField(
+              label: "A (> 0)",
+              category: UnitCategory.area,
+              initialSI: widget.area.value,
+              signed: false,
+              isDense: true,
+              contentPadding: const EdgeInsets.all(12),
+              border: const OutlineInputBorder(),
+              errorText: (value) =>
+                  widget.validate ? validateLayupAngle(value) : null,
+              onChangedSI: (value) {
+                widget.area.value = value;
               },
             ),
           )

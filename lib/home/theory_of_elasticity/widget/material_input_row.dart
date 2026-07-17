@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class MaterialInputRow extends StatefulWidget {
   final MechanicalMaterial material;
@@ -256,20 +258,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController1,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E",
-                      errorText:
-                          widget.validate ? validateModulus(material.e) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('miiso-E'),
+                  label: "E",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e = value;
                   },
                 ),
               ),
@@ -311,20 +312,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController1,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E1",
-                      errorText:
-                          widget.validate ? validateModulus(material.e1) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e1 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('mitrans-E1'),
+                  label: "E1",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e1,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e1 = value;
                   },
                 ),
               ),
@@ -332,20 +332,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
                 width: 12,
               ),
               Expanded(
-                child: TextField(
-                  controller: textEditingController2,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E2",
-                      errorText:
-                          widget.validate ? validateModulus(material.e2) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e2 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('mitrans-E2'),
+                  label: "E2",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e2,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e2 = value;
                   },
                 ),
               ),
@@ -360,21 +359,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController3,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "G12",
-                      errorText: widget.validate
-                          ? validateModulus(material.g12)
-                          : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.g12 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('mitrans-G12'),
+                  label: "G12",
+                  category: UnitCategory.modulus,
+                  initialSI: material.g12,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.g12 = value;
                   },
                 ),
               ),
@@ -448,20 +445,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController1,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E1",
-                      errorText:
-                          widget.validate ? validateModulus(material.e1) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e1 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('miortho-E1'),
+                  label: "E1",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e1,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e1 = value;
                   },
                 ),
               ),
@@ -469,20 +465,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
                 width: 12,
               ),
               Expanded(
-                child: TextField(
-                  controller: textEditingController2,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E2",
-                      errorText:
-                          widget.validate ? validateModulus(material.e2) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e2 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('miortho-E2'),
+                  label: "E2",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e2,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e2 = value;
                   },
                 ),
               ),
@@ -497,20 +492,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController3,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E3",
-                      errorText:
-                          widget.validate ? validateModulus(material.e3) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e3 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('miortho-E3'),
+                  label: "E3",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e3,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e3 = value;
                   },
                 ),
               ),
@@ -518,21 +512,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
                 width: 12,
               ),
               Expanded(
-                child: TextField(
-                  controller: textEditingController4,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "G12",
-                      errorText: widget.validate
-                          ? validateModulus(material.g12)
-                          : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.g12 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('miortho-G12'),
+                  label: "G12",
+                  category: UnitCategory.modulus,
+                  initialSI: material.g12,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.g12 = value;
                   },
                 ),
               ),
@@ -547,21 +539,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController5,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "G13",
-                      errorText: widget.validate
-                          ? validateModulus(material.g13)
-                          : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.g13 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('miortho-G13'),
+                  label: "G13",
+                  category: UnitCategory.modulus,
+                  initialSI: material.g13,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.g13 = value;
                   },
                 ),
               ),
@@ -569,21 +559,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
                 width: 12,
               ),
               Expanded(
-                child: TextField(
-                  controller: textEditingController6,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "G23",
-                      errorText: widget.validate
-                          ? validateModulus(material.g23)
-                          : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.g23 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('miortho-G23'),
+                  label: "G23",
+                  category: UnitCategory.modulus,
+                  initialSI: material.g23,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.g23 = value;
                   },
                 ),
               ),
@@ -686,20 +674,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController1,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E1",
-                      errorText:
-                          widget.validate ? validateModulus(material.e1) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e1 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('mimono-E1'),
+                  label: "E1",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e1,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e1 = value;
                   },
                 ),
               ),
@@ -707,20 +694,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
                 width: 12,
               ),
               Expanded(
-                child: TextField(
-                  controller: textEditingController2,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E2",
-                      errorText:
-                          widget.validate ? validateModulus(material.e2) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e2 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('mimono-E2'),
+                  label: "E2",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e2,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e2 = value;
                   },
                 ),
               ),
@@ -735,20 +721,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController3,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E3",
-                      errorText:
-                          widget.validate ? validateModulus(material.e3) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e3 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('mimono-E3'),
+                  label: "E3",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e3,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e3 = value;
                   },
                 ),
               ),
@@ -756,21 +741,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
                 width: 12,
               ),
               Expanded(
-                child: TextField(
-                  controller: textEditingController4,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "G12",
-                      errorText: widget.validate
-                          ? validateModulus(material.g12)
-                          : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.g12 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('mimono-G12'),
+                  label: "G12",
+                  category: UnitCategory.modulus,
+                  initialSI: material.g12,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.g12 = value;
                   },
                 ),
               ),
@@ -785,21 +768,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController5,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "G13",
-                      errorText: widget.validate
-                          ? validateModulus(material.g13)
-                          : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.g13 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('mimono-G13'),
+                  label: "G13",
+                  category: UnitCategory.modulus,
+                  initialSI: material.g13,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.g13 = value;
                   },
                 ),
               ),
@@ -807,21 +788,19 @@ class _MaterialInputRowState extends State<MaterialInputRow> {
                 width: 12,
               ),
               Expanded(
-                child: TextField(
-                  controller: textEditingController6,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "G23",
-                      errorText: widget.validate
-                          ? validateModulus(material.g23)
-                          : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.g23 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('mimono-G23'),
+                  label: "G23",
+                  category: UnitCategory.modulus,
+                  initialSI: material.g23,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.g23 = value;
                   },
                 ),
               ),

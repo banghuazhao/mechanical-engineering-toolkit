@@ -5,6 +5,8 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/mechanical_tensor_model.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/result_6by6_matrix.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -76,17 +78,25 @@ class LinearElasticStressStrainWidget extends StatelessWidget {
   const LinearElasticStressStrainWidget({Key? key, required this.mechanicalTensor})
       : super(key: key);
 
-  _propertyRow(BuildContext context, String title, double? value) {
+  _propertyRow(BuildContext context, String title, double? valueSI,
+      [UnitCategory? category]) {
     return Consumer<NumberPrecisionHelper>(builder: (context, precs, child) {
+      final system = context.watch<UnitSystemPreference>().system;
+      final displayValue = valueSI == null || category == null
+          ? valueSI
+          : fromSI(valueSI, category, system);
+      final label = category == null
+          ? title
+          : '$title (${unitLabel(category, system)})';
       return SizedBox(
         height: 40,
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(
-            title,
+            label,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            precs.formatValue(value),
+            precs.formatValue(displayValue),
             style: Theme.of(context).textTheme.bodyLarge,
           )
         ]),
@@ -97,6 +107,7 @@ class LinearElasticStressStrainWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isStress = (mechanicalTensor is LinearStress);
+    final category = isStress ? UnitCategory.stress : null;
 
     return Card(
       shape: RoundedRectangleBorder(
@@ -121,42 +132,48 @@ class LinearElasticStressStrainWidget extends StatelessWidget {
                     isStress ? "σ11" : "ε11",
                     isStress
                         ? (mechanicalTensor as LinearStress).s11
-                        : (mechanicalTensor as LinearStrain).epsilon11),
+                        : (mechanicalTensor as LinearStrain).epsilon11,
+                    category),
                 const Divider(height: 1),
                 _propertyRow(
                     context,
                     isStress ? "σ22" : "ε22",
                     isStress
                         ? (mechanicalTensor as LinearStress).s22
-                        : (mechanicalTensor as LinearStrain).epsilon22),
+                        : (mechanicalTensor as LinearStrain).epsilon22,
+                    category),
                 const Divider(height: 1),
                 _propertyRow(
                     context,
                     isStress ? "σ33" : "ε33",
                     isStress
                         ? (mechanicalTensor as LinearStress).s33
-                        : (mechanicalTensor as LinearStrain).epsilon33),
+                        : (mechanicalTensor as LinearStrain).epsilon33,
+                    category),
                 const Divider(height: 1),
                 _propertyRow(
                     context,
                     isStress ? "σ23" : "ε23",
                     isStress
                         ? (mechanicalTensor as LinearStress).s23
-                        : (mechanicalTensor as LinearStrain).epsilon23),
+                        : (mechanicalTensor as LinearStrain).epsilon23,
+                    category),
                 const Divider(height: 1),
                 _propertyRow(
                     context,
                     isStress ? "σ13" : "ε13",
                     isStress
                         ? (mechanicalTensor as LinearStress).s13
-                        : (mechanicalTensor as LinearStrain).epsilon13),
+                        : (mechanicalTensor as LinearStrain).epsilon13,
+                    category),
                 const Divider(height: 1),
                 _propertyRow(
                     context,
                     isStress ? "σ12" : "ε12",
                     isStress
                         ? (mechanicalTensor as LinearStress).s12
-                        : (mechanicalTensor as LinearStrain).epsilon12),
+                        : (mechanicalTensor as LinearStrain).epsilon12,
+                    category),
               ],
             ),
           ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/beam_deflection_slope_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class CantileverBeamDeflectionsSlopesRow extends StatefulWidget {
   final BeamDeflectionSlope beamDeflectionSlope;
@@ -21,47 +23,6 @@ class CantileverBeamDeflectionsSlopesRow extends StatefulWidget {
 class _MonentsOfInertiaRowState
     extends State<CantileverBeamDeflectionsSlopesRow> {
   String dropValue = "Point force at end";
-
-  late TextEditingController textEditingController1;
-  late TextEditingController textEditingController2;
-  late TextEditingController textEditingController3;
-  late TextEditingController textEditingController4;
-  late TextEditingController textEditingController5;
-
-  @override
-  void initState() {
-    super.initState();
-    textEditingController1 = TextEditingController();
-    textEditingController2 = TextEditingController();
-    textEditingController3 = TextEditingController();
-    textEditingController4 = TextEditingController();
-    textEditingController5 = TextEditingController();
-    _updateControllers();
-  }
-
-  @override
-  void dispose() {
-    textEditingController1.dispose();
-    textEditingController2.dispose();
-    textEditingController3.dispose();
-    textEditingController4.dispose();
-    textEditingController5.dispose();
-    super.dispose();
-  }
-
-  void _updateControllers() {
-    textEditingController1.text = widget.beamDeflectionSlope.E?.toString() ?? '';
-    textEditingController2.text = widget.beamDeflectionSlope.I?.toString() ?? '';
-    textEditingController3.text = widget.beamDeflectionSlope.L?.toString() ?? '';
-    textEditingController4.text = widget.beamDeflectionSlope.f?.toString() ?? '';
-    if (widget.beamDeflectionSlope is BeamDeflectionSlopeABModel) {
-      textEditingController5.text =
-          (widget.beamDeflectionSlope as BeamDeflectionSlopeABModel)
-                  .a
-                  ?.toString() ??
-              '';
-    }
-  }
 
   validateForce(double? value) {
     if (value == null) {
@@ -89,6 +50,20 @@ class _MonentsOfInertiaRowState
     } else {
       return null;
     }
+  }
+
+  // "f" holds P (point force), q (distributed load), or M (moment)
+  // depending on the selected loading type — each needs a different unit
+  // category to stay dimensionally consistent with E (MPa), I (mm⁴) and
+  // L (mm).
+  UnitCategory get _forceCategory {
+    if (dropValue == "Distributed force evenly" ||
+        dropValue == "Distributed force") {
+      return UnitCategory.distributedLoadSmall;
+    } else if (dropValue == "Moment at end" || dropValue == "Moment") {
+      return UnitCategory.momentSection;
+    }
+    return UnitCategory.force;
   }
 
   @override
@@ -119,7 +94,6 @@ class _MonentsOfInertiaRowState
                     setState(() {
                       dropValue = newValue!;
                       widget.callback(dropValue);
-                      _updateControllers();
                     });
                   },
                   items: <String>[
@@ -152,21 +126,20 @@ class _MonentsOfInertiaRowState
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController1,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText: "E",
-                        errorText: widget.validate
-                            ? validateModulus(widget.beamDeflectionSlope.E)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
-                      widget.beamDeflectionSlope.E = double.tryParse(value);
+                  child: UnitField(
+                    key: ValueKey('E-$dropValue'),
+                    label: "E",
+                    category: UnitCategory.stress,
+                    initialSI: widget.beamDeflectionSlope.E,
+                    signed: false,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: (value) =>
+                        widget.validate ? validateModulus(value) : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
+                      widget.beamDeflectionSlope.E = value;
                     },
                   ),
                 ),
@@ -174,21 +147,20 @@ class _MonentsOfInertiaRowState
                   width: 12,
                 ),
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController2,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText: "I",
-                        errorText: widget.validate
-                            ? validateModulus(widget.beamDeflectionSlope.I)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
-                      widget.beamDeflectionSlope.I = double.tryParse(value);
+                  child: UnitField(
+                    key: ValueKey('I-$dropValue'),
+                    label: "I",
+                    category: UnitCategory.momentOfInertia,
+                    initialSI: widget.beamDeflectionSlope.I,
+                    signed: false,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: (value) =>
+                        widget.validate ? validateModulus(value) : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
+                      widget.beamDeflectionSlope.I = value;
                     },
                   ),
                 ),
@@ -203,21 +175,20 @@ class _MonentsOfInertiaRowState
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController3,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText: "L",
-                        errorText: widget.validate
-                            ? validateModulus(widget.beamDeflectionSlope.L)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
-                      widget.beamDeflectionSlope.L = double.tryParse(value);
+                  child: UnitField(
+                    key: ValueKey('L-$dropValue'),
+                    label: "L",
+                    category: UnitCategory.length,
+                    initialSI: widget.beamDeflectionSlope.L,
+                    signed: false,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: (value) =>
+                        widget.validate ? validateModulus(value) : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
+                      widget.beamDeflectionSlope.L = value;
                     },
                   ),
                 ),
@@ -225,21 +196,19 @@ class _MonentsOfInertiaRowState
                   width: 12,
                 ),
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController4,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText: forceText(),
-                        errorText: widget.validate
-                            ? validateForce(widget.beamDeflectionSlope.f)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
-                      widget.beamDeflectionSlope.f = double.tryParse(value);
+                  child: UnitField(
+                    key: ValueKey('f-$dropValue'),
+                    label: forceText(),
+                    category: _forceCategory,
+                    initialSI: widget.beamDeflectionSlope.f,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: (value) =>
+                        widget.validate ? validateForce(value) : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
+                      widget.beamDeflectionSlope.f = value;
                     },
                   ),
                 ),
@@ -255,25 +224,25 @@ class _MonentsOfInertiaRowState
                   child: Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: textEditingController5,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "a (0<=a<=L)",
-                              errorText: widget.validate
-                                  ? validatePositive((widget.beamDeflectionSlope
-                                          as BeamDeflectionSlopeABModel)
-                                      .a)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
+                        child: UnitField(
+                          key: ValueKey('a-$dropValue'),
+                          label: "a (0<=a<=L)",
+                          category: UnitCategory.length,
+                          initialSI: (widget.beamDeflectionSlope
+                                  as BeamDeflectionSlopeABModel)
+                              .a,
+                          signed: false,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validatePositive(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
                             (widget.beamDeflectionSlope
                                     as BeamDeflectionSlopeABModel)
-                                .a = double.tryParse(value);
+                                .a = value;
                           },
                         ),
                       ),

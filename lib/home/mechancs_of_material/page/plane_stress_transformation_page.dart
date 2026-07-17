@@ -13,6 +13,7 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/layup_angle
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/spherical_shell_stress_result.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/plane_stress_row.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class PlaneStressTransformationPage extends StatefulWidget {
   final String title;
@@ -163,11 +164,12 @@ The transformation equations for plane stress are:
           MaterialPageRoute(
               builder: (context) => SphericalShellStressResultPage(
                     rowTitle: "Transformed Stresses",
-                    titles: ["σ_x'", "σ_y'", "τ_x'y'"],
-                    values: [
-                      sigma_x1.formatted(precs),
-                      sigma_y1.formatted(precs),
-                      sigma_xy.formatted(precs),
+                    titles: const ["σ_x'", "σ_y'", "τ_x'y'"],
+                    values: [sigma_x1, sigma_y1, sigma_xy],
+                    valueUnits: const [
+                      UnitCategory.stress,
+                      UnitCategory.stress,
+                      UnitCategory.stress,
                     ],
                     calculationSteps: [
                       'θ = ${precs.formatValue(angle)}°,  2θ = ${precs.formatValue(2 * angle)}°',

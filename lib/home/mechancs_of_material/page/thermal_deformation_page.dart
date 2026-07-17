@@ -8,6 +8,9 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -74,20 +77,17 @@ class _ThermalDeformationPageState extends State<ThermalDeformationPage> {
               children: fields
                   .map((f) => Padding(
                         padding: const EdgeInsets.only(bottom: 12),
-                        child: TextField(
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true, signed: true),
-                          decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: const EdgeInsets.all(12),
-                            border: const OutlineInputBorder(),
-                            labelText: f.label,
-                            errorText: validate && f.value == null
-                                ? S.of(context).Not_a_number
-                                : null,
-                          ),
-                          onChanged: (v) =>
-                              setState(() => f.setter(double.tryParse(v))),
+                        child: UnitField(
+                          label: f.label,
+                          category: f.category,
+                          initialSI: f.value,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => validate && value == null
+                              ? S.of(context).Not_a_number
+                              : null,
+                          onChangedSI: (v) => setState(() => f.setter(v)),
                         ),
                       ))
                   .toList(),
@@ -102,14 +102,14 @@ class _ThermalDeformationPageState extends State<ThermalDeformationPage> {
   Widget build(BuildContext context) {
     final items = [
       _inputCard('Thermal Properties', [
-        _Field('α  (coefficient of thermal expansion, 1/°C or 1/K)',
-            () => _model.alpha, (v) => _model.alpha = v),
-        _Field('ΔT  (temperature change, °C or K)', () => _model.deltaT,
-            (v) => _model.deltaT = v),
-        _Field('L  (original length, m)', () => _model.length,
-            (v) => _model.length = v),
-        _Field('E  (Young\'s modulus, Pa)', () => _model.youngsModulus,
-            (v) => _model.youngsModulus = v),
+        _Field('α  (coefficient of thermal expansion, per °C — not converted)',
+            () => _model.alpha, (v) => _model.alpha = v, null),
+        _Field('ΔT  (temperature change)', () => _model.deltaT,
+            (v) => _model.deltaT = v, UnitCategory.temperatureDelta),
+        _Field('L  (original length)', () => _model.length,
+            (v) => _model.length = v, UnitCategory.length),
+        _Field('E  (Young\'s modulus)', () => _model.youngsModulus,
+            (v) => _model.youngsModulus = v, UnitCategory.stress),
       ]),
       DescriptionItem(
         content: Column(
@@ -205,8 +205,9 @@ class _Field {
   final String label;
   final double? Function() getter;
   final void Function(double?) setter;
+  final UnitCategory? category;
   double? get value => getter();
-  _Field(this.label, this.getter, this.setter);
+  _Field(this.label, this.getter, this.setter, this.category);
 }
 
 class _ThermalResultPage extends StatelessWidget {
@@ -224,8 +225,17 @@ class _ThermalResultPage extends StatelessWidget {
       required this.length,
       required this.E});
 
+  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
+    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+    final system =
+        Provider.of<UnitSystemPreference>(context, listen: false).system;
+    final display = valueSI == null ? null : fromSI(valueSI, category, system);
+    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
+  }
+
   @override
   Widget build(BuildContext context) {
+    context.watch<UnitSystemPreference>();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -239,12 +249,12 @@ class _ThermalResultPage extends StatelessWidget {
               final precs =
                   Provider.of<NumberPrecisionHelper>(context, listen: false);
               shareResult('Thermal Deformation & Stress', [
-                'δ_T = ${precs.formatValue(delta)}',
-                'σ_T = ${precs.formatValue(sigma)}',
+                'δ_T = ${_fv(context, delta, UnitCategory.length)}',
+                'σ_T = ${_fv(context, sigma, UnitCategory.stress)}',
                 '',
                 'Calculation:',
-                'δ_T = α × ΔT × L = ${precs.formatValue(alpha)} × ${precs.formatValue(deltaT)} × ${precs.formatValue(length)} = ${precs.formatValue(delta)}',
-                'σ_T = −E × α × ΔT = −${precs.formatValue(E)} × ${precs.formatValue(alpha)} × ${precs.formatValue(deltaT)} = ${precs.formatValue(sigma)}',
+                'δ_T = α × ΔT × L = ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} × ${_fv(context, length, UnitCategory.length)} = ${_fv(context, delta, UnitCategory.length)}',
+                'σ_T = −E × α × ΔT = −${_fv(context, E, UnitCategory.stress)} × ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} = ${_fv(context, sigma, UnitCategory.stress)}',
               ]);
             },
           ),
@@ -267,15 +277,16 @@ class _ThermalResultPage extends StatelessWidget {
                   'σ_T  (thermal stress, constrained)'
                 ],
                 resultValues: [delta, sigma],
+                resultUnits: const [UnitCategory.length, UnitCategory.stress],
               ),
               CalculationCard(steps: [
                 'δ_T = α × ΔT × L',
-                '= ${precs.formatValue(alpha)} × ${precs.formatValue(deltaT)} × ${precs.formatValue(length)}',
-                '= ${precs.formatValue(delta)}',
+                '= ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} × ${_fv(context, length, UnitCategory.length)}',
+                '= ${_fv(context, delta, UnitCategory.length)}',
                 '',
                 'σ_T = −E × α × ΔT',
-                '= −${precs.formatValue(E)} × ${precs.formatValue(alpha)} × ${precs.formatValue(deltaT)}',
-                '= ${precs.formatValue(sigma)}',
+                '= −${_fv(context, E, UnitCategory.stress)} × ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)}',
+                '= ${_fv(context, sigma, UnitCategory.stress)}',
               ]),
             ];
             return StaggeredGridView.countBuilder(

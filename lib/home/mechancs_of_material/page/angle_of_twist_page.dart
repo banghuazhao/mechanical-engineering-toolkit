@@ -10,6 +10,9 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -52,12 +55,14 @@ class _AngleOfTwistPageState extends State<AngleOfTwistPage> {
     final primary = Theme.of(context).colorScheme.primary;
 
     final fields = <_FieldDef>[
-      _FieldDef(
-          'T  (applied torque, N·m)', (v) => _model.T = v, () => _model.T),
-      _FieldDef('L  (shaft length, m)', (v) => _model.L = v, () => _model.L),
-      _FieldDef('G  (shear modulus, Pa)', (v) => _model.G = v, () => _model.G),
-      _FieldDef('J  (polar moment of inertia, m⁴)', (v) => _model.J = v,
-          () => _model.J),
+      _FieldDef('T  (applied torque)', (v) => _model.T = v, () => _model.T,
+          UnitCategory.momentSection),
+      _FieldDef('L  (shaft length)', (v) => _model.L = v, () => _model.L,
+          UnitCategory.length),
+      _FieldDef('G  (shear modulus)', (v) => _model.G = v, () => _model.G,
+          UnitCategory.stress),
+      _FieldDef('J  (polar moment of inertia)', (v) => _model.J = v,
+          () => _model.J, UnitCategory.momentOfInertia),
     ];
 
     final items = [
@@ -84,20 +89,17 @@ class _AngleOfTwistPageState extends State<AngleOfTwistPage> {
                 children: fields
                     .map((f) => Padding(
                           padding: const EdgeInsets.only(bottom: 12),
-                          child: TextField(
-                            keyboardType: const TextInputType.numberWithOptions(
-                                decimal: true, signed: true),
-                            decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: f.label,
-                              errorText: validate && f.getter() == null
-                                  ? S.of(context).Not_a_number
-                                  : null,
-                            ),
-                            onChanged: (v) =>
-                                setState(() => f.setter(double.tryParse(v))),
+                          child: UnitField(
+                            label: f.label,
+                            category: f.category,
+                            initialSI: f.getter(),
+                            isDense: true,
+                            contentPadding: const EdgeInsets.all(12),
+                            border: const OutlineInputBorder(),
+                            errorText: (value) => validate && value == null
+                                ? S.of(context).Not_a_number
+                                : null,
+                            onChangedSI: (v) => setState(() => f.setter(v)),
                           ),
                         ))
                     .toList(),
@@ -196,7 +198,8 @@ class _FieldDef {
   final String label;
   final void Function(double?) setter;
   final double? Function() getter;
-  _FieldDef(this.label, this.setter, this.getter);
+  final UnitCategory? category;
+  _FieldDef(this.label, this.setter, this.getter, this.category);
 }
 
 class _TwistResultPage extends StatelessWidget {
@@ -209,8 +212,17 @@ class _TwistResultPage extends StatelessWidget {
       required this.G,
       required this.J});
 
+  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
+    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+    final system =
+        Provider.of<UnitSystemPreference>(context, listen: false).system;
+    final display = valueSI == null ? null : fromSI(valueSI, category, system);
+    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
+  }
+
   @override
   Widget build(BuildContext context) {
+    context.watch<UnitSystemPreference>();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -228,7 +240,7 @@ class _TwistResultPage extends StatelessWidget {
                 '',
                 'Calculation:',
                 'φ = T·L / (G·J)',
-                '= ${precs.formatValue(T)} × ${precs.formatValue(L)} / (${precs.formatValue(G)} × ${precs.formatValue(J)})',
+                '= ${_fv(context, T, UnitCategory.momentSection)} × ${_fv(context, L, UnitCategory.length)} / (${_fv(context, G, UnitCategory.stress)} × ${_fv(context, J, UnitCategory.momentOfInertia)})',
                 '= ${precs.formatValue(phiRad)} rad = ${precs.formatValue(phiDeg)}°',
               ]);
             },
@@ -256,11 +268,12 @@ class _TwistResultPage extends StatelessWidget {
                 title: 'Angle of Twist',
                 resultTitles: const ['φ  (radians)', 'φ  (degrees)'],
                 resultValues: [phiRad, phiDeg],
+                resultUnits: const [null, UnitCategory.angle],
               ),
               Consumer<NumberPrecisionHelper>(
                 builder: (context, precs, _) => CalculationCard(steps: [
                   'φ = T·L / (G·J)',
-                  '= ${precs.formatValue(T)} × ${precs.formatValue(L)} / (${precs.formatValue(G)} × ${precs.formatValue(J)})',
+                  '= ${_fv(context, T, UnitCategory.momentSection)} × ${_fv(context, L, UnitCategory.length)} / (${_fv(context, G, UnitCategory.stress)} × ${_fv(context, J, UnitCategory.momentOfInertia)})',
                   '= ${precs.formatValue(phiRad)} rad',
                   '= ${precs.formatValue(phiDeg)}°',
                 ]),

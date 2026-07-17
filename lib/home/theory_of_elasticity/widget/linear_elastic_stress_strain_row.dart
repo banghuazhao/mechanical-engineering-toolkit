@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/mechanical_tensor_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class LinearElasticStressStrainRow extends StatefulWidget {
   final MechanicalTensor mechanicalTensor;
@@ -22,56 +24,6 @@ class LinearElasticStressStrainRow extends StatefulWidget {
 class _LinearElasticStressStrainRowState
     extends State<LinearElasticStressStrainRow> {
   String dropValue = "Stress";
-
-  late TextEditingController textEditingController1;
-  late TextEditingController textEditingController2;
-  late TextEditingController textEditingController3;
-  late TextEditingController textEditingController4;
-  late TextEditingController textEditingController5;
-  late TextEditingController textEditingController6;
-
-  @override
-  void initState() {
-    super.initState();
-    textEditingController1 = TextEditingController();
-    textEditingController2 = TextEditingController();
-    textEditingController3 = TextEditingController();
-    textEditingController4 = TextEditingController();
-    textEditingController5 = TextEditingController();
-    textEditingController6 = TextEditingController();
-    _updateControllers();
-  }
-
-  @override
-  void dispose() {
-    textEditingController1.dispose();
-    textEditingController2.dispose();
-    textEditingController3.dispose();
-    textEditingController4.dispose();
-    textEditingController5.dispose();
-    textEditingController6.dispose();
-    super.dispose();
-  }
-
-  void _updateControllers() {
-    if (widget.mechanicalTensor is LinearStress) {
-      LinearStress stress = (widget.mechanicalTensor as LinearStress);
-      textEditingController1.text = stress.s11?.toString() ?? '';
-      textEditingController2.text = stress.s22?.toString() ?? '';
-      textEditingController3.text = stress.s33?.toString() ?? '';
-      textEditingController4.text = stress.s23?.toString() ?? '';
-      textEditingController5.text = stress.s13?.toString() ?? '';
-      textEditingController6.text = stress.s12?.toString() ?? '';
-    } else {
-      LinearStrain strain = (widget.mechanicalTensor as LinearStrain);
-      textEditingController1.text = strain.epsilon11?.toString() ?? '';
-      textEditingController2.text = strain.epsilon22?.toString() ?? '';
-      textEditingController3.text = strain.epsilon33?.toString() ?? '';
-      textEditingController4.text = strain.epsilon23?.toString() ?? '';
-      textEditingController5.text = strain.epsilon13?.toString() ?? '';
-      textEditingController6.text = strain.epsilon12?.toString() ?? '';
-    }
-  }
 
   validateTensor(double? value) {
     if (value == null) {
@@ -119,7 +71,6 @@ class _LinearElasticStressStrainRowState
                     setState(() {
                       dropValue = newValue!;
                       widget.callback(dropValue);
-                      _updateControllers();
                     });
                   },
                   items: <String>[S.of(context).Stress, S.of(context).Strain]
@@ -138,30 +89,29 @@ class _LinearElasticStressStrainRowState
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController1,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText:
-                            dropValue == S.of(context).Stress ? "σ11" : "ε11",
-                        errorText: widget.validate
-                            ? validateTensor(dropValue == S.of(context).Stress
-                                ? (widget.mechanicalTensor as LinearStress).s11
-                                : (widget.mechanicalTensor as LinearStrain)
-                                    .epsilon11)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
+                  child: UnitField(
+                    key: ValueKey('s11-$dropValue'),
+                    label:
+                        dropValue == S.of(context).Stress ? "σ11" : "ε11",
+                    category: dropValue == S.of(context).Stress
+                        ? UnitCategory.stress
+                        : null,
+                    initialSI: dropValue == S.of(context).Stress
+                        ? (widget.mechanicalTensor as LinearStress).s11
+                        : (widget.mechanicalTensor as LinearStrain).epsilon11,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: widget.validate
+                        ? (si) => validateTensor(si)
+                        : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {
-                        (widget.mechanicalTensor as LinearStress).s11 =
-                            double.tryParse(value);
+                        (widget.mechanicalTensor as LinearStress).s11 = value;
                       } else {
                         (widget.mechanicalTensor as LinearStrain).epsilon11 =
-                            double.tryParse(value);
+                            value;
                       }
                     },
                   ),
@@ -170,30 +120,29 @@ class _LinearElasticStressStrainRowState
                   width: 12,
                 ),
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController2,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText:
-                            dropValue == S.of(context).Stress ? "σ22" : "ε22",
-                        errorText: widget.validate
-                            ? validateTensor(dropValue == S.of(context).Stress
-                                ? (widget.mechanicalTensor as LinearStress).s22
-                                : (widget.mechanicalTensor as LinearStrain)
-                                    .epsilon22)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
+                  child: UnitField(
+                    key: ValueKey('s22-$dropValue'),
+                    label:
+                        dropValue == S.of(context).Stress ? "σ22" : "ε22",
+                    category: dropValue == S.of(context).Stress
+                        ? UnitCategory.stress
+                        : null,
+                    initialSI: dropValue == S.of(context).Stress
+                        ? (widget.mechanicalTensor as LinearStress).s22
+                        : (widget.mechanicalTensor as LinearStrain).epsilon22,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: widget.validate
+                        ? (si) => validateTensor(si)
+                        : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {
-                        (widget.mechanicalTensor as LinearStress).s22 =
-                            double.tryParse(value);
+                        (widget.mechanicalTensor as LinearStress).s22 = value;
                       } else {
                         (widget.mechanicalTensor as LinearStrain).epsilon22 =
-                            double.tryParse(value);
+                            value;
                       }
                     },
                   ),
@@ -209,30 +158,29 @@ class _LinearElasticStressStrainRowState
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController3,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText:
-                            dropValue == S.of(context).Stress ? "σ33" : "ε33",
-                        errorText: widget.validate
-                            ? validateTensor(dropValue == S.of(context).Stress
-                                ? (widget.mechanicalTensor as LinearStress).s33
-                                : (widget.mechanicalTensor as LinearStrain)
-                                    .epsilon33)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
+                  child: UnitField(
+                    key: ValueKey('s33-$dropValue'),
+                    label:
+                        dropValue == S.of(context).Stress ? "σ33" : "ε33",
+                    category: dropValue == S.of(context).Stress
+                        ? UnitCategory.stress
+                        : null,
+                    initialSI: dropValue == S.of(context).Stress
+                        ? (widget.mechanicalTensor as LinearStress).s33
+                        : (widget.mechanicalTensor as LinearStrain).epsilon33,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: widget.validate
+                        ? (si) => validateTensor(si)
+                        : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {
-                        (widget.mechanicalTensor as LinearStress).s33 =
-                            double.tryParse(value);
+                        (widget.mechanicalTensor as LinearStress).s33 = value;
                       } else {
                         (widget.mechanicalTensor as LinearStrain).epsilon33 =
-                            double.tryParse(value);
+                            value;
                       }
                     },
                   ),
@@ -241,30 +189,29 @@ class _LinearElasticStressStrainRowState
                   width: 12,
                 ),
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController4,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText:
-                            dropValue == S.of(context).Stress ? "σ23" : "ε23",
-                        errorText: widget.validate
-                            ? validateTensor(dropValue == S.of(context).Stress
-                                ? (widget.mechanicalTensor as LinearStress).s23
-                                : (widget.mechanicalTensor as LinearStrain)
-                                    .epsilon23)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
+                  child: UnitField(
+                    key: ValueKey('s23-$dropValue'),
+                    label:
+                        dropValue == S.of(context).Stress ? "σ23" : "ε23",
+                    category: dropValue == S.of(context).Stress
+                        ? UnitCategory.stress
+                        : null,
+                    initialSI: dropValue == S.of(context).Stress
+                        ? (widget.mechanicalTensor as LinearStress).s23
+                        : (widget.mechanicalTensor as LinearStrain).epsilon23,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: widget.validate
+                        ? (si) => validateTensor(si)
+                        : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {
-                        (widget.mechanicalTensor as LinearStress).s23 =
-                            double.tryParse(value);
+                        (widget.mechanicalTensor as LinearStress).s23 = value;
                       } else {
                         (widget.mechanicalTensor as LinearStrain).epsilon23 =
-                            double.tryParse(value);
+                            value;
                       }
                     },
                   ),
@@ -280,30 +227,29 @@ class _LinearElasticStressStrainRowState
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController5,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText:
-                            dropValue == S.of(context).Stress ? "σ13" : "ε13",
-                        errorText: widget.validate
-                            ? validateTensor(dropValue == S.of(context).Stress
-                                ? (widget.mechanicalTensor as LinearStress).s13
-                                : (widget.mechanicalTensor as LinearStrain)
-                                    .epsilon13)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
+                  child: UnitField(
+                    key: ValueKey('s13-$dropValue'),
+                    label:
+                        dropValue == S.of(context).Stress ? "σ13" : "ε13",
+                    category: dropValue == S.of(context).Stress
+                        ? UnitCategory.stress
+                        : null,
+                    initialSI: dropValue == S.of(context).Stress
+                        ? (widget.mechanicalTensor as LinearStress).s13
+                        : (widget.mechanicalTensor as LinearStrain).epsilon13,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: widget.validate
+                        ? (si) => validateTensor(si)
+                        : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {
-                        (widget.mechanicalTensor as LinearStress).s13 =
-                            double.tryParse(value);
+                        (widget.mechanicalTensor as LinearStress).s13 = value;
                       } else {
                         (widget.mechanicalTensor as LinearStrain).epsilon13 =
-                            double.tryParse(value);
+                            value;
                       }
                     },
                   ),
@@ -312,30 +258,29 @@ class _LinearElasticStressStrainRowState
                   width: 12,
                 ),
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController6,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText:
-                            dropValue == S.of(context).Stress ? "σ12" : "ε12",
-                        errorText: widget.validate
-                            ? validateTensor(dropValue == S.of(context).Stress
-                                ? (widget.mechanicalTensor as LinearStress).s12
-                                : (widget.mechanicalTensor as LinearStrain)
-                                    .epsilon12)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
+                  child: UnitField(
+                    key: ValueKey('s12-$dropValue'),
+                    label:
+                        dropValue == S.of(context).Stress ? "σ12" : "ε12",
+                    category: dropValue == S.of(context).Stress
+                        ? UnitCategory.stress
+                        : null,
+                    initialSI: dropValue == S.of(context).Stress
+                        ? (widget.mechanicalTensor as LinearStress).s12
+                        : (widget.mechanicalTensor as LinearStrain).epsilon12,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: widget.validate
+                        ? (si) => validateTensor(si)
+                        : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {
-                        (widget.mechanicalTensor as LinearStress).s12 =
-                            double.tryParse(value);
+                        (widget.mechanicalTensor as LinearStress).s12 = value;
                       } else {
                         (widget.mechanicalTensor as LinearStrain).epsilon12 =
-                            double.tryParse(value);
+                            value;
                       }
                     },
                   ),

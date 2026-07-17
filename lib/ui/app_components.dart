@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
+import 'package:provider/provider.dart';
 
 class AppContent extends StatelessWidget {
   const AppContent({
@@ -156,14 +160,27 @@ class AppCopyableValue extends StatelessWidget {
   const AppCopyableValue({
     super.key,
     required this.label,
-    required this.value,
-  });
+    this.value,
+    this.valueSI,
+    this.category,
+  }) : assert(value != null || valueSI != null,
+            'Provide either value or valueSI');
 
   final String label;
-  final String value;
 
-  Future<void> _copy(BuildContext context) async {
-    await Clipboard.setData(ClipboardData(text: value));
+  /// A pre-formatted display string. Ignored when [valueSI] is provided.
+  final String? value;
+
+  /// A raw value expressed in the app's SI display unit for [category].
+  /// When provided, this widget formats it via [NumberPrecisionHelper] and
+  /// converts/labels it using the current [UnitSystemPreference].
+  final double? valueSI;
+
+  /// Unit category for [valueSI]. Pass null for a dimensionless value.
+  final UnitCategory? category;
+
+  Future<void> _copy(BuildContext context, String text) async {
+    await Clipboard.setData(ClipboardData(text: text));
     await HapticFeedback.lightImpact();
     if (!context.mounted) return;
     ScaffoldMessenger.of(context)
@@ -174,8 +191,9 @@ class AppCopyableValue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final displayValue = _resolveValue(context);
     return InkWell(
-      onTap: value.isEmpty ? null : () => _copy(context),
+      onTap: displayValue.isEmpty ? null : () => _copy(context, displayValue),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: context.tokens.space2),
         child: Row(
@@ -191,7 +209,7 @@ class AppCopyableValue extends StatelessWidget {
             ),
             Flexible(
               child: Text(
-                value.isEmpty ? '—' : value,
+                displayValue.isEmpty ? '—' : displayValue,
                 textAlign: TextAlign.end,
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: theme.colorScheme.primary,
@@ -199,7 +217,7 @@ class AppCopyableValue extends StatelessWidget {
                 ),
               ),
             ),
-            if (value.isNotEmpty)
+            if (displayValue.isNotEmpty)
               Icon(
                 Icons.content_copy_rounded,
                 size: 18,
@@ -209,6 +227,17 @@ class AppCopyableValue extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _resolveValue(BuildContext context) {
+    final si = valueSI;
+    if (si == null) return value ?? '';
+    final precs = context.watch<NumberPrecisionHelper>();
+    final system = context.watch<UnitSystemPreference>().system;
+    final displayNumber = category == null ? si : fromSI(si, category!, system);
+    final formatted = precs.formatValue(displayNumber);
+    final unit = category == null ? '' : unitLabel(category!, system);
+    return unit.isEmpty ? formatted : '$formatted $unit';
   }
 }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/mechanical_tensor_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class PlaneStressStrainRow extends StatefulWidget {
   final MechanicalTensor mechanicalTensor;
@@ -20,10 +22,6 @@ class PlaneStressStrainRow extends StatefulWidget {
 
 class _PlaneStressStrainRowState extends State<PlaneStressStrainRow> {
   String dropValue = "Stress";
-
-  TextEditingController textEditingController1 = TextEditingController();
-  TextEditingController textEditingController2 = TextEditingController();
-  TextEditingController textEditingController3 = TextEditingController();
 
   validateTensor(double? value) {
     if (value == null) {
@@ -71,9 +69,6 @@ class _PlaneStressStrainRowState extends State<PlaneStressStrainRow> {
                     setState(() {
                       dropValue = newValue!;
                       widget.callback(dropValue);
-                      textEditingController1.clear();
-                      textEditingController2.clear();
-                      textEditingController3.clear();
                     });
                   },
                   items: <String>[S.of(context).Stress, S.of(context).Strain]
@@ -92,31 +87,30 @@ class _PlaneStressStrainRowState extends State<PlaneStressStrainRow> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController1,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText:
-                            dropValue == S.of(context).Stress ? "σ11" : "ε11",
-                        errorText: widget.validate
-                            ? validateTensor(dropValue == S.of(context).Stress
-                                ? (widget.mechanicalTensor as PlaneStress)
-                                    .sigma11
-                                : (widget.mechanicalTensor as PlaneStrain)
-                                    .epsilon11)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
+                  child: UnitField(
+                    key: ValueKey('sigma11-$dropValue'),
+                    label:
+                        dropValue == S.of(context).Stress ? "σ11" : "ε11",
+                    category: dropValue == S.of(context).Stress
+                        ? UnitCategory.stress
+                        : null,
+                    initialSI: dropValue == S.of(context).Stress
+                        ? (widget.mechanicalTensor as PlaneStress).sigma11
+                        : (widget.mechanicalTensor as PlaneStrain).epsilon11,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: widget.validate
+                        ? (si) => validateTensor(si)
+                        : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {
                         (widget.mechanicalTensor as PlaneStress).sigma11 =
-                            double.tryParse(value);
+                            value;
                       } else {
                         (widget.mechanicalTensor as PlaneStrain).epsilon11 =
-                            double.tryParse(value);
+                            value;
                       }
                     },
                   ),
@@ -125,31 +119,30 @@ class _PlaneStressStrainRowState extends State<PlaneStressStrainRow> {
                   width: 12,
                 ),
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController2,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText:
-                            dropValue == S.of(context).Stress ? "σ22" : "ε22",
-                        errorText: widget.validate
-                            ? validateTensor(dropValue == S.of(context).Stress
-                                ? (widget.mechanicalTensor as PlaneStress)
-                                    .sigma22
-                                : (widget.mechanicalTensor as PlaneStrain)
-                                    .epsilon22)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
+                  child: UnitField(
+                    key: ValueKey('sigma22-$dropValue'),
+                    label:
+                        dropValue == S.of(context).Stress ? "σ22" : "ε22",
+                    category: dropValue == S.of(context).Stress
+                        ? UnitCategory.stress
+                        : null,
+                    initialSI: dropValue == S.of(context).Stress
+                        ? (widget.mechanicalTensor as PlaneStress).sigma22
+                        : (widget.mechanicalTensor as PlaneStrain).epsilon22,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: widget.validate
+                        ? (si) => validateTensor(si)
+                        : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {
                         (widget.mechanicalTensor as PlaneStress).sigma22 =
-                            double.tryParse(value);
+                            value;
                       } else {
                         (widget.mechanicalTensor as PlaneStrain).epsilon22 =
-                            double.tryParse(value);
+                            value;
                       }
                     },
                   ),
@@ -165,32 +158,31 @@ class _PlaneStressStrainRowState extends State<PlaneStressStrainRow> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController3,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText: dropValue == S.of(context).Stress
-                            ? "σ12"
-                            : "γ12 (2ε12)",
-                        errorText: widget.validate
-                            ? validateTensor(dropValue == S.of(context).Stress
-                                ? (widget.mechanicalTensor as PlaneStress)
-                                    .sigma12
-                                : (widget.mechanicalTensor as PlaneStrain)
-                                    .gamma12)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
+                  child: UnitField(
+                    key: ValueKey('sigma12-$dropValue'),
+                    label: dropValue == S.of(context).Stress
+                        ? "σ12"
+                        : "γ12 (2ε12)",
+                    category: dropValue == S.of(context).Stress
+                        ? UnitCategory.stress
+                        : null,
+                    initialSI: dropValue == S.of(context).Stress
+                        ? (widget.mechanicalTensor as PlaneStress).sigma12
+                        : (widget.mechanicalTensor as PlaneStrain).gamma12,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: widget.validate
+                        ? (si) => validateTensor(si)
+                        : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {
                         (widget.mechanicalTensor as PlaneStress).sigma12 =
-                            double.tryParse(value);
+                            value;
                       } else {
                         (widget.mechanicalTensor as PlaneStrain).gamma12 =
-                            double.tryParse(value);
+                            value;
                       }
                     },
                   ),

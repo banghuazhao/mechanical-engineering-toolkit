@@ -11,6 +11,9 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -119,16 +122,20 @@ class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
               child: Column(
                 children: [
                   if (_mode == _SolveFor.torque)
-                    _field('P  (power, kW)', validate && _power == null,
-                        (v) => setState(() => _power = double.tryParse(v))),
+                    _unitField('P  (power)', UnitCategory.power, _power,
+                        validate && _power == null,
+                        (v) => setState(() => _power = v)),
                   if (_mode == _SolveFor.power)
-                    _field('T  (torque, N·m)', validate && _torque == null,
-                        (v) => setState(() => _torque = double.tryParse(v))),
+                    _unitField('T  (torque)', UnitCategory.torque, _torque,
+                        validate && _torque == null,
+                        (v) => setState(() => _torque = v)),
                   const SizedBox(height: 12),
-                  _field(
-                      'n  (rotational speed, RPM)',
+                  _unitField(
+                      'n  (rotational speed)',
+                      UnitCategory.angularVelocity,
+                      _rpm,
                       validate && (_rpm == null || _rpm == 0),
-                      (v) => setState(() => _rpm = double.tryParse(v))),
+                      (v) => setState(() => _rpm = v)),
                 ],
               ),
             ),
@@ -194,18 +201,18 @@ class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
     );
   }
 
-  Widget _field(String label, bool showError, void Function(String) onChanged) {
-    return TextField(
-      keyboardType:
-          const TextInputType.numberWithOptions(decimal: true, signed: false),
-      decoration: InputDecoration(
-        isDense: true,
-        contentPadding: const EdgeInsets.all(12),
-        border: const OutlineInputBorder(),
-        labelText: label,
-        errorText: showError ? S.of(context).Not_a_number : null,
-      ),
-      onChanged: onChanged,
+  Widget _unitField(String label, UnitCategory category, double? initialSI,
+      bool showError, ValueChanged<double?> onChangedSI) {
+    return UnitField(
+      label: label,
+      category: category,
+      initialSI: initialSI,
+      signed: false,
+      isDense: true,
+      contentPadding: const EdgeInsets.all(12),
+      border: const OutlineInputBorder(),
+      errorText: (_) => showError ? S.of(context).Not_a_number : null,
+      onChangedSI: onChangedSI,
     );
   }
 
@@ -250,8 +257,17 @@ class _PowerTorqueResultPage extends StatelessWidget {
       required this.rpm,
       required this.mode});
 
+  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
+    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+    final system =
+        Provider.of<UnitSystemPreference>(context, listen: false).system;
+    final display = valueSI == null ? null : fromSI(valueSI, category, system);
+    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
+  }
+
   @override
   Widget build(BuildContext context) {
+    context.watch<UnitSystemPreference>();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -266,22 +282,22 @@ class _PowerTorqueResultPage extends StatelessWidget {
                   Provider.of<NumberPrecisionHelper>(context, listen: false);
               final lines = mode == _SolveFor.torque
                   ? [
-                      'T = ${precs.formatValue(torque)} N·m',
-                      'P = ${precs.formatValue(power)} W  (${precs.formatValue(power / 1000)} kW)',
+                      'T = ${_fv(context, torque, UnitCategory.torque)}',
+                      'P = ${precs.formatValue(power)} W  (${_fv(context, power / 1000, UnitCategory.power)})',
                       'ω = ${precs.formatValue(omega)} rad/s',
                       '',
                       'Calculation:',
                       'ω = 2π·n / 60 = 2π × ${precs.formatValue(rpm)} / 60 = ${precs.formatValue(omega)} rad/s',
-                      'T = P / ω = ${precs.formatValue(power)} / ${precs.formatValue(omega)} = ${precs.formatValue(torque)} N·m',
+                      'T = P / ω = ${precs.formatValue(power)} / ${precs.formatValue(omega)} = ${_fv(context, torque, UnitCategory.torque)}',
                     ]
                   : [
-                      'P = ${precs.formatValue(power)} W  (${precs.formatValue(power / 1000)} kW)',
-                      'T = ${precs.formatValue(torque)} N·m',
+                      'P = ${precs.formatValue(power)} W  (${_fv(context, power / 1000, UnitCategory.power)})',
+                      'T = ${_fv(context, torque, UnitCategory.torque)}',
                       'ω = ${precs.formatValue(omega)} rad/s',
                       '',
                       'Calculation:',
                       'ω = 2π·n / 60 = 2π × ${precs.formatValue(rpm)} / 60 = ${precs.formatValue(omega)} rad/s',
-                      'P = T × ω = ${precs.formatValue(torque)} × ${precs.formatValue(omega)} = ${precs.formatValue(power)} W',
+                      'P = T × ω = ${_fv(context, torque, UnitCategory.torque)} × ${precs.formatValue(omega)} = ${precs.formatValue(power)} W',
                     ];
               shareResult('Shaft Power & Torque', lines);
             },
@@ -308,23 +324,29 @@ class _PowerTorqueResultPage extends StatelessWidget {
               MultipleRowResult(
                 title: 'Shaft Power & Torque',
                 resultTitles: const [
-                  'T  (torque, N·m)',
+                  'T  (torque)',
                   'P  (power, W)',
-                  'P  (power, kW)',
+                  'P  (power)',
                   'ω  (angular velocity, rad/s)',
                 ],
                 resultValues: [torque, power, power / 1000, omega],
+                resultUnits: const [
+                  UnitCategory.torque,
+                  null,
+                  UnitCategory.power,
+                  null,
+                ],
               ),
               Consumer<NumberPrecisionHelper>(
                 builder: (context, precs, _) {
                   final steps = mode == _SolveFor.torque
                       ? [
                           'ω = 2π·n / 60 = 2π × ${precs.formatValue(rpm)} / 60 = ${precs.formatValue(omega)} rad/s',
-                          'T = P / ω = ${precs.formatValue(power)} / ${precs.formatValue(omega)} = ${precs.formatValue(torque)} N·m',
+                          'T = P / ω = ${precs.formatValue(power)} / ${precs.formatValue(omega)} = ${_fv(context, torque, UnitCategory.torque)}',
                         ]
                       : [
                           'ω = 2π·n / 60 = 2π × ${precs.formatValue(rpm)} / 60 = ${precs.formatValue(omega)} rad/s',
-                          'P = T × ω = ${precs.formatValue(torque)} × ${precs.formatValue(omega)} = ${precs.formatValue(power)} W',
+                          'P = T × ω = ${_fv(context, torque, UnitCategory.torque)} × ${precs.formatValue(omega)} = ${precs.formatValue(power)} W',
                         ];
                   return CalculationCard(steps: steps);
                 },

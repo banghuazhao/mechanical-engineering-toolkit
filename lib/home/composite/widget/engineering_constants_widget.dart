@@ -1,22 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class EngineeringConstantsWidget extends StatelessWidget {
   final String title;
   final Map<String, double> constants;
 
+  /// Optional lookup returning the [UnitCategory] for a given entry key.
+  /// When it returns non-null for a key, that entry's value is
+  /// converted/labelled reactively via the app's [UnitSystemPreference].
+  /// Defaults to null for every key, preserving the previous
+  /// (unconverted) behavior for call sites that don't pass this.
+  final UnitCategory? Function(String key)? categoryForKey;
+
   const EngineeringConstantsWidget({
     Key? key,
     required this.title,
     required this.constants,
+    this.categoryForKey,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final primary = Theme.of(context).colorScheme.primary;
     final entries = constants.entries.toList();
+    final system = context.watch<UnitSystemPreference>().system;
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +50,13 @@ class EngineeringConstantsWidget extends StatelessWidget {
               children: entries.asMap().entries.map((e) {
                 final isLast = e.key == entries.length - 1;
                 final key = e.value.key;
-                final val = e.value.value;
+                final category = categoryForKey?.call(key);
+                final val = category == null
+                    ? e.value.value
+                    : fromSI(e.value.value, category, system);
+                final displayKey = category == null
+                    ? key
+                    : '$key (${unitLabel(category, system)})';
                 final valStr = precs.formatValue(val);
                 return Column(
                   children: [
@@ -66,7 +83,7 @@ class EngineeringConstantsWidget extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(key,
+                            Text(displayKey,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleMedium

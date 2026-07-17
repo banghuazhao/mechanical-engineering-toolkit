@@ -5,6 +5,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/engineering_constants_widget.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/result_list_matrix.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 import '../../tool_setting_page.dart';
 
@@ -35,6 +36,11 @@ class LaminatePlanePropertiesResultPage extends StatelessWidget {
     return m;
   }
 
+  UnitCategory? _categoryForKey(String key) {
+    if (key.startsWith('E') || key.startsWith('G')) return UnitCategory.modulus;
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final items = <Widget>[
@@ -43,10 +49,12 @@ class LaminatePlanePropertiesResultPage extends StatelessWidget {
       ResultListMatrix(title: 'D Matrix (Flexural)', matrix: output.D),
       EngineeringConstantsWidget(
           title: 'In-Plane Properties',
-          constants: _propsMap(output.inPlaneProperties)),
+          constants: _propsMap(output.inPlaneProperties),
+          categoryForKey: _categoryForKey),
       EngineeringConstantsWidget(
           title: 'Flexural Properties',
-          constants: _propsMap(output.flexuralProperties)),
+          constants: _propsMap(output.flexuralProperties),
+          categoryForKey: _categoryForKey),
     ];
 
     return Scaffold(

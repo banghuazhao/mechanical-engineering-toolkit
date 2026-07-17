@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 enum _LoadType { pointLoad, udl, both }
@@ -21,35 +24,26 @@ class BeamReactionsPage extends StatefulWidget {
 class _BeamReactionsPageState extends State<BeamReactionsPage> {
   _LoadType _loadType = _LoadType.pointLoad;
 
-  final _spanCtrl = TextEditingController();
-  final _pCtrl = TextEditingController();
-  final _aCtrl = TextEditingController();
-  final _wCtrl = TextEditingController();
+  double? _span;
+  double? _p;
+  double? _a;
+  double? _w;
 
   @override
   void initState() {
     super.initState();
     if (widget.initialInputs != null) {
       final inputs = widget.initialInputs!;
-      _spanCtrl.text = inputs['Span L'] ?? '';
+      _span = double.tryParse(inputs['Span L'] ?? '');
       if (inputs.containsKey('Load Type')) {
         _loadType = _LoadType.values.firstWhere(
             (e) => e.toString().split('.').last == inputs['Load Type'],
             orElse: () => _LoadType.pointLoad);
       }
-      _pCtrl.text = inputs['P (load)'] ?? '';
-      _aCtrl.text = inputs['a (from A)'] ?? '';
-      _wCtrl.text = inputs['w (intensity)'] ?? '';
+      _p = double.tryParse(inputs['P (load)'] ?? '');
+      _a = double.tryParse(inputs['a (from A)'] ?? '');
+      _w = double.tryParse(inputs['w (intensity)'] ?? '');
     }
-  }
-
-  @override
-  void dispose() {
-    _spanCtrl.dispose();
-    _pCtrl.dispose();
-    _aCtrl.dispose();
-    _wCtrl.dispose();
-    super.dispose();
   }
 
   @override
@@ -72,10 +66,11 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 12),
-                  TextField(
-                    controller: _spanCtrl,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    decoration: const InputDecoration(labelText: 'Span L', suffixText: 'm'),
+                  UnitField(
+                    label: 'Span L',
+                    category: UnitCategory.span,
+                    initialSI: _span,
+                    onChangedSI: (v) => _span = v,
                   ),
                   const SizedBox(height: 16),
                   Text('Load Type', style: Theme.of(context).textTheme.titleMedium),
@@ -96,18 +91,20 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
                     Row(
                       children: [
                         Expanded(
-                          child: TextField(
-                            controller: _pCtrl,
-                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                            decoration: const InputDecoration(labelText: 'P (load)', suffixText: 'N'),
+                          child: UnitField(
+                            label: 'P (load)',
+                            category: UnitCategory.force,
+                            initialSI: _p,
+                            onChangedSI: (v) => _p = v,
                           ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
-                          child: TextField(
-                            controller: _aCtrl,
-                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                            decoration: const InputDecoration(labelText: 'a (from A)', suffixText: 'm'),
+                          child: UnitField(
+                            label: 'a (from A)',
+                            category: UnitCategory.span,
+                            initialSI: _a,
+                            onChangedSI: (v) => _a = v,
                           ),
                         ),
                       ],
@@ -117,10 +114,11 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
                   if (_loadType == _LoadType.udl || _loadType == _LoadType.both) ...[
                     Text('Uniform Distributed Load (full span)', style: Theme.of(context).textTheme.titleSmall),
                     const SizedBox(height: 8),
-                    TextField(
-                      controller: _wCtrl,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(labelText: 'w (intensity)', suffixText: 'N/m'),
+                    UnitField(
+                      label: 'w (intensity)',
+                      category: UnitCategory.distributedLoad,
+                      initialSI: _w,
+                      onChangedSI: (v) => _w = v,
                     ),
                   ],
                 ],
@@ -144,7 +142,7 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
   }
 
   void _calculate() {
-    final L = double.tryParse(_spanCtrl.text);
+    final L = _span;
     if (L == null || L <= 0) { _showError('Enter a valid span L > 0'); return; }
 
     final hasPoint = _loadType == _LoadType.pointLoad || _loadType == _LoadType.both;
@@ -152,13 +150,13 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
 
     double? P, a, w;
     if (hasPoint) {
-      P = double.tryParse(_pCtrl.text);
-      a = double.tryParse(_aCtrl.text);
+      P = _p;
+      a = _a;
       if (P == null || a == null) { _showError('Enter P and a'); return; }
       if (a < 0 || a > L) { _showError('a must be between 0 and L'); return; }
     }
     if (hasUdl) {
-      w = double.tryParse(_wCtrl.text);
+      w = _w;
       if (w == null) { _showError('Enter w'); return; }
     }
 
@@ -175,63 +173,13 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
     }
     context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
 
-    double Ra = 0, Rb = 0, maxM = 0;
-    final steps = <String>[];
-
-    if (hasPoint && !hasUdl) {
-      final b = L - a!;
-      Ra = P! * b / L;
-      Rb = P * a / L;
-      maxM = Ra * a;
-      steps.addAll([
-        'Point load P = ${_fmt(P)} N at a = ${_fmt(a)} m from A',
-        'b = L − a = ${_fmt(L)} − ${_fmt(a)} = ${_fmt(b)} m',
-        'Ra = P·b / L',
-        '   = ${_fmt(P)} × ${_fmt(b)} / ${_fmt(L)}',
-        '   = ${_fmt(Ra)} N',
-        'Rb = P·a / L',
-        '   = ${_fmt(P)} × ${_fmt(a)} / ${_fmt(L)}',
-        '   = ${_fmt(Rb)} N',
-        'M_max = Ra·a = ${_fmt(Ra)} × ${_fmt(a)} = ${_fmt(maxM)} N·m  (at x = ${_fmt(a)} m)',
-      ]);
-    } else if (!hasPoint && hasUdl) {
-      Ra = w! * L / 2;
-      Rb = Ra;
-      maxM = w * L * L / 8;
-      steps.addAll([
-        'UDL w = ${_fmt(w)} N/m over L = ${_fmt(L)} m',
-        'Ra = w·L / 2 = ${_fmt(w)} × ${_fmt(L)} / 2 = ${_fmt(Ra)} N',
-        'Rb = w·L / 2 = ${_fmt(Rb)} N',
-        'M_max = w·L² / 8',
-        '      = ${_fmt(w)} × ${_fmt(L)}² / 8',
-        '      = ${_fmt(maxM)} N·m  (at midspan)',
-      ]);
-    } else {
-      final b = L - a!;
-      final RaPt = P! * b / L;
-      final RbPt = P * a / L;
-      final RaUdl = w! * L / 2;
-      Ra = RaPt + RaUdl;
-      Rb = RbPt + RaUdl;
-      maxM = Ra * a; // approximate
-      steps.addAll([
-        'Point load P = ${_fmt(P)} N at a = ${_fmt(a)} m, UDL w = ${_fmt(w)} N/m',
-        'Ra (point) = P·b/L = ${_fmt(P)}×${_fmt(b)}/${_fmt(L)} = ${_fmt(RaPt)} N',
-        'Ra (UDL)   = w·L/2 = ${_fmt(w)}×${_fmt(L)}/2 = ${_fmt(RaUdl)} N',
-        'Ra = ${_fmt(RaPt)} + ${_fmt(RaUdl)} = ${_fmt(Ra)} N',
-        'Rb (point) = P·a/L = ${_fmt(P)}×${_fmt(a)}/${_fmt(L)} = ${_fmt(RbPt)} N',
-        'Rb = ${_fmt(RbPt)} + ${_fmt(RaUdl)} = ${_fmt(Rb)} N',
-        'M_max ≈ Ra·a = ${_fmt(Ra)} × ${_fmt(a)} = ${_fmt(maxM)} N·m',
-      ]);
-    }
-
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => _ResultPage(
           title: widget.title,
-          Ra: Ra, Rb: Rb, maxM: maxM,
-          steps: steps,
+          loadType: _loadType,
+          L: L, P: P, a: a, w: w,
         ),
       ),
     );
@@ -239,29 +187,92 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
 
   void _showError(String msg) =>
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
-
-  String _fmt(double v) =>
-      v.toStringAsFixed(4).replaceAll(RegExp(r'0+$'), '').replaceAll(RegExp(r'\.$'), '');
 }
 
 class _ResultPage extends StatelessWidget {
   final String title;
-  final double Ra, Rb, maxM;
-  final List<String> steps;
+  final _LoadType loadType;
+  final double L;
+  final double? P, a, w;
 
   const _ResultPage({
     required this.title,
-    required this.Ra,
-    required this.Rb,
-    required this.maxM,
-    required this.steps,
+    required this.loadType,
+    required this.L,
+    required this.P,
+    required this.a,
+    required this.w,
   });
 
   String _fmt(double v) =>
       v.toStringAsFixed(4).replaceAll(RegExp(r'0+$'), '').replaceAll(RegExp(r'\.$'), '');
 
+  String _fv(double valueSI, UnitCategory category, UnitSystem system) =>
+      '${_fmt(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
+
+  ({double Ra, double Rb, double maxM, List<String> steps}) _solve(
+      UnitSystem system) {
+    final hasPoint =
+        loadType == _LoadType.pointLoad || loadType == _LoadType.both;
+    final hasUdl = loadType == _LoadType.udl || loadType == _LoadType.both;
+    final l = _fv(L, UnitCategory.span, system);
+
+    double Ra = 0, Rb = 0, maxM = 0;
+    final steps = <String>[];
+
+    if (hasPoint && !hasUdl) {
+      final b = L - a!;
+      Ra = P! * b / L;
+      Rb = P! * a! / L;
+      maxM = Ra * a!;
+      steps.addAll([
+        'Point load P = ${_fv(P!, UnitCategory.force, system)} at a = ${_fv(a!, UnitCategory.span, system)} from A',
+        'b = L − a = $l − ${_fv(a!, UnitCategory.span, system)} = ${_fv(b, UnitCategory.span, system)}',
+        'Ra = P·b / L',
+        '   = ${_fv(P!, UnitCategory.force, system)} × ${_fv(b, UnitCategory.span, system)} / $l',
+        '   = ${_fv(Ra, UnitCategory.force, system)}',
+        'Rb = P·a / L',
+        '   = ${_fv(P!, UnitCategory.force, system)} × ${_fv(a!, UnitCategory.span, system)} / $l',
+        '   = ${_fv(Rb, UnitCategory.force, system)}',
+        'M_max = Ra·a = ${_fv(Ra, UnitCategory.force, system)} × ${_fv(a!, UnitCategory.span, system)} = ${_fv(maxM, UnitCategory.torque, system)}  (at x = ${_fv(a!, UnitCategory.span, system)})',
+      ]);
+    } else if (!hasPoint && hasUdl) {
+      Ra = w! * L / 2;
+      Rb = Ra;
+      maxM = w! * L * L / 8;
+      steps.addAll([
+        'UDL w = ${_fv(w!, UnitCategory.distributedLoad, system)} over L = $l',
+        'Ra = w·L / 2 = ${_fv(w!, UnitCategory.distributedLoad, system)} × $l / 2 = ${_fv(Ra, UnitCategory.force, system)}',
+        'Rb = w·L / 2 = ${_fv(Rb, UnitCategory.force, system)}',
+        'M_max = w·L² / 8',
+        '      = ${_fv(w!, UnitCategory.distributedLoad, system)} × $l² / 8',
+        '      = ${_fv(maxM, UnitCategory.torque, system)}  (at midspan)',
+      ]);
+    } else {
+      final b = L - a!;
+      final RaPt = P! * b / L;
+      final RbPt = P! * a! / L;
+      final RaUdl = w! * L / 2;
+      Ra = RaPt + RaUdl;
+      Rb = RbPt + RaUdl;
+      maxM = Ra * a!; // approximate
+      steps.addAll([
+        'Point load P = ${_fv(P!, UnitCategory.force, system)} at a = ${_fv(a!, UnitCategory.span, system)}, UDL w = ${_fv(w!, UnitCategory.distributedLoad, system)}',
+        'Ra (point) = P·b/L = ${_fv(P!, UnitCategory.force, system)}×${_fv(b, UnitCategory.span, system)}/$l = ${_fv(RaPt, UnitCategory.force, system)}',
+        'Ra (UDL)   = w·L/2 = ${_fv(w!, UnitCategory.distributedLoad, system)}×$l/2 = ${_fv(RaUdl, UnitCategory.force, system)}',
+        'Ra = ${_fv(RaPt, UnitCategory.force, system)} + ${_fv(RaUdl, UnitCategory.force, system)} = ${_fv(Ra, UnitCategory.force, system)}',
+        'Rb (point) = P·a/L = ${_fv(P!, UnitCategory.force, system)}×${_fv(a!, UnitCategory.span, system)}/$l = ${_fv(RbPt, UnitCategory.force, system)}',
+        'Rb = ${_fv(RbPt, UnitCategory.force, system)} + ${_fv(RaUdl, UnitCategory.force, system)} = ${_fv(Rb, UnitCategory.force, system)}',
+        'M_max ≈ Ra·a = ${_fv(Ra, UnitCategory.force, system)} × ${_fv(a!, UnitCategory.span, system)} = ${_fv(maxM, UnitCategory.torque, system)}',
+      ]);
+    }
+    return (Ra: Ra, Rb: Rb, maxM: maxM, steps: steps);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final system = context.watch<UnitSystemPreference>().system;
+    final solved = _solve(system);
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -269,16 +280,16 @@ class _ResultPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.share_rounded),
             onPressed: () => shareResult(title, [
-              'Ra = ${_fmt(Ra)} N',
-              'Rb = ${_fmt(Rb)} N',
-              'M_max = ${_fmt(maxM)} N·m',
+              'Ra = ${_fv(solved.Ra, UnitCategory.force, system)}',
+              'Rb = ${_fv(solved.Rb, UnitCategory.force, system)}',
+              'M_max = ${_fv(solved.maxM, UnitCategory.torque, system)}',
             ]),
           ),
         ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
-        children: [CalculationCard(steps: steps)],
+        children: [CalculationCard(steps: solved.steps)],
       ),
     );
   }

@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class MultipleRowResult extends StatelessWidget {
   final String title;
   final List<String> resultTitles;
   final List<double?> resultValues;
+  final List<UnitCategory?>? resultUnits;
 
   const MultipleRowResult({
     Key? key,
     required this.title,
     required this.resultTitles,
     required this.resultValues,
+    this.resultUnits,
   }) : super(key: key);
 
   void _copyToClipboard(BuildContext context, String value) {
@@ -50,17 +54,28 @@ class MultipleRowResult extends StatelessWidget {
             ),
           ),
           const Divider(height: 14),
-          Consumer<NumberPrecisionHelper>(
-            builder: (context, precs, child) {
+          Consumer2<NumberPrecisionHelper, UnitSystemPreference>(
+            builder: (context, precs, unitPref, child) {
               return Column(
                 children: List.generate(resultTitles.length, (index) {
-                  final valueStr = precs.formatValue(resultValues[index]);
+                  final category = resultUnits?[index];
+                  final rawValue = resultValues[index];
+                  final displayNumber = rawValue == null
+                      ? null
+                      : (category == null
+                          ? rawValue
+                          : fromSI(rawValue, category, unitPref.system));
+                  final valueStr = precs.formatValue(displayNumber);
+                  final unit =
+                      category == null ? '' : unitLabel(category, unitPref.system);
+                  final displayStr =
+                      valueStr.isEmpty || unit.isEmpty ? valueStr : '$valueStr $unit';
                   final isLast = index == resultTitles.length - 1;
                   return Column(
                     children: [
                       InkWell(
                         onTap: valueStr.isNotEmpty
-                            ? () => _copyToClipboard(context, valueStr)
+                            ? () => _copyToClipboard(context, displayStr)
                             : null,
                         borderRadius: isLast
                             ? const BorderRadius.vertical(bottom: Radius.circular(14))
@@ -79,7 +94,7 @@ class MultipleRowResult extends StatelessWidget {
                               Row(
                                 children: [
                                   Text(
-                                    valueStr.isNotEmpty ? valueStr : '—',
+                                    valueStr.isNotEmpty ? displayStr : '—',
                                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                                           color: primary,
                                           fontWeight: FontWeight.w600,

@@ -9,6 +9,8 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -82,9 +84,18 @@ class _BarForceDisplacementResultPageState
     return _anchoredAdaptiveAd!.load();
   }
 
+  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
+    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+    final system =
+        Provider.of<UnitSystemPreference>(context, listen: false).system;
+    final display = valueSI == null ? null : fromSI(valueSI, category, system);
+    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
+  }
+
   @override
   Widget build(BuildContext context) {
     final adsRemoved = context.watch<RemoveAdsService>().isAdsRemoved;
+    context.watch<UnitSystemPreference>();
     _disposeBannerWhenPurchased(adsRemoved);
     return Scaffold(
         appBar: AppBar(
@@ -92,15 +103,13 @@ class _BarForceDisplacementResultPageState
             IconButton(
               icon: const Icon(Icons.share_rounded),
               onPressed: () {
-                final precs =
-                    Provider.of<NumberPrecisionHelper>(context, listen: false);
                 shareResult('Bar Force & Displacement', [
-                  'δ = ${precs.formatValue(widget.displacement.value)}',
+                  'δ = ${_fv(context, widget.displacement.value, UnitCategory.length)}',
                   '',
                   'Calculation:',
                   'δ = F·L / (E·A)',
-                  '= ${precs.formatValue(widget.F)} × ${precs.formatValue(widget.L)} / (${precs.formatValue(widget.E)} × ${precs.formatValue(widget.A)})',
-                  '= ${precs.formatValue(widget.displacement.value)}',
+                  '= ${_fv(context, widget.F, UnitCategory.force)} × ${_fv(context, widget.L, UnitCategory.length)} / (${_fv(context, widget.E, UnitCategory.stress)} × ${_fv(context, widget.A, UnitCategory.area)})',
+                  '= ${_fv(context, widget.displacement.value, UnitCategory.length)}',
                 ]);
               },
             ),
@@ -136,14 +145,13 @@ class _BarForceDisplacementResultPageState
                     SingleRowResult(
                         title: S.of(context).Displacement,
                         resultTitle: "δ",
-                        resultValue: widget.displacement.value),
-                    Consumer<NumberPrecisionHelper>(
-                      builder: (context, precs, _) => CalculationCard(steps: [
-                        'δ = F·L / (E·A)',
-                        '= ${precs.formatValue(widget.F)} × ${precs.formatValue(widget.L)} / (${precs.formatValue(widget.E)} × ${precs.formatValue(widget.A)})',
-                        '= ${precs.formatValue(widget.displacement.value)}',
-                      ]),
-                    ),
+                        resultValue: widget.displacement.value,
+                        category: UnitCategory.length),
+                    CalculationCard(steps: [
+                      'δ = F·L / (E·A)',
+                      '= ${_fv(context, widget.F, UnitCategory.force)} × ${_fv(context, widget.L, UnitCategory.length)} / (${_fv(context, widget.E, UnitCategory.stress)} × ${_fv(context, widget.A, UnitCategory.area)})',
+                      '= ${_fv(context, widget.displacement.value, UnitCategory.length)}',
+                    ]),
                   ][index];
                 }),
             if (!adsRemoved && _anchoredAdaptiveAd != null && _isLoaded)

@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/engineering_constants_widget.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/result_list_matrix.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 import '../../tool_setting_page.dart';
 
@@ -37,6 +38,7 @@ class LaminaStressStrainResultPage extends StatelessWidget {
       EngineeringConstantsWidget(
         title: isStress ? 'Stress Result' : 'Strain Result',
         constants: resultConstants,
+        categoryForKey: isStress ? (_) => UnitCategory.stress : null,
       ),
       ResultListMatrix(title: 'Stiffness Matrix Q̄', matrix: output.Q),
       ResultListMatrix(title: 'Compliance Matrix S̄', matrix: output.S),

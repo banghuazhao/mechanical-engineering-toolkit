@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class LaminaContantsRow extends StatefulWidget {
   final TransverselyIsotropicMaterial material;
@@ -21,21 +23,12 @@ class LaminaContantsRow extends StatefulWidget {
 }
 
 class _LaminaContantsRowState extends State<LaminaContantsRow> {
-  late TextEditingController _e1Controller;
-  late TextEditingController _e2Controller;
-  late TextEditingController _g12Controller;
   late TextEditingController _nu12Controller;
   late TextEditingController _nu23Controller;
 
   @override
   void initState() {
     super.initState();
-    _e1Controller =
-        TextEditingController(text: widget.material.e1?.toString() ?? '');
-    _e2Controller =
-        TextEditingController(text: widget.material.e2?.toString() ?? '');
-    _g12Controller =
-        TextEditingController(text: widget.material.g12?.toString() ?? '');
     _nu12Controller =
         TextEditingController(text: widget.material.nu12?.toString() ?? '');
     _nu23Controller =
@@ -44,9 +37,6 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
 
   @override
   void dispose() {
-    _e1Controller.dispose();
-    _e2Controller.dispose();
-    _g12Controller.dispose();
     _nu12Controller.dispose();
     _nu23Controller.dispose();
     super.dispose();
@@ -95,41 +85,37 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: _e1Controller,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "E1",
-                              errorText: widget.validate
-                                  ? validateModulus(widget.material.e1)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.material.e1 = double.tryParse(value);
+                        child: UnitField(
+                          label: "E1",
+                          category: UnitCategory.modulus,
+                          initialSI: widget.material.e1,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: widget.validate
+                              ? (si) => validateModulus(si)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.material.e1 = value;
                           },
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: TextField(
-                          controller: _e2Controller,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "E2",
-                              errorText: widget.validate
-                                  ? validateModulus(widget.material.e2)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.material.e2 = double.tryParse(value);
+                        child: UnitField(
+                          label: "E2",
+                          category: UnitCategory.modulus,
+                          initialSI: widget.material.e2,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: widget.validate
+                              ? (si) => validateModulus(si)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.material.e2 = value;
                           },
                         ),
                       ),
@@ -139,21 +125,19 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: _g12Controller,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "G12",
-                              errorText: widget.validate
-                                  ? validateModulus(widget.material.g12)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.material.g12 = double.tryParse(value);
+                        child: UnitField(
+                          label: "G12",
+                          category: UnitCategory.modulus,
+                          initialSI: widget.material.g12,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: widget.validate
+                              ? (si) => validateModulus(si)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.material.g12 = value;
                           },
                         ),
                       ),

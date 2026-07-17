@@ -8,6 +8,8 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -83,9 +85,18 @@ class _ColumnBucklingLoadResultPageState
     return _anchoredAdaptiveAd!.load();
   }
 
+  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
+    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+    final system =
+        Provider.of<UnitSystemPreference>(context, listen: false).system;
+    final display = valueSI == null ? null : fromSI(valueSI, category, system);
+    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
+  }
+
   @override
   Widget build(BuildContext context) {
     final adsRemoved = context.watch<RemoveAdsService>().isAdsRemoved;
+    context.watch<UnitSystemPreference>();
     _disposeBannerWhenPurchased(adsRemoved);
     return Scaffold(
         appBar: AppBar(
@@ -99,12 +110,12 @@ class _ColumnBucklingLoadResultPageState
                     ? 'π²'
                     : '${precs.formatValue(widget.C)} × π²';
                 shareResult('Column Buckling Load', [
-                  'Pcr = ${precs.formatValue(widget.Pcr)}',
+                  'Pcr = ${_fv(context, widget.Pcr, UnitCategory.force)}',
                   '',
                   'Calculation:',
                   'Pcr = C·π²·E·I / L²  (${widget.endCondition})',
-                  '= $cStr × ${precs.formatValue(widget.E)} × ${precs.formatValue(widget.I)} / ${precs.formatValue(widget.L)}²',
-                  '= ${precs.formatValue(widget.Pcr)}',
+                  '= $cStr × ${_fv(context, widget.E, UnitCategory.stress)} × ${_fv(context, widget.I, UnitCategory.momentOfInertia)} / ${_fv(context, widget.L, UnitCategory.length)}²',
+                  '= ${_fv(context, widget.Pcr, UnitCategory.force)}',
                 ]);
               },
             ),
@@ -140,7 +151,8 @@ class _ColumnBucklingLoadResultPageState
                     SingleRowResult(
                         title: S.of(context).Buckling_Load,
                         resultTitle: "Pcr",
-                        resultValue: widget.Pcr),
+                        resultValue: widget.Pcr,
+                        category: UnitCategory.force),
                     Consumer<NumberPrecisionHelper>(
                       builder: (context, precs, _) {
                         final cStr = widget.C == 1.0
@@ -148,8 +160,8 @@ class _ColumnBucklingLoadResultPageState
                             : '${precs.formatValue(widget.C)} × π²';
                         return CalculationCard(steps: [
                           'Pcr = C·π²·E·I / L²  (${widget.endCondition})',
-                          '= $cStr × ${precs.formatValue(widget.E)} × ${precs.formatValue(widget.I)} / ${precs.formatValue(widget.L)}²',
-                          '= ${precs.formatValue(widget.Pcr)}',
+                          '= $cStr × ${_fv(context, widget.E, UnitCategory.stress)} × ${_fv(context, widget.I, UnitCategory.momentOfInertia)} / ${_fv(context, widget.L, UnitCategory.length)}²',
+                          '= ${_fv(context, widget.Pcr, UnitCategory.force)}',
                         ]);
                       },
                     ),

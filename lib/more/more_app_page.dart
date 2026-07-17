@@ -12,12 +12,6 @@ class MoreAppPage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<MoreAppItem> _items = [];
 
-    var finance_go =
-        MoreAppItem(Image.asset("images/app_icons/finance_go.png"), S.of(context).FinanceGo, () {
-      OpenStore.instance
-          .open(appStoreId: "1519476344", androidAppBundleId: "com.appsbay.financego");
-    });
-
     var Relaxing_Up =
         MoreAppItem(Image.asset("images/app_icons/relaxing_up.png"), S.of(context).Relaxing_Up, () {
       OpenStore.instance
@@ -27,12 +21,6 @@ class MoreAppPage extends StatelessWidget {
     var Yes_Habit =
         MoreAppItem(Image.asset("images/app_icons/yes_habit.png"), S.of(context).Yes_Habit, () {
       OpenStore.instance.open(appStoreId: "1637643734", androidAppBundleId: "");
-    });
-
-    var Mint_Translate = MoreAppItem(
-        Image.asset("images/app_icons/mint_translate.png"), S.of(context).Mint_Translate, () {
-      OpenStore.instance
-          .open(appStoreId: "1638456603", androidAppBundleId: "com.appsbay.mint_translate");
     });
 
     var Metronome_Go = MoreAppItem(
@@ -61,13 +49,6 @@ class MoreAppPage extends StatelessWidget {
 
     var Shows = MoreAppItem(Image.asset("images/app_icons/shows.png"), S.of(context).Shows, () {
       OpenStore.instance.open(appStoreId: "1624910011", androidAppBundleId: "com.appsbay.shows");
-    });
-
-    var Simple_English_Dictionary = MoreAppItem(
-        Image.asset("images/app_icons/simple_english_dictionary.png"),
-        S.of(context).Simple_English_Dictionary, () {
-      OpenStore.instance.open(
-          appStoreId: "1611258200", androidAppBundleId: "com.appsbay.simple_english_dictionary");
     });
 
     var Sudoku_Lover = MoreAppItem(
@@ -99,28 +80,18 @@ class MoreAppPage extends StatelessWidget {
           .open(appStoreId: "1595232677", androidAppBundleId: "com.AppsBay.nasa_lover");
     });
 
-    var SwiftComp =
-        MoreAppItem(Image.asset("images/app_icons/swiftcomp.png"), S.of(context).SwiftComp, () {
-      OpenStore.instance
-          .open(appStoreId: "1297825946", androidAppBundleId: "com.banghuazhao.swiftcomp");
-    });
-
     if (Platform.isIOS) {
       _items = [
-        SwiftComp,
         Relaxing_Up,
         Yes_Habit,
-        Mint_Translate,
         Metronome_Go,
         World_Weather_Live,
         Shows,
-        Simple_English_Dictionary,
         Sudoku_Lover,
         Express_Scan,
         Simple_Calculator,
         Onlynote,
         money_tracker,
-        finance_go,
         novels_hub,
         nasa_lover,
         MoreAppItem(Image.asset("images/app_icons/appstore.png"), S.of(context).MoreApps, () {
@@ -129,14 +100,10 @@ class MoreAppPage extends StatelessWidget {
       ];
     } else {
       _items = [
-        SwiftComp,
         Relaxing_Up,
-        Mint_Translate,
         Metronome_Go,
         World_Weather_Live,
         Shows,
-        finance_go,
-        Simple_English_Dictionary,
         Sudoku_Lover,
         Express_Scan,
         Simple_Calculator,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class OrthotropicPropertiesWidget extends StatelessWidget {
@@ -10,18 +12,27 @@ class OrthotropicPropertiesWidget extends StatelessWidget {
       {Key? key, required this.title, required this.orthotropicMaterial})
       : super(key: key);
 
-  _propertyRow(BuildContext context, String title, double? value) {
+  _propertyRow(BuildContext context, String title, double? valueSI,
+      [UnitCategory? category]) {
     return Consumer<NumberPrecisionHelper>(builder: (context, precs, child) {
+      final system = context.watch<UnitSystemPreference>().system;
+      final displayValue =
+          valueSI == null || category == null
+              ? valueSI
+              : fromSI(valueSI, category, system);
+      final label = category == null
+          ? title
+          : '$title (${unitLabel(category, system)})';
       return SizedBox(
         height: 40,
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(
-            title,
+            label,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            precs.formatValue(value),
+            precs.formatValue(displayValue),
             style: Theme.of(context).textTheme.bodyLarge,
           )
         ]),
@@ -49,17 +60,23 @@ class OrthotropicPropertiesWidget extends StatelessWidget {
             child: ListView(
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                _propertyRow(context, "E1", orthotropicMaterial.e1),
+                _propertyRow(context, "E1", orthotropicMaterial.e1,
+                    UnitCategory.modulus),
                 const Divider(height: 1),
-                _propertyRow(context, "E2", orthotropicMaterial.e2),
+                _propertyRow(context, "E2", orthotropicMaterial.e2,
+                    UnitCategory.modulus),
                 const Divider(height: 1),
-                _propertyRow(context, "E3", orthotropicMaterial.e3),
+                _propertyRow(context, "E3", orthotropicMaterial.e3,
+                    UnitCategory.modulus),
                 const Divider(height: 1),
-                _propertyRow(context, "G12", orthotropicMaterial.g12),
+                _propertyRow(context, "G12", orthotropicMaterial.g12,
+                    UnitCategory.modulus),
                 const Divider(height: 1),
-                _propertyRow(context, "G13", orthotropicMaterial.g13),
+                _propertyRow(context, "G13", orthotropicMaterial.g13,
+                    UnitCategory.modulus),
                 const Divider(height: 1),
-                _propertyRow(context, "G23", orthotropicMaterial.g23),
+                _propertyRow(context, "G23", orthotropicMaterial.g23,
+                    UnitCategory.modulus),
                 const Divider(height: 1),
                 _propertyRow(context, "ν12", orthotropicMaterial.nu12),
                 const Divider(height: 1),

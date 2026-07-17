@@ -10,6 +10,9 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -74,18 +77,28 @@ class _FailureCriteriaPageState extends State<FailureCriteriaPage> {
             const Divider(height: 14),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: TextField(
-                keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true, signed: false),
-                decoration: InputDecoration(
-                  isDense: true,
-                  contentPadding: const EdgeInsets.all(12),
-                  border: const OutlineInputBorder(),
-                  labelText:
-                      'S_y  (tensile yield strength — for factor of safety)',
-                  helperText: 'Leave blank to skip safety factor calculation',
-                ),
-                onChanged: (v) => setState(() => _yield = double.tryParse(v)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  UnitField(
+                    label:
+                        'S_y  (tensile yield strength — for factor of safety)',
+                    category: UnitCategory.stress,
+                    initialSI: _yield,
+                    signed: false,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    onChangedSI: (v) => setState(() => _yield = v),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Leave blank to skip safety factor calculation',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -184,21 +197,18 @@ class _FailureCriteriaPageState extends State<FailureCriteriaPage> {
               children: fields
                   .map((f) => Padding(
                         padding: const EdgeInsets.only(bottom: 12),
-                        child: TextField(
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true, signed: true),
-                          decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: const EdgeInsets.all(12),
-                            border: const OutlineInputBorder(),
-                            labelText: f.label,
-                            errorText:
-                                validate && f.required && f.getter() == null
-                                    ? S.of(context).Not_a_number
-                                    : null,
-                          ),
-                          onChanged: (v) =>
-                              setState(() => f.setter(double.tryParse(v))),
+                        child: UnitField(
+                          label: f.label,
+                          category: UnitCategory.stress,
+                          initialSI: f.getter(),
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) =>
+                              validate && f.required && value == null
+                                  ? S.of(context).Not_a_number
+                                  : null,
+                          onChangedSI: (v) => setState(() => f.setter(v)),
                         ),
                       ))
                   .toList(),
@@ -277,8 +287,17 @@ class _FailureResultPage extends StatelessWidget {
     this.yield_,
   });
 
+  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
+    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+    final system =
+        Provider.of<UnitSystemPreference>(context, listen: false).system;
+    final display = valueSI == null ? null : fromSI(valueSI, category, system);
+    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
+  }
+
   @override
   Widget build(BuildContext context) {
+    context.watch<UnitSystemPreference>();
     final hasSy = yield_ != null && yield_! > 0;
     final fsSy = hasSy ? yield_! / vonMises : null;
     final fsTresca = hasSy ? yield_! / tresca : null;
@@ -315,19 +334,19 @@ class _FailureResultPage extends StatelessWidget {
               final precs =
                   Provider.of<NumberPrecisionHelper>(context, listen: false);
               shareResult('Failure Criteria', [
-                'σ₁ = ${precs.formatValue(s1)},  σ₂ = ${precs.formatValue(s2)}',
-                'σ_VM = ${precs.formatValue(vonMises)}',
-                'σ_Tresca = ${precs.formatValue(tresca)},  τ_max = ${precs.formatValue(tauMax)}',
+                'σ₁ = ${_fv(context, s1, UnitCategory.stress)},  σ₂ = ${_fv(context, s2, UnitCategory.stress)}',
+                'σ_VM = ${_fv(context, vonMises, UnitCategory.stress)}',
+                'σ_Tresca = ${_fv(context, tresca, UnitCategory.stress)},  τ_max = ${_fv(context, tauMax, UnitCategory.stress)}',
                 if (yield_ != null && yield_! > 0) ...[
                   'FS_VM = ${precs.formatValue(yield_! / vonMises)}',
                   'FS_Tresca = ${precs.formatValue(yield_! / tresca)}',
                 ],
                 '',
                 'Calculation:',
-                'R = √(((σₓ−σᵧ)/2)² + τ²) = ${precs.formatValue(R)}',
-                'σ₁ = ${precs.formatValue(avg)} + ${precs.formatValue(R)} = ${precs.formatValue(s1)}',
-                'σ₂ = ${precs.formatValue(avg)} − ${precs.formatValue(R)} = ${precs.formatValue(s2)}',
-                'σ_VM = √(σ₁²−σ₁σ₂+σ₂²) = ${precs.formatValue(vonMises)}',
+                'R = √(((σₓ−σᵧ)/2)² + τ²) = ${_fv(context, R, UnitCategory.stress)}',
+                'σ₁ = ${_fv(context, avg, UnitCategory.stress)} + ${_fv(context, R, UnitCategory.stress)} = ${_fv(context, s1, UnitCategory.stress)}',
+                'σ₂ = ${_fv(context, avg, UnitCategory.stress)} − ${_fv(context, R, UnitCategory.stress)} = ${_fv(context, s2, UnitCategory.stress)}',
+                'σ_VM = √(σ₁²−σ₁σ₂+σ₂²) = ${_fv(context, vonMises, UnitCategory.stress)}',
               ]);
             },
           ),
@@ -354,6 +373,13 @@ class _FailureResultPage extends StatelessWidget {
                 title: 'Stress Results',
                 resultTitles: titles.sublist(0, 5),
                 resultValues: values.sublist(0, 5),
+                resultUnits: const [
+                  UnitCategory.stress,
+                  UnitCategory.stress,
+                  UnitCategory.stress,
+                  UnitCategory.stress,
+                  UnitCategory.stress,
+                ],
               );
             }
             if (hasSy && i == 1) {
@@ -367,17 +393,17 @@ class _FailureResultPage extends StatelessWidget {
               builder: (context, precs, _) => CalculationCard(steps: [
                 'Principal stresses:',
                 'R = √(((σₓ−σᵧ)/2)² + τ²)',
-                '  = √((( ${precs.formatValue(sx)} − ${precs.formatValue(sy)} )/2)² + ${precs.formatValue(txy)}²)',
-                '  = ${precs.formatValue(R)}',
-                'σ₁ = (σₓ+σᵧ)/2 + R = ${precs.formatValue(avg)} + ${precs.formatValue(R)} = ${precs.formatValue(s1)}',
-                'σ₂ = (σₓ+σᵧ)/2 − R = ${precs.formatValue(avg)} − ${precs.formatValue(R)} = ${precs.formatValue(s2)}',
+                '  = √((( ${_fv(context, sx, UnitCategory.stress)} − ${_fv(context, sy, UnitCategory.stress)} )/2)² + ${_fv(context, txy, UnitCategory.stress)}²)',
+                '  = ${_fv(context, R, UnitCategory.stress)}',
+                'σ₁ = (σₓ+σᵧ)/2 + R = ${_fv(context, avg, UnitCategory.stress)} + ${_fv(context, R, UnitCategory.stress)} = ${_fv(context, s1, UnitCategory.stress)}',
+                'σ₂ = (σₓ+σᵧ)/2 − R = ${_fv(context, avg, UnitCategory.stress)} − ${_fv(context, R, UnitCategory.stress)} = ${_fv(context, s2, UnitCategory.stress)}',
                 '',
-                'Von Mises: σ_VM = √(σ₁²−σ₁σ₂+σ₂²) = ${precs.formatValue(vonMises)}',
-                'Tresca:  σ_eff = |σ₁−σ₂| = ${precs.formatValue(tresca)},  τ_max = ${precs.formatValue(tauMax)}',
+                'Von Mises: σ_VM = √(σ₁²−σ₁σ₂+σ₂²) = ${_fv(context, vonMises, UnitCategory.stress)}',
+                'Tresca:  σ_eff = |σ₁−σ₂| = ${_fv(context, tresca, UnitCategory.stress)},  τ_max = ${_fv(context, tauMax, UnitCategory.stress)}',
                 if (hasSy)
-                  'FS_VM = Sᵧ / σ_VM = ${precs.formatValue(yield_)} / ${precs.formatValue(vonMises)} = ${precs.formatValue(yield_! / vonMises)}',
+                  'FS_VM = Sᵧ / σ_VM = ${_fv(context, yield_, UnitCategory.stress)} / ${_fv(context, vonMises, UnitCategory.stress)} = ${precs.formatValue(yield_! / vonMises)}',
                 if (hasSy)
-                  'FS_Tresca = Sᵧ / σ_eff = ${precs.formatValue(yield_)} / ${precs.formatValue(tresca)} = ${precs.formatValue(yield_! / tresca)}',
+                  'FS_Tresca = Sᵧ / σ_eff = ${_fv(context, yield_, UnitCategory.stress)} / ${_fv(context, tresca, UnitCategory.stress)} = ${precs.formatValue(yield_! / tresca)}',
               ]),
             );
           },

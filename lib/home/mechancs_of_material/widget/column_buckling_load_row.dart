@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/column_buckling_load_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class ColumnBucklingLoadRow extends StatefulWidget {
   final ColumnBucklingLoadModel columnBucklingLoadModel;
@@ -20,36 +22,6 @@ class ColumnBucklingLoadRow extends StatefulWidget {
 
 class _ColumnBucklingLoadRowState extends State<ColumnBucklingLoadRow> {
   String dropValue = "Pinned-pinned column";
-
-  late TextEditingController textEditingController1;
-  late TextEditingController textEditingController2;
-  late TextEditingController textEditingController3;
-
-  @override
-  void initState() {
-    super.initState();
-    textEditingController1 = TextEditingController();
-    textEditingController2 = TextEditingController();
-    textEditingController3 = TextEditingController();
-    _updateControllers();
-  }
-
-  @override
-  void dispose() {
-    textEditingController1.dispose();
-    textEditingController2.dispose();
-    textEditingController3.dispose();
-    super.dispose();
-  }
-
-  void _updateControllers() {
-    textEditingController1.text =
-        widget.columnBucklingLoadModel.E?.toString() ?? '';
-    textEditingController2.text =
-        widget.columnBucklingLoadModel.I?.toString() ?? '';
-    textEditingController3.text =
-        widget.columnBucklingLoadModel.L?.toString() ?? '';
-  }
 
   validateModulus(double? value) {
     if (value == null) {
@@ -89,7 +61,6 @@ class _ColumnBucklingLoadRowState extends State<ColumnBucklingLoadRow> {
                     setState(() {
                       dropValue = newValue!;
                       widget.callback(dropValue);
-                      _updateControllers();
                     });
                   },
                   items: <String>[
@@ -120,21 +91,20 @@ class _ColumnBucklingLoadRowState extends State<ColumnBucklingLoadRow> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController1,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText: "E",
-                        errorText: widget.validate
-                            ? validateModulus(widget.columnBucklingLoadModel.E)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
-                      widget.columnBucklingLoadModel.E = double.tryParse(value);
+                  child: UnitField(
+                    key: ValueKey('E-$dropValue'),
+                    label: "E",
+                    category: UnitCategory.stress,
+                    initialSI: widget.columnBucklingLoadModel.E,
+                    signed: false,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: (value) =>
+                        widget.validate ? validateModulus(value) : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
+                      widget.columnBucklingLoadModel.E = value;
                     },
                   ),
                 ),
@@ -142,21 +112,20 @@ class _ColumnBucklingLoadRowState extends State<ColumnBucklingLoadRow> {
                   width: 12,
                 ),
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController2,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText: "I",
-                        errorText: widget.validate
-                            ? validateModulus(widget.columnBucklingLoadModel.I)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
-                      widget.columnBucklingLoadModel.I = double.tryParse(value);
+                  child: UnitField(
+                    key: ValueKey('I-$dropValue'),
+                    label: "I",
+                    category: UnitCategory.momentOfInertia,
+                    initialSI: widget.columnBucklingLoadModel.I,
+                    signed: false,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: (value) =>
+                        widget.validate ? validateModulus(value) : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
+                      widget.columnBucklingLoadModel.I = value;
                     },
                   ),
                 ),
@@ -171,21 +140,20 @@ class _ColumnBucklingLoadRowState extends State<ColumnBucklingLoadRow> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: textEditingController3,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.all(12),
-                        border: const OutlineInputBorder(),
-                        labelText: "L",
-                        errorText: widget.validate
-                            ? validateModulus(widget.columnBucklingLoadModel.L)
-                            : null,
-                        errorStyle: const TextStyle(fontSize: 10)),
-                    onChanged: (value) {
-                      widget.columnBucklingLoadModel.L = double.tryParse(value);
+                  child: UnitField(
+                    key: ValueKey('L-$dropValue'),
+                    label: "L",
+                    category: UnitCategory.length,
+                    initialSI: widget.columnBucklingLoadModel.L,
+                    signed: false,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: const OutlineInputBorder(),
+                    errorText: (value) =>
+                        widget.validate ? validateModulus(value) : null,
+                    errorStyle: const TextStyle(fontSize: 10),
+                    onChangedSI: (value) {
+                      widget.columnBucklingLoadModel.L = value;
                     },
                   ),
                 ),

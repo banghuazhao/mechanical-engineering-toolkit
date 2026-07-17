@@ -9,6 +9,8 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -74,9 +76,18 @@ class _GeneralStressResultPageState extends State<GeneralStressResultPage> {
     return _anchoredAdaptiveAd!.load();
   }
 
+  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
+    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+    final system =
+        Provider.of<UnitSystemPreference>(context, listen: false).system;
+    final display = valueSI == null ? null : fromSI(valueSI, category, system);
+    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
+  }
+
   @override
   Widget build(BuildContext context) {
     final adsRemoved = context.watch<RemoveAdsService>().isAdsRemoved;
+    context.watch<UnitSystemPreference>();
     _disposeBannerWhenPurchased(adsRemoved);
     return Scaffold(
         appBar: AppBar(
@@ -84,15 +95,13 @@ class _GeneralStressResultPageState extends State<GeneralStressResultPage> {
             IconButton(
               icon: const Icon(Icons.share_rounded),
               onPressed: () {
-                final precs =
-                    Provider.of<NumberPrecisionHelper>(context, listen: false);
                 shareResult('General Stress', [
-                  'σ = ${precs.formatValue(widget.stress.value)}',
+                  'σ = ${_fv(context, widget.stress.value, UnitCategory.stress)}',
                   '',
                   'Calculation:',
                   'σ = F / A',
-                  '= ${precs.formatValue(widget.F)} / ${precs.formatValue(widget.A)}',
-                  '= ${precs.formatValue(widget.stress.value)}',
+                  '= ${_fv(context, widget.F, UnitCategory.force)} / ${_fv(context, widget.A, UnitCategory.area)}',
+                  '= ${_fv(context, widget.stress.value, UnitCategory.stress)}',
                 ]);
               },
             ),
@@ -128,14 +137,13 @@ class _GeneralStressResultPageState extends State<GeneralStressResultPage> {
                     SingleRowResult(
                         title: S.of(context).Stress,
                         resultTitle: "σ",
-                        resultValue: widget.stress.value),
-                    Consumer<NumberPrecisionHelper>(
-                      builder: (context, precs, _) => CalculationCard(steps: [
-                        'σ = F / A',
-                        '= ${precs.formatValue(widget.F)} / ${precs.formatValue(widget.A)}',
-                        '= ${precs.formatValue(widget.stress.value)}',
-                      ]),
-                    ),
+                        resultValue: widget.stress.value,
+                        category: UnitCategory.stress),
+                    CalculationCard(steps: [
+                      'σ = F / A',
+                      '= ${_fv(context, widget.F, UnitCategory.force)} / ${_fv(context, widget.A, UnitCategory.area)}',
+                      '= ${_fv(context, widget.stress.value, UnitCategory.stress)}',
+                    ]),
                   ][index];
                 }),
             if (!adsRemoved && _anchoredAdaptiveAd != null && _isLoaded)

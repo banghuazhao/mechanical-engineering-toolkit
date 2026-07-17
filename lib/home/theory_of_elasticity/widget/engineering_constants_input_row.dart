@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class EngineeringConstantsInputRow extends StatefulWidget {
   final MechanicalMaterial material;
@@ -210,20 +212,19 @@ class _EngineeringConstantsInputRowState
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController1,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E",
-                      errorText:
-                          widget.validate ? validateModulus(material.e) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('eciso-E'),
+                  label: "E",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e = value;
                   },
                 ),
               ),
@@ -265,20 +266,19 @@ class _EngineeringConstantsInputRowState
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController1,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E1",
-                      errorText:
-                          widget.validate ? validateModulus(material.e1) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e1 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ectrans-E1'),
+                  label: "E1",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e1,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e1 = value;
                   },
                 ),
               ),
@@ -286,20 +286,19 @@ class _EngineeringConstantsInputRowState
                 width: 12,
               ),
               Expanded(
-                child: TextField(
-                  controller: textEditingController2,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E2",
-                      errorText:
-                          widget.validate ? validateModulus(material.e2) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e2 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ectrans-E2'),
+                  label: "E2",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e2,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e2 = value;
                   },
                 ),
               ),
@@ -314,21 +313,19 @@ class _EngineeringConstantsInputRowState
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController3,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "G12",
-                      errorText: widget.validate
-                          ? validateModulus(material.g12)
-                          : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.g12 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ectrans-G12'),
+                  label: "G12",
+                  category: UnitCategory.modulus,
+                  initialSI: material.g12,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.g12 = value;
                   },
                 ),
               ),
@@ -402,20 +399,19 @@ class _EngineeringConstantsInputRowState
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController1,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E1",
-                      errorText:
-                          widget.validate ? validateModulus(material.e1) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e1 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ecortho-E1'),
+                  label: "E1",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e1,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e1 = value;
                   },
                 ),
               ),
@@ -423,20 +419,19 @@ class _EngineeringConstantsInputRowState
                 width: 12,
               ),
               Expanded(
-                child: TextField(
-                  controller: textEditingController2,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E2",
-                      errorText:
-                          widget.validate ? validateModulus(material.e2) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e2 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ecortho-E2'),
+                  label: "E2",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e2,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e2 = value;
                   },
                 ),
               ),
@@ -451,20 +446,19 @@ class _EngineeringConstantsInputRowState
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController3,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E3",
-                      errorText:
-                          widget.validate ? validateModulus(material.e3) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e3 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ecortho-E3'),
+                  label: "E3",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e3,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e3 = value;
                   },
                 ),
               ),
@@ -472,21 +466,19 @@ class _EngineeringConstantsInputRowState
                 width: 12,
               ),
               Expanded(
-                child: TextField(
-                  controller: textEditingController4,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "G12",
-                      errorText: widget.validate
-                          ? validateModulus(material.g12)
-                          : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.g12 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ecortho-G12'),
+                  label: "G12",
+                  category: UnitCategory.modulus,
+                  initialSI: material.g12,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.g12 = value;
                   },
                 ),
               ),
@@ -501,21 +493,19 @@ class _EngineeringConstantsInputRowState
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController5,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "G13",
-                      errorText: widget.validate
-                          ? validateModulus(material.g13)
-                          : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.g13 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ecortho-G13'),
+                  label: "G13",
+                  category: UnitCategory.modulus,
+                  initialSI: material.g13,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.g13 = value;
                   },
                 ),
               ),
@@ -523,21 +513,19 @@ class _EngineeringConstantsInputRowState
                 width: 12,
               ),
               Expanded(
-                child: TextField(
-                  controller: textEditingController6,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "G23",
-                      errorText: widget.validate
-                          ? validateModulus(material.g23)
-                          : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.g23 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ecortho-G23'),
+                  label: "G23",
+                  category: UnitCategory.modulus,
+                  initialSI: material.g23,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.g23 = value;
                   },
                 ),
               ),
@@ -640,20 +628,19 @@ class _EngineeringConstantsInputRowState
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController1,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E1",
-                      errorText:
-                          widget.validate ? validateModulus(material.e1) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e1 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ecmono-E1'),
+                  label: "E1",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e1,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e1 = value;
                   },
                 ),
               ),
@@ -661,20 +648,19 @@ class _EngineeringConstantsInputRowState
                 width: 12,
               ),
               Expanded(
-                child: TextField(
-                  controller: textEditingController2,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E2",
-                      errorText:
-                          widget.validate ? validateModulus(material.e2) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e2 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ecmono-E2'),
+                  label: "E2",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e2,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e2 = value;
                   },
                 ),
               ),
@@ -689,20 +675,19 @@ class _EngineeringConstantsInputRowState
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController3,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "E3",
-                      errorText:
-                          widget.validate ? validateModulus(material.e3) : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.e3 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ecmono-E3'),
+                  label: "E3",
+                  category: UnitCategory.modulus,
+                  initialSI: material.e3,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.e3 = value;
                   },
                 ),
               ),
@@ -710,21 +695,19 @@ class _EngineeringConstantsInputRowState
                 width: 12,
               ),
               Expanded(
-                child: TextField(
-                  controller: textEditingController4,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "G12",
-                      errorText: widget.validate
-                          ? validateModulus(material.g12)
-                          : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.g12 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ecmono-G12'),
+                  label: "G12",
+                  category: UnitCategory.modulus,
+                  initialSI: material.g12,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.g12 = value;
                   },
                 ),
               ),
@@ -739,21 +722,19 @@ class _EngineeringConstantsInputRowState
           child: Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: textEditingController5,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "G13",
-                      errorText: widget.validate
-                          ? validateModulus(material.g13)
-                          : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.g13 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ecmono-G13'),
+                  label: "G13",
+                  category: UnitCategory.modulus,
+                  initialSI: material.g13,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.g13 = value;
                   },
                 ),
               ),
@@ -761,21 +742,19 @@ class _EngineeringConstantsInputRowState
                 width: 12,
               ),
               Expanded(
-                child: TextField(
-                  controller: textEditingController6,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(12),
-                      border: const OutlineInputBorder(),
-                      labelText: "G23",
-                      errorText: widget.validate
-                          ? validateModulus(material.g23)
-                          : null,
-                      errorStyle: const TextStyle(fontSize: 10)),
-                  onChanged: (value) {
-                    material.g23 = double.tryParse(value);
+                child: UnitField(
+                  key: const ValueKey('ecmono-G23'),
+                  label: "G23",
+                  category: UnitCategory.modulus,
+                  initialSI: material.g23,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  errorText:
+                      widget.validate ? (si) => validateModulus(si) : null,
+                  errorStyle: const TextStyle(fontSize: 10),
+                  onChangedSI: (value) {
+                    material.g23 = value;
                   },
                 ),
               ),

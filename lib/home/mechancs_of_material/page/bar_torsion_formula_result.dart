@@ -9,6 +9,8 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -80,9 +82,18 @@ class _BarTorsionFormulaResultPageState
     return _anchoredAdaptiveAd!.load();
   }
 
+  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
+    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+    final system =
+        Provider.of<UnitSystemPreference>(context, listen: false).system;
+    final display = valueSI == null ? null : fromSI(valueSI, category, system);
+    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
+  }
+
   @override
   Widget build(BuildContext context) {
     final adsRemoved = context.watch<RemoveAdsService>().isAdsRemoved;
+    context.watch<UnitSystemPreference>();
     _disposeBannerWhenPurchased(adsRemoved);
     return Scaffold(
         appBar: AppBar(
@@ -90,15 +101,13 @@ class _BarTorsionFormulaResultPageState
             IconButton(
               icon: const Icon(Icons.share_rounded),
               onPressed: () {
-                final precs =
-                    Provider.of<NumberPrecisionHelper>(context, listen: false);
                 shareResult('Torsion Formula', [
-                  'τ_max = ${precs.formatValue(widget.strain.value)}',
+                  'τ_max = ${_fv(context, widget.strain.value, UnitCategory.stress)}',
                   '',
                   'Calculation:',
                   'τ = T·c / J',
-                  '= ${precs.formatValue(widget.T)} × ${precs.formatValue(widget.c)} / ${precs.formatValue(widget.J)}',
-                  '= ${precs.formatValue(widget.strain.value)}',
+                  '= ${_fv(context, widget.T, UnitCategory.momentSection)} × ${_fv(context, widget.c, UnitCategory.length)} / ${_fv(context, widget.J, UnitCategory.momentOfInertia)}',
+                  '= ${_fv(context, widget.strain.value, UnitCategory.stress)}',
                 ]);
               },
             ),
@@ -134,14 +143,13 @@ class _BarTorsionFormulaResultPageState
                     SingleRowResult(
                         title: S.of(context).The_Maximum_Shear_Stress,
                         resultTitle: "𝛕_max",
-                        resultValue: widget.strain.value),
-                    Consumer<NumberPrecisionHelper>(
-                      builder: (context, precs, _) => CalculationCard(steps: [
-                        'τ = T·c / J',
-                        '= ${precs.formatValue(widget.T)} × ${precs.formatValue(widget.c)} / ${precs.formatValue(widget.J)}',
-                        '= ${precs.formatValue(widget.strain.value)}',
-                      ]),
-                    ),
+                        resultValue: widget.strain.value,
+                        category: UnitCategory.stress),
+                    CalculationCard(steps: [
+                      'τ = T·c / J',
+                      '= ${_fv(context, widget.T, UnitCategory.momentSection)} × ${_fv(context, widget.c, UnitCategory.length)} / ${_fv(context, widget.J, UnitCategory.momentOfInertia)}',
+                      '= ${_fv(context, widget.strain.value, UnitCategory.stress)}',
+                    ]),
                   ][index];
                 }),
             if (!adsRemoved && _anchoredAdaptiveAd != null && _isLoaded)

@@ -8,6 +8,8 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/thermal_constants_row.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 import '../../tool_setting_page.dart';
@@ -88,18 +90,18 @@ class _LaminaEngineeringConstantsResultPageState
   @override
   Widget build(BuildContext context) {
     final isThermal = widget.analysisType == AnalysisType.thermalElastic;
-    final elasticRows = [
-      ('Ex', _current?.E1),
-      ('Ey', _current?.E2),
-      ('Gxy', _current?.G12),
-      ('νxy', _current?.nu12),
-      ('η₁', _current?.eta1_12),
-      ('η₂', _current?.eta2_12),
+    final elasticRows = <(String, double?, UnitCategory?)>[
+      ('Ex', _current?.E1, UnitCategory.modulus),
+      ('Ey', _current?.E2, UnitCategory.modulus),
+      ('Gxy', _current?.G12, UnitCategory.modulus),
+      ('νxy', _current?.nu12, null),
+      ('η₁', _current?.eta1_12, null),
+      ('η₂', _current?.eta2_12, null),
     ];
-    final thermalRows = [
-      ('α₁₁', _current?.alpha_11),
-      ('α₂₂', _current?.alpha_22),
-      ('α₁₂', _current?.alpha_12),
+    final thermalRows = <(String, double?, UnitCategory?)>[
+      ('α₁₁', _current?.alpha_11, null),
+      ('α₂₂', _current?.alpha_22, null),
+      ('α₁₂', _current?.alpha_12, null),
     ];
     final allRows = [...elasticRows, if (isThermal) ...thermalRows];
 
@@ -108,6 +110,7 @@ class _LaminaEngineeringConstantsResultPageState
         .map((r) => _ConstantRow(
               label: r.$1,
               value: r.$2 ?? 0,
+              category: r.$3,
               chartData: _chartData[r.$1]!,
               currentAngle: layupAngle,
             ))
@@ -175,12 +178,14 @@ class _LaminaEngineeringConstantsResultPageState
 class _ConstantRow extends StatelessWidget {
   final String label;
   final double value;
+  final UnitCategory? category;
   final List<FlSpot> chartData;
   final double currentAngle;
 
   const _ConstantRow({
     required this.label,
     required this.value,
+    this.category,
     required this.chartData,
     required this.currentAngle,
   });
@@ -194,6 +199,10 @@ class _ConstantRow extends StatelessWidget {
       minY -= 1;
       maxY += 1;
     }
+    final system = context.watch<UnitSystemPreference>().system;
+    final displayValue =
+        category == null ? value : fromSI(value, category!, system);
+    final unitSuffix = category == null ? '' : ' ${unitLabel(category!, system)}';
 
     return Card(
       child: Padding(
@@ -211,7 +220,7 @@ class _ConstantRow extends StatelessWidget {
                   const SizedBox(height: 4),
                   Consumer<NumberPrecisionHelper>(
                     builder: (_, precs, __) => Text(
-                      precs.formatValue(value),
+                      '${precs.formatValue(displayValue)}$unitSuffix',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: primary,
                             fontWeight: FontWeight.w600,

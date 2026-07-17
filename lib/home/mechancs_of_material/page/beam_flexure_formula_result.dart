@@ -6,6 +6,8 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class BeamFlexureFormulaResultPage extends StatefulWidget {
@@ -29,8 +31,19 @@ class BeamFlexureFormulaResultPage extends StatefulWidget {
 
 class _BeamFlexureFormulaResultPageState
     extends State<BeamFlexureFormulaResultPage> {
+  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
+    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+    final system =
+        Provider.of<UnitSystemPreference>(context, listen: false).system;
+    final display = valueSI == null ? null : fromSI(valueSI, category, system);
+    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
+  }
+
   @override
   Widget build(BuildContext context) {
+    context.watch<UnitSystemPreference>();
+    final double? sigmaAtY =
+        widget.y != null ? widget.stress.value! * widget.y! : null;
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -44,18 +57,18 @@ class _BeamFlexureFormulaResultPageState
                 final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
                 final lines = widget.y != null
                     ? [
-                        'σ = ${precs.formatValue(widget.stress.value! * widget.y!)}',
+                        'σ = ${_fv(context, sigmaAtY, UnitCategory.stress)}',
                         '',
                         'Calculation:',
                         'σ = M·y / I',
-                        '= ${precs.formatValue(widget.M)} × ${precs.formatValue(widget.y)} / ${precs.formatValue(widget.I)}',
-                        '= ${precs.formatValue(widget.stress.value! * widget.y!)}',
+                        '= ${_fv(context, widget.M, UnitCategory.momentSection)} × ${_fv(context, widget.y, UnitCategory.length)} / ${_fv(context, widget.I, UnitCategory.momentOfInertia)}',
+                        '= ${_fv(context, sigmaAtY, UnitCategory.stress)}',
                       ]
                     : [
                         'σ(y) = ${precs.formatValue(widget.stress.value)} × y',
                         '',
                         'Calculation:',
-                        'σ(y) = M·y / I = ${precs.formatValue(widget.M)} × y / ${precs.formatValue(widget.I)}',
+                        'σ(y) = M·y / I = ${_fv(context, widget.M, UnitCategory.momentSection)} × y / ${_fv(context, widget.I, UnitCategory.momentOfInertia)}',
                         '= ${precs.formatValue(widget.stress.value)} × y',
                       ];
                 shareResult('Beam Flexure Formula', lines);
@@ -67,18 +80,15 @@ class _BeamFlexureFormulaResultPageState
         body: SafeArea(
           child: Consumer<NumberPrecisionHelper>(
             builder: (context, precs, _) {
-              final double? sigmaAtY =
-                  widget.y != null ? widget.stress.value! * widget.y! : null;
-
               final calcSteps = widget.y != null
                   ? [
                       'σ = M·y / I',
-                      '= ${precs.formatValue(widget.M)} × ${precs.formatValue(widget.y)} / ${precs.formatValue(widget.I)}',
-                      '= ${precs.formatValue(sigmaAtY)}',
+                      '= ${_fv(context, widget.M, UnitCategory.momentSection)} × ${_fv(context, widget.y, UnitCategory.length)} / ${_fv(context, widget.I, UnitCategory.momentOfInertia)}',
+                      '= ${_fv(context, sigmaAtY, UnitCategory.stress)}',
                     ]
                   : [
                       'σ(y) = M·y / I',
-                      '= ${precs.formatValue(widget.M)} × y / ${precs.formatValue(widget.I)}',
+                      '= ${_fv(context, widget.M, UnitCategory.momentSection)} × y / ${_fv(context, widget.I, UnitCategory.momentOfInertia)}',
                       '= ${precs.formatValue(widget.stress.value)} × y',
                     ];
 
@@ -94,7 +104,8 @@ class _BeamFlexureFormulaResultPageState
                     return [
                       BeamFlexureFormulaRowResult(
                           resultFormula: precs.formatValue(widget.stress.value) + ' × y',
-                          resultValue: sigmaAtY),
+                          resultValue: sigmaAtY,
+                          category: widget.y != null ? UnitCategory.stress : null),
                       CalculationCard(steps: calcSteps),
                     ][index];
                   });

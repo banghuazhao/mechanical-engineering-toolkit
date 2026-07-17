@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/beam_flexure_formula_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class BeamFlexureFormulaRow extends StatefulWidget {
   final BeamFlexureFormulaModel beamFlexureFormulaModel;
@@ -15,29 +17,6 @@ class BeamFlexureFormulaRow extends StatefulWidget {
 }
 
 class _LaminaContantsRowState extends State<BeamFlexureFormulaRow> {
-  late TextEditingController _mController;
-  late TextEditingController _iController;
-  late TextEditingController _yController;
-
-  @override
-  void initState() {
-    super.initState();
-    _mController = TextEditingController(
-        text: widget.beamFlexureFormulaModel.M?.toString() ?? '');
-    _iController = TextEditingController(
-        text: widget.beamFlexureFormulaModel.I?.toString() ?? '');
-    _yController = TextEditingController(
-        text: widget.beamFlexureFormulaModel.y?.toString() ?? '');
-  }
-
-  @override
-  void dispose() {
-    _mController.dispose();
-    _iController.dispose();
-    _yController.dispose();
-    super.dispose();
-  }
-
   validateModulus(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -79,45 +58,38 @@ class _LaminaContantsRowState extends State<BeamFlexureFormulaRow> {
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: _mController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              signed: true, decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "M",
-                              errorText: widget.validate
-                                  ? validateForce(
-                                      widget.beamFlexureFormulaModel.M)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.beamFlexureFormulaModel.M =
-                                double.tryParse(value);
+                        child: UnitField(
+                          label: "M",
+                          category: UnitCategory.momentSection,
+                          initialSI: widget.beamFlexureFormulaModel.M,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validateForce(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.beamFlexureFormulaModel.M = value;
                           },
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: TextField(
-                          controller: _iController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "I",
-                              errorText: widget.validate
-                                  ? validateModulus(
-                                      widget.beamFlexureFormulaModel.I)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.beamFlexureFormulaModel.I =
-                                double.tryParse(value);
+                        child: UnitField(
+                          label: "I",
+                          category: UnitCategory.momentOfInertia,
+                          initialSI: widget.beamFlexureFormulaModel.I,
+                          signed: false,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validateModulus(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.beamFlexureFormulaModel.I = value;
                           },
                         ),
                       ),
@@ -127,23 +99,19 @@ class _LaminaContantsRowState extends State<BeamFlexureFormulaRow> {
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: _yController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              signed: true, decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "y",
-                              errorText: widget.validate
-                                  ? validateForce(
-                                      widget.beamFlexureFormulaModel.y)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.beamFlexureFormulaModel.y =
-                                double.tryParse(value);
+                        child: UnitField(
+                          label: "y",
+                          category: UnitCategory.length,
+                          initialSI: widget.beamFlexureFormulaModel.y,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validateForce(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.beamFlexureFormulaModel.y = value;
                           },
                         ),
                       ),

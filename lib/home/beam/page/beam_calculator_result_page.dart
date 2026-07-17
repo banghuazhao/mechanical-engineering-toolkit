@@ -7,6 +7,9 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
+import 'package:provider/provider.dart';
 
 class BeamCalculatorResultPage extends StatelessWidget {
   const BeamCalculatorResultPage({
@@ -22,6 +25,7 @@ class BeamCalculatorResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final system = context.watch<UnitSystemPreference>().system;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Result'),
@@ -29,7 +33,7 @@ class BeamCalculatorResultPage extends StatelessWidget {
           IconButton(
             tooltip: 'Share results',
             icon: const Icon(Icons.share_rounded),
-            onPressed: _share,
+            onPressed: () => _share(system),
           ),
           IconButton(
             tooltip: 'Settings',
@@ -53,33 +57,37 @@ class BeamCalculatorResultPage extends StatelessWidget {
               child: Column(children: [
                 AppCopyableValue(
                     label: 'Left reaction, RA',
-                    value: '${_f(result.leftReaction)} kN'),
+                    value: _fv(result.leftReaction, UnitCategory.forceStructural, system)),
                 AppCopyableValue(
                     label: 'Right reaction, RB',
-                    value: '${_f(result.rightReaction)} kN'),
+                    value: _fv(result.rightReaction, UnitCategory.forceStructural, system)),
                 AppCopyableValue(
                   label: 'Maximum bending moment',
                   value:
-                      '${_f(result.maximumMoment)} kN·m at x = ${_f(result.maximumMomentPosition)} m',
+                      '${_fv(result.maximumMoment, UnitCategory.momentStructural, system)} at x = ${_fv(result.maximumMomentPosition, UnitCategory.span, system)}',
                 ),
                 AppCopyableValue(
                   label: 'Maximum downward deflection',
                   value:
-                      '${_f(result.maximumDeflection)} mm at x = ${_f(result.maximumDeflectionPosition)} m',
+                      '${_fv(result.maximumDeflection, UnitCategory.length, system)} at x = ${_fv(result.maximumDeflectionPosition, UnitCategory.span, system)}',
                 ),
               ]),
             ),
             SizedBox(height: context.tokens.space4),
-            CalculationCard(steps: _reactionSteps()),
+            CalculationCard(steps: _reactionSteps(system)),
             SizedBox(height: context.tokens.space3),
-            CalculationCard(steps: _responseSteps()),
+            CalculationCard(steps: _responseSteps(system)),
             SizedBox(height: context.tokens.space4),
-            _diagramCard(context, 'Shear-force diagram', 'kN', result.shear),
+            _diagramCard(context, 'Shear-force diagram',
+                unitLabel(UnitCategory.forceStructural, system), result.shear),
+            SizedBox(height: context.tokens.space3),
+            _diagramCard(context, 'Bending-moment diagram',
+                unitLabel(UnitCategory.momentStructural, system), result.moment),
             SizedBox(height: context.tokens.space3),
             _diagramCard(
-                context, 'Bending-moment diagram', 'kN·m', result.moment),
-            SizedBox(height: context.tokens.space3),
-            _diagramCard(context, 'Elastic deflection', 'mm downward',
+                context,
+                'Elastic deflection',
+                '${unitLabel(UnitCategory.length, system)} downward',
                 result.deflection),
             SizedBox(height: context.tokens.space3),
             Text(
@@ -94,27 +102,27 @@ class BeamCalculatorResultPage extends StatelessWidget {
     );
   }
 
-  List<String> _reactionSteps() => [
+  List<String> _reactionSteps(UnitSystem system) => [
         'Support reactions from static equilibrium',
         'RA = P(L−a)/L + wL/2',
-        '= ${_f(input.pointLoad)}(${_f(input.span)}−${_f(input.pointPosition)})/${_f(input.span)} + ${_f(input.distributedLoad)}×${_f(input.span)}/2',
-        '= ${_f(result.leftReaction)} kN',
+        '= ${_fv(input.pointLoad, UnitCategory.forceStructural, system)}(${_fv(input.span, UnitCategory.span, system)}−${_fv(input.pointPosition, UnitCategory.span, system)})/${_fv(input.span, UnitCategory.span, system)} + ${_fv(input.distributedLoad, UnitCategory.distributedLoadStructural, system)}×${_fv(input.span, UnitCategory.span, system)}/2',
+        '= ${_fv(result.leftReaction, UnitCategory.forceStructural, system)}',
         'RB = Pa/L + wL/2',
-        '= ${_f(input.pointLoad)}×${_f(input.pointPosition)}/${_f(input.span)} + ${_f(input.distributedLoad)}×${_f(input.span)}/2',
-        '= ${_f(result.rightReaction)} kN',
-        'Check: RA + RB = ${_f(result.leftReaction + result.rightReaction)} kN = P + wL',
+        '= ${_fv(input.pointLoad, UnitCategory.forceStructural, system)}×${_fv(input.pointPosition, UnitCategory.span, system)}/${_fv(input.span, UnitCategory.span, system)} + ${_fv(input.distributedLoad, UnitCategory.distributedLoadStructural, system)}×${_fv(input.span, UnitCategory.span, system)}/2',
+        '= ${_fv(result.rightReaction, UnitCategory.forceStructural, system)}',
+        'Check: RA + RB = ${_fv(result.leftReaction + result.rightReaction, UnitCategory.forceStructural, system)} = P + wL',
       ];
 
-  List<String> _responseSteps() => [
+  List<String> _responseSteps(UnitSystem system) => [
         'Internal actions and elastic deflection',
         'V(x) = RA − wx − P·H(x−a)',
         'M(x) = RA·x − wx²/2 − P(x−a)·H(x−a)',
-        'Mmax = ${_f(result.maximumMoment)} kN·m at x = ${_f(result.maximumMomentPosition)} m',
-        'EI = (${_f(input.elasticModulus)} GPa)(${_f(input.secondMoment)} mm⁴)',
+        'Mmax = ${_fv(result.maximumMoment, UnitCategory.momentStructural, system)} at x = ${_fv(result.maximumMomentPosition, UnitCategory.span, system)}',
+        'EI = (${_fv(input.elasticModulus, UnitCategory.modulus, system)})(${_fv(input.secondMoment, UnitCategory.momentOfInertia, system)})',
         'UDL: v(x) = wx(L³−2Lx²+x³)/(24EI)',
         'Point load, x≤a: v(x) = Pb·x(L²−b²−x²)/(6LEI)',
         'Point load, x≥a: v(x) = Pa(L−x)[L²−a²−(L−x)²]/(6LEI)',
-        'vmax = ${_f(result.maximumDeflection)} mm downward at x = ${_f(result.maximumDeflectionPosition)} m',
+        'vmax = ${_fv(result.maximumDeflection, UnitCategory.length, system)} downward at x = ${_fv(result.maximumDeflectionPosition, UnitCategory.span, system)}',
       ];
 
   Widget _diagramCard(
@@ -140,7 +148,7 @@ class BeamCalculatorResultPage extends StatelessWidget {
             ),
             SizedBox(height: context.tokens.space2),
             Text(
-              'Horizontal: position (m) • Vertical: $unit',
+              'Horizontal: position (${unitLabel(UnitCategory.span, context.watch<UnitSystemPreference>().system)}) • Vertical: $unit',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodySmall,
             ),
@@ -148,19 +156,22 @@ class BeamCalculatorResultPage extends StatelessWidget {
         ),
       );
 
-  void _share() => shareResult(title, [
-        'RA = ${_f(result.leftReaction)} kN',
-        'RB = ${_f(result.rightReaction)} kN',
-        'Mmax = ${_f(result.maximumMoment)} kN·m at ${_f(result.maximumMomentPosition)} m',
-        'Deflection max = ${_f(result.maximumDeflection)} mm at ${_f(result.maximumDeflectionPosition)} m',
+  void _share(UnitSystem system) => shareResult(title, [
+        'RA = ${_fv(result.leftReaction, UnitCategory.forceStructural, system)}',
+        'RB = ${_fv(result.rightReaction, UnitCategory.forceStructural, system)}',
+        'Mmax = ${_fv(result.maximumMoment, UnitCategory.momentStructural, system)} at ${_fv(result.maximumMomentPosition, UnitCategory.span, system)}',
+        'Deflection max = ${_fv(result.maximumDeflection, UnitCategory.length, system)} at ${_fv(result.maximumDeflectionPosition, UnitCategory.span, system)}',
         '',
-        ..._reactionSteps(),
+        ..._reactionSteps(system),
         '',
-        ..._responseSteps(),
+        ..._responseSteps(system),
       ]);
 
   String _f(double value) =>
       value.toStringAsFixed(3).replaceFirst(RegExp(r'\.?0+$'), '');
+
+  String _fv(double valueSI, UnitCategory category, UnitSystem system) =>
+      '${_f(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
 }
 
 class _BeamDiagramPainter extends CustomPainter {

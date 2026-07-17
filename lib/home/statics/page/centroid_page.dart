@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 enum _ShapeType { rectangle, circle, triangle, semicircle }
@@ -10,16 +13,10 @@ enum _ShapeType { rectangle, circle, triangle, semicircle }
 class _Shape {
   _ShapeType type = _ShapeType.rectangle;
   bool subtract = false;
-  final TextEditingController dim1 = TextEditingController(); // width or radius
-  final TextEditingController dim2 = TextEditingController(); // height
-  final TextEditingController xRef = TextEditingController();
-  final TextEditingController yRef = TextEditingController();
-  void dispose() {
-    dim1.dispose();
-    dim2.dispose();
-    xRef.dispose();
-    yRef.dispose();
-  }
+  double? dim1; // width or radius
+  double? dim2; // height
+  double? xRef;
+  double? yRef;
 }
 
 class CentroidPage extends StatefulWidget {
@@ -53,7 +50,6 @@ class _CentroidPageState extends State<CentroidPage> {
       });
 
       if (maxI > 0) {
-        for (var s in _shapes) s.dispose();
         _shapes.clear();
         for (int i = 0; i < maxI; i++) {
           final s = _Shape();
@@ -64,21 +60,15 @@ class _CentroidPageState extends State<CentroidPage> {
                 (t) => _shapeLabel(t) == typeStr,
                 orElse: () => _ShapeType.rectangle);
           }
-          s.dim1.text = inputs['$prefix Dim1'] ?? '';
-          s.dim2.text = inputs['$prefix Dim2'] ?? '';
-          s.xRef.text = inputs['$prefix xRef'] ?? '';
-          s.yRef.text = inputs['$prefix yRef'] ?? '';
+          s.dim1 = double.tryParse(inputs['$prefix Dim1'] ?? '');
+          s.dim2 = double.tryParse(inputs['$prefix Dim2'] ?? '');
+          s.xRef = double.tryParse(inputs['$prefix xRef'] ?? '');
+          s.yRef = double.tryParse(inputs['$prefix yRef'] ?? '');
           s.subtract = inputs['$prefix Subtract'] == 'true';
           _shapes.add(s);
         }
       }
     }
-  }
-
-  @override
-  void dispose() {
-    for (final s in _shapes) s.dispose();
-    super.dispose();
   }
 
   String _shapeLabel(_ShapeType t) {
@@ -156,6 +146,7 @@ class _CentroidPageState extends State<CentroidPage> {
             : 'y (bottom-left)';
 
     return Card(
+      key: ObjectKey(s),
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -177,7 +168,6 @@ class _CentroidPageState extends State<CentroidPage> {
                       color: Colors.red),
                   onPressed: _shapes.length > 1
                       ? () {
-                          s.dispose();
                           setState(() => _shapes.removeAt(i));
                         }
                       : null,
@@ -197,23 +187,21 @@ class _CentroidPageState extends State<CentroidPage> {
             Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: s.dim1,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration:
-                        InputDecoration(labelText: dim1Label, suffixText: 'm'),
+                  child: UnitField(
+                    label: dim1Label,
+                    category: UnitCategory.span,
+                    initialSI: s.dim1,
+                    onChangedSI: (v) => s.dim1 = v,
                   ),
                 ),
                 if (showDim2) ...[
                   const SizedBox(width: 8),
                   Expanded(
-                    child: TextField(
-                      controller: s.dim2,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(
-                          labelText: 'Height h', suffixText: 'm'),
+                    child: UnitField(
+                      label: 'Height h',
+                      category: UnitCategory.span,
+                      initialSI: s.dim2,
+                      onChangedSI: (v) => s.dim2 = v,
                     ),
                   ),
                 ],
@@ -223,22 +211,20 @@ class _CentroidPageState extends State<CentroidPage> {
             Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: s.xRef,
-                    keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true, signed: true),
-                    decoration:
-                        InputDecoration(labelText: xLabel, suffixText: 'm'),
+                  child: UnitField(
+                    label: xLabel,
+                    category: UnitCategory.span,
+                    initialSI: s.xRef,
+                    onChangedSI: (v) => s.xRef = v,
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: TextField(
-                    controller: s.yRef,
-                    keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true, signed: true),
-                    decoration:
-                        InputDecoration(labelText: yLabel, suffixText: 'm'),
+                  child: UnitField(
+                    label: yLabel,
+                    category: UnitCategory.span,
+                    initialSI: s.yRef,
+                    onChangedSI: (v) => s.yRef = v,
                   ),
                 ),
               ],
@@ -251,18 +237,18 @@ class _CentroidPageState extends State<CentroidPage> {
 
   void _calculate() {
     double totalA = 0, sumAx = 0, sumAy = 0;
-    final steps = <String>[];
     final Map<String, String> inputs = {};
+    final shapeCalcs = <({_ShapeType type, bool subtract, double a, double cx, double cy})>[];
 
     for (int i = 0; i < _shapes.length; i++) {
       final s = _shapes[i];
-      final d1 = double.tryParse(s.dim1.text);
+      final d1 = s.dim1;
       if (d1 == null || d1 <= 0) {
         _showError('Enter dimension for shape ${i + 1}');
         return;
       }
-      final xRef = double.tryParse(s.xRef.text) ?? 0;
-      final yRef = double.tryParse(s.yRef.text) ?? 0;
+      final xRef = s.xRef ?? 0;
+      final yRef = s.yRef ?? 0;
 
       final prefix = 'Shape ${i + 1}';
       inputs['$prefix Type'] = _shapeLabel(s.type);
@@ -270,14 +256,14 @@ class _CentroidPageState extends State<CentroidPage> {
       inputs['$prefix xRef'] = xRef.toString();
       inputs['$prefix yRef'] = yRef.toString();
       if (s.type == _ShapeType.rectangle || s.type == _ShapeType.triangle) {
-        inputs['$prefix Dim2'] = s.dim2.text;
+        inputs['$prefix Dim2'] = '${s.dim2 ?? ''}';
       }
       inputs['$prefix Subtract'] = s.subtract.toString();
 
       double A, cx, cy;
       switch (s.type) {
         case _ShapeType.rectangle:
-          final h = double.tryParse(s.dim2.text);
+          final h = s.dim2;
           if (h == null || h <= 0) {
             _showError('Enter height for shape ${i + 1}');
             return;
@@ -292,7 +278,7 @@ class _CentroidPageState extends State<CentroidPage> {
           cy = yRef;
           break;
         case _ShapeType.triangle:
-          final h = double.tryParse(s.dim2.text);
+          final h = s.dim2;
           if (h == null || h <= 0) {
             _showError('Enter height for shape ${i + 1}');
             return;
@@ -312,10 +298,7 @@ class _CentroidPageState extends State<CentroidPage> {
       totalA += sign * A;
       sumAx += sign * A * cx;
       sumAy += sign * A * cy;
-
-      final tag = s.subtract ? '(subtract)' : '';
-      steps.add(
-          'Shape ${i + 1} $tag  A=${_fmt(A)} m²  cx=${_fmt(cx)}  cy=${_fmt(cy)}');
+      shapeCalcs.add((type: s.type, subtract: s.subtract, a: A, cx: cx, cy: cy));
     }
 
     if (totalA == 0) {
@@ -326,12 +309,6 @@ class _CentroidPageState extends State<CentroidPage> {
     final xBar = sumAx / totalA;
     final yBar = sumAy / totalA;
 
-    steps.addAll([
-      'Total A = ${_fmt(totalA)} m²',
-      'x̄ = ΣAᵢxᵢ / A = ${_fmt(sumAx)} / ${_fmt(totalA)} = ${_fmt(xBar)} m',
-      'ȳ = ΣAᵢyᵢ / A = ${_fmt(sumAy)} / ${_fmt(totalA)} = ${_fmt(yBar)} m',
-    ]);
-
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -340,7 +317,9 @@ class _CentroidPageState extends State<CentroidPage> {
           totalA: totalA,
           xBar: xBar,
           yBar: yBar,
-          steps: steps,
+          sumAx: sumAx,
+          sumAy: sumAy,
+          shapeCalcs: shapeCalcs,
         ),
       ),
     );
@@ -348,24 +327,21 @@ class _CentroidPageState extends State<CentroidPage> {
 
   void _showError(String msg) =>
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
-
-  String _fmt(double v) => v
-      .toStringAsFixed(4)
-      .replaceAll(RegExp(r'0+$'), '')
-      .replaceAll(RegExp(r'\.$'), '');
 }
 
 class _ResultPage extends StatelessWidget {
   final String title;
-  final double totalA, xBar, yBar;
-  final List<String> steps;
+  final double totalA, xBar, yBar, sumAx, sumAy;
+  final List<({_ShapeType type, bool subtract, double a, double cx, double cy})> shapeCalcs;
 
   const _ResultPage({
     required this.title,
     required this.totalA,
     required this.xBar,
     required this.yBar,
-    required this.steps,
+    required this.sumAx,
+    required this.sumAy,
+    required this.shapeCalcs,
   });
 
   String _fmt(double v) => v
@@ -373,8 +349,39 @@ class _ResultPage extends StatelessWidget {
       .replaceAll(RegExp(r'0+$'), '')
       .replaceAll(RegExp(r'\.$'), '');
 
+  String _fvArea(double valueSI, UnitSystem system) =>
+      '${_fmt(fromSI(valueSI, UnitCategory.areaStructural, system))} ${unitLabel(UnitCategory.areaStructural, system)}';
+
+  String _fvSpan(double valueSI, UnitSystem system) =>
+      '${_fmt(fromSI(valueSI, UnitCategory.span, system))} ${unitLabel(UnitCategory.span, system)}';
+
+  // First moment of area (area x length): m^3 <-> ft^3. Used only to keep the
+  // illustrative "sumAx / totalA = xBar" step arithmetic dimensionally
+  // consistent; not a general-purpose unit category.
+  String _fvAreaMoment(double valueSI, UnitSystem system) {
+    if (system == UnitSystem.si) return '${_fmt(valueSI)} m³';
+    return '${_fmt(valueSI / 0.028316846592)} ft³';
+  }
+
+  List<String> _steps(UnitSystem system) {
+    final steps = <String>[];
+    for (var i = 0; i < shapeCalcs.length; i++) {
+      final s = shapeCalcs[i];
+      final tag = s.subtract ? '(subtract)' : '';
+      steps.add(
+          'Shape ${i + 1} $tag  A=${_fvArea(s.a, system)}  cx=${_fvSpan(s.cx, system)}  cy=${_fvSpan(s.cy, system)}');
+    }
+    steps.addAll([
+      'Total A = ${_fvArea(totalA, system)}',
+      'x̄ = ΣAᵢxᵢ / A = ${_fvAreaMoment(sumAx, system)} / ${_fvArea(totalA, system)} = ${_fvSpan(xBar, system)}',
+      'ȳ = ΣAᵢyᵢ / A = ${_fvAreaMoment(sumAy, system)} / ${_fvArea(totalA, system)} = ${_fvSpan(yBar, system)}',
+    ]);
+    return steps;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final system = context.watch<UnitSystemPreference>().system;
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -382,16 +389,16 @@ class _ResultPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.share_rounded),
             onPressed: () => shareResult(title, [
-              'Total Area = ${_fmt(totalA)} m²',
-              'Centroid x̄ = ${_fmt(xBar)} m',
-              'Centroid ȳ = ${_fmt(yBar)} m',
+              'Total Area = ${_fvArea(totalA, system)}',
+              'Centroid x̄ = ${_fvSpan(xBar, system)}',
+              'Centroid ȳ = ${_fvSpan(yBar, system)}',
             ]),
           ),
         ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
-        children: [CalculationCard(steps: steps)],
+        children: [CalculationCard(steps: _steps(system))],
       ),
     );
   }

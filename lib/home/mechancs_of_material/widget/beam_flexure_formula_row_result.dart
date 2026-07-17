@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class BeamFlexureFormulaRowResult extends StatelessWidget {
   final String resultFormula;
   final double? resultValue;
+  final UnitCategory? category;
 
   const BeamFlexureFormulaRowResult({
     Key? key,
     required this.resultFormula,
     required this.resultValue,
+    this.category,
   }) : super(key: key);
 
   void _copyToClipboard(BuildContext context, String value) {
@@ -75,9 +79,16 @@ class BeamFlexureFormulaRowResult extends StatelessWidget {
           ),
           if (resultValue != null) ...[
             const Divider(height: 1, indent: 16, endIndent: 16),
-            Consumer<NumberPrecisionHelper>(
-              builder: (context, precs, child) {
-                final valueStr = precs.formatValue(resultValue);
+            Consumer2<NumberPrecisionHelper, UnitSystemPreference>(
+              builder: (context, precs, unitPref, child) {
+                final display = category == null
+                    ? resultValue
+                    : fromSI(resultValue!, category!, unitPref.system);
+                final unit =
+                    category == null ? '' : unitLabel(category!, unitPref.system);
+                final numStr = precs.formatValue(display);
+                final valueStr =
+                    numStr.isEmpty || unit.isEmpty ? numStr : '$numStr $unit';
                 return InkWell(
                   onTap: valueStr.isNotEmpty
                       ? () => _copyToClipboard(context, valueStr)

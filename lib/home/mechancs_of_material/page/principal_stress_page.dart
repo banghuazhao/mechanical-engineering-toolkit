@@ -11,6 +11,7 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/description
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/spherical_shell_stress_result.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/plane_stress_row.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class PrincipalStressPage extends StatefulWidget {
   final String title;
@@ -134,8 +135,9 @@ The principal stresses σ1 and σ2 (The maximum and minimum normal stresses) are
           MaterialPageRoute(
               builder: (context) => SphericalShellStressResultPage(
                     rowTitle: "Principal Stresses",
-                    titles: ["σ₁", "σ₂"],
-                    values: [sigma_1.formatted(precs), sigma_2.formatted(precs)],
+                    titles: const ["σ₁", "σ₂"],
+                    values: [sigma_1, sigma_2],
+                    valueUnits: const [UnitCategory.stress, UnitCategory.stress],
                     calculationSteps: [
                       'σ₁,₂ = (σₓ + σᵧ)/2 ± √((σₓ−σᵧ)²/4 + τ²)',
                       '= (${precs.formatValue(s11)} + ${precs.formatValue(s22)}) / 2 ± √(((${precs.formatValue(s11)}−${precs.formatValue(s22)})/2)² + ${precs.formatValue(s12)}²)',

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class ResultantForcePage extends StatefulWidget {
@@ -18,12 +21,8 @@ class ResultantForcePage extends StatefulWidget {
 }
 
 class _ForceEntry {
-  final TextEditingController fx = TextEditingController();
-  final TextEditingController fy = TextEditingController();
-  void dispose() {
-    fx.dispose();
-    fy.dispose();
-  }
+  double? fx;
+  double? fy;
 }
 
 class _ResultantForcePageState extends State<ResultantForcePage> {
@@ -45,24 +44,21 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
       });
 
       if (maxI > 0) {
-        for (var f in _forces) f.dispose();
         _forces.clear();
         for (int i = 0; i < maxI; i++) {
           final entry = _ForceEntry();
           final fxKey = 'F${i + 1} Fx';
           final fyKey = 'F${i + 1} Fy';
-          if (inputs.containsKey(fxKey)) entry.fx.text = inputs[fxKey]!;
-          if (inputs.containsKey(fyKey)) entry.fy.text = inputs[fyKey]!;
+          if (inputs.containsKey(fxKey)) {
+            entry.fx = double.tryParse(inputs[fxKey]!);
+          }
+          if (inputs.containsKey(fyKey)) {
+            entry.fy = double.tryParse(inputs[fyKey]!);
+          }
           _forces.add(entry);
         }
       }
     }
-  }
-
-  @override
-  void dispose() {
-    for (final f in _forces) f.dispose();
-    super.dispose();
   }
 
   @override
@@ -112,30 +108,33 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
   }
 
   Widget _buildForceRow(int i) {
+    final entry = _forces[i];
     return Padding(
+      key: ObjectKey(entry),
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
           SizedBox(width: 28, child: Text('F${i + 1}', style: const TextStyle(fontWeight: FontWeight.w600))),
           Expanded(
-            child: TextField(
-              controller: _forces[i].fx,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true),
-              decoration: const InputDecoration(labelText: 'Fx', suffixText: 'N'),
+            child: UnitField(
+              label: 'Fx',
+              category: UnitCategory.force,
+              initialSI: entry.fx,
+              onChangedSI: (v) => entry.fx = v,
             ),
           ),
           const SizedBox(width: 8),
           Expanded(
-            child: TextField(
-              controller: _forces[i].fy,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true),
-              decoration: const InputDecoration(labelText: 'Fy', suffixText: 'N'),
+            child: UnitField(
+              label: 'Fy',
+              category: UnitCategory.force,
+              initialSI: entry.fy,
+              onChangedSI: (v) => entry.fy = v,
             ),
           ),
           IconButton(
             icon: const Icon(Icons.remove_circle_outline_rounded, color: Colors.red),
             onPressed: _forces.length > 1 ? () {
-              _forces[i].dispose();
               setState(() => _forces.removeAt(i));
             } : null,
           ),
@@ -150,9 +149,9 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
     final Map<String, String> inputs = {};
     for (int i = 0; i < _forces.length; i++) {
       final f = _forces[i];
-      final fx = double.tryParse(f.fx.text) ?? 0;
-      final fy = double.tryParse(f.fy.text) ?? 0;
-      if (f.fx.text.isNotEmpty || f.fy.text.isNotEmpty) {
+      final fx = f.fx ?? 0;
+      final fy = f.fy ?? 0;
+      if (f.fx != null || f.fy != null) {
         hasValue = true;
         inputs['F${i + 1} Fx'] = fx.toString();
         inputs['F${i + 1} Fy'] = fy.toString();
@@ -173,8 +172,8 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
         builder: (_) => _ResultPage(
           title: widget.title,
           forces: _forces.map((f) => (
-            fx: double.tryParse(f.fx.text) ?? 0,
-            fy: double.tryParse(f.fy.text) ?? 0,
+            fx: f.fx ?? 0,
+            fy: f.fy ?? 0,
           )).toList(),
           sumFx: sumFx,
           sumFy: sumFy,
@@ -202,19 +201,23 @@ class _ResultPage extends StatelessWidget {
 
   String _fmt(double v) => v.toStringAsFixed(4).replaceAll(RegExp(r'0+$'), '').replaceAll(RegExp(r'\.$'), '');
 
+  String _fv(double valueSI, UnitSystem system) =>
+      '${_fmt(fromSI(valueSI, UnitCategory.force, system))} ${unitLabel(UnitCategory.force, system)}';
+
   @override
   Widget build(BuildContext context) {
-    final fxTerms = forces.map((f) => _fmt(f.fx)).join(' + ');
-    final fyTerms = forces.map((f) => _fmt(f.fy)).join(' + ');
+    final system = context.watch<UnitSystemPreference>().system;
+    final fxTerms = forces.map((f) => _fmt(fromSI(f.fx, UnitCategory.force, system))).join(' + ');
+    final fyTerms = forces.map((f) => _fmt(fromSI(f.fy, UnitCategory.force, system))).join(' + ');
 
     final steps = [
-      'ΣFx = $fxTerms = ${_fmt(sumFx)} N',
-      'ΣFy = $fyTerms = ${_fmt(sumFy)} N',
+      'ΣFx = $fxTerms = ${_fv(sumFx, system)}',
+      'ΣFy = $fyTerms = ${_fv(sumFy, system)}',
       'R = √(ΣFx² + ΣFy²)',
-      '  = √(${_fmt(sumFx)}² + ${_fmt(sumFy)}²)',
-      '  = ${_fmt(R)} N',
+      '  = √(${_fv(sumFx, system)}² + ${_fv(sumFy, system)}²)',
+      '  = ${_fv(R, system)}',
       'θ = atan2(ΣFy, ΣFx)',
-      '  = atan2(${_fmt(sumFy)}, ${_fmt(sumFx)})',
+      '  = atan2(${_fv(sumFy, system)}, ${_fv(sumFx, system)})',
       '  = ${_fmt(theta)}°',
     ];
 
@@ -225,9 +228,9 @@ class _ResultPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.share_rounded),
             onPressed: () => shareResult(title, [
-              'ΣFx = ${_fmt(sumFx)} N',
-              'ΣFy = ${_fmt(sumFy)} N',
-              'R = ${_fmt(R)} N',
+              'ΣFx = ${_fv(sumFx, system)}',
+              'ΣFy = ${_fv(sumFy, system)}',
+              'R = ${_fv(R, system)}',
               'θ = ${_fmt(theta)}°',
             ]),
           ),

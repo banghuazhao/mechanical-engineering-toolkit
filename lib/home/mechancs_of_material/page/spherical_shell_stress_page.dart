@@ -9,6 +9,7 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/s
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/spherical_shell_stress_result.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/spherical_shell_stress_row.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class SphericalShellStressPage extends StatefulWidget {
   final String title;
@@ -130,8 +131,9 @@ Where p is the pressure, r is the radius of the spherical and t is the thickness
           context,
           MaterialPageRoute(
               builder: (context) => SphericalShellStressResultPage(
-                  titles: ["σ"],
-                  values: [stress.formatted(precs)],
+                  titles: const ["σ"],
+                  values: [stress],
+                  valueUnits: const [UnitCategory.stress],
                   calculationSteps: [
                     'σ = p·r / (2t)',
                     '= ${precs.formatValue(p)} × ${precs.formatValue(r)} / (2 × ${precs.formatValue(t)})',

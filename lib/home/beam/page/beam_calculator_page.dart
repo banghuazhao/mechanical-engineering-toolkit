@@ -6,6 +6,8 @@ import 'package:mechanical_engineering_toolkit/home/beam/page/beam_calculator_re
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class BeamCalculatorPage extends StatefulWidget {
@@ -25,36 +27,28 @@ class BeamCalculatorPage extends StatefulWidget {
 }
 
 class _BeamCalculatorPageState extends State<BeamCalculatorPage> {
-  final _span = TextEditingController(text: '4');
-  final _pointLoad = TextEditingController(text: '10');
-  final _pointPosition = TextEditingController(text: '2');
-  final _udl = TextEditingController(text: '0');
-  final _elasticModulus = TextEditingController(text: '200');
-  final _secondMoment = TextEditingController(text: '100000000');
+  double? _span = 4;
+  double? _pointLoad = 10;
+  double? _pointPosition = 2;
+  double? _udl = 0;
+  double? _elasticModulus = 200;
+  double? _secondMoment = 100000000;
 
   @override
   void initState() {
     super.initState();
     final inputs = widget.initialInputs;
     if (inputs == null) return;
-    _span.text = inputs['Span (m)'] ?? _span.text;
-    _pointLoad.text = inputs['Point load (kN)'] ?? _pointLoad.text;
-    _pointPosition.text = inputs['Point position (m)'] ?? _pointPosition.text;
-    _udl.text = inputs['UDL (kN/m)'] ?? _udl.text;
-    _elasticModulus.text =
-        inputs['Elastic modulus (GPa)'] ?? _elasticModulus.text;
-    _secondMoment.text = inputs['Second moment (mm4)'] ?? _secondMoment.text;
-  }
-
-  @override
-  void dispose() {
-    _span.dispose();
-    _pointLoad.dispose();
-    _pointPosition.dispose();
-    _udl.dispose();
-    _elasticModulus.dispose();
-    _secondMoment.dispose();
-    super.dispose();
+    _span = double.tryParse(inputs['Span (m)'] ?? '') ?? _span;
+    _pointLoad = double.tryParse(inputs['Point load (kN)'] ?? '') ?? _pointLoad;
+    _pointPosition =
+        double.tryParse(inputs['Point position (m)'] ?? '') ?? _pointPosition;
+    _udl = double.tryParse(inputs['UDL (kN/m)'] ?? '') ?? _udl;
+    _elasticModulus =
+        double.tryParse(inputs['Elastic modulus (GPa)'] ?? '') ??
+            _elasticModulus;
+    _secondMoment =
+        double.tryParse(inputs['Second moment (mm4)'] ?? '') ?? _secondMoment;
   }
 
   @override
@@ -90,12 +84,42 @@ class _BeamCalculatorPageState extends State<BeamCalculatorPage> {
                   ),
                   SizedBox(height: context.tokens.space4),
                   AdaptiveFieldGrid(children: [
-                    _field(_span, 'Span, L', 'm'),
-                    _field(_pointLoad, 'Point load, P', 'kN'),
-                    _field(_pointPosition, 'Point position, a', 'm'),
-                    _field(_udl, 'Full-span UDL, w', 'kN/m'),
-                    _field(_elasticModulus, 'Elastic modulus, E', 'GPa'),
-                    _field(_secondMoment, 'Second moment, I', 'mm⁴'),
+                    UnitField(
+                      label: 'Span, L',
+                      category: UnitCategory.span,
+                      initialSI: _span,
+                      onChangedSI: (v) => _span = v,
+                    ),
+                    UnitField(
+                      label: 'Point load, P',
+                      category: UnitCategory.forceStructural,
+                      initialSI: _pointLoad,
+                      onChangedSI: (v) => _pointLoad = v,
+                    ),
+                    UnitField(
+                      label: 'Point position, a',
+                      category: UnitCategory.span,
+                      initialSI: _pointPosition,
+                      onChangedSI: (v) => _pointPosition = v,
+                    ),
+                    UnitField(
+                      label: 'Full-span UDL, w',
+                      category: UnitCategory.distributedLoadStructural,
+                      initialSI: _udl,
+                      onChangedSI: (v) => _udl = v,
+                    ),
+                    UnitField(
+                      label: 'Elastic modulus, E',
+                      category: UnitCategory.modulus,
+                      initialSI: _elasticModulus,
+                      onChangedSI: (v) => _elasticModulus = v,
+                    ),
+                    UnitField(
+                      label: 'Second moment, I',
+                      category: UnitCategory.momentOfInertia,
+                      initialSI: _secondMoment,
+                      onChangedSI: (v) => _secondMoment = v,
+                    ),
                   ]),
                 ],
               ),
@@ -135,34 +159,23 @@ EI\frac{d^2v}{dx^2}&=M(x)
     );
   }
 
-  Widget _field(
-    TextEditingController controller,
-    String label,
-    String unit,
-  ) =>
-      TextField(
-        controller: controller,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        decoration: InputDecoration(labelText: label, suffixText: unit),
-      );
-
   void _calculate() {
     try {
       final inputs = <String, String>{
-        'Span (m)': _span.text,
-        'Point load (kN)': _pointLoad.text,
-        'Point position (m)': _pointPosition.text,
-        'UDL (kN/m)': _udl.text,
-        'Elastic modulus (GPa)': _elasticModulus.text,
-        'Second moment (mm4)': _secondMoment.text,
+        'Span (m)': '${_span ?? ''}',
+        'Point load (kN)': '${_pointLoad ?? ''}',
+        'Point position (m)': '${_pointPosition ?? ''}',
+        'UDL (kN/m)': '${_udl ?? ''}',
+        'Elastic modulus (GPa)': '${_elasticModulus ?? ''}',
+        'Second moment (mm4)': '${_secondMoment ?? ''}',
       };
       final input = BeamAnalysisInput(
-        span: double.tryParse(_span.text) ?? 0,
-        pointLoad: double.tryParse(_pointLoad.text) ?? 0,
-        pointPosition: double.tryParse(_pointPosition.text) ?? 0,
-        distributedLoad: double.tryParse(_udl.text) ?? 0,
-        elasticModulus: double.tryParse(_elasticModulus.text) ?? 0,
-        secondMoment: double.tryParse(_secondMoment.text) ?? 0,
+        span: _span ?? 0,
+        pointLoad: _pointLoad ?? 0,
+        pointPosition: _pointPosition ?? 0,
+        distributedLoad: _udl ?? 0,
+        elasticModulus: _elasticModulus ?? 0,
+        secondMoment: _secondMoment ?? 0,
       );
       final result = SimplySupportedBeamCalculator.calculate(input);
       context.read<ToolHistory>().record(widget.toolId, inputs: inputs);

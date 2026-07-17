@@ -4,7 +4,21 @@ import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
+
+String _fmtPreview(double v) =>
+    v == v.roundToDouble() ? v.toStringAsFixed(0) : v.toStringAsFixed(2);
+
+String _unitSystemPreview(UnitSystem system) {
+  final length = fromSI(125, UnitCategory.length, system);
+  final force = fromSI(42, UnitCategory.force, system);
+  final stress = fromSI(15, UnitCategory.stress, system);
+  return '${_fmtPreview(length)} ${unitLabel(UnitCategory.length, system)} · '
+      '${_fmtPreview(force)} ${unitLabel(UnitCategory.force, system)} · '
+      '${_fmtPreview(stress)} ${unitLabel(UnitCategory.stress, system)}';
+}
 
 class ToolSettingPage extends StatelessWidget {
   const ToolSettingPage({super.key});
@@ -17,14 +31,117 @@ class ToolSettingPage extends StatelessWidget {
         title: Text(S.of(context).Settings),
       ),
       bottomNavigationBar: const AppBannerAd(),
-      body: Consumer<NumberPrecisionHelper>(
-          builder: (context, precs, child) => SafeArea(
+      body: Consumer2<NumberPrecisionHelper, UnitSystemPreference>(
+          builder: (context, precs, unitPref, child) => SafeArea(
                 child: Stack(
                     alignment: AlignmentDirectional.bottomCenter,
                     children: [
                       ListView(
                         padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
                         children: [
+                          // --- Unit System ---
+                          Card(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(16, 14, 16, 0),
+                                  child: Text(
+                                    'UNIT SYSTEM',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                          color: primary,
+                                          letterSpacing: 0.8,
+                                        ),
+                                  ),
+                                ),
+                                const Divider(height: 14),
+                                ...UnitSystem.values.asMap().entries.map((entry) {
+                                  final system = entry.value;
+                                  final isLast = entry.key ==
+                                      UnitSystem.values.length - 1;
+                                  final isSelected = unitPref.system == system;
+                                  return Column(
+                                    children: [
+                                      InkWell(
+                                        onTap: () => unitPref.set(system),
+                                        borderRadius: isLast
+                                            ? const BorderRadius.vertical(
+                                                bottom: Radius.circular(14))
+                                            : BorderRadius.zero,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 16),
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      system == UnitSystem.si
+                                                          ? 'Metric (SI)'
+                                                          : 'Imperial (US)',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .titleMedium
+                                                          ?.copyWith(
+                                                            color: isSelected
+                                                                ? primary
+                                                                : null,
+                                                            fontWeight:
+                                                                isSelected
+                                                                    ? FontWeight
+                                                                        .w600
+                                                                    : null,
+                                                          ),
+                                                    ),
+                                                    const SizedBox(height: 2),
+                                                    Text(
+                                                      _unitSystemPreview(system),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodySmall
+                                                          ?.copyWith(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .onSurfaceVariant,
+                                                            fontFamily:
+                                                                'monospace',
+                                                          ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              if (isSelected)
+                                                Icon(Icons.check_circle_rounded,
+                                                    color: primary, size: 20),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      if (!isLast)
+                                        const Divider(
+                                            height: 1,
+                                            indent: 16,
+                                            endIndent: 16),
+                                    ],
+                                  );
+                                }),
+                                const SizedBox(height: 4),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 12),
+
                           // --- Precision ---
                           Card(
                             child: Column(
@@ -49,7 +166,7 @@ class ToolSettingPage extends StatelessWidget {
                                 const Divider(height: 14),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(16, 4, 12, 14),
+                                      const EdgeInsets.fromLTRB(16, 8, 12, 18),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -157,7 +274,7 @@ class ToolSettingPage extends StatelessWidget {
                                             : BorderRadius.zero,
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 12),
+                                              horizontal: 16, vertical: 16),
                                           child: Row(
                                             children: [
                                               Expanded(
@@ -229,7 +346,8 @@ class ToolSettingPage extends StatelessWidget {
                               return AppSectionCard(
                                 title: 'Privacy',
                                 child: ListTile(
-                                  contentPadding: EdgeInsets.zero,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 4),
                                   leading:
                                       const Icon(Icons.privacy_tip_rounded),
                                   title: const Text('Privacy choices'),

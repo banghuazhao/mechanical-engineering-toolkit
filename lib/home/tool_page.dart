@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
+import 'package:mechanical_engineering_toolkit/home/major_recommendation.dart';
+import 'package:mechanical_engineering_toolkit/home/major_tools_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_favorites.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
@@ -179,6 +181,22 @@ class _ToolPageState extends State<ToolPage> {
                 ),
               ),
             ),
+            _drawerSectionHeader(context, 'RECOMMENDED BY MAJOR'),
+            for (final major in majorRecommendations)
+              MoreRow(
+                title: major.title,
+                leadingIcon: major.icon,
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MajorToolsPage(major: major),
+                    ),
+                  );
+                },
+              ),
+            const Divider(height: 24, indent: 16, endIndent: 16),
             MoreRow(
                 title: S.of(context).Settings,
                 leadingIcon: Icons.settings_rounded,
@@ -297,6 +315,20 @@ class _ToolPageState extends State<ToolPage> {
       ),
       body: SafeArea(child: buildContents(context)),
       bottomNavigationBar: const AppBannerAd(),
+    );
+  }
+
+  Widget _drawerSectionHeader(BuildContext context, String title) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.8,
+            ),
+      ),
     );
   }
 

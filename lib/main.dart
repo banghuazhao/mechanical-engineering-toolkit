@@ -7,6 +7,7 @@ import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/in_app_reviewer_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/others.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:provider/provider.dart';
 
 import 'generated/l10n.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: removeAdsService),
         ChangeNotifierProvider(create: (context) => Favorites()),
         ChangeNotifierProvider(create: (context) => NumberPrecisionHelper()),
+        ChangeNotifierProvider(create: (context) => UnitSystemPreference()),
         ChangeNotifierProvider(create: (context) => ToolHistory()),
       ],
       child: MaterialApp(

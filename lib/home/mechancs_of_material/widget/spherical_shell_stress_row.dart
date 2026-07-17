@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/spherical_shell_stress_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class SphericalShellStressRow extends StatefulWidget {
   final SphericalShellStressModel sphericalShellStressModel;
@@ -17,29 +19,6 @@ class SphericalShellStressRow extends StatefulWidget {
 }
 
 class _LaminaContantsRowState extends State<SphericalShellStressRow> {
-  late TextEditingController _pController;
-  late TextEditingController _rController;
-  late TextEditingController _tController;
-
-  @override
-  void initState() {
-    super.initState();
-    _pController = TextEditingController(
-        text: widget.sphericalShellStressModel.p?.toString() ?? '');
-    _rController = TextEditingController(
-        text: widget.sphericalShellStressModel.r?.toString() ?? '');
-    _tController = TextEditingController(
-        text: widget.sphericalShellStressModel.t?.toString() ?? '');
-  }
-
-  @override
-  void dispose() {
-    _pController.dispose();
-    _rController.dispose();
-    _tController.dispose();
-    super.dispose();
-  }
-
   validateModulus(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -81,45 +60,38 @@ class _LaminaContantsRowState extends State<SphericalShellStressRow> {
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: _pController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              signed: true, decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "P",
-                              errorText: widget.validate
-                                  ? validateForce(
-                                      widget.sphericalShellStressModel.p)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.sphericalShellStressModel.p =
-                                double.tryParse(value);
+                        child: UnitField(
+                          label: "P",
+                          category: UnitCategory.stress,
+                          initialSI: widget.sphericalShellStressModel.p,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validateForce(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.sphericalShellStressModel.p = value;
                           },
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: TextField(
-                          controller: _rController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "r",
-                              errorText: widget.validate
-                                  ? validateModulus(
-                                      widget.sphericalShellStressModel.r)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.sphericalShellStressModel.r =
-                                double.tryParse(value);
+                        child: UnitField(
+                          label: "r",
+                          category: UnitCategory.length,
+                          initialSI: widget.sphericalShellStressModel.r,
+                          signed: false,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validateModulus(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.sphericalShellStressModel.r = value;
                           },
                         ),
                       ),
@@ -129,23 +101,20 @@ class _LaminaContantsRowState extends State<SphericalShellStressRow> {
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: _tController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "t",
-                              errorText: widget.validate
-                                  ? validateModulus(
-                                      widget.sphericalShellStressModel.t)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.sphericalShellStressModel.t =
-                                double.tryParse(value);
+                        child: UnitField(
+                          label: "t",
+                          category: UnitCategory.length,
+                          initialSI: widget.sphericalShellStressModel.t,
+                          signed: false,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validateModulus(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.sphericalShellStressModel.t = value;
                           },
                         ),
                       ),

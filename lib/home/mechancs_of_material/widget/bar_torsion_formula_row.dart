@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/bar_torsion_formula_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class BarTorsionFormulaRow extends StatefulWidget {
   final BarTorsionFormulaModel barTorsionFormulaModel;
@@ -15,29 +17,6 @@ class BarTorsionFormulaRow extends StatefulWidget {
 }
 
 class _BarTorsionFormulaRowState extends State<BarTorsionFormulaRow> {
-  late TextEditingController _tController;
-  late TextEditingController _rController;
-  late TextEditingController _ipController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tController = TextEditingController(
-        text: widget.barTorsionFormulaModel.T?.toString() ?? '');
-    _rController = TextEditingController(
-        text: widget.barTorsionFormulaModel.r?.toString() ?? '');
-    _ipController = TextEditingController(
-        text: widget.barTorsionFormulaModel.Ip?.toString() ?? '');
-  }
-
-  @override
-  void dispose() {
-    _tController.dispose();
-    _rController.dispose();
-    _ipController.dispose();
-    super.dispose();
-  }
-
   validateModulus(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -79,45 +58,38 @@ class _BarTorsionFormulaRowState extends State<BarTorsionFormulaRow> {
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: _tController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              signed: true, decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "T",
-                              errorText: widget.validate
-                                  ? validateForce(
-                                      widget.barTorsionFormulaModel.T)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.barTorsionFormulaModel.T =
-                                double.tryParse(value);
+                        child: UnitField(
+                          label: "T",
+                          category: UnitCategory.momentSection,
+                          initialSI: widget.barTorsionFormulaModel.T,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validateForce(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.barTorsionFormulaModel.T = value;
                           },
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: TextField(
-                          controller: _rController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "r",
-                              errorText: widget.validate
-                                  ? validateModulus(
-                                      widget.barTorsionFormulaModel.r)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.barTorsionFormulaModel.r =
-                                double.tryParse(value);
+                        child: UnitField(
+                          label: "r",
+                          category: UnitCategory.length,
+                          initialSI: widget.barTorsionFormulaModel.r,
+                          signed: false,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validateModulus(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.barTorsionFormulaModel.r = value;
                           },
                         ),
                       ),
@@ -127,23 +99,20 @@ class _BarTorsionFormulaRowState extends State<BarTorsionFormulaRow> {
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: _ipController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "Ip",
-                              errorText: widget.validate
-                                  ? validateModulus(
-                                      widget.barTorsionFormulaModel.Ip)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.barTorsionFormulaModel.Ip =
-                                double.tryParse(value);
+                        child: UnitField(
+                          label: "Ip",
+                          category: UnitCategory.momentOfInertia,
+                          initialSI: widget.barTorsionFormulaModel.Ip,
+                          signed: false,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validateModulus(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.barTorsionFormulaModel.Ip = value;
                           },
                         ),
                       ),

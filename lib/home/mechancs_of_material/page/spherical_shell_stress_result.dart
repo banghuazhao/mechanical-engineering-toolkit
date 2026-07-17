@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_fomula_row_result.dart';
+import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
+import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
+import 'package:provider/provider.dart';
 
+/// A generic result page for a list of single-value physical quantities
+/// (e.g. stresses), reused by several "Mechanics of Material" tools:
+/// spherical shell stress, cylindrical pressure vessel, plane-stress
+/// transformation, and principal stress.
 class SphericalShellStressResultPage extends StatefulWidget {
   final List<String> titles;
-  final List<String> values;
+  final List<double?> values;
+  final List<UnitCategory?>? valueUnits;
   final String rowTitle;
   final List<String>? calculationSteps;
 
@@ -15,6 +24,7 @@ class SphericalShellStressResultPage extends StatefulWidget {
     Key? key,
     required this.titles,
     required this.values,
+    this.valueUnits,
     this.rowTitle = "Result Stress",
     this.calculationSteps,
   }) : super(key: key);
@@ -26,8 +36,20 @@ class SphericalShellStressResultPage extends StatefulWidget {
 
 class _SphericalShellStressResultPageState
     extends State<SphericalShellStressResultPage> {
+  String _fv(BuildContext context, double? valueSI, UnitCategory? category) {
+    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+    if (category == null) {
+      return precs.formatValue(valueSI);
+    }
+    final system =
+        Provider.of<UnitSystemPreference>(context, listen: false).system;
+    final display = valueSI == null ? null : fromSI(valueSI, category, system);
+    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
+  }
+
   @override
   Widget build(BuildContext context) {
+    context.watch<UnitSystemPreference>();
     final hasCalc = widget.calculationSteps != null &&
         widget.calculationSteps!.isNotEmpty;
 
@@ -43,7 +65,7 @@ class _SphericalShellStressResultPageState
               onPressed: () {
                 final lines = [
                   for (var i = 0; i < widget.titles.length; i++)
-                    '${widget.titles[i]} = ${widget.values[i]}',
+                    '${widget.titles[i]} = ${_fv(context, widget.values[i], widget.valueUnits?[i])}',
                   if (hasCalc) '',
                   if (hasCalc) 'Calculation:',
                   if (hasCalc) ...widget.calculationSteps!,
@@ -65,10 +87,11 @@ class _SphericalShellStressResultPageState
               crossAxisSpacing: 12,
               itemBuilder: (BuildContext context, int index) {
                 return [
-                  MultipleFormulaRowResult(
+                  MultipleRowResult(
                       title: widget.rowTitle,
                       resultTitles: widget.titles,
-                      resultValues: widget.values),
+                      resultValues: widget.values,
+                      resultUnits: widget.valueUnits),
                   if (hasCalc) CalculationCard(steps: widget.calculationSteps!),
                 ][index];
               }),

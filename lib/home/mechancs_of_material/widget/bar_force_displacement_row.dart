@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/bar_force_displacement_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class BarForceDisplacementRow extends StatefulWidget {
   final BarTorsionFormulaModel barForceDisplacementModel;
@@ -17,33 +19,6 @@ class BarForceDisplacementRow extends StatefulWidget {
 }
 
 class _LaminaContantsRowState extends State<BarForceDisplacementRow> {
-  late TextEditingController _pController;
-  late TextEditingController _lController;
-  late TextEditingController _eController;
-  late TextEditingController _aController;
-
-  @override
-  void initState() {
-    super.initState();
-    _pController = TextEditingController(
-        text: widget.barForceDisplacementModel.p?.toString() ?? '');
-    _lController = TextEditingController(
-        text: widget.barForceDisplacementModel.l?.toString() ?? '');
-    _eController = TextEditingController(
-        text: widget.barForceDisplacementModel.e?.toString() ?? '');
-    _aController = TextEditingController(
-        text: widget.barForceDisplacementModel.area?.toString() ?? '');
-  }
-
-  @override
-  void dispose() {
-    _pController.dispose();
-    _lController.dispose();
-    _eController.dispose();
-    _aController.dispose();
-    super.dispose();
-  }
-
   validateModulus(double? value) {
     if (value == null) {
       return S.of(context).Not_a_number;
@@ -85,45 +60,38 @@ class _LaminaContantsRowState extends State<BarForceDisplacementRow> {
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: _pController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              signed: true, decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "P",
-                              errorText: widget.validate
-                                  ? validateForce(
-                                      widget.barForceDisplacementModel.p)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.barForceDisplacementModel.p =
-                                double.tryParse(value);
+                        child: UnitField(
+                          label: "P",
+                          category: UnitCategory.force,
+                          initialSI: widget.barForceDisplacementModel.p,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validateForce(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.barForceDisplacementModel.p = value;
                           },
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: TextField(
-                          controller: _lController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "L",
-                              errorText: widget.validate
-                                  ? validateModulus(
-                                      widget.barForceDisplacementModel.l)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.barForceDisplacementModel.l =
-                                double.tryParse(value);
+                        child: UnitField(
+                          label: "L",
+                          category: UnitCategory.length,
+                          initialSI: widget.barForceDisplacementModel.l,
+                          signed: false,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validateModulus(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.barForceDisplacementModel.l = value;
                           },
                         ),
                       ),
@@ -133,45 +101,39 @@ class _LaminaContantsRowState extends State<BarForceDisplacementRow> {
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: _eController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "E",
-                              errorText: widget.validate
-                                  ? validateModulus(
-                                      widget.barForceDisplacementModel.e)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.barForceDisplacementModel.e =
-                                double.tryParse(value);
+                        child: UnitField(
+                          label: "E",
+                          category: UnitCategory.stress,
+                          initialSI: widget.barForceDisplacementModel.e,
+                          signed: false,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validateModulus(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.barForceDisplacementModel.e = value;
                           },
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: TextField(
-                          controller: _aController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "Area",
-                              errorText: widget.validate
-                                  ? validateModulus(
-                                      widget.barForceDisplacementModel.area)
-                                  : null,
-                              errorStyle: const TextStyle(fontSize: 10)),
-                          onChanged: (value) {
-                            widget.barForceDisplacementModel.area =
-                                double.tryParse(value);
+                        child: UnitField(
+                          label: "Area",
+                          category: UnitCategory.area,
+                          initialSI: widget.barForceDisplacementModel.area,
+                          signed: false,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: (value) => widget.validate
+                              ? validateModulus(value)
+                              : null,
+                          errorStyle: const TextStyle(fontSize: 10),
+                          onChangedSI: (value) {
+                            widget.barForceDisplacementModel.area = value;
                           },
                         ),
                       ),

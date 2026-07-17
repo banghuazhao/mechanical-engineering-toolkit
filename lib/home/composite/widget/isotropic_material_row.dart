@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
 class IsotropicMaterialRow extends StatefulWidget {
   final String title;
@@ -62,19 +64,18 @@ class _IsotropicMaterialRowState extends State<IsotropicMaterialRow> {
                   Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              contentPadding: const EdgeInsets.all(12),
-                              border: const OutlineInputBorder(),
-                              labelText: "E1",
-                              errorText: widget.validate
-                                  ? validateModulus(widget.material.e)
-                                  : null),
-                          onChanged: (value) {
-                            widget.material.e = double.tryParse(value);
+                        child: UnitField(
+                          label: "E1",
+                          category: UnitCategory.modulus,
+                          initialSI: widget.material.e,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.all(12),
+                          border: const OutlineInputBorder(),
+                          errorText: widget.validate
+                              ? (si) => validateModulus(si)
+                              : null,
+                          onChangedSI: (value) {
+                            widget.material.e = value;
                           },
                         ),
                       ),

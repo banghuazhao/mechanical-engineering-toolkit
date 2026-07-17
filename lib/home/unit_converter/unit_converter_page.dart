@@ -1,6 +1,6 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart' as units;
 
 class _UnitCategory {
   final String name;
@@ -23,180 +23,100 @@ const _categories = <_UnitCategory>[
     name: 'Length',
     icon: Icons.straighten_rounded,
     units: [
-      _Unit(label: 'mm', toBase: _mm2m, fromBase: _m2mm),
-      _Unit(label: 'cm', toBase: _cm2m, fromBase: _m2cm),
-      _Unit(label: 'm',  toBase: _id,   fromBase: _id),
-      _Unit(label: 'km', toBase: _km2m, fromBase: _m2km),
-      _Unit(label: 'in', toBase: _in2m, fromBase: _m2in),
-      _Unit(label: 'ft', toBase: _ft2m, fromBase: _m2ft),
-      _Unit(label: 'yd', toBase: _yd2m, fromBase: _m2yd),
-      _Unit(label: 'mi', toBase: _mi2m, fromBase: _m2mi),
+      _Unit(label: 'mm', toBase: units.mm2m, fromBase: units.m2mm),
+      _Unit(label: 'cm', toBase: units.cm2m, fromBase: units.m2cm),
+      _Unit(label: 'm',  toBase: units.id,   fromBase: units.id),
+      _Unit(label: 'km', toBase: units.km2m, fromBase: units.m2km),
+      _Unit(label: 'in', toBase: units.in2m, fromBase: units.m2in),
+      _Unit(label: 'ft', toBase: units.ft2m, fromBase: units.m2ft),
+      _Unit(label: 'yd', toBase: units.yd2m, fromBase: units.m2yd),
+      _Unit(label: 'mi', toBase: units.mi2m, fromBase: units.m2mi),
     ],
   ),
   _UnitCategory(
     name: 'Force',
     icon: Icons.arrow_downward_rounded,
     units: [
-      _Unit(label: 'N',   toBase: _id,     fromBase: _id),
-      _Unit(label: 'kN',  toBase: _kN2N,   fromBase: _N2kN),
-      _Unit(label: 'MN',  toBase: _MN2N,   fromBase: _N2MN),
-      _Unit(label: 'lbf', toBase: _lbf2N,  fromBase: _N2lbf),
-      _Unit(label: 'kip', toBase: _kip2N,  fromBase: _N2kip),
+      _Unit(label: 'N',   toBase: units.id,     fromBase: units.id),
+      _Unit(label: 'kN',  toBase: units.kN2N,   fromBase: units.N2kN),
+      _Unit(label: 'MN',  toBase: units.MN2N,   fromBase: units.N2MN),
+      _Unit(label: 'lbf', toBase: units.lbf2N,  fromBase: units.N2lbf),
+      _Unit(label: 'kip', toBase: units.kip2N,  fromBase: units.N2kip),
     ],
   ),
   _UnitCategory(
     name: 'Stress / Pressure',
     icon: Icons.compress_rounded,
     units: [
-      _Unit(label: 'Pa',  toBase: _id,      fromBase: _id),
-      _Unit(label: 'kPa', toBase: _kPa2Pa,  fromBase: _Pa2kPa),
-      _Unit(label: 'MPa', toBase: _MPa2Pa,  fromBase: _Pa2MPa),
-      _Unit(label: 'GPa', toBase: _GPa2Pa,  fromBase: _Pa2GPa),
-      _Unit(label: 'psi', toBase: _psi2Pa,  fromBase: _Pa2psi),
-      _Unit(label: 'ksi', toBase: _ksi2Pa,  fromBase: _Pa2ksi),
-      _Unit(label: 'atm', toBase: _atm2Pa,  fromBase: _Pa2atm),
-      _Unit(label: 'bar', toBase: _bar2Pa,  fromBase: _Pa2bar),
+      _Unit(label: 'Pa',  toBase: units.id,      fromBase: units.id),
+      _Unit(label: 'kPa', toBase: units.kPa2Pa,  fromBase: units.Pa2kPa),
+      _Unit(label: 'MPa', toBase: units.MPa2Pa,  fromBase: units.Pa2MPa),
+      _Unit(label: 'GPa', toBase: units.GPa2Pa,  fromBase: units.Pa2GPa),
+      _Unit(label: 'psi', toBase: units.psi2Pa,  fromBase: units.Pa2psi),
+      _Unit(label: 'ksi', toBase: units.ksi2Pa,  fromBase: units.Pa2ksi),
+      _Unit(label: 'atm', toBase: units.atm2Pa,  fromBase: units.Pa2atm),
+      _Unit(label: 'bar', toBase: units.bar2Pa,  fromBase: units.Pa2bar),
     ],
   ),
   _UnitCategory(
     name: 'Mass',
     icon: Icons.scale_rounded,
     units: [
-      _Unit(label: 'g',    toBase: _g2kg,    fromBase: _kg2g),
-      _Unit(label: 'kg',   toBase: _id,      fromBase: _id),
-      _Unit(label: 'tonne',toBase: _t2kg,    fromBase: _kg2t),
-      _Unit(label: 'oz',   toBase: _oz2kg,   fromBase: _kg2oz),
-      _Unit(label: 'lb',   toBase: _lb2kg,   fromBase: _kg2lb),
-      _Unit(label: 'slug', toBase: _slug2kg, fromBase: _kg2slug),
+      _Unit(label: 'g',    toBase: units.g2kg,    fromBase: units.kg2g),
+      _Unit(label: 'kg',   toBase: units.id,      fromBase: units.id),
+      _Unit(label: 'tonne',toBase: units.t2kg,    fromBase: units.kg2t),
+      _Unit(label: 'oz',   toBase: units.oz2kg,   fromBase: units.kg2oz),
+      _Unit(label: 'lb',   toBase: units.lb2kg,   fromBase: units.kg2lb),
+      _Unit(label: 'slug', toBase: units.slug2kg, fromBase: units.kg2slug),
     ],
   ),
   _UnitCategory(
     name: 'Temperature',
     icon: Icons.thermostat_rounded,
     units: [
-      _Unit(label: '°C', toBase: _id,   fromBase: _id),
-      _Unit(label: '°F', toBase: _F2C,  fromBase: _C2F),
-      _Unit(label: 'K',  toBase: _K2C,  fromBase: _C2K),
+      _Unit(label: '°C', toBase: units.id,   fromBase: units.id),
+      _Unit(label: '°F', toBase: units.F2C,  fromBase: units.C2F),
+      _Unit(label: 'K',  toBase: units.K2C,  fromBase: units.C2K),
     ],
   ),
   _UnitCategory(
     name: 'Torque',
     icon: Icons.rotate_right_rounded,
     units: [
-      _Unit(label: 'N·m',    toBase: _id,        fromBase: _id),
-      _Unit(label: 'kN·m',   toBase: _kNm2Nm,   fromBase: _Nm2kNm),
-      _Unit(label: 'lbf·ft', toBase: _lbfft2Nm, fromBase: _Nm2lbfft),
-      _Unit(label: 'lbf·in', toBase: _lbfin2Nm, fromBase: _Nm2lbfin),
+      _Unit(label: 'N·m',    toBase: units.id,        fromBase: units.id),
+      _Unit(label: 'kN·m',   toBase: units.kNm2Nm,   fromBase: units.Nm2kNm),
+      _Unit(label: 'lbf·ft', toBase: units.lbfft2Nm, fromBase: units.Nm2lbfft),
+      _Unit(label: 'lbf·in', toBase: units.lbfin2Nm, fromBase: units.Nm2lbfin),
     ],
   ),
   _UnitCategory(
     name: 'Power',
     icon: Icons.bolt_rounded,
     units: [
-      _Unit(label: 'W',  toBase: _id,    fromBase: _id),
-      _Unit(label: 'kW', toBase: _kW2W,  fromBase: _W2kW),
-      _Unit(label: 'MW', toBase: _MW2W,  fromBase: _W2MW),
-      _Unit(label: 'hp', toBase: _hp2W,  fromBase: _W2hp),
+      _Unit(label: 'W',  toBase: units.id,    fromBase: units.id),
+      _Unit(label: 'kW', toBase: units.kW2W,  fromBase: units.W2kW),
+      _Unit(label: 'MW', toBase: units.MW2W,  fromBase: units.W2MW),
+      _Unit(label: 'hp', toBase: units.hp2W,  fromBase: units.W2hp),
     ],
   ),
   _UnitCategory(
     name: 'Angular Velocity',
     icon: Icons.settings_rounded,
     units: [
-      _Unit(label: 'rad/s', toBase: _id,       fromBase: _id),
-      _Unit(label: 'rpm',   toBase: _rpm2rads, fromBase: _rads2rpm),
-      _Unit(label: 'deg/s', toBase: _degs2rads,fromBase: _rads2degs),
+      _Unit(label: 'rad/s', toBase: units.id,       fromBase: units.id),
+      _Unit(label: 'rpm',   toBase: units.rpm2rads, fromBase: units.rads2rpm),
+      _Unit(label: 'deg/s', toBase: units.degs2rads,fromBase: units.rads2degs),
     ],
   ),
   _UnitCategory(
     name: 'Angle',
     icon: Icons.architecture_rounded,
     units: [
-      _Unit(label: 'rad', toBase: _id,         fromBase: _id),
-      _Unit(label: 'deg', toBase: _deg2rad,    fromBase: _rad2deg),
+      _Unit(label: 'rad', toBase: units.id,         fromBase: units.id),
+      _Unit(label: 'deg', toBase: units.deg2rad,    fromBase: units.rad2deg),
     ],
   ),
 ];
-
-// Length
-double _mm2m(double v) => v * 0.001;
-double _m2mm(double v) => v * 1000;
-double _cm2m(double v) => v * 0.01;
-double _m2cm(double v) => v * 100;
-double _km2m(double v) => v * 1000;
-double _m2km(double v) => v * 0.001;
-double _in2m(double v) => v * 0.0254;
-double _m2in(double v) => v / 0.0254;
-double _ft2m(double v) => v * 0.3048;
-double _m2ft(double v) => v / 0.3048;
-double _yd2m(double v) => v * 0.9144;
-double _m2yd(double v) => v / 0.9144;
-double _mi2m(double v) => v * 1609.344;
-double _m2mi(double v) => v / 1609.344;
-// Force
-double _kN2N(double v) => v * 1e3;
-double _N2kN(double v) => v * 1e-3;
-double _MN2N(double v) => v * 1e6;
-double _N2MN(double v) => v * 1e-6;
-double _lbf2N(double v) => v * 4.44822;
-double _N2lbf(double v) => v / 4.44822;
-double _kip2N(double v) => v * 4448.22;
-double _N2kip(double v) => v / 4448.22;
-// Stress
-double _kPa2Pa(double v) => v * 1e3;
-double _Pa2kPa(double v) => v * 1e-3;
-double _MPa2Pa(double v) => v * 1e6;
-double _Pa2MPa(double v) => v * 1e-6;
-double _GPa2Pa(double v) => v * 1e9;
-double _Pa2GPa(double v) => v * 1e-9;
-double _psi2Pa(double v) => v * 6894.76;
-double _Pa2psi(double v) => v / 6894.76;
-double _ksi2Pa(double v) => v * 6.89476e6;
-double _Pa2ksi(double v) => v / 6.89476e6;
-double _atm2Pa(double v) => v * 101325;
-double _Pa2atm(double v) => v / 101325;
-double _bar2Pa(double v) => v * 1e5;
-double _Pa2bar(double v) => v * 1e-5;
-// Mass
-double _g2kg(double v) => v * 0.001;
-double _kg2g(double v) => v * 1000;
-double _t2kg(double v) => v * 1000;
-double _kg2t(double v) => v * 0.001;
-double _oz2kg(double v) => v * 0.0283495;
-double _kg2oz(double v) => v / 0.0283495;
-double _lb2kg(double v) => v * 0.453592;
-double _kg2lb(double v) => v / 0.453592;
-double _slug2kg(double v) => v * 14.5939;
-double _kg2slug(double v) => v / 14.5939;
-// Temperature (base = °C)
-double _F2C(double v) => (v - 32) * 5 / 9;
-double _C2F(double v) => v * 9 / 5 + 32;
-double _K2C(double v) => v - 273.15;
-double _C2K(double v) => v + 273.15;
-// Torque
-double _kNm2Nm(double v) => v * 1000;
-double _Nm2kNm(double v) => v * 0.001;
-double _lbfft2Nm(double v) => v * 1.35582;
-double _Nm2lbfft(double v) => v / 1.35582;
-double _lbfin2Nm(double v) => v * 0.112985;
-double _Nm2lbfin(double v) => v / 0.112985;
-// Power
-double _kW2W(double v) => v * 1000;
-double _W2kW(double v) => v * 0.001;
-double _MW2W(double v) => v * 1e6;
-double _W2MW(double v) => v * 1e-6;
-double _hp2W(double v) => v * 745.7;
-double _W2hp(double v) => v / 745.7;
-// Angular velocity
-double _rpm2rads(double v) => v * pi / 30;
-double _rads2rpm(double v) => v * 30 / pi;
-double _degs2rads(double v) => v * pi / 180;
-double _rads2degs(double v) => v * 180 / pi;
-// Angle
-double _deg2rad(double v) => v * pi / 180;
-double _rad2deg(double v) => v * 180 / pi;
-// Identity
-double _id(double v) => v;
 
 class UnitConverterPage extends StatefulWidget {
   final String? title;
