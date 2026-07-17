@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/home/major_recommendation.dart';
-import 'package:mechanical_engineering_toolkit/home/major_tools_page.dart';
+import 'package:mechanical_engineering_toolkit/home/major_list_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_favorites.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
@@ -58,6 +57,8 @@ class ToolPage extends StatefulWidget {
 class _ToolPageState extends State<ToolPage> {
   List<ToolSection> sections = [];
   late ToolViewMode _viewMode;
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
   AppOpenAdManager? _appOpenAdManager;
   AppLifecycleReactor? _appLifecycleReactor;
 
@@ -75,6 +76,15 @@ class _ToolPageState extends State<ToolPage> {
           : ToolViewMode.list;
     });
     ToolViewModePreference.set(_viewMode);
+  }
+
+  void _updateSearch(String value) {
+    setState(() => _searchQuery = value.trim().toLowerCase());
+  }
+
+  void _clearSearch() {
+    _searchController.clear();
+    _updateSearch('');
   }
 
   @override
@@ -132,6 +142,7 @@ class _ToolPageState extends State<ToolPage> {
     final reactor = _appLifecycleReactor;
     if (reactor != null) WidgetsBinding.instance.removeObserver(reactor);
     _appOpenAdManager?.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -181,21 +192,19 @@ class _ToolPageState extends State<ToolPage> {
                 ),
               ),
             ),
-            _drawerSectionHeader(context, 'RECOMMENDED BY MAJOR'),
-            for (final major in majorRecommendations)
-              MoreRow(
-                title: major.title,
-                leadingIcon: major.icon,
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MajorToolsPage(major: major),
-                    ),
-                  );
-                },
-              ),
+            MoreRow(
+              title: 'Recommended by Major',
+              leadingIcon: Icons.school_rounded,
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MajorListPage(),
+                  ),
+                );
+              },
+            ),
             const Divider(height: 24, indent: 16, endIndent: 16),
             MoreRow(
                 title: S.of(context).Settings,
@@ -318,27 +327,52 @@ class _ToolPageState extends State<ToolPage> {
     );
   }
 
-  Widget _drawerSectionHeader(BuildContext context, String title) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.8,
-            ),
-      ),
-    );
-  }
-
   Widget buildContents(BuildContext context) {
+    final visibleSections = _searchQuery.isEmpty
+        ? sections
+        : sections
+            .map(
+              (section) => ToolSection(
+                section.title,
+                section.tools
+                    .where(
+                      (tool) => tool.title.toLowerCase().contains(_searchQuery),
+                    )
+                    .toList(),
+              ),
+            )
+            .where((section) => section.tools.isNotEmpty)
+            .toList();
+
     return Center(
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: context.tokens.contentMaxWidth),
         child: CustomScrollView(
           slivers: [
-            for (var section in sections) ...[
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+                child: TextField(
+                  key: const Key('toolSearchField'),
+                  controller: _searchController,
+                  onChanged: _updateSearch,
+                  textInputAction: TextInputAction.search,
+                  decoration: InputDecoration(
+                    hintText: 'Search tools',
+                    prefixIcon: const Icon(Icons.search_rounded),
+                    suffixIcon: _searchQuery.isEmpty
+                        ? null
+                        : IconButton(
+                            key: const Key('clearToolSearch'),
+                            tooltip: 'Clear search',
+                            onPressed: _clearSearch,
+                            icon: const Icon(Icons.close_rounded),
+                          ),
+                  ),
+                ),
+              ),
+            ),
+            for (var section in visibleSections) ...[
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -350,6 +384,19 @@ class _ToolPageState extends State<ToolPage> {
               else
                 _buildGridSliver(context, section.tools),
             ],
+            if (visibleSections.isEmpty)
+              const SliverFillRemaining(
+                hasScrollBody: false,
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(24),
+                    child: Text(
+                      'No tools found',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
             SliverToBoxAdapter(
               child: SizedBox(height: context.tokens.space4),
             ),

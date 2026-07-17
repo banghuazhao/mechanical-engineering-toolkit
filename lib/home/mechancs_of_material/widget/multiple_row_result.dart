@@ -83,29 +83,40 @@ class MultipleRowResult extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                resultTitles[index],
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      color: const Color(0xFF6E6E73),
-                                    ),
+                              Expanded(
+                                child: Text(
+                                  resultTitles[index],
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                        color: const Color(0xFF6E6E73),
+                                      ),
+                                ),
                               ),
-                              Row(
-                                children: [
-                                  Text(
-                                    valueStr.isNotEmpty ? displayStr : '—',
-                                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                          color: primary,
-                                          fontWeight: FontWeight.w600,
-                                          fontFeatures: const [FontFeature.tabularFigures()],
-                                        ),
-                                  ),
-                                  if (valueStr.isNotEmpty) ...[
-                                    const SizedBox(width: 6),
-                                    Icon(Icons.copy_rounded, size: 12, color: Colors.grey[400]),
+                              const SizedBox(width: 12),
+                              Flexible(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        valueStr.isNotEmpty ? displayStr : '—',
+                                        textAlign: TextAlign.end,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                              color: primary,
+                                              fontWeight: FontWeight.w600,
+                                              fontFeatures: const [FontFeature.tabularFigures()],
+                                            ),
+                                      ),
+                                    ),
+                                    if (valueStr.isNotEmpty) ...[
+                                      const SizedBox(width: 6),
+                                      Icon(Icons.copy_rounded, size: 12, color: Colors.grey[400]),
+                                    ],
                                   ],
-                                ],
+                                ),
                               ),
                             ],
                           ),

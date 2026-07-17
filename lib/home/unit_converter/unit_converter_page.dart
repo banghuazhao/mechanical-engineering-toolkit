@@ -173,6 +173,8 @@ class _UnitConverterPageState extends State<UnitConverterPage> {
       }
     }
     _updating = false;
+    // Rebuild so Copy result enables/disables with the current result text.
+    setState(() {});
   }
 
   String _fmt(double v) {

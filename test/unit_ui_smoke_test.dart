@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/favorites.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/home/major_list_page.dart';
 import 'package:mechanical_engineering_toolkit/home/major_recommendation.dart';
 import 'package:mechanical_engineering_toolkit/home/major_tools_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_page.dart';
@@ -99,7 +100,8 @@ void main() {
     }
   });
 
-  testWidgets('Side menu lists every major and opens its tools',
+  testWidgets(
+      'Side menu has a single Recommended by Major row that opens the major list',
       (tester) async {
     await tester.pumpWidget(_wrap(const ToolPage()));
     await tester.pumpAndSettle();
@@ -108,7 +110,17 @@ void main() {
     tester.state<ScaffoldState>(find.byType(Scaffold)).openDrawer();
     await tester.pumpAndSettle();
 
-    expect(find.text('RECOMMENDED BY MAJOR'), findsOneWidget);
+    final row = find.text('Recommended by Major');
+    expect(row, findsOneWidget);
+    // Majors themselves are not inlined in the drawer anymore.
+    for (final major in majorRecommendations) {
+      expect(find.text(major.title), findsNothing);
+    }
+
+    await tester.tap(row);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MajorListPage), findsOneWidget);
     for (final major in majorRecommendations) {
       expect(find.text(major.title), findsOneWidget);
     }
@@ -117,5 +129,31 @@ void main() {
     await tester.tap(find.text(majorRecommendations.first.title));
     await tester.pumpAndSettle();
     expect(find.byType(MajorToolsPage), findsOneWidget);
+  });
+
+  testWidgets('Tool search filters tools and can be cleared', (tester) async {
+    await tester.pumpWidget(_wrap(const ToolPage()));
+    await tester.pumpAndSettle();
+
+    final searchField = find.byKey(const Key('toolSearchField'));
+    expect(searchField, findsOneWidget);
+
+    await tester.enterText(searchField, 'unit converter');
+    await tester.pump();
+
+    expect(find.text('Unit Converter'), findsOneWidget);
+    expect(find.byType(ToolGridTile), findsOneWidget);
+
+    await tester.enterText(searchField, 'tool that does not exist');
+    await tester.pump();
+
+    expect(find.text('No tools found'), findsOneWidget);
+    expect(find.byType(ToolGridTile), findsNothing);
+
+    await tester.tap(find.byKey(const Key('clearToolSearch')));
+    await tester.pump();
+
+    expect(find.text('No tools found'), findsNothing);
+    expect(find.byType(ToolGridTile), findsWidgets);
   });
 }

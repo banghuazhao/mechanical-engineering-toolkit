@@ -4,13 +4,18 @@ import 'package:mechanical_engineering_toolkit/home/beam/page/beam_calculator_pa
 import 'package:mechanical_engineering_toolkit/home/beam/page/beam_section_properties_page.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/page/centroid_page.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/page/resultant_force_page.dart';
+import 'package:mechanical_engineering_toolkit/home/statics/page/truss_analysis_page.dart';
 import 'package:mechanical_engineering_toolkit/home/unit_converter/unit_converter_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/bar_force_displacement_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/beam_flexure_formula_page.dart';
+import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/bolted_joint_page.dart';
+import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/combined_loading_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/cantilever_beam_deflections_slopes_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/column_buckling_load_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/cylindrical_pressure_vessel_page.dart';
+import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/fatigue_safety_factor_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/general_stress_page.dart';
+import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/mohrs_circle_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/plane_stress_transformation_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/spherical_shell_stress_page.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/page/linear_elastic_constitutive_relation.dart';
@@ -305,6 +310,58 @@ class ToolLibrary {
                         toolId: toolId,
                         initialInputs: initialInputs,
                       )))),
+      Tool(
+          id: 118,
+          icon: Icons.circle_outlined,
+          title: "Mohr's Circle for Plane Stress",
+          type: ToolType.mechanicsOfMaterial,
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MohrsCirclePage(
+                        title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
+                      )))),
+      Tool(
+          id: 119,
+          icon: Icons.change_history_outlined,
+          title: 'Fatigue Safety Factor (Modified Goodman)',
+          type: ToolType.mechanicsOfMaterial,
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => FatigueSafetyFactorPage(
+                        title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
+                      )))),
+      Tool(
+          id: 120,
+          icon: Icons.grid_4x4_rounded,
+          title: 'Bolted / Riveted Joint',
+          type: ToolType.mechanicsOfMaterial,
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BoltedJointPage(
+                        title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
+                      )))),
+      Tool(
+          id: 121,
+          icon: Icons.blur_circular_rounded,
+          title: 'Combined Loading at a Point',
+          type: ToolType.mechanicsOfMaterial,
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CombinedLoadingPage(
+                        title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
+                      )))),
       // Theory of Elasticity
       Tool(
           id: 200,
@@ -445,6 +502,18 @@ class ToolLibrary {
               context,
               MaterialPageRoute(
                   builder: (context) => CentroidPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 403,
+          icon: Icons.change_history_rounded,
+          title: 'Truss Analysis (Method of Joints)',
+          type: ToolType.statics,
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TrussAnalysisPage(
                       title: title,
                       toolId: toolId,
                       initialInputs: initialInputs)))),
