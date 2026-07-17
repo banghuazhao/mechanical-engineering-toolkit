@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.0 - 2026-07-17
+
+- Added Mohr's Circle, Bolted Joint, Combined Loading, and Fatigue Safety Factor calculators.
+- Added Truss Analysis for 2D statics problems.
+- Added a unified SI / Imperial unit system across calculators, with a setting to choose your preferred units.
+- Added major-based tool discovery to help students find the right calculators faster.
+- Fixed App Tracking Transparency so the permission prompt appears before ads initialize.
+
 ## 1.4.0 - 2026-07-12
 
 - Added Beam Section Properties and Beam Load Analysis calculators with formulas, substituted calculation steps, and engineering diagrams.
