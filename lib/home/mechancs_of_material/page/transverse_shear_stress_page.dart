@@ -1,273 +1,272 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/single_row_result.dart';
-import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
-import '../../tool_setting_page.dart';
-
-class _ShearModel {
-  double? V, Q, I, t;
-  bool isValid() =>
-      V != null && Q != null && I != null && t != null && I! != 0 && t! != 0;
-}
-
 class TransverseShearStressPage extends StatefulWidget {
+  const TransverseShearStressPage({
+    super.key,
+    required this.title,
+    required this.toolId,
+    this.initialInputs,
+  });
+
   final String title;
   final int toolId;
   final Map<String, String>? initialInputs;
-  const TransverseShearStressPage(
-      {Key? key, required this.title, required this.toolId, this.initialInputs})
-      : super(key: key);
 
   @override
-  _TransverseShearStressPageState createState() =>
+  State<TransverseShearStressPage> createState() =>
       _TransverseShearStressPageState();
 }
 
 class _TransverseShearStressPageState extends State<TransverseShearStressPage> {
-  final _model = _ShearModel();
-  bool validate = false;
+  double? _v;
+  double? _q;
+  double? _i;
+  double? _t;
 
   @override
   void initState() {
     super.initState();
-    if (widget.initialInputs != null) {
-      _model.V = double.tryParse(widget.initialInputs!["V"] ?? "");
-      _model.Q = double.tryParse(widget.initialInputs!["Q"] ?? "");
-      _model.I = double.tryParse(widget.initialInputs!["I"] ?? "");
-      _model.t = double.tryParse(widget.initialInputs!["t"] ?? "");
-    }
+    final inputs = widget.initialInputs;
+    if (inputs == null) return;
+    _v = double.tryParse(inputs['V'] ?? '');
+    _q = double.tryParse(inputs['Q'] ?? '');
+    _i = double.tryParse(inputs['I'] ?? '');
+    _t = double.tryParse(inputs['t'] ?? '');
   }
 
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).colorScheme.primary;
-    final fields = <_FieldDef>[
-      _FieldDef('V  (transverse shear force)', (v) => _model.V = v,
-          () => _model.V, UnitCategory.force),
-      _FieldDef('Q  (first moment of area)', (v) => _model.Q = v,
-          () => _model.Q, UnitCategory.sectionModulus),
-      _FieldDef('I  (moment of inertia)', (v) => _model.I = v, () => _model.I,
-          UnitCategory.momentOfInertia),
-      _FieldDef('t  (width at point of interest)', (v) => _model.t = v,
-          () => _model.t, UnitCategory.length),
-    ];
-
-    final items = [
-      Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
-              child: Text(
-                'INPUTS',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: primary,
-                      letterSpacing: 0.8,
-                    ),
-              ),
-            ),
-            const Divider(height: 14),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: Column(
-                children: fields
-                    .map((f) => Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: UnitField(
-                            label: f.label,
-                            category: f.category,
-                            initialSI: f.getter(),
-                            isDense: true,
-                            contentPadding: const EdgeInsets.all(12),
-                            border: const OutlineInputBorder(),
-                            errorText: (value) => validate && value == null
-                                ? S.of(context).Not_a_number
-                                : null,
-                            onChangedSI: (v) => setState(() => f.setter(v)),
-                          ),
-                        ))
-                    .toList(),
-              ),
-            ),
-          ],
-        ),
-      ),
-      DescriptionItem(
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'The transverse shear stress at any point in the cross-section:',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 12),
-            Center(
-              child: Math.tex(
-                r'''\tau = \frac{VQ}{It}''',
-                mathStyle: MathStyle.display,
-                textStyle: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'where Q = ∫ydA is the first moment of the area above (or below) the point of interest about the neutral axis.',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ],
-        ),
-      ),
-    ];
-
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          setState(() => validate = true);
-          _calculate();
-        },
+        onPressed: _calculate,
+        icon: const Icon(Icons.analytics_rounded),
         label: Text(S.of(context).Calculate),
       ),
-      body: SafeArea(
-        child: StaggeredGridView.countBuilder(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-          crossAxisCount: 8,
-          itemCount: items.length,
-          staggeredTileBuilder: (_) => StaggeredTile.fit(
-              MediaQuery.of(context).size.width > 600 ? 4 : 8),
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          itemBuilder: (_, i) => items[i],
+      body: AppContent(
+        padding: EdgeInsets.zero,
+        child: ListView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          padding: EdgeInsets.fromLTRB(
+            context.tokens.space4,
+            context.tokens.space4,
+            context.tokens.space4,
+            100,
+          ),
+          children: [
+            AppSectionCard(
+              title: 'Transverse Shear Stress',
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'The shear stress at any point in a beam cross-section, where Q is the first moment of the area above (or below) the point about the neutral axis.',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                  SizedBox(height: context.tokens.space3),
+                  Center(
+                    child: Math.tex(
+                      r'''\tau = \frac{VQ}{It}''',
+                      mathStyle: MathStyle.display,
+                      textStyle: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                  SizedBox(height: context.tokens.space4),
+                  AdaptiveFieldGrid(children: [
+                    UnitField(
+                      label: 'Shear force, V',
+                      category: UnitCategory.force,
+                      initialSI: _v,
+                      onChangedSI: (v) => _v = v,
+                    ),
+                    UnitField(
+                      label: 'First moment, Q',
+                      category: UnitCategory.sectionModulus,
+                      signed: false,
+                      initialSI: _q,
+                      onChangedSI: (v) => _q = v,
+                    ),
+                    UnitField(
+                      label: 'Moment of inertia, I',
+                      category: UnitCategory.momentOfInertia,
+                      signed: false,
+                      initialSI: _i,
+                      onChangedSI: (v) => _i = v,
+                    ),
+                    UnitField(
+                      label: 'Width, t',
+                      category: UnitCategory.length,
+                      signed: false,
+                      initialSI: _t,
+                      onChangedSI: (v) => _t = v,
+                    ),
+                  ]),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   void _calculate() {
-    if (!_model.isValid()) return;
-    final tau = _model.V! * _model.Q! / (_model.I! * _model.t!);
-    context.read<ToolHistory>().record(widget.toolId, inputs: {
-      "V": _model.V!.toString(),
-      "Q": _model.Q!.toString(),
-      "I": _model.I!.toString(),
-      "t": _model.t!.toString(),
-    });
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => _ShearResultPage(
-          tau: tau,
-          V: _model.V!,
-          Q: _model.Q!,
-          I: _model.I!,
-          t: _model.t!,
+    try {
+      final v = _v;
+      final q = _q;
+      final i = _i;
+      final t = _t;
+      if (v == null || q == null || i == null || t == null) {
+        throw const FormatException('Enter V, Q, I, and t.');
+      }
+      if (i == 0 || t == 0) {
+        throw const FormatException('I and t must be nonzero.');
+      }
+
+      final tau = v * q / (i * t);
+
+      context.read<ToolHistory>().record(widget.toolId, inputs: {
+        'V': '$v',
+        'Q': '$q',
+        'I': '$i',
+        't': '$t',
+      });
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => _TransverseShearStressResultPage(
+            tau: tau,
+            v: v,
+            q: q,
+            i: i,
+            t: t,
+          ),
         ),
-      ),
-    );
+      );
+    } on FormatException catch (error) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(error.message)));
+    }
   }
 }
 
-class _FieldDef {
-  final String label;
-  final void Function(double?) setter;
-  final double? Function() getter;
-  final UnitCategory? category;
-  _FieldDef(this.label, this.setter, this.getter, this.category);
-}
+class _TransverseShearStressResultPage extends StatelessWidget {
+  _TransverseShearStressResultPage({
+    required this.tau,
+    required this.v,
+    required this.q,
+    required this.i,
+    required this.t,
+  });
 
-class _ShearResultPage extends StatelessWidget {
-  final double tau, V, Q, I, t;
-  const _ShearResultPage(
-      {required this.tau,
-      required this.V,
-      required this.Q,
-      required this.I,
-      required this.t});
+  final double tau;
+  final double v;
+  final double q;
+  final double i;
+  final double t;
+  final _exportKey = GlobalKey();
 
-  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
-    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
-    final system =
-        Provider.of<UnitSystemPreference>(context, listen: false).system;
-    final display = valueSI == null ? null : fromSI(valueSI, category, system);
-    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
-  }
+  String _fmt(double value) =>
+      value.toStringAsFixed(3).replaceFirst(RegExp(r'\.?0+$'), '');
+
+  String _fv(double valueSI, UnitCategory category, UnitSystem system) =>
+      '${_fmt(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
 
   @override
   Widget build(BuildContext context) {
-    context.watch<UnitSystemPreference>();
+    final system = context.watch<UnitSystemPreference>().system;
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        title: const Text('Result'),
         actions: [
           IconButton(
+            tooltip: 'Share results',
             icon: const Icon(Icons.share_rounded),
-            onPressed: () {
-              shareResult('Transverse Shear Stress', [
-                'τ = ${_fv(context, tau, UnitCategory.stress)}',
-                '',
-                'Calculation:',
-                'τ = V·Q / (I·t)',
-                '= ${_fv(context, V, UnitCategory.force)} × ${_fv(context, Q, UnitCategory.sectionModulus)} / (${_fv(context, I, UnitCategory.momentOfInertia)} × ${_fv(context, t, UnitCategory.length)})',
-                '= ${_fv(context, tau, UnitCategory.stress)}',
-              ]);
-            },
+            onPressed: () => _share(system),
           ),
           IconButton(
+            tooltip: 'Share as image',
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () =>
+                shareResultImage(_exportKey, 'Transverse Shear Stress'),
+          ),
+          IconButton(
+            tooltip: 'Settings',
             icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const ToolSettingPage())),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ToolSettingPage()),
+            ),
           ),
         ],
-        title: Text(S.of(context).Result),
       ),
-      body: SafeArea(
-        child: StaggeredGridView.countBuilder(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-          crossAxisCount: 8,
-          itemCount: 2,
-          staggeredTileBuilder: (_) => StaggeredTile.fit(
-              MediaQuery.of(context).size.width > 600 ? 4 : 8),
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          itemBuilder: (_, i) {
-            return [
-              SingleRowResult(
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: AppContent(
+          padding: EdgeInsets.zero,
+          child: ListView(
+            padding: EdgeInsets.all(context.tokens.space4),
+            children: [
+              AppSectionCard(
                 title: 'Transverse Shear Stress',
-                resultTitle: 'τ = VQ/(It)',
-                resultValue: tau,
-                category: UnitCategory.stress,
+                child: Column(children: [
+                  AppCopyableValue(
+                    label: 'Shear stress, τ',
+                    valueSI: tau,
+                    category: UnitCategory.stress,
+                  ),
+                ]),
               ),
-              CalculationCard(steps: [
-                'τ = V·Q / (I·t)',
-                '= ${_fv(context, V, UnitCategory.force)} × ${_fv(context, Q, UnitCategory.sectionModulus)} / (${_fv(context, I, UnitCategory.momentOfInertia)} × ${_fv(context, t, UnitCategory.length)})',
-                '= ${_fv(context, tau, UnitCategory.stress)}',
-              ]),
-            ][i];
-          },
+              SizedBox(height: context.tokens.space4),
+              AppSectionCard(
+                title: 'Formula',
+                child: Text(
+                  'τ = V·Q / (I·t)\n'
+                  '= ${_fv(v, UnitCategory.force, system)} × ${_fv(q, UnitCategory.sectionModulus, system)} / (${_fv(i, UnitCategory.momentOfInertia, system)} × ${_fv(t, UnitCategory.length, system)})\n'
+                  '= ${_fv(tau, UnitCategory.stress, system)}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+              SizedBox(height: context.tokens.space4),
+              ParameterSweepCard(
+                variableLabel: 'Width, t',
+                variableCategory: UnitCategory.length,
+                baseValueSI: t,
+                outputLabel: 'τ',
+                outputCategory: UnitCategory.stress,
+                compute: (variedT) => v * q / (i * variedT),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+
+  void _share(UnitSystem system) => shareResult('Transverse Shear Stress', [
+        'τ = ${_fv(tau, UnitCategory.stress, system)}',
+        '',
+        'Calculation:',
+        'τ = V·Q / (I·t)',
+        '= ${_fv(v, UnitCategory.force, system)} × ${_fv(q, UnitCategory.sectionModulus, system)} / (${_fv(i, UnitCategory.momentOfInertia, system)} × ${_fv(t, UnitCategory.length, system)})',
+        '= ${_fv(tau, UnitCategory.stress, system)}',
+      ]);
 }

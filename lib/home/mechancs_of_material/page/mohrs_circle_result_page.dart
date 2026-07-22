@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/principal_stress_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
@@ -12,7 +13,7 @@ import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class MohrsCircleResultPage extends StatelessWidget {
-  const MohrsCircleResultPage({
+  MohrsCircleResultPage({
     super.key,
     required this.title,
     required this.sigmaX,
@@ -26,6 +27,7 @@ class MohrsCircleResultPage extends StatelessWidget {
   final double sigmaY;
   final double tauXY;
   final PrincipalStressResult result;
+  final _exportKey = GlobalKey();
 
   String _f(double value) =>
       value.toStringAsFixed(3).replaceFirst(RegExp(r'\.?0+$'), '');
@@ -46,6 +48,11 @@ class MohrsCircleResultPage extends StatelessWidget {
             onPressed: () => _share(system),
           ),
           IconButton(
+            tooltip: 'Share as image',
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () => shareResultImage(_exportKey, title),
+          ),
+          IconButton(
             tooltip: 'Settings',
             icon: const Icon(Icons.settings_rounded),
             onPressed: () => Navigator.push(
@@ -57,46 +64,50 @@ class MohrsCircleResultPage extends StatelessWidget {
           ),
         ],
       ),
-      body: AppContent(
-        padding: EdgeInsets.zero,
-        child: ListView(
-          padding: EdgeInsets.all(context.tokens.space4),
-          children: [
-            AppSectionCard(
-              title: title,
-              child: Column(children: [
-                AppCopyableValue(
-                  label: 'Maximum principal stress, σ1',
-                  valueSI: result.sigma1,
-                  category: UnitCategory.stress,
-                ),
-                AppCopyableValue(
-                  label: 'Minimum principal stress, σ2',
-                  valueSI: result.sigma2,
-                  category: UnitCategory.stress,
-                ),
-                AppCopyableValue(
-                  label: 'Maximum in-plane shear, τmax',
-                  valueSI: result.tauMax,
-                  category: UnitCategory.stress,
-                ),
-                AppCopyableValue(
-                  label: 'Principal-plane angle, θp',
-                  valueSI: result.thetaP,
-                  category: UnitCategory.angle,
-                ),
-                AppCopyableValue(
-                  label: 'Max-shear-plane angle, θs',
-                  valueSI: result.thetaS,
-                  category: UnitCategory.angle,
-                ),
-              ]),
-            ),
-            SizedBox(height: context.tokens.space4),
-            _circleCard(context, system),
-            SizedBox(height: context.tokens.space4),
-            CalculationCard(steps: _steps(system)),
-          ],
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: AppContent(
+          padding: EdgeInsets.zero,
+          child: ListView(
+            padding: EdgeInsets.all(context.tokens.space4),
+            children: [
+              AppSectionCard(
+                title: title,
+                child: Column(children: [
+                  AppCopyableValue(
+                    label: 'Maximum principal stress, σ1',
+                    valueSI: result.sigma1,
+                    category: UnitCategory.stress,
+                  ),
+                  AppCopyableValue(
+                    label: 'Minimum principal stress, σ2',
+                    valueSI: result.sigma2,
+                    category: UnitCategory.stress,
+                  ),
+                  AppCopyableValue(
+                    label: 'Maximum in-plane shear, τmax',
+                    valueSI: result.tauMax,
+                    category: UnitCategory.stress,
+                  ),
+                  AppCopyableValue(
+                    label: 'Principal-plane angle, θp',
+                    valueSI: result.thetaP,
+                    category: UnitCategory.angle,
+                  ),
+                  AppCopyableValue(
+                    label: 'Max-shear-plane angle, θs',
+                    valueSI: result.thetaS,
+                    category: UnitCategory.angle,
+                  ),
+                ]),
+              ),
+              SizedBox(height: context.tokens.space4),
+              _circleCard(context, system),
+              SizedBox(height: context.tokens.space4),
+              CalculationCard(steps: _steps(system)),
+            ],
+          ),
         ),
       ),
     );
@@ -193,15 +204,13 @@ class _MohrsCirclePainter extends CustomPainter {
       ..strokeWidth = 1;
 
     // sigma axis (tau = 0)
-    canvas.drawLine(
-        Offset(chart.left, centerOffset.dy),
-        Offset(chart.right, centerOffset.dy),
-        axisPaint);
+    canvas.drawLine(Offset(chart.left, centerOffset.dy),
+        Offset(chart.right, centerOffset.dy), axisPaint);
     // tau axis (sigma = 0), only if within view
     final zeroSigmaX = toCanvas(0, 0).dx;
     if (zeroSigmaX >= chart.left && zeroSigmaX <= chart.right) {
-      canvas.drawLine(
-          Offset(zeroSigmaX, chart.top), Offset(zeroSigmaX, chart.bottom), axisPaint);
+      canvas.drawLine(Offset(zeroSigmaX, chart.top),
+          Offset(zeroSigmaX, chart.bottom), axisPaint);
     }
 
     // Circle
@@ -241,7 +250,8 @@ class _MohrsCirclePainter extends CustomPainter {
     final painter = TextPainter(
       text: TextSpan(
         text: text,
-        style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600),
+        style:
+            TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600),
       ),
       textDirection: TextDirection.ltr,
     )..layout();

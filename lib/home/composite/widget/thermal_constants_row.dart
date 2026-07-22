@@ -66,10 +66,11 @@ class ThermalConstantsRow extends StatelessWidget {
     );
   }
 
-  Widget _field(BuildContext context, String label, ValueChanged<double?> onChanged,
-      double? currentValue, bool validate) {
+  Widget _field(BuildContext context, String label,
+      ValueChanged<double?> onChanged, double? currentValue, bool validate) {
     return TextField(
-      keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true),
+      keyboardType:
+          const TextInputType.numberWithOptions(decimal: true, signed: true),
       decoration: InputDecoration(
         labelText: label,
         errorText: validate && currentValue == null ? 'Required' : null,

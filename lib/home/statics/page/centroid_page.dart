@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -238,7 +239,8 @@ class _CentroidPageState extends State<CentroidPage> {
   void _calculate() {
     double totalA = 0, sumAx = 0, sumAy = 0;
     final Map<String, String> inputs = {};
-    final shapeCalcs = <({_ShapeType type, bool subtract, double a, double cx, double cy})>[];
+    final shapeCalcs =
+        <({_ShapeType type, bool subtract, double a, double cx, double cy})>[];
 
     for (int i = 0; i < _shapes.length; i++) {
       final s = _shapes[i];
@@ -298,7 +300,8 @@ class _CentroidPageState extends State<CentroidPage> {
       totalA += sign * A;
       sumAx += sign * A * cx;
       sumAy += sign * A * cy;
-      shapeCalcs.add((type: s.type, subtract: s.subtract, a: A, cx: cx, cy: cy));
+      shapeCalcs
+          .add((type: s.type, subtract: s.subtract, a: A, cx: cx, cy: cy));
     }
 
     if (totalA == 0) {
@@ -332,9 +335,10 @@ class _CentroidPageState extends State<CentroidPage> {
 class _ResultPage extends StatelessWidget {
   final String title;
   final double totalA, xBar, yBar, sumAx, sumAy;
-  final List<({_ShapeType type, bool subtract, double a, double cx, double cy})> shapeCalcs;
+  final List<({_ShapeType type, bool subtract, double a, double cx, double cy})>
+      shapeCalcs;
 
-  const _ResultPage({
+  _ResultPage({
     required this.title,
     required this.totalA,
     required this.xBar,
@@ -343,6 +347,8 @@ class _ResultPage extends StatelessWidget {
     required this.sumAy,
     required this.shapeCalcs,
   });
+
+  final _exportKey = GlobalKey();
 
   String _fmt(double v) => v
       .toStringAsFixed(4)
@@ -394,11 +400,19 @@ class _ResultPage extends StatelessWidget {
               'Centroid ȳ = ${_fvSpan(yBar, system)}',
             ]),
           ),
+          IconButton(
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () => shareResultImage(_exportKey, title),
+          ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [CalculationCard(steps: _steps(system))],
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [CalculationCard(steps: _steps(system))],
+        ),
       ),
     );
   }

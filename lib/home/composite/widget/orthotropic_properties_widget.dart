@@ -16,13 +16,11 @@ class OrthotropicPropertiesWidget extends StatelessWidget {
       [UnitCategory? category]) {
     return Consumer<NumberPrecisionHelper>(builder: (context, precs, child) {
       final system = context.watch<UnitSystemPreference>().system;
-      final displayValue =
-          valueSI == null || category == null
-              ? valueSI
-              : fromSI(valueSI, category, system);
-      final label = category == null
-          ? title
-          : '$title (${unitLabel(category, system)})';
+      final displayValue = valueSI == null || category == null
+          ? valueSI
+          : fromSI(valueSI, category, system);
+      final label =
+          category == null ? title : '$title (${unitLabel(category, system)})';
       return SizedBox(
         height: 40,
         child:

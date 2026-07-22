@@ -6,6 +6,7 @@ import 'package:mechanical_engineering_toolkit/home/beam/page/beam_calculator_re
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -44,9 +45,8 @@ class _BeamCalculatorPageState extends State<BeamCalculatorPage> {
     _pointPosition =
         double.tryParse(inputs['Point position (m)'] ?? '') ?? _pointPosition;
     _udl = double.tryParse(inputs['UDL (kN/m)'] ?? '') ?? _udl;
-    _elasticModulus =
-        double.tryParse(inputs['Elastic modulus (GPa)'] ?? '') ??
-            _elasticModulus;
+    _elasticModulus = double.tryParse(inputs['Elastic modulus (GPa)'] ?? '') ??
+        _elasticModulus;
     _secondMoment =
         double.tryParse(inputs['Second moment (mm4)'] ?? '') ?? _secondMoment;
   }
@@ -121,6 +121,14 @@ class _BeamCalculatorPageState extends State<BeamCalculatorPage> {
                       onChangedSI: (v) => _secondMoment = v,
                     ),
                   ]),
+                  SizedBox(height: context.tokens.space2),
+                  MaterialPresetButton(
+                    onSelected: (preset) => setState(() {
+                      if (preset.elasticModulusSI != null) {
+                        _elasticModulus = preset.elasticModulusSI;
+                      }
+                    }),
+                  ),
                 ],
               ),
             ),

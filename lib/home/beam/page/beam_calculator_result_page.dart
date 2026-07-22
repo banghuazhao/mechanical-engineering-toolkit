@@ -1,18 +1,18 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/beam/model/simply_supported_beam_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/xy_diagram_card.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class BeamCalculatorResultPage extends StatelessWidget {
-  const BeamCalculatorResultPage({
+  BeamCalculatorResultPage({
     super.key,
     required this.title,
     required this.input,
@@ -22,6 +22,7 @@ class BeamCalculatorResultPage extends StatelessWidget {
   final String title;
   final BeamAnalysisInput input;
   final BeamAnalysisResult result;
+  final _exportKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,11 @@ class BeamCalculatorResultPage extends StatelessWidget {
             onPressed: () => _share(system),
           ),
           IconButton(
+            tooltip: 'Share as image',
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () => shareResultImage(_exportKey, title),
+          ),
+          IconButton(
             tooltip: 'Settings',
             icon: const Icon(Icons.settings_rounded),
             onPressed: () => Navigator.push(
@@ -47,56 +53,78 @@ class BeamCalculatorResultPage extends StatelessWidget {
           ),
         ],
       ),
-      body: AppContent(
-        padding: EdgeInsets.zero,
-        child: ListView(
-          padding: EdgeInsets.all(context.tokens.space4),
-          children: [
-            AppSectionCard(
-              title: title,
-              child: Column(children: [
-                AppCopyableValue(
-                    label: 'Left reaction, RA',
-                    value: _fv(result.leftReaction, UnitCategory.forceStructural, system)),
-                AppCopyableValue(
-                    label: 'Right reaction, RB',
-                    value: _fv(result.rightReaction, UnitCategory.forceStructural, system)),
-                AppCopyableValue(
-                  label: 'Maximum bending moment',
-                  value:
-                      '${_fv(result.maximumMoment, UnitCategory.momentStructural, system)} at x = ${_fv(result.maximumMomentPosition, UnitCategory.span, system)}',
-                ),
-                AppCopyableValue(
-                  label: 'Maximum downward deflection',
-                  value:
-                      '${_fv(result.maximumDeflection, UnitCategory.length, system)} at x = ${_fv(result.maximumDeflectionPosition, UnitCategory.span, system)}',
-                ),
-              ]),
-            ),
-            SizedBox(height: context.tokens.space4),
-            CalculationCard(steps: _reactionSteps(system)),
-            SizedBox(height: context.tokens.space3),
-            CalculationCard(steps: _responseSteps(system)),
-            SizedBox(height: context.tokens.space4),
-            _diagramCard(context, 'Shear-force diagram',
-                unitLabel(UnitCategory.forceStructural, system), result.shear),
-            SizedBox(height: context.tokens.space3),
-            _diagramCard(context, 'Bending-moment diagram',
-                unitLabel(UnitCategory.momentStructural, system), result.moment),
-            SizedBox(height: context.tokens.space3),
-            _diagramCard(
-                context,
-                'Elastic deflection',
-                '${unitLabel(UnitCategory.length, system)} downward',
-                result.deflection),
-            SizedBox(height: context.tokens.space3),
-            Text(
-              'Linear-elastic Euler–Bernoulli analysis. Self-weight and shear deformation are excluded unless entered as part of the UDL. Diagram extrema are evaluated at 200 intervals.',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: AppContent(
+          padding: EdgeInsets.zero,
+          child: ListView(
+            padding: EdgeInsets.all(context.tokens.space4),
+            children: [
+              AppSectionCard(
+                title: title,
+                child: Column(children: [
+                  AppCopyableValue(
+                      label: 'Left reaction, RA',
+                      value: _fv(result.leftReaction,
+                          UnitCategory.forceStructural, system)),
+                  AppCopyableValue(
+                      label: 'Right reaction, RB',
+                      value: _fv(result.rightReaction,
+                          UnitCategory.forceStructural, system)),
+                  AppCopyableValue(
+                    label: 'Maximum bending moment',
+                    value:
+                        '${_fv(result.maximumMoment, UnitCategory.momentStructural, system)} at x = ${_fv(result.maximumMomentPosition, UnitCategory.span, system)}',
                   ),
-            ),
-          ],
+                  AppCopyableValue(
+                    label: 'Maximum downward deflection',
+                    value:
+                        '${_fv(result.maximumDeflection, UnitCategory.length, system)} at x = ${_fv(result.maximumDeflectionPosition, UnitCategory.span, system)}',
+                  ),
+                ]),
+              ),
+              SizedBox(height: context.tokens.space4),
+              CalculationCard(steps: _reactionSteps(system)),
+              SizedBox(height: context.tokens.space3),
+              CalculationCard(steps: _responseSteps(system)),
+              SizedBox(height: context.tokens.space4),
+              XYDiagramCard(
+                title: 'Shear-force diagram',
+                xUnitLabel: unitLabel(UnitCategory.span, system),
+                yUnitLabel: unitLabel(UnitCategory.forceStructural, system),
+                points: result.shear
+                    .map((p) => DiagramPoint(p.x, p.value))
+                    .toList(),
+              ),
+              SizedBox(height: context.tokens.space3),
+              XYDiagramCard(
+                title: 'Bending-moment diagram',
+                xUnitLabel: unitLabel(UnitCategory.span, system),
+                yUnitLabel: unitLabel(UnitCategory.momentStructural, system),
+                points: result.moment
+                    .map((p) => DiagramPoint(p.x, p.value))
+                    .toList(),
+              ),
+              SizedBox(height: context.tokens.space3),
+              XYDiagramCard(
+                title: 'Elastic deflection',
+                xUnitLabel: unitLabel(UnitCategory.span, system),
+                yUnitLabel:
+                    '${unitLabel(UnitCategory.length, system)} downward',
+                points: result.deflection
+                    .map((p) => DiagramPoint(p.x, p.value))
+                    .toList(),
+              ),
+              SizedBox(height: context.tokens.space3),
+              Text(
+                'Linear-elastic Euler–Bernoulli analysis. Self-weight and shear deformation are excluded unless entered as part of the UDL. Diagram extrema are evaluated at 200 intervals.',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -125,37 +153,6 @@ class BeamCalculatorResultPage extends StatelessWidget {
         'vmax = ${_fv(result.maximumDeflection, UnitCategory.length, system)} downward at x = ${_fv(result.maximumDeflectionPosition, UnitCategory.span, system)}',
       ];
 
-  Widget _diagramCard(
-    BuildContext context,
-    String title,
-    String unit,
-    List<BeamDiagramPoint> points,
-  ) =>
-      AppSectionCard(
-        title: title,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              height: 180,
-              child: CustomPaint(
-                painter: _BeamDiagramPainter(
-                  points: points,
-                  color: Theme.of(context).colorScheme.primary,
-                  axisColor: Theme.of(context).colorScheme.outline,
-                ),
-              ),
-            ),
-            SizedBox(height: context.tokens.space2),
-            Text(
-              'Horizontal: position (${unitLabel(UnitCategory.span, context.watch<UnitSystemPreference>().system)}) • Vertical: $unit',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
-        ),
-      );
-
   void _share(UnitSystem system) => shareResult(title, [
         'RA = ${_fv(result.leftReaction, UnitCategory.forceStructural, system)}',
         'RB = ${_fv(result.rightReaction, UnitCategory.forceStructural, system)}',
@@ -172,50 +169,4 @@ class BeamCalculatorResultPage extends StatelessWidget {
 
   String _fv(double valueSI, UnitCategory category, UnitSystem system) =>
       '${_f(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
-}
-
-class _BeamDiagramPainter extends CustomPainter {
-  const _BeamDiagramPainter(
-      {required this.points, required this.color, required this.axisColor});
-  final List<BeamDiagramPoint> points;
-  final Color color;
-  final Color axisColor;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (points.isEmpty) return;
-    const padding = 12.0;
-    final chart = Rect.fromLTWH(
-        padding, padding, size.width - 2 * padding, size.height - 2 * padding);
-    final maxX = points.last.x;
-    final minY = points.map((point) => point.value).reduce(min);
-    final maxY = points.map((point) => point.value).reduce(max);
-    final rangeY = max(maxY - minY, max(maxY.abs(), 1) * 0.02);
-    double dx(double x) => chart.left + x / maxX * chart.width;
-    double dy(double y) => chart.bottom - (y - minY) / rangeY * chart.height;
-    final axisPaint = Paint()
-      ..color = axisColor
-      ..strokeWidth = 1;
-    final zeroY = dy(0).clamp(chart.top, chart.bottom).toDouble();
-    canvas.drawLine(
-        Offset(chart.left, zeroY), Offset(chart.right, zeroY), axisPaint);
-    canvas.drawLine(chart.bottomLeft, chart.topLeft, axisPaint);
-    final path = Path()..moveTo(dx(points.first.x), dy(points.first.value));
-    for (final point in points.skip(1)) {
-      path.lineTo(dx(point.x), dy(point.value));
-    }
-    canvas.drawPath(
-        path,
-        Paint()
-          ..color = color
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2
-          ..strokeJoin = StrokeJoin.round);
-  }
-
-  @override
-  bool shouldRepaint(covariant _BeamDiagramPainter oldDelegate) =>
-      oldDelegate.points != points ||
-      oldDelegate.color != color ||
-      oldDelegate.axisColor != axisColor;
 }

@@ -8,7 +8,8 @@ import 'package:vector_math/vector_math.dart' as VMath;
 class ResultPlaneStiffnessMatrix extends StatelessWidget {
   final VMath.Matrix3 Q_bar;
 
-  const ResultPlaneStiffnessMatrix({Key? key, required this.Q_bar}) : super(key: key);
+  const ResultPlaneStiffnessMatrix({Key? key, required this.Q_bar})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,8 @@ class ResultPlaneStiffnessMatrix extends StatelessWidget {
             itemCount: 9,
             itemBuilder: (BuildContext context, int index) {
               double value = Q_bar[index];
-              return Consumer<NumberPrecisionHelper>(builder: (context, precs, child) {
+              return Consumer<NumberPrecisionHelper>(
+                  builder: (context, precs, child) {
                 return Center(
                   child: Container(
                     height: 40,

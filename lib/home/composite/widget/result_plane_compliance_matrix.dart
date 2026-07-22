@@ -8,7 +8,8 @@ import 'package:vector_math/vector_math.dart' as VMath;
 class ResultPlaneComplianceMatrix extends StatelessWidget {
   final VMath.Matrix3 S_bar;
 
-  const ResultPlaneComplianceMatrix({Key? key, required this.S_bar}) : super(key: key);
+  const ResultPlaneComplianceMatrix({Key? key, required this.S_bar})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,8 @@ class ResultPlaneComplianceMatrix extends StatelessWidget {
             itemCount: 9,
             itemBuilder: (BuildContext context, int index) {
               double value = S_bar[index];
-              return Consumer<NumberPrecisionHelper>(builder: (context, precs, child) {
+              return Consumer<NumberPrecisionHelper>(
+                  builder: (context, precs, child) {
                 return Center(
                   child: Container(
                     height: 40,

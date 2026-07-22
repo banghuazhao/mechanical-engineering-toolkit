@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -59,11 +60,15 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Beam Configuration', style: Theme.of(context).textTheme.titleMedium),
+                  Text('Beam Configuration',
+                      style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 4),
                   Text(
                     'Simply supported beam — pin at A (left), roller at B (right)',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 12),
                   UnitField(
@@ -73,20 +78,26 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
                     onChangedSI: (v) => _span = v,
                   ),
                   const SizedBox(height: 16),
-                  Text('Load Type', style: Theme.of(context).textTheme.titleMedium),
+                  Text('Load Type',
+                      style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 8),
                   SegmentedButton<_LoadType>(
                     segments: const [
-                      ButtonSegment(value: _LoadType.pointLoad, label: Text('Point Load')),
+                      ButtonSegment(
+                          value: _LoadType.pointLoad,
+                          label: Text('Point Load')),
                       ButtonSegment(value: _LoadType.udl, label: Text('UDL')),
                       ButtonSegment(value: _LoadType.both, label: Text('Both')),
                     ],
                     selected: {_loadType},
-                    onSelectionChanged: (s) => setState(() => _loadType = s.first),
+                    onSelectionChanged: (s) =>
+                        setState(() => _loadType = s.first),
                   ),
                   const SizedBox(height: 16),
-                  if (_loadType == _LoadType.pointLoad || _loadType == _LoadType.both) ...[
-                    Text('Point Load', style: Theme.of(context).textTheme.titleSmall),
+                  if (_loadType == _LoadType.pointLoad ||
+                      _loadType == _LoadType.both) ...[
+                    Text('Point Load',
+                        style: Theme.of(context).textTheme.titleSmall),
                     const SizedBox(height: 8),
                     Row(
                       children: [
@@ -111,8 +122,10 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
                     ),
                     const SizedBox(height: 16),
                   ],
-                  if (_loadType == _LoadType.udl || _loadType == _LoadType.both) ...[
-                    Text('Uniform Distributed Load (full span)', style: Theme.of(context).textTheme.titleSmall),
+                  if (_loadType == _LoadType.udl ||
+                      _loadType == _LoadType.both) ...[
+                    Text('Uniform Distributed Load (full span)',
+                        style: Theme.of(context).textTheme.titleSmall),
                     const SizedBox(height: 8),
                     UnitField(
                       label: 'w (intensity)',
@@ -132,7 +145,8 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
             ),
             child: const Text('Calculate', style: TextStyle(fontSize: 16)),
           ),
@@ -143,21 +157,34 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
 
   void _calculate() {
     final L = _span;
-    if (L == null || L <= 0) { _showError('Enter a valid span L > 0'); return; }
+    if (L == null || L <= 0) {
+      _showError('Enter a valid span L > 0');
+      return;
+    }
 
-    final hasPoint = _loadType == _LoadType.pointLoad || _loadType == _LoadType.both;
+    final hasPoint =
+        _loadType == _LoadType.pointLoad || _loadType == _LoadType.both;
     final hasUdl = _loadType == _LoadType.udl || _loadType == _LoadType.both;
 
     double? P, a, w;
     if (hasPoint) {
       P = _p;
       a = _a;
-      if (P == null || a == null) { _showError('Enter P and a'); return; }
-      if (a < 0 || a > L) { _showError('a must be between 0 and L'); return; }
+      if (P == null || a == null) {
+        _showError('Enter P and a');
+        return;
+      }
+      if (a < 0 || a > L) {
+        _showError('a must be between 0 and L');
+        return;
+      }
     }
     if (hasUdl) {
       w = _w;
-      if (w == null) { _showError('Enter w'); return; }
+      if (w == null) {
+        _showError('Enter w');
+        return;
+      }
     }
 
     final Map<String, String> inputs = {
@@ -179,7 +206,10 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
         builder: (_) => _ResultPage(
           title: widget.title,
           loadType: _loadType,
-          L: L, P: P, a: a, w: w,
+          L: L,
+          P: P,
+          a: a,
+          w: w,
         ),
       ),
     );
@@ -195,7 +225,7 @@ class _ResultPage extends StatelessWidget {
   final double L;
   final double? P, a, w;
 
-  const _ResultPage({
+  _ResultPage({
     required this.title,
     required this.loadType,
     required this.L,
@@ -204,8 +234,12 @@ class _ResultPage extends StatelessWidget {
     required this.w,
   });
 
-  String _fmt(double v) =>
-      v.toStringAsFixed(4).replaceAll(RegExp(r'0+$'), '').replaceAll(RegExp(r'\.$'), '');
+  final _exportKey = GlobalKey();
+
+  String _fmt(double v) => v
+      .toStringAsFixed(4)
+      .replaceAll(RegExp(r'0+$'), '')
+      .replaceAll(RegExp(r'\.$'), '');
 
   String _fv(double valueSI, UnitCategory category, UnitSystem system) =>
       '${_fmt(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
@@ -285,11 +319,19 @@ class _ResultPage extends StatelessWidget {
               'M_max = ${_fv(solved.maxM, UnitCategory.torque, system)}',
             ]),
           ),
+          IconButton(
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () => shareResultImage(_exportKey, title),
+          ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [CalculationCard(steps: solved.steps)],
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [CalculationCard(steps: solved.steps)],
+        ),
       ),
     );
   }

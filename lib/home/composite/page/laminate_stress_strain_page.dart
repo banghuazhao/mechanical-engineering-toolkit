@@ -22,10 +22,7 @@ class LaminateStressStrainPage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const LaminateStressStrainPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -103,8 +100,8 @@ class _LaminateStressStrainPageState extends State<LaminateStressStrainPage> {
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
           itemCount: 5,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          staggeredTileBuilder: (_) => StaggeredTile.fit(
+              MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           itemBuilder: (context, index) => [
@@ -160,21 +157,32 @@ class _LaminateStressStrainPageState extends State<LaminateStressStrainPage> {
       'ν12': material.nu12.toString(),
       S.of(context).Layup_Sequence: layupSequence.rawValue.toString(),
       S.of(context).Layer_Thickness: layerThickness.value.toString(),
-      'Input Type': mechanicalTensor is LaminateStress ? 'Stress Resultant' : 'Mid-plane Strain',
+      'Input Type': mechanicalTensor is LaminateStress
+          ? 'Stress Resultant'
+          : 'Mid-plane Strain',
     };
     if (mechanicalTensor is LaminateStress) {
       final t = mechanicalTensor as LaminateStress;
-      inputs['N11'] = t.N11.toString(); inputs['N22'] = t.N22.toString(); inputs['N12'] = t.N12.toString();
-      inputs['M11'] = t.M11.toString(); inputs['M22'] = t.M22.toString(); inputs['M12'] = t.M12.toString();
+      inputs['N11'] = t.N11.toString();
+      inputs['N22'] = t.N22.toString();
+      inputs['N12'] = t.N12.toString();
+      inputs['M11'] = t.M11.toString();
+      inputs['M22'] = t.M22.toString();
+      inputs['M12'] = t.M12.toString();
     } else if (mechanicalTensor is LaminateStrain) {
       final t = mechanicalTensor as LaminateStrain;
-      inputs['ε011'] = t.epsilon11.toString(); inputs['ε022'] = t.epsilon22.toString(); inputs['γ012'] = t.epsilon12.toString();
-      inputs['κ11'] = t.kappa11.toString(); inputs['κ22'] = t.kappa22.toString(); inputs['κ12'] = t.kappa12.toString();
+      inputs['ε011'] = t.epsilon11.toString();
+      inputs['ε022'] = t.epsilon22.toString();
+      inputs['γ012'] = t.epsilon12.toString();
+      inputs['κ11'] = t.kappa11.toString();
+      inputs['κ22'] = t.kappa22.toString();
+      inputs['κ12'] = t.kappa12.toString();
     }
     context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
 
-    final tensorType =
-        mechanicalTensor is LaminateStress ? TensorType.stress : TensorType.strain;
+    final tensorType = mechanicalTensor is LaminateStress
+        ? TensorType.stress
+        : TensorType.strain;
     final s = mechanicalTensor is LaminateStress
         ? mechanicalTensor as LaminateStress
         : null;

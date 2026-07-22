@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/beam/model/beam_section_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
@@ -10,7 +11,7 @@ import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class BeamSectionPropertiesResultPage extends StatelessWidget {
-  const BeamSectionPropertiesResultPage({
+  BeamSectionPropertiesResultPage({
     super.key,
     required this.title,
     required this.input,
@@ -20,6 +21,7 @@ class BeamSectionPropertiesResultPage extends StatelessWidget {
   final String title;
   final BeamSectionInput input;
   final BeamSectionResult result;
+  final _exportKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,11 @@ class BeamSectionPropertiesResultPage extends StatelessWidget {
             onPressed: () => _share(system),
           ),
           IconButton(
+            tooltip: 'Share as image',
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () => shareResultImage(_exportKey, title),
+          ),
+          IconButton(
             tooltip: 'Settings',
             icon: const Icon(Icons.settings_rounded),
             onPressed: () => Navigator.push(
@@ -45,45 +52,53 @@ class BeamSectionPropertiesResultPage extends StatelessWidget {
           ),
         ],
       ),
-      body: AppContent(
-        padding: EdgeInsets.zero,
-        child: ListView(
-          padding: EdgeInsets.all(context.tokens.space4),
-          children: [
-            AppSectionCard(
-              title: title,
-              child: Column(children: [
-                AppCopyableValue(
-                    label: 'Area, A',
-                    value: _fv(result.area, UnitCategory.area, system)),
-                AppCopyableValue(
-                    label: 'Second moment, Ix',
-                    value: _fv(result.ix, UnitCategory.momentOfInertia, system)),
-                AppCopyableValue(
-                    label: 'Second moment, Iy',
-                    value: _fv(result.iy, UnitCategory.momentOfInertia, system)),
-                AppCopyableValue(
-                    label: 'Section modulus, Zx',
-                    value: _fv(result.zx, UnitCategory.sectionModulus, system)),
-                AppCopyableValue(
-                    label: 'Section modulus, Zy',
-                    value: _fv(result.zy, UnitCategory.sectionModulus, system)),
-                AppCopyableValue(
-                    label: 'Polar area moment, J',
-                    value: _fv(
-                        result.polarMoment, UnitCategory.momentOfInertia, system)),
-              ]),
-            ),
-            SizedBox(height: context.tokens.space4),
-            CalculationCard(steps: _calculationSteps(system)),
-            SizedBox(height: context.tokens.space3),
-            Text(
-              'J = Ix + Iy is the polar area moment. It is not the Saint-Venant torsion constant for non-circular sections.',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-            ),
-          ],
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: AppContent(
+          padding: EdgeInsets.zero,
+          child: ListView(
+            padding: EdgeInsets.all(context.tokens.space4),
+            children: [
+              AppSectionCard(
+                title: title,
+                child: Column(children: [
+                  AppCopyableValue(
+                      label: 'Area, A',
+                      value: _fv(result.area, UnitCategory.area, system)),
+                  AppCopyableValue(
+                      label: 'Second moment, Ix',
+                      value:
+                          _fv(result.ix, UnitCategory.momentOfInertia, system)),
+                  AppCopyableValue(
+                      label: 'Second moment, Iy',
+                      value:
+                          _fv(result.iy, UnitCategory.momentOfInertia, system)),
+                  AppCopyableValue(
+                      label: 'Section modulus, Zx',
+                      value:
+                          _fv(result.zx, UnitCategory.sectionModulus, system)),
+                  AppCopyableValue(
+                      label: 'Section modulus, Zy',
+                      value:
+                          _fv(result.zy, UnitCategory.sectionModulus, system)),
+                  AppCopyableValue(
+                      label: 'Polar area moment, J',
+                      value: _fv(result.polarMoment,
+                          UnitCategory.momentOfInertia, system)),
+                ]),
+              ),
+              SizedBox(height: context.tokens.space4),
+              CalculationCard(steps: _calculationSteps(system)),
+              SizedBox(height: context.tokens.space3),
+              Text(
+                'J = Ix + Iy is the polar area moment. It is not the Saint-Venant torsion constant for non-circular sections.',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -101,9 +116,12 @@ class BeamSectionPropertiesResultPage extends StatelessWidget {
     final t = _fv(input.wallThickness, UnitCategory.length, system);
     final tf = _fv(input.flangeThickness, UnitCategory.length, system);
     final tw = _fv(input.webThickness, UnitCategory.length, system);
-    final bi = _fv(input.width - 2 * input.wallThickness, UnitCategory.length, system);
-    final hi = _fv(input.height - 2 * input.wallThickness, UnitCategory.length, system);
-    final hw = _fv(input.height - 2 * input.flangeThickness, UnitCategory.length, system);
+    final bi =
+        _fv(input.width - 2 * input.wallThickness, UnitCategory.length, system);
+    final hi = _fv(
+        input.height - 2 * input.wallThickness, UnitCategory.length, system);
+    final hw = _fv(
+        input.height - 2 * input.flangeThickness, UnitCategory.length, system);
     final common = [
       'Zx = Ix / (h/2) = $ix / ($h/2) = $zx',
       'Zy = Iy / (b/2) = $iy / ($b/2) = $zy',

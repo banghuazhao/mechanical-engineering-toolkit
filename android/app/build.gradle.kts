@@ -49,8 +49,8 @@ android {
 
     defaultConfig {
         applicationId = "com.appsbay.mechanical_engineering_toolkit"
-        minSdk = flutter.minSdkVersion
-        targetSdk = 35
+        minSdk = 36
+        targetSdk = 36
         versionCode = flutterVersionCode.toInt()
         versionName = flutterVersionName
         multiDexEnabled = true

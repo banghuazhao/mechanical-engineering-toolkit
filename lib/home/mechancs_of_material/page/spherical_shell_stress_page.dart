@@ -16,10 +16,7 @@ class SphericalShellStressPage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const SphericalShellStressPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -130,11 +127,14 @@ Where p is the pressure, r is the radius of the spherical and t is the thickness
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => SphericalShellStressResultPage(
-                  titles: const ["σ"],
-                  values: [stress],
-                  valueUnits: const [UnitCategory.stress],
-                  calculationSteps: [
+              builder: (context) =>
+                  SphericalShellStressResultPage(titles: const [
+                    "σ"
+                  ], values: [
+                    stress
+                  ], valueUnits: const [
+                    UnitCategory.stress
+                  ], calculationSteps: [
                     'σ = p·r / (2t)',
                     '= ${precs.formatValue(p)} × ${precs.formatValue(r)} / (2 × ${precs.formatValue(t)})',
                     '= ${precs.formatValue(stress)}',

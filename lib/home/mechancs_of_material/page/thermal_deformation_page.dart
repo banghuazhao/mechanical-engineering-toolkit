@@ -6,6 +6,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
@@ -217,13 +218,15 @@ class _ThermalResultPage extends StatelessWidget {
   final double deltaT;
   final double length;
   final double E;
-  const _ThermalResultPage(
+  _ThermalResultPage(
       {required this.delta,
       required this.sigma,
       required this.alpha,
       required this.deltaT,
       required this.length,
       required this.E});
+
+  final _exportKey = GlobalKey();
 
   String _fv(BuildContext context, double? valueSI, UnitCategory category) {
     final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
@@ -259,6 +262,11 @@ class _ThermalResultPage extends StatelessWidget {
             },
           ),
           IconButton(
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () =>
+                shareResultImage(_exportKey, 'Thermal Deformation & Stress'),
+          ),
+          IconButton(
             icon: const Icon(Icons.settings_rounded),
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(builder: (_) => const ToolSettingPage())),
@@ -266,40 +274,44 @@ class _ThermalResultPage extends StatelessWidget {
         ],
         title: Text(S.of(context).Result),
       ),
-      body: SafeArea(
-        child: Consumer<NumberPrecisionHelper>(
-          builder: (context, precs, _) {
-            final items = [
-              MultipleRowResult(
-                title: 'Thermal Results',
-                resultTitles: const [
-                  'δ_T  (thermal deformation)',
-                  'σ_T  (thermal stress, constrained)'
-                ],
-                resultValues: [delta, sigma],
-                resultUnits: const [UnitCategory.length, UnitCategory.stress],
-              ),
-              CalculationCard(steps: [
-                'δ_T = α × ΔT × L',
-                '= ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} × ${_fv(context, length, UnitCategory.length)}',
-                '= ${_fv(context, delta, UnitCategory.length)}',
-                '',
-                'σ_T = −E × α × ΔT',
-                '= −${_fv(context, E, UnitCategory.stress)} × ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)}',
-                '= ${_fv(context, sigma, UnitCategory.stress)}',
-              ]),
-            ];
-            return StaggeredGridView.countBuilder(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-              crossAxisCount: 8,
-              itemCount: items.length,
-              staggeredTileBuilder: (_) => StaggeredTile.fit(
-                  MediaQuery.of(context).size.width > 600 ? 4 : 8),
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              itemBuilder: (_, i) => items[i],
-            );
-          },
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: SafeArea(
+          child: Consumer<NumberPrecisionHelper>(
+            builder: (context, precs, _) {
+              final items = [
+                MultipleRowResult(
+                  title: 'Thermal Results',
+                  resultTitles: const [
+                    'δ_T  (thermal deformation)',
+                    'σ_T  (thermal stress, constrained)'
+                  ],
+                  resultValues: [delta, sigma],
+                  resultUnits: const [UnitCategory.length, UnitCategory.stress],
+                ),
+                CalculationCard(steps: [
+                  'δ_T = α × ΔT × L',
+                  '= ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} × ${_fv(context, length, UnitCategory.length)}',
+                  '= ${_fv(context, delta, UnitCategory.length)}',
+                  '',
+                  'σ_T = −E × α × ΔT',
+                  '= −${_fv(context, E, UnitCategory.stress)} × ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)}',
+                  '= ${_fv(context, sigma, UnitCategory.stress)}',
+                ]),
+              ];
+              return StaggeredGridView.countBuilder(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+                crossAxisCount: 8,
+                itemCount: items.length,
+                staggeredTileBuilder: (_) => StaggeredTile.fit(
+                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                itemBuilder: (_, i) => items[i],
+              );
+            },
+          ),
         ),
       ),
     );

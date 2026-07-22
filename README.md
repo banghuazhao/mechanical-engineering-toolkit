@@ -104,6 +104,122 @@ flutter build ios
 flutter build apk
 ```
 
+## 🧩 Adding a New Calculator
+
+New tools should follow the pattern used by recent additions (e.g.
+[`bolted_joint_page.dart`](lib/home/mechancs_of_material/page/bolted_joint_page.dart)
++ [`bolted_joint_result_page.dart`](lib/home/mechancs_of_material/page/bolted_joint_result_page.dart),
+or [`centroid_page.dart`](lib/home/statics/page/centroid_page.dart)) rather than the
+older per-tool `model/` + `widget/…Row.dart` split. All Mechanics of
+Material and Beam Engineering tools have been migrated to this pattern; the
+2 Theory of Elasticity tools and 6 Composite Material tools are still on the
+older split (their matrix-heavy UIs make that a bigger, separate migration) —
+follow the current pattern for anything new in those areas too, but don't be
+surprised to find the older style there today.
+
+### File layout
+
+- One input page: `lib/home/<category>/page/<tool>_page.dart`
+- One result page: `lib/home/<category>/page/<tool>_result_page.dart`
+- Register the tool as a `Tool` entry in `lib/home/tool_model.dart`
+  (`ToolLibrary.getTools`), using the next free id in the category's block:
+  `100s` Mechanics of Material · `200s` Theory of Elasticity · `300s` Composite
+  Material · `400s` Statics · `500s` Utilities.
+
+### Checklist — every new calculator must
+
+1. **Respect the unit system.** Every physical input/output must use
+   [`UnitField`](lib/util/unit_field.dart) with a `UnitCategory` from
+   [`units.dart`](lib/util/units.dart) (add a new category there if none fits).
+   Never hardcode a unit string — `UnitField` shows the right suffix and
+   converts in place based on `UnitSystemPreference`, and the user can switch
+   between SI and Imperial from Settings at any time.
+2. **Have an appropriate icon.** Give the `Tool` entry in `tool_model.dart`
+   either `icon: Icons.…` (a Material *rounded* icon, matching existing
+   entries) or `image: AssetImage('images/...')` pointing at a purpose-made
+   asset. Don't ship a tool with no visual identity.
+3. **Explain itself with a description and formula.** The input page should
+   state what the tool computes and show the governing formula — plain text,
+   or rendered math via `flutter_math_fork`'s `Math.tex` — near the inputs, so
+   the user understands what to enter without leaving the page.
+4. **Respect precision settings.** Route every displayed value through
+   `NumberPrecisionHelper.formatValue()` — directly, or via the shared
+   `AppCopyableValue` / `UnitField` widgets, which already do this — so
+   results honor the user's precision and display-format (auto / scientific /
+   decimal / engineering) settings. Never hardcode `toStringAsFixed(n)` on a
+   user-facing result.
+5. **Show the calculation and make it shareable — as text and as an image.**
+   The result page must display the calculation steps (formula with values
+   substituted — see `CalculationCard`) and offer two share actions in
+   `AppBar.actions`: `shareResult(toolName, lines)` (text) and
+   `shareResultImage(exportKey, toolName)` (PNG screenshot), both from
+   [`share_helper.dart`](lib/util/share_helper.dart). For the image share,
+   wrap the page's `AppContent` in a `RepaintBoundary(key: _exportKey, ...)`
+   and give the widget an (non-`const`) `final _exportKey = GlobalKey();`
+   field — see `bolted_joint_result_page.dart` for the exact pattern.
+6. **Include an illustration where it helps.** When a diagram clarifies the
+   setup (beam loading case, cross-section, free-body diagram, sign
+   convention, etc.), add an image under `images/` or a small custom-painted
+   diagram. Not required when the formula is fully self-explanatory, but
+   strongly preferred. For an x-vs-y curve (a beam moment/deflection diagram,
+   etc.), use the shared [`XYDiagramCard`](lib/ui/xy_diagram_card.dart) rather
+   than writing a new `CustomPainter`.
+
+### Also expected of every new tool
+
+- Record successful calculations with
+  `context.read<ToolHistory>().record(widget.toolId, inputs: {...})`, and
+  parse the same keys back out of `widget.initialInputs` in `initState`, so
+  History and Favorites re-entry works.
+- Build the UI from the shared design system —`AppContent`, `AppSectionCard`,
+  `AdaptiveFieldGrid`, `AppCopyableValue`, and `context.tokens` for
+  spacing/radius — rather than raw `Card`/`Padding` with magic numbers.
+- Add a settings icon (`Icons.settings_rounded` → `ToolSettingPage`) and the
+  `AppBannerAd` (`bottomNavigationBar: const AppBannerAd()`) to the result
+  page, matching other tools — `AppBannerAd` already no-ops once the user has
+  purchased Remove Ads, so no extra gating logic is needed.
+- Validate inputs and report problems via a `SnackBar` (throw a
+  `FormatException` in `_calculate()` and catch it) instead of failing
+  silently.
+- If the tool takes an isotropic material property (E, G, yield/ultimate
+  strength, density, ν), add a
+  [`MaterialPresetButton`](lib/ui/material_preset_picker.dart) below the
+  relevant fields so the user can pick a built-in or custom material instead
+  of typing constants by hand. Not for composite lamina properties
+  (E1/E2/G12/ν12) — those aren't covered by this picker.
+- If the tool's formula is a simple, single-valued function of its inputs,
+  add a [`ParameterSweepCard`](lib/ui/parameter_sweep_card.dart) to the result
+  page letting the user drag one input across a range and see the effect on
+  the output live. Skip it for tools that already show a full diagram (beam
+  load analysis) or whose output isn't a single scalar (truss analysis,
+  centroid, composite laminate matrices).
+- Add a unit test for the pure calculation logic under `test/` when the math
+  is non-trivial (see `truss_solver_test.dart`, `beam_calculators_test.dart`
+  for style).
+- Add the new tool to this README's [Available Categories](#-available-categories) list.
+
+### A note on units: two internal conventions coexist
+
+Most tools work in true SI (E in Pa, L in m) and convert only at the
+`UnitField`/display boundary — see `simply_supported_beam_calculator.dart`.
+
+A number of "quick formula" tools (column buckling, bar force-displacement,
+angle of twist, beam flexure, etc.) instead keep everything in the
+**mm–N–MPa** system: length in mm, force in N, moment in N·mm, stress in MPa,
+second moment of area in mm⁴. In that system the raw numeric values from
+`UnitCategory.length`/`.force`/`.momentSection`/`.stress`/`.momentOfInertia`
+combine directly with no conversion factors (e.g. `σ = M·y/I` with M in
+N·mm, y in mm, I in mm⁴ gives σ directly in MPa). If such a tool also takes
+an elastic/shear modulus, keep the field as `UnitCategory.modulus` (GPa —
+correct display, and what `MaterialPresetButton` provides), but **multiply
+by 1000 at the point of use** to convert to the MPa-equivalent number the
+rest of the mm/N formula expects (1 GPa = 1000 MPa) — see the `e * 1000` /
+`g * 1000` calls in `column_buckling_load_page.dart` and
+`angle_of_twist_page.dart`. Getting this wrong silently produces results off
+by a factor of 1000, so when adding a new mm–N–MPa tool with a modulus
+input, follow one of those two files as a template rather than re-deriving
+the conversion from scratch.
+
 ## 🤝 Contributing
 
 We welcome contributions from the community! Here's how you can help:

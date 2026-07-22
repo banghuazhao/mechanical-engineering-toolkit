@@ -16,10 +16,7 @@ class MonentsOfInertiaPage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const MonentsOfInertiaPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override

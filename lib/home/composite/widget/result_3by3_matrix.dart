@@ -8,7 +8,8 @@ class Result3By3Matrix extends StatelessWidget {
   final String title;
   final Matrix matrix;
 
-  const Result3By3Matrix({Key? key, required this.matrix, required this.title}) : super(key: key);
+  const Result3By3Matrix({Key? key, required this.matrix, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,8 @@ class Result3By3Matrix extends StatelessWidget {
             itemCount: 9,
             itemBuilder: (BuildContext context, int index) {
               double value = matrix[index ~/ 3][index % 3];
-              return Consumer<NumberPrecisionHelper>(builder: (context, precs, child) {
+              return Consumer<NumberPrecisionHelper>(
+                  builder: (context, precs, child) {
                 return Center(
                   child: Container(
                     height: 40,

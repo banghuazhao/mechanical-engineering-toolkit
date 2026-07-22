@@ -3,6 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -36,6 +37,8 @@ class SphericalShellStressResultPage extends StatefulWidget {
 
 class _SphericalShellStressResultPageState
     extends State<SphericalShellStressResultPage> {
+  final _exportKey = GlobalKey();
+
   String _fv(BuildContext context, double? valueSI, UnitCategory? category) {
     final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
     if (category == null) {
@@ -50,13 +53,14 @@ class _SphericalShellStressResultPageState
   @override
   Widget build(BuildContext context) {
     context.watch<UnitSystemPreference>();
-    final hasCalc = widget.calculationSteps != null &&
-        widget.calculationSteps!.isNotEmpty;
+    final hasCalc =
+        widget.calculationSteps != null && widget.calculationSteps!.isNotEmpty;
 
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
+            icon:
+                const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
           ),
           actions: [
@@ -73,28 +77,37 @@ class _SphericalShellStressResultPageState
                 shareResult(widget.rowTitle, lines);
               },
             ),
+            IconButton(
+              icon: const Icon(Icons.image_outlined),
+              onPressed: () => shareResultImage(_exportKey, widget.rowTitle),
+            ),
           ],
           title: Text(S.of(context).Result),
         ),
-        body: SafeArea(
-          child: StaggeredGridView.countBuilder(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-              crossAxisCount: 8,
-              itemCount: hasCalc ? 2 : 1,
-              staggeredTileBuilder: (int index) => StaggeredTile.fit(
-                  MediaQuery.of(context).size.width > 600 ? 4 : 8),
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              itemBuilder: (BuildContext context, int index) {
-                return [
-                  MultipleRowResult(
-                      title: widget.rowTitle,
-                      resultTitles: widget.titles,
-                      resultValues: widget.values,
-                      resultUnits: widget.valueUnits),
-                  if (hasCalc) CalculationCard(steps: widget.calculationSteps!),
-                ][index];
-              }),
+        bottomNavigationBar: const AppBannerAd(),
+        body: RepaintBoundary(
+          key: _exportKey,
+          child: SafeArea(
+            child: StaggeredGridView.countBuilder(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+                crossAxisCount: 8,
+                itemCount: hasCalc ? 2 : 1,
+                staggeredTileBuilder: (int index) => StaggeredTile.fit(
+                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                itemBuilder: (BuildContext context, int index) {
+                  return [
+                    MultipleRowResult(
+                        title: widget.rowTitle,
+                        resultTitles: widget.titles,
+                        resultValues: widget.values,
+                        resultUnits: widget.valueUnits),
+                    if (hasCalc)
+                      CalculationCard(steps: widget.calculationSteps!),
+                  ][index];
+                }),
+          ),
         ));
   }
 }

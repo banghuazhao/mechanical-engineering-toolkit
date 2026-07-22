@@ -2,12 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
@@ -15,88 +17,122 @@ import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
-import '../../tool_setting_page.dart';
-
 class FailureCriteriaPage extends StatefulWidget {
+  const FailureCriteriaPage({
+    super.key,
+    required this.title,
+    required this.toolId,
+    this.initialInputs,
+  });
+
   final String title;
   final int toolId;
   final Map<String, String>? initialInputs;
-  const FailureCriteriaPage(
-      {Key? key, required this.title, required this.toolId, this.initialInputs})
-      : super(key: key);
 
   @override
-  _FailureCriteriaPageState createState() => _FailureCriteriaPageState();
+  State<FailureCriteriaPage> createState() => _FailureCriteriaPageState();
 }
 
 class _FailureCriteriaPageState extends State<FailureCriteriaPage> {
-  double? _sx, _sy, _txy, _yield;
-  bool validate = false;
+  double? _sx;
+  double? _sy;
+  double? _txy;
+  double? _yield;
 
   @override
   void initState() {
     super.initState();
-    if (widget.initialInputs != null) {
-      _sx = double.tryParse(widget.initialInputs!["σ_x"] ?? "");
-      _sy = double.tryParse(widget.initialInputs!["σ_y"] ?? "");
-      _txy = double.tryParse(widget.initialInputs!["τ_xy"] ?? "");
-      _yield = double.tryParse(widget.initialInputs!["S_y"] ?? "");
-    }
+    final inputs = widget.initialInputs;
+    if (inputs == null) return;
+    _sx = double.tryParse(inputs['σ_x'] ?? '');
+    _sy = double.tryParse(inputs['σ_y'] ?? '');
+    _txy = double.tryParse(inputs['τ_xy'] ?? '');
+    _yield = double.tryParse(inputs['S_y'] ?? '');
   }
-
-  bool get _inputsReady => _sx != null && _sy != null && _txy != null;
 
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).colorScheme.primary;
-
-    final stressFields = <_FieldSpec>[
-      _FieldSpec('σ_x  (normal stress in x)', (v) => _sx = v, () => _sx, true),
-      _FieldSpec('σ_y  (normal stress in y)', (v) => _sy = v, () => _sy, true),
-      _FieldSpec('τ_xy  (shear stress)', (v) => _txy = v, () => _txy, true),
-    ];
-
-    final items = [
-      _buildCard(context, 'PLANE STRESS STATE', stressFields, primary),
-      Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.title)),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _calculate,
+        icon: const Icon(Icons.analytics_rounded),
+        label: Text(S.of(context).Calculate),
+      ),
+      body: AppContent(
+        padding: EdgeInsets.zero,
+        child: ListView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          padding: EdgeInsets.fromLTRB(
+            context.tokens.space4,
+            context.tokens.space4,
+            context.tokens.space4,
+            100,
+          ),
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
-              child: Text(
-                'MATERIAL (OPTIONAL)',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: primary,
-                      letterSpacing: 0.8,
-                    ),
-              ),
-            ),
-            const Divider(height: 14),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            AppSectionCard(
+              title: 'Failure Criteria (von Mises / Tresca)',
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  UnitField(
-                    label:
-                        'S_y  (tensile yield strength — for factor of safety)',
-                    category: UnitCategory.stress,
-                    initialSI: _yield,
-                    signed: false,
-                    isDense: true,
-                    contentPadding: const EdgeInsets.all(12),
-                    border: const OutlineInputBorder(),
-                    onChangedSI: (v) => setState(() => _yield = v),
+                  Center(
+                    child: Math.tex(
+                      r'''\sigma_{VM} = \sqrt{\sigma_1^2 - \sigma_1\sigma_2 + \sigma_2^2}''',
+                      mathStyle: MathStyle.display,
+                      textStyle: Theme.of(context).textTheme.bodyLarge,
+                    ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: context.tokens.space2),
+                  Center(
+                    child: Math.tex(
+                      r'''\sigma_{eff,Tresca} = |\sigma_1 - \sigma_2|''',
+                      mathStyle: MathStyle.display,
+                      textStyle: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
+                  SizedBox(height: context.tokens.space4),
+                  AdaptiveFieldGrid(children: [
+                    UnitField(
+                      label: 'σx',
+                      category: UnitCategory.stress,
+                      initialSI: _sx,
+                      onChangedSI: (v) => _sx = v,
+                    ),
+                    UnitField(
+                      label: 'σy',
+                      category: UnitCategory.stress,
+                      initialSI: _sy,
+                      onChangedSI: (v) => _sy = v,
+                    ),
+                    UnitField(
+                      label: 'τxy',
+                      category: UnitCategory.stress,
+                      initialSI: _txy,
+                      onChangedSI: (v) => _txy = v,
+                    ),
+                  ]),
+                  SizedBox(height: context.tokens.space3),
                   Text(
-                    'Leave blank to skip safety factor calculation',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey[600],
+                    'Yield strength (optional — enables factor of safety)',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
                         ),
+                  ),
+                  SizedBox(height: context.tokens.space2),
+                  UnitField(
+                    label: 'Yield strength, Sy',
+                    category: UnitCategory.stress,
+                    signed: false,
+                    initialSI: _yield,
+                    onChangedSI: (v) => _yield = v,
+                  ),
+                  SizedBox(height: context.tokens.space2),
+                  MaterialPresetButton(
+                    onSelected: (preset) => setState(() {
+                      if (preset.yieldStrengthSI != null) {
+                        _yield = preset.yieldStrengthSI;
+                      }
+                    }),
                   ),
                 ],
               ),
@@ -104,176 +140,61 @@ class _FailureCriteriaPageState extends State<FailureCriteriaPage> {
           ],
         ),
       ),
-      DescriptionItem(
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Von Mises (Distortion Energy) Criterion:',
-                style: Theme.of(context).textTheme.bodyMedium),
-            const SizedBox(height: 8),
-            Center(
-              child: Math.tex(
-                r'''\sigma_{VM} = \sqrt{\sigma_1^2 - \sigma_1\sigma_2 + \sigma_2^2}''',
-                mathStyle: MathStyle.display,
-                textStyle: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text('Tresca (Maximum Shear Stress) Criterion:',
-                style: Theme.of(context).textTheme.bodyMedium),
-            const SizedBox(height: 8),
-            Center(
-              child: Math.tex(
-                r'''\tau_{max} = \frac{|\sigma_1 - \sigma_2|}{2}''',
-                mathStyle: MathStyle.display,
-                textStyle: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Center(
-              child: Math.tex(
-                r'''\sigma_{eff,Tresca} = |\sigma_1 - \sigma_2|''',
-                mathStyle: MathStyle.display,
-                textStyle: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ];
-
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text(widget.title),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          setState(() => validate = true);
-          _calculate();
-        },
-        label: Text(S.of(context).Calculate),
-      ),
-      body: SafeArea(
-        child: StaggeredGridView.countBuilder(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-          crossAxisCount: 8,
-          itemCount: items.length,
-          staggeredTileBuilder: (_) => StaggeredTile.fit(
-              MediaQuery.of(context).size.width > 600 ? 4 : 8),
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          itemBuilder: (_, i) => items[i],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCard(BuildContext context, String cardTitle,
-      List<_FieldSpec> fields, Color primary) {
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
-            child: Text(
-              cardTitle,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: primary,
-                    letterSpacing: 0.8,
-                  ),
-            ),
-          ),
-          const Divider(height: 14),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            child: Column(
-              children: fields
-                  .map((f) => Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: UnitField(
-                          label: f.label,
-                          category: UnitCategory.stress,
-                          initialSI: f.getter(),
-                          isDense: true,
-                          contentPadding: const EdgeInsets.all(12),
-                          border: const OutlineInputBorder(),
-                          errorText: (value) =>
-                              validate && f.required && value == null
-                                  ? S.of(context).Not_a_number
-                                  : null,
-                          onChangedSI: (v) => setState(() => f.setter(v)),
-                        ),
-                      ))
-                  .toList(),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
   void _calculate() {
-    if (!_inputsReady) return;
-    final sx = _sx!, sy = _sy!, txy = _txy!;
+    try {
+      final sx = _sx;
+      final sy = _sy;
+      final txy = _txy;
+      if (sx == null || sy == null || txy == null) {
+        throw const FormatException('Enter σx, σy, and τxy.');
+      }
 
-    final avg = (sx + sy) / 2;
-    final r = sqrt(pow((sx - sy) / 2, 2) + txy * txy);
-    final s1 = avg + r;
-    final s2 = avg - r;
+      final avg = (sx + sy) / 2;
+      final r = sqrt(pow((sx - sy) / 2, 2) + txy * txy);
+      final s1 = avg + r;
+      final s2 = avg - r;
+      final vonMises = sqrt(s1 * s1 - s1 * s2 + s2 * s2);
+      final tresca = (s1 - s2).abs();
+      final tauMax = tresca / 2;
 
-    final vonMises = sqrt(s1 * s1 - s1 * s2 + s2 * s2);
-    final tresca = (s1 - s2).abs();
-    final tauMax = tresca / 2;
+      context.read<ToolHistory>().record(widget.toolId, inputs: {
+        'σ_x': '$sx',
+        'σ_y': '$sy',
+        'τ_xy': '$txy',
+        'S_y': _yield == null ? '' : '$_yield',
+      });
 
-    context.read<ToolHistory>().record(widget.toolId, inputs: {
-      "σ_x": sx.toString(),
-      "σ_y": sy.toString(),
-      "τ_xy": txy.toString(),
-      "S_y": _yield?.toString() ?? "",
-    });
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => _FailureResultPage(
-          s1: s1,
-          s2: s2,
-          vonMises: vonMises,
-          tresca: tresca,
-          tauMax: tauMax,
-          yield_: _yield,
-          sx: _sx!,
-          sy: _sy!,
-          txy: _txy!,
-          avg: avg,
-          R: r,
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => _FailureCriteriaResultPage(
+            s1: s1,
+            s2: s2,
+            vonMises: vonMises,
+            tresca: tresca,
+            tauMax: tauMax,
+            yieldStrength: _yield,
+            sx: sx,
+            sy: sy,
+            txy: txy,
+            avg: avg,
+            r: r,
+          ),
         ),
-      ),
-    );
+      );
+    } on FormatException catch (error) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(error.message)));
+    }
   }
 }
 
-class _FieldSpec {
-  final String label;
-  final void Function(double?) setter;
-  final double? Function() getter;
-  final bool required;
-  _FieldSpec(this.label, this.setter, this.getter, this.required);
-}
-
-class _FailureResultPage extends StatelessWidget {
-  final double s1, s2, vonMises, tresca, tauMax;
-  final double sx, sy, txy, avg, R;
-  final double? yield_;
-
-  const _FailureResultPage({
+class _FailureCriteriaResultPage extends StatelessWidget {
+  _FailureCriteriaResultPage({
     required this.s1,
     required this.s2,
     required this.vonMises,
@@ -283,132 +204,151 @@ class _FailureResultPage extends StatelessWidget {
     required this.sy,
     required this.txy,
     required this.avg,
-    required this.R,
-    this.yield_,
+    required this.r,
+    this.yieldStrength,
   });
 
-  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
-    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
-    final system =
-        Provider.of<UnitSystemPreference>(context, listen: false).system;
-    final display = valueSI == null ? null : fromSI(valueSI, category, system);
-    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
-  }
+  final double s1;
+  final double s2;
+  final double vonMises;
+  final double tresca;
+  final double tauMax;
+  final double sx;
+  final double sy;
+  final double txy;
+  final double avg;
+  final double r;
+  final double? yieldStrength;
+  final _exportKey = GlobalKey();
+
+  String _fv(double valueSI, UnitCategory category, UnitSystem system,
+          NumberPrecisionHelper precs) =>
+      '${precs.formatValue(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
 
   @override
   Widget build(BuildContext context) {
-    context.watch<UnitSystemPreference>();
-    final hasSy = yield_ != null && yield_! > 0;
-    final fsSy = hasSy ? yield_! / vonMises : null;
-    final fsTresca = hasSy ? yield_! / tresca : null;
-
-    final titles = [
-      'σ₁  (principal stress 1)',
-      'σ₂  (principal stress 2)',
-      'σ_VM  (Von Mises stress)',
-      'τ_max  (maximum shear stress)',
-      'σ_Tresca  (effective Tresca stress)',
-      if (hasSy) 'FS_VM  (factor of safety — Von Mises)',
-      if (hasSy) 'FS_Tresca  (factor of safety — Tresca)',
-    ];
-    final values = [
-      s1,
-      s2,
-      vonMises,
-      tauMax,
-      tresca,
-      if (hasSy) fsSy!,
-      if (hasSy) fsTresca!,
-    ];
+    final system = context.watch<UnitSystemPreference>().system;
+    final precs = context.watch<NumberPrecisionHelper>();
+    final hasSy = yieldStrength != null && yieldStrength! > 0;
+    final fsVm = hasSy ? yieldStrength! / vonMises : null;
+    final fsTresca = hasSy ? yieldStrength! / tresca : null;
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        title: const Text('Result'),
         actions: [
           IconButton(
+            tooltip: 'Share results',
             icon: const Icon(Icons.share_rounded),
-            onPressed: () {
-              final precs =
-                  Provider.of<NumberPrecisionHelper>(context, listen: false);
-              shareResult('Failure Criteria', [
-                'σ₁ = ${_fv(context, s1, UnitCategory.stress)},  σ₂ = ${_fv(context, s2, UnitCategory.stress)}',
-                'σ_VM = ${_fv(context, vonMises, UnitCategory.stress)}',
-                'σ_Tresca = ${_fv(context, tresca, UnitCategory.stress)},  τ_max = ${_fv(context, tauMax, UnitCategory.stress)}',
-                if (yield_ != null && yield_! > 0) ...[
-                  'FS_VM = ${precs.formatValue(yield_! / vonMises)}',
-                  'FS_Tresca = ${precs.formatValue(yield_! / tresca)}',
-                ],
-                '',
-                'Calculation:',
-                'R = √(((σₓ−σᵧ)/2)² + τ²) = ${_fv(context, R, UnitCategory.stress)}',
-                'σ₁ = ${_fv(context, avg, UnitCategory.stress)} + ${_fv(context, R, UnitCategory.stress)} = ${_fv(context, s1, UnitCategory.stress)}',
-                'σ₂ = ${_fv(context, avg, UnitCategory.stress)} − ${_fv(context, R, UnitCategory.stress)} = ${_fv(context, s2, UnitCategory.stress)}',
-                'σ_VM = √(σ₁²−σ₁σ₂+σ₂²) = ${_fv(context, vonMises, UnitCategory.stress)}',
-              ]);
-            },
+            onPressed: () => _share(system, precs, hasSy, fsVm, fsTresca),
           ),
           IconButton(
+            tooltip: 'Share as image',
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () => shareResultImage(_exportKey, 'Failure Criteria'),
+          ),
+          IconButton(
+            tooltip: 'Settings',
             icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const ToolSettingPage())),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ToolSettingPage()),
+            ),
           ),
         ],
-        title: Text(S.of(context).Result),
       ),
-      body: SafeArea(
-        child: StaggeredGridView.countBuilder(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-          crossAxisCount: 8,
-          itemCount: hasSy ? 3 : 2,
-          staggeredTileBuilder: (_) => StaggeredTile.fit(
-              MediaQuery.of(context).size.width > 600 ? 4 : 8),
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          itemBuilder: (_, i) {
-            if (i == 0) {
-              return MultipleRowResult(
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: AppContent(
+          padding: EdgeInsets.zero,
+          child: ListView(
+            padding: EdgeInsets.all(context.tokens.space4),
+            children: [
+              AppSectionCard(
                 title: 'Stress Results',
-                resultTitles: titles.sublist(0, 5),
-                resultValues: values.sublist(0, 5),
-                resultUnits: const [
-                  UnitCategory.stress,
-                  UnitCategory.stress,
-                  UnitCategory.stress,
-                  UnitCategory.stress,
-                  UnitCategory.stress,
-                ],
-              );
-            }
-            if (hasSy && i == 1) {
-              return MultipleRowResult(
-                title: 'Factor of Safety',
-                resultTitles: titles.sublist(5),
-                resultValues: values.sublist(5),
-              );
-            }
-            return Consumer<NumberPrecisionHelper>(
-              builder: (context, precs, _) => CalculationCard(steps: [
-                'Principal stresses:',
-                'R = √(((σₓ−σᵧ)/2)² + τ²)',
-                '  = √((( ${_fv(context, sx, UnitCategory.stress)} − ${_fv(context, sy, UnitCategory.stress)} )/2)² + ${_fv(context, txy, UnitCategory.stress)}²)',
-                '  = ${_fv(context, R, UnitCategory.stress)}',
-                'σ₁ = (σₓ+σᵧ)/2 + R = ${_fv(context, avg, UnitCategory.stress)} + ${_fv(context, R, UnitCategory.stress)} = ${_fv(context, s1, UnitCategory.stress)}',
-                'σ₂ = (σₓ+σᵧ)/2 − R = ${_fv(context, avg, UnitCategory.stress)} − ${_fv(context, R, UnitCategory.stress)} = ${_fv(context, s2, UnitCategory.stress)}',
-                '',
-                'Von Mises: σ_VM = √(σ₁²−σ₁σ₂+σ₂²) = ${_fv(context, vonMises, UnitCategory.stress)}',
-                'Tresca:  σ_eff = |σ₁−σ₂| = ${_fv(context, tresca, UnitCategory.stress)},  τ_max = ${_fv(context, tauMax, UnitCategory.stress)}',
-                if (hasSy)
-                  'FS_VM = Sᵧ / σ_VM = ${_fv(context, yield_, UnitCategory.stress)} / ${_fv(context, vonMises, UnitCategory.stress)} = ${precs.formatValue(yield_! / vonMises)}',
-                if (hasSy)
-                  'FS_Tresca = Sᵧ / σ_eff = ${_fv(context, yield_, UnitCategory.stress)} / ${_fv(context, tresca, UnitCategory.stress)} = ${precs.formatValue(yield_! / tresca)}',
-              ]),
-            );
-          },
+                child: Column(children: [
+                  AppCopyableValue(
+                      label: 'σ₁', valueSI: s1, category: UnitCategory.stress),
+                  AppCopyableValue(
+                      label: 'σ₂', valueSI: s2, category: UnitCategory.stress),
+                  AppCopyableValue(
+                      label: 'σ_VM (von Mises)',
+                      valueSI: vonMises,
+                      category: UnitCategory.stress),
+                  AppCopyableValue(
+                      label: 'τ_max',
+                      valueSI: tauMax,
+                      category: UnitCategory.stress),
+                  AppCopyableValue(
+                      label: 'σ_Tresca',
+                      valueSI: tresca,
+                      category: UnitCategory.stress),
+                ]),
+              ),
+              if (hasSy) ...[
+                SizedBox(height: context.tokens.space4),
+                AppSectionCard(
+                  title: 'Factor of Safety',
+                  child: Column(children: [
+                    AppCopyableValue(
+                        label: 'FS (von Mises)',
+                        value: precs.formatValue(fsVm)),
+                    AppCopyableValue(
+                        label: 'FS (Tresca)',
+                        value: precs.formatValue(fsTresca)),
+                  ]),
+                ),
+              ],
+              SizedBox(height: context.tokens.space4),
+              AppSectionCard(
+                title: 'Calculation',
+                child: Text(
+                  'R = √(((σx−σy)/2)² + τ²) = ${_fv(r, UnitCategory.stress, system, precs)}\n'
+                  'σ1 = (σx+σy)/2 + R = ${_fv(avg, UnitCategory.stress, system, precs)} + ${_fv(r, UnitCategory.stress, system, precs)} = ${_fv(s1, UnitCategory.stress, system, precs)}\n'
+                  'σ2 = (σx+σy)/2 − R = ${_fv(avg, UnitCategory.stress, system, precs)} − ${_fv(r, UnitCategory.stress, system, precs)} = ${_fv(s2, UnitCategory.stress, system, precs)}\n'
+                  'σ_VM = √(σ1²−σ1σ2+σ2²) = ${_fv(vonMises, UnitCategory.stress, system, precs)}\n'
+                  'σ_Tresca = |σ1−σ2| = ${_fv(tresca, UnitCategory.stress, system, precs)}, τ_max = ${_fv(tauMax, UnitCategory.stress, system, precs)}'
+                  '${hasSy ? '\nFS_VM = Sy/σ_VM = ${precs.formatValue(fsVm)}\nFS_Tresca = Sy/σ_Tresca = ${precs.formatValue(fsTresca)}' : ''}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+              SizedBox(height: context.tokens.space4),
+              ParameterSweepCard(
+                variableLabel: 'τxy',
+                variableCategory: UnitCategory.stress,
+                baseValueSI: txy,
+                outputLabel: 'σ_VM',
+                outputCategory: UnitCategory.stress,
+                compute: (variedTxy) {
+                  final rr =
+                      sqrt(pow((sx - sy) / 2, 2) + variedTxy * variedTxy);
+                  final ss1 = avg + rr;
+                  final ss2 = avg - rr;
+                  return sqrt(ss1 * ss1 - ss1 * ss2 + ss2 * ss2);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _share(UnitSystem system, NumberPrecisionHelper precs, bool hasSy,
+      double? fsVm, double? fsTresca) {
+    shareResult('Failure Criteria', [
+      'σ₁ = ${_fv(s1, UnitCategory.stress, system, precs)}, σ₂ = ${_fv(s2, UnitCategory.stress, system, precs)}',
+      'σ_VM = ${_fv(vonMises, UnitCategory.stress, system, precs)}',
+      'σ_Tresca = ${_fv(tresca, UnitCategory.stress, system, precs)}, τ_max = ${_fv(tauMax, UnitCategory.stress, system, precs)}',
+      if (hasSy) 'FS_VM = ${precs.formatValue(fsVm)}',
+      if (hasSy) 'FS_Tresca = ${precs.formatValue(fsTresca)}',
+      '',
+      'Calculation:',
+      'R = √(((σx−σy)/2)² + τ²) = ${_fv(r, UnitCategory.stress, system, precs)}',
+      'σ1 = ${_fv(avg, UnitCategory.stress, system, precs)} + ${_fv(r, UnitCategory.stress, system, precs)} = ${_fv(s1, UnitCategory.stress, system, precs)}',
+      'σ2 = ${_fv(avg, UnitCategory.stress, system, precs)} − ${_fv(r, UnitCategory.stress, system, precs)} = ${_fv(s2, UnitCategory.stress, system, precs)}',
+      'σ_VM = √(σ1²−σ1σ2+σ2²) = ${_fv(vonMises, UnitCategory.stress, system, precs)}',
+    ]);
   }
 }

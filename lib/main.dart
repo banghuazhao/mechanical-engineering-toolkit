@@ -5,6 +5,7 @@ import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart'
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/in_app_reviewer_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/material_library.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/others.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => NumberPrecisionHelper()),
         ChangeNotifierProvider(create: (context) => UnitSystemPreference()),
         ChangeNotifierProvider(create: (context) => ToolHistory()),
+        ChangeNotifierProvider(create: (context) => MaterialLibrary()),
       ],
       child: MaterialApp(
         builder: (context, child) => NotificationListener<ScrollNotification>(

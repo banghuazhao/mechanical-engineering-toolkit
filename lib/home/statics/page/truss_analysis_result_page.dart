@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/model/truss_solver.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
@@ -8,7 +9,7 @@ import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class TrussAnalysisResultPage extends StatelessWidget {
-  const TrussAnalysisResultPage({
+  TrussAnalysisResultPage({
     super.key,
     required this.title,
     required this.joints,
@@ -20,6 +21,7 @@ class TrussAnalysisResultPage extends StatelessWidget {
   final List<TrussJoint> joints;
   final List<TrussMember> members;
   final TrussSolution solution;
+  final _exportKey = GlobalKey();
 
   String _f(double value) =>
       value.toStringAsFixed(3).replaceFirst(RegExp(r'\.?0+$'), '');
@@ -30,6 +32,7 @@ class TrussAnalysisResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
+    final scheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Result'),
@@ -39,75 +42,113 @@ class TrussAnalysisResultPage extends StatelessWidget {
             icon: const Icon(Icons.share_rounded),
             onPressed: () => _share(system),
           ),
+          IconButton(
+            tooltip: 'Share as image',
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () => shareResultImage(_exportKey, title),
+          ),
         ],
       ),
-      body: AppContent(
-        padding: EdgeInsets.zero,
-        child: ListView(
-          padding: EdgeInsets.all(context.tokens.space4),
-          children: [
-            AppSectionCard(
-              title: 'Truss Geometry',
-              child: SizedBox(
-                height: 220,
-                child: CustomPaint(
-                  painter: _TrussDiagramPainter(
-                    joints: joints,
-                    members: members,
-                    color: Theme.of(context).colorScheme.primary,
-                    textColor: Theme.of(context).colorScheme.onSurface,
-                  ),
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: AppContent(
+          padding: EdgeInsets.zero,
+          child: ListView(
+            padding: EdgeInsets.all(context.tokens.space4),
+            children: [
+              AppSectionCard(
+                title: 'Truss Geometry',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(
+                      height: 220,
+                      child: CustomPaint(
+                        painter: _TrussDiagramPainter(
+                          joints: joints,
+                          members: members,
+                          memberForces: solution.memberForces,
+                          reactions: solution.reactions,
+                          tensionColor: scheme.primary,
+                          compressionColor: scheme.error,
+                          reactionColor: scheme.tertiary,
+                          textColor: scheme.onSurface,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: context.tokens.space2),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: context.tokens.space3,
+                      children: [
+                        _legendItem(context, scheme.primary, 'Tension'),
+                        _legendItem(context, scheme.error, 'Compression'),
+                        _legendItem(context, scheme.tertiary, 'Reaction'),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            ),
-            SizedBox(height: context.tokens.space4),
-            AppSectionCard(
-              title: 'Member Forces (+ tension, − compression)',
-              child: Column(
-                children: List.generate(members.length, (i) {
-                  final force = solution.memberForces[i];
-                  final member = members[i];
-                  final tag = force >= 0 ? 'tension' : 'compression';
-                  return AppCopyableValue(
-                    label: 'M${i + 1}: J${member.jointA + 1}–J${member.jointB + 1} ($tag)',
-                    valueSI: force,
-                    category: UnitCategory.force,
-                  );
-                }),
-              ),
-            ),
-            SizedBox(height: context.tokens.space4),
-            AppSectionCard(
-              title: 'Support Reactions',
-              child: Column(
-                children: solution.reactions.expand((r) {
-                  final joint = joints[r.jointIndex];
-                  final widgets = <Widget>[];
-                  if (joint.support == TrussSupport.pin ||
-                      joint.support == TrussSupport.rollerX) {
-                    widgets.add(AppCopyableValue(
-                      label: 'J${r.jointIndex + 1} Rx',
-                      valueSI: r.fx,
+              SizedBox(height: context.tokens.space4),
+              AppSectionCard(
+                title: 'Member Forces (+ tension, − compression)',
+                child: Column(
+                  children: List.generate(members.length, (i) {
+                    final force = solution.memberForces[i];
+                    final member = members[i];
+                    final tag = force >= 0 ? 'tension' : 'compression';
+                    return AppCopyableValue(
+                      label:
+                          'M${i + 1}: J${member.jointA + 1}–J${member.jointB + 1} ($tag)',
+                      valueSI: force,
                       category: UnitCategory.force,
-                    ));
-                  }
-                  if (joint.support == TrussSupport.pin ||
-                      joint.support == TrussSupport.rollerY) {
-                    widgets.add(AppCopyableValue(
-                      label: 'J${r.jointIndex + 1} Ry',
-                      valueSI: r.fy,
-                      category: UnitCategory.force,
-                    ));
-                  }
-                  return widgets;
-                }).toList(),
+                    );
+                  }),
+                ),
               ),
-            ),
-          ],
+              SizedBox(height: context.tokens.space4),
+              AppSectionCard(
+                title: 'Support Reactions',
+                child: Column(
+                  children: solution.reactions.expand((r) {
+                    final joint = joints[r.jointIndex];
+                    final widgets = <Widget>[];
+                    if (joint.support == TrussSupport.pin ||
+                        joint.support == TrussSupport.rollerX) {
+                      widgets.add(AppCopyableValue(
+                        label: 'J${r.jointIndex + 1} Rx',
+                        valueSI: r.fx,
+                        category: UnitCategory.force,
+                      ));
+                    }
+                    if (joint.support == TrussSupport.pin ||
+                        joint.support == TrussSupport.rollerY) {
+                      widgets.add(AppCopyableValue(
+                        label: 'J${r.jointIndex + 1} Ry',
+                        valueSI: r.fy,
+                        category: UnitCategory.force,
+                      ));
+                    }
+                    return widgets;
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+
+  Widget _legendItem(BuildContext context, Color color, String label) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(width: 14, height: 3, color: color),
+          const SizedBox(width: 6),
+          Text(label, style: Theme.of(context).textTheme.bodySmall),
+        ],
+      );
 
   void _share(UnitSystem system) => shareResult(title, [
         for (var i = 0; i < members.length; i++)
@@ -122,13 +163,21 @@ class _TrussDiagramPainter extends CustomPainter {
   const _TrussDiagramPainter({
     required this.joints,
     required this.members,
-    required this.color,
+    required this.memberForces,
+    required this.reactions,
+    required this.tensionColor,
+    required this.compressionColor,
+    required this.reactionColor,
     required this.textColor,
   });
 
   final List<TrussJoint> joints;
   final List<TrussMember> members;
-  final Color color;
+  final List<double> memberForces;
+  final List<TrussReaction> reactions;
+  final Color tensionColor;
+  final Color compressionColor;
+  final Color reactionColor;
   final Color textColor;
 
   @override
@@ -153,10 +202,12 @@ class _TrussDiagramPainter extends CustomPainter {
           chart.center.dy - (y - centerData.dy) * scale,
         );
 
-    final linePaint = Paint()
-      ..color = color
-      ..strokeWidth = 2;
-    for (final member in members) {
+    for (var mi = 0; mi < members.length; mi++) {
+      final member = members[mi];
+      final force = mi < memberForces.length ? memberForces[mi] : 0.0;
+      final linePaint = Paint()
+        ..color = force >= 0 ? tensionColor : compressionColor
+        ..strokeWidth = 2;
       canvas.drawLine(
         toCanvas(joints[member.jointA].x, joints[member.jointA].y),
         toCanvas(joints[member.jointB].x, joints[member.jointB].y),
@@ -164,19 +215,67 @@ class _TrussDiagramPainter extends CustomPainter {
       );
     }
 
-    final dotPaint = Paint()..color = color;
+    // Reaction arrows at supported joints, direction from force sign,
+    // fixed on-screen length (not to force scale — reactions can span many
+    // orders of magnitude relative to the geometry).
+    const arrowLength = 24.0;
+    final arrowPaint = Paint()
+      ..color = reactionColor
+      ..strokeWidth = 2;
+    for (final r in reactions) {
+      final joint = toCanvas(joints[r.jointIndex].x, joints[r.jointIndex].y);
+      if ((joint.dx.isNaN) || (joint.dy.isNaN)) continue;
+      if (r.fx.abs() > 1e-9) {
+        _drawArrow(
+            canvas, joint, r.fx > 0 ? 0 : 3.14159, arrowLength, arrowPaint);
+      }
+      if (r.fy.abs() > 1e-9) {
+        // Screen y grows downward; a positive (upward) reaction points up.
+        _drawArrow(canvas, joint, r.fy > 0 ? -1.5708 : 1.5708, arrowLength,
+            arrowPaint);
+      }
+    }
+
+    final dotPaint = Paint()..color = textColor;
     for (var i = 0; i < joints.length; i++) {
       final p = toCanvas(joints[i].x, joints[i].y);
       canvas.drawCircle(p, 4, dotPaint);
       final painter = TextPainter(
         text: TextSpan(
           text: 'J${i + 1}',
-          style: TextStyle(color: textColor, fontSize: 11, fontWeight: FontWeight.w600),
+          style: TextStyle(
+              color: textColor, fontSize: 11, fontWeight: FontWeight.w600),
         ),
         textDirection: TextDirection.ltr,
       )..layout();
       painter.paint(canvas, p + const Offset(6, -14));
     }
+  }
+
+  void _drawArrow(
+      Canvas canvas, Offset from, double angle, double length, Paint paint) {
+    final dx = length *
+        (angle == 0
+            ? 1
+            : angle == 3.14159
+                ? -1
+                : 0);
+    final dy = angle == -1.5708
+        ? -length
+        : angle == 1.5708
+            ? length
+            : 0.0;
+    final to = from + Offset(dx, dy);
+    canvas.drawLine(from, to, paint);
+    final dir = (to - from);
+    final len = dir.distance == 0 ? 1 : dir.distance;
+    final unit = Offset(dir.dx / len, dir.dy / len);
+    final perp = Offset(-unit.dy, unit.dx);
+    const headSize = 6.0;
+    final head1 = to - unit * headSize + perp * (headSize * 0.6);
+    final head2 = to - unit * headSize - perp * (headSize * 0.6);
+    canvas.drawLine(to, head1, paint);
+    canvas.drawLine(to, head2, paint);
   }
 
   @override

@@ -67,9 +67,8 @@ class _LaminaContantsRowState extends State<SphericalShellStressRow> {
                           isDense: true,
                           contentPadding: const EdgeInsets.all(12),
                           border: const OutlineInputBorder(),
-                          errorText: (value) => widget.validate
-                              ? validateForce(value)
-                              : null,
+                          errorText: (value) =>
+                              widget.validate ? validateForce(value) : null,
                           errorStyle: const TextStyle(fontSize: 10),
                           onChangedSI: (value) {
                             widget.sphericalShellStressModel.p = value;
@@ -86,9 +85,8 @@ class _LaminaContantsRowState extends State<SphericalShellStressRow> {
                           isDense: true,
                           contentPadding: const EdgeInsets.all(12),
                           border: const OutlineInputBorder(),
-                          errorText: (value) => widget.validate
-                              ? validateModulus(value)
-                              : null,
+                          errorText: (value) =>
+                              widget.validate ? validateModulus(value) : null,
                           errorStyle: const TextStyle(fontSize: 10),
                           onChangedSI: (value) {
                             widget.sphericalShellStressModel.r = value;
@@ -109,9 +107,8 @@ class _LaminaContantsRowState extends State<SphericalShellStressRow> {
                           isDense: true,
                           contentPadding: const EdgeInsets.all(12),
                           border: const OutlineInputBorder(),
-                          errorText: (value) => widget.validate
-                              ? validateModulus(value)
-                              : null,
+                          errorText: (value) =>
+                              widget.validate ? validateModulus(value) : null,
                           errorStyle: const TextStyle(fontSize: 10),
                           onChangedSI: (value) {
                             widget.sphericalShellStressModel.t = value;

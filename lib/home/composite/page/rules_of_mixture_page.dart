@@ -20,10 +20,7 @@ class RulesOfMixturePage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const RulesOfMixturePage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -32,8 +29,7 @@ class RulesOfMixturePage extends StatefulWidget {
 
 class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
   AnalysisType analysisType = AnalysisType.elastic;
-  TransverselyIsotropicMaterial fiberMaterial =
-      TransverselyIsotropicMaterial();
+  TransverselyIsotropicMaterial fiberMaterial = TransverselyIsotropicMaterial();
   IsotropicMaterial matrixMaterial = IsotropicMaterial();
   VolumeFraction fiberVolumeFraction = VolumeFraction();
   ThermalConstants fiberThermal = ThermalConstants();
@@ -98,8 +94,7 @@ class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
           title: 'Matrix Material',
           material: matrixMaterial,
           validate: validate),
-      if (isThermal)
-        _matrixAlphaRow(),
+      if (isThermal) _matrixAlphaRow(),
       VolumeFractionRow(
           volumeFraction: fiberVolumeFraction, validate: validate),
       DescriptionItem(
@@ -133,8 +128,8 @@ class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
           itemCount: items.length,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          staggeredTileBuilder: (_) => StaggeredTile.fit(
+              MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           itemBuilder: (_, i) => items[i],
@@ -166,12 +161,16 @@ class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: TextField(
               controller: _matrixAlphaController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true, signed: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true, signed: true),
               decoration: InputDecoration(
                 labelText: 'α (isotropic)',
-                errorText: validate && isThermal && matrixAlpha == null ? 'Required' : null,
+                errorText: validate && isThermal && matrixAlpha == null
+                    ? 'Required'
+                    : null,
               ),
-              onChanged: (v) => setState(() => matrixAlpha = double.tryParse(v)),
+              onChanged: (v) =>
+                  setState(() => matrixAlpha = double.tryParse(v)),
             ),
           ),
         ],
@@ -184,7 +183,8 @@ class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
         !matrixMaterial.isValid() ||
         !fiberVolumeFraction.isValid()) return;
     if (isThermal) {
-      if (!fiberThermal.isValid(requireAlpha12: false) || matrixAlpha == null) return;
+      if (!fiberThermal.isValid(requireAlpha12: false) || matrixAlpha == null)
+        return;
     }
 
     final Map<String, String> inputs = {

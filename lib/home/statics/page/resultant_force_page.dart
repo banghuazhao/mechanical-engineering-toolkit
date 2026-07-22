@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -74,11 +75,15 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Forces', style: Theme.of(context).textTheme.titleMedium),
+                  Text('Forces',
+                      style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 4),
                   Text(
                     'Enter Fx and Fy components for each force (N)',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 12),
                   ...List.generate(_forces.length, _buildForceRow),
@@ -98,7 +103,8 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
             ),
             child: const Text('Calculate', style: TextStyle(fontSize: 16)),
           ),
@@ -114,7 +120,10 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          SizedBox(width: 28, child: Text('F${i + 1}', style: const TextStyle(fontWeight: FontWeight.w600))),
+          SizedBox(
+              width: 28,
+              child: Text('F${i + 1}',
+                  style: const TextStyle(fontWeight: FontWeight.w600))),
           Expanded(
             child: UnitField(
               label: 'Fx',
@@ -133,10 +142,13 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.remove_circle_outline_rounded, color: Colors.red),
-            onPressed: _forces.length > 1 ? () {
-              setState(() => _forces.removeAt(i));
-            } : null,
+            icon: const Icon(Icons.remove_circle_outline_rounded,
+                color: Colors.red),
+            onPressed: _forces.length > 1
+                ? () {
+                    setState(() => _forces.removeAt(i));
+                  }
+                : null,
           ),
         ],
       ),
@@ -171,10 +183,12 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
       MaterialPageRoute(
         builder: (_) => _ResultPage(
           title: widget.title,
-          forces: _forces.map((f) => (
-            fx: f.fx ?? 0,
-            fy: f.fy ?? 0,
-          )).toList(),
+          forces: _forces
+              .map((f) => (
+                    fx: f.fx ?? 0,
+                    fy: f.fy ?? 0,
+                  ))
+              .toList(),
           sumFx: sumFx,
           sumFy: sumFy,
           R: R,
@@ -190,7 +204,7 @@ class _ResultPage extends StatelessWidget {
   final List<({double fx, double fy})> forces;
   final double sumFx, sumFy, R, theta;
 
-  const _ResultPage({
+  _ResultPage({
     required this.title,
     required this.forces,
     required this.sumFx,
@@ -199,7 +213,12 @@ class _ResultPage extends StatelessWidget {
     required this.theta,
   });
 
-  String _fmt(double v) => v.toStringAsFixed(4).replaceAll(RegExp(r'0+$'), '').replaceAll(RegExp(r'\.$'), '');
+  final _exportKey = GlobalKey();
+
+  String _fmt(double v) => v
+      .toStringAsFixed(4)
+      .replaceAll(RegExp(r'0+$'), '')
+      .replaceAll(RegExp(r'\.$'), '');
 
   String _fv(double valueSI, UnitSystem system) =>
       '${_fmt(fromSI(valueSI, UnitCategory.force, system))} ${unitLabel(UnitCategory.force, system)}';
@@ -207,8 +226,12 @@ class _ResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
-    final fxTerms = forces.map((f) => _fmt(fromSI(f.fx, UnitCategory.force, system))).join(' + ');
-    final fyTerms = forces.map((f) => _fmt(fromSI(f.fy, UnitCategory.force, system))).join(' + ');
+    final fxTerms = forces
+        .map((f) => _fmt(fromSI(f.fx, UnitCategory.force, system)))
+        .join(' + ');
+    final fyTerms = forces
+        .map((f) => _fmt(fromSI(f.fy, UnitCategory.force, system)))
+        .join(' + ');
 
     final steps = [
       'ΣFx = $fxTerms = ${_fv(sumFx, system)}',
@@ -234,11 +257,19 @@ class _ResultPage extends StatelessWidget {
               'θ = ${_fmt(theta)}°',
             ]),
           ),
+          IconButton(
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () => shareResultImage(_exportKey, title),
+          ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [CalculationCard(steps: steps)],
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [CalculationCard(steps: steps)],
+        ),
       ),
     );
   }

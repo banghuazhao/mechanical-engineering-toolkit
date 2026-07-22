@@ -66,10 +66,12 @@ class MultipleRowResult extends StatelessWidget {
                           ? rawValue
                           : fromSI(rawValue, category, unitPref.system));
                   final valueStr = precs.formatValue(displayNumber);
-                  final unit =
-                      category == null ? '' : unitLabel(category, unitPref.system);
-                  final displayStr =
-                      valueStr.isEmpty || unit.isEmpty ? valueStr : '$valueStr $unit';
+                  final unit = category == null
+                      ? ''
+                      : unitLabel(category, unitPref.system);
+                  final displayStr = valueStr.isEmpty || unit.isEmpty
+                      ? valueStr
+                      : '$valueStr $unit';
                   final isLast = index == resultTitles.length - 1;
                   return Column(
                     children: [
@@ -78,7 +80,8 @@ class MultipleRowResult extends StatelessWidget {
                             ? () => _copyToClipboard(context, displayStr)
                             : null,
                         borderRadius: isLast
-                            ? const BorderRadius.vertical(bottom: Radius.circular(14))
+                            ? const BorderRadius.vertical(
+                                bottom: Radius.circular(14))
                             : BorderRadius.zero,
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
@@ -88,7 +91,10 @@ class MultipleRowResult extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   resultTitles[index],
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
                                         color: const Color(0xFF6E6E73),
                                       ),
                                 ),
@@ -104,16 +110,22 @@ class MultipleRowResult extends StatelessWidget {
                                         valueStr.isNotEmpty ? displayStr : '—',
                                         textAlign: TextAlign.end,
                                         overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                              color: primary,
-                                              fontWeight: FontWeight.w600,
-                                              fontFeatures: const [FontFeature.tabularFigures()],
-                                            ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge
+                                            ?.copyWith(
+                                          color: primary,
+                                          fontWeight: FontWeight.w600,
+                                          fontFeatures: const [
+                                            FontFeature.tabularFigures()
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     if (valueStr.isNotEmpty) ...[
                                       const SizedBox(width: 6),
-                                      Icon(Icons.copy_rounded, size: 12, color: Colors.grey[400]),
+                                      Icon(Icons.copy_rounded,
+                                          size: 12, color: Colors.grey[400]),
                                     ],
                                   ],
                                 ),
@@ -122,7 +134,8 @@ class MultipleRowResult extends StatelessWidget {
                           ),
                         ),
                       ),
-                      if (!isLast) const Divider(height: 1, indent: 16, endIndent: 16),
+                      if (!isLast)
+                        const Divider(height: 1, indent: 16, endIndent: 16),
                     ],
                   );
                 }),

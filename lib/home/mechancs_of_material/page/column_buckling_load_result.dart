@@ -1,189 +1,125 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/single_row_result.dart';
-import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
-import '../../tool_setting_page.dart';
-
-class ColumnBucklingLoadResultPage extends StatefulWidget {
-  final double Pcr;
-  final double E;
-  final double I;
-  final double L;
-  final String endCondition;
-  final double C;
-
-  const ColumnBucklingLoadResultPage({
-    Key? key,
-    required this.Pcr,
-    required this.E,
-    required this.I,
-    required this.L,
+class ColumnBucklingLoadResultPage extends StatelessWidget {
+  ColumnBucklingLoadResultPage({
+    super.key,
+    required this.pcr,
+    required this.e,
+    required this.i,
+    required this.l,
+    required this.c,
     required this.endCondition,
-    required this.C,
-  }) : super(key: key);
+  });
 
-  @override
-  _ColumnBucklingLoadResultPageState createState() =>
-      _ColumnBucklingLoadResultPageState();
-}
+  final double pcr;
+  final double e;
+  final double i;
+  final double l;
+  final double c;
+  final String endCondition;
+  final _exportKey = GlobalKey();
 
-class _ColumnBucklingLoadResultPageState
-    extends State<ColumnBucklingLoadResultPage> {
-  BannerAd? _anchoredAdaptiveAd;
-  bool _isLoaded = false;
+  String _fmt(double value) =>
+      value.toStringAsFixed(3).replaceFirst(RegExp(r'\.?0+$'), '');
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _loadAd();
-  }
-
-  Future<void> _loadAd() async {
-    if (!await AdsManager.canRequestAds() || !mounted) return;
-
-    // Get an AnchoredAdaptiveBannerAdSize before loading the ad.
-    final AnchoredAdaptiveBannerAdSize? size =
-        await AdSize.getLargeAnchoredAdaptiveBannerAdSize(
-            MediaQuery.of(context).size.width.truncate());
-
-    if (size == null) {
-      print('Unable to get height of anchored banner.');
-      return;
-    }
-
-    _anchoredAdaptiveAd = BannerAd(
-      // TODO: replace these test ad units with your own ad unit.
-      adUnitId: AdsManager.bannerAdUnitId,
-      size: size,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (Ad ad) {
-          print('$ad loaded: ${ad.responseInfo}');
-          setState(() {
-            // When the ad is loaded, get the ad size and use it to set
-            // the height of the ad container.
-            _anchoredAdaptiveAd = ad as BannerAd;
-            _isLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          print('Anchored adaptive banner failedToLoad: $error');
-          ad.dispose();
-        },
-      ),
-    );
-    return _anchoredAdaptiveAd!.load();
-  }
-
-  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
-    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
-    final system =
-        Provider.of<UnitSystemPreference>(context, listen: false).system;
-    final display = valueSI == null ? null : fromSI(valueSI, category, system);
-    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
-  }
+  String _fv(double valueSI, UnitCategory category, UnitSystem system) =>
+      '${_fmt(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
 
   @override
   Widget build(BuildContext context) {
-    final adsRemoved = context.watch<RemoveAdsService>().isAdsRemoved;
-    context.watch<UnitSystemPreference>();
-    _disposeBannerWhenPurchased(adsRemoved);
+    final system = context.watch<UnitSystemPreference>().system;
+    final precs = context.watch<NumberPrecisionHelper>();
+    final cStr = c == 1.0 ? 'π²' : '${precs.formatValue(c)} × π²';
+
     return Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.share_rounded),
-              onPressed: () {
-                final precs =
-                    Provider.of<NumberPrecisionHelper>(context, listen: false);
-                final cStr = widget.C == 1.0
-                    ? 'π²'
-                    : '${precs.formatValue(widget.C)} × π²';
-                shareResult('Column Buckling Load', [
-                  'Pcr = ${_fv(context, widget.Pcr, UnitCategory.force)}',
-                  '',
-                  'Calculation:',
-                  'Pcr = C·π²·E·I / L²  (${widget.endCondition})',
-                  '= $cStr × ${_fv(context, widget.E, UnitCategory.stress)} × ${_fv(context, widget.I, UnitCategory.momentOfInertia)} / ${_fv(context, widget.L, UnitCategory.length)}²',
-                  '= ${_fv(context, widget.Pcr, UnitCategory.force)}',
-                ]);
-              },
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ToolSettingPage()));
-              },
-              icon: const Icon(Icons.settings_rounded),
-            ),
-          ],
-          leading: IconButton(
-            icon:
-                const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+      appBar: AppBar(
+        title: const Text('Result'),
+        actions: [
+          IconButton(
+            tooltip: 'Share results',
+            icon: const Icon(Icons.share_rounded),
+            onPressed: () => _share(system, cStr),
           ),
-          title: Text(S.of(context).Result),
+          IconButton(
+            tooltip: 'Share as image',
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () =>
+                shareResultImage(_exportKey, 'Column Buckling Load'),
+          ),
+          IconButton(
+            tooltip: 'Settings',
+            icon: const Icon(Icons.settings_rounded),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ToolSettingPage()),
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: AppContent(
+          padding: EdgeInsets.zero,
+          child: ListView(
+            padding: EdgeInsets.all(context.tokens.space4),
+            children: [
+              AppSectionCard(
+                title: 'Buckling Load of Column',
+                child: Column(children: [
+                  AppCopyableValue(
+                    label: 'Buckling load, Pcr',
+                    valueSI: pcr,
+                    category: UnitCategory.force,
+                  ),
+                ]),
+              ),
+              SizedBox(height: context.tokens.space4),
+              AppSectionCard(
+                title: 'Formula',
+                child: Text(
+                  'Pcr = C·π²·E·I / L²  ($endCondition)\n'
+                  '= $cStr × ${_fv(e, UnitCategory.modulus, system)} × ${_fv(i, UnitCategory.momentOfInertia, system)} / ${_fv(l, UnitCategory.length, system)}²\n'
+                  '= ${_fv(pcr, UnitCategory.force, system)}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+              SizedBox(height: context.tokens.space4),
+              ParameterSweepCard(
+                variableLabel: 'Length, L',
+                variableCategory: UnitCategory.length,
+                baseValueSI: l,
+                outputLabel: 'Pcr',
+                outputCategory: UnitCategory.force,
+                compute: (variedL) =>
+                    c * pi * pi * (e * 1000) * i / (variedL * variedL),
+              ),
+            ],
+          ),
         ),
-        body: SafeArea(
-          child: Stack(alignment: AlignmentDirectional.bottomCenter, children: [
-            StaggeredGridView.countBuilder(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, adsRemoved ? 20 : 100),
-                crossAxisCount: 8,
-                itemCount: 2,
-                staggeredTileBuilder: (int index) => StaggeredTile.fit(
-                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                itemBuilder: (BuildContext context, int index) {
-                  return [
-                    SingleRowResult(
-                        title: S.of(context).Buckling_Load,
-                        resultTitle: "Pcr",
-                        resultValue: widget.Pcr,
-                        category: UnitCategory.force),
-                    Consumer<NumberPrecisionHelper>(
-                      builder: (context, precs, _) {
-                        final cStr = widget.C == 1.0
-                            ? 'π²'
-                            : '${precs.formatValue(widget.C)} × π²';
-                        return CalculationCard(steps: [
-                          'Pcr = C·π²·E·I / L²  (${widget.endCondition})',
-                          '= $cStr × ${_fv(context, widget.E, UnitCategory.stress)} × ${_fv(context, widget.I, UnitCategory.momentOfInertia)} / ${_fv(context, widget.L, UnitCategory.length)}²',
-                          '= ${_fv(context, widget.Pcr, UnitCategory.force)}',
-                        ]);
-                      },
-                    ),
-                  ][index];
-                }),
-            if (!adsRemoved && _anchoredAdaptiveAd != null && _isLoaded)
-              Container(
-                color: Colors.transparent,
-                width: _anchoredAdaptiveAd!.size.width.toDouble(),
-                height: _anchoredAdaptiveAd!.size.height.toDouble(),
-                child: AdWidget(ad: _anchoredAdaptiveAd!),
-              )
-          ]),
-        ));
+      ),
+    );
   }
 
-  void _disposeBannerWhenPurchased(bool adsRemoved) {
-    if (!adsRemoved || _anchoredAdaptiveAd == null) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _anchoredAdaptiveAd?.dispose();
-      _anchoredAdaptiveAd = null;
-      _isLoaded = false;
-    });
-  }
+  void _share(UnitSystem system, String cStr) =>
+      shareResult('Column Buckling Load', [
+        'Pcr = ${_fv(pcr, UnitCategory.force, system)}',
+        '',
+        'Calculation:',
+        'Pcr = C·π²·E·I / L²  ($endCondition)',
+        '= $cStr × ${_fv(e, UnitCategory.modulus, system)} × ${_fv(i, UnitCategory.momentOfInertia, system)} / ${_fv(l, UnitCategory.length, system)}²',
+        '= ${_fv(pcr, UnitCategory.force, system)}',
+      ]);
 }

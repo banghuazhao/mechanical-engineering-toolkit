@@ -1,164 +1,187 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:mechanical_engineering_toolkit/home/history.dart';
-import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/beam_deflection_slope_model.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/cantilever_beam_deflections_slopes_result.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/simple_beam_deflections_slopes_row.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/xy_diagram_card.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
+import 'package:provider/provider.dart';
+
+const _kLoadCases = [
+  'Point force at middle',
+  'Distributed force evenly',
+  'Moment at middle',
+];
+
+UnitCategory _forceCategory(String loadCase) {
+  if (loadCase.startsWith('Distributed'))
+    return UnitCategory.distributedLoadSmall;
+  if (loadCase.startsWith('Moment')) return UnitCategory.momentSection;
+  return UnitCategory.force;
+}
 
 class SimpleBeamDeflectionsSlopesPage extends StatefulWidget {
+  const SimpleBeamDeflectionsSlopesPage({
+    super.key,
+    required this.title,
+    required this.toolId,
+    this.initialInputs,
+  });
+
   final String title;
   final int toolId;
   final Map<String, String>? initialInputs;
-  const SimpleBeamDeflectionsSlopesPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
-      : super(key: key);
 
   @override
-  _SimpleBeamDeflectionsSlopesPageState createState() =>
+  State<SimpleBeamDeflectionsSlopesPage> createState() =>
       _SimpleBeamDeflectionsSlopesPageState();
 }
 
 class _SimpleBeamDeflectionsSlopesPageState
     extends State<SimpleBeamDeflectionsSlopesPage> {
-  BeamDeflectionSlope beamDeflectionSlope = BeamDeflectionSlopeModel();
-  String dropValue = "Point force at middle";
-  bool validate = false;
+  String _loadCase = 'Point force at middle';
+  double? _e;
+  double? _i;
+  double? _l;
+  double? _f;
 
   @override
   void initState() {
     super.initState();
-    if (widget.initialInputs != null) {
-      dropValue = widget.initialInputs!["Type"] ?? "Point force at middle";
-      beamDeflectionSlope.E = double.tryParse(widget.initialInputs!["E"] ?? "");
-      beamDeflectionSlope.I = double.tryParse(widget.initialInputs!["I"] ?? "");
-      beamDeflectionSlope.L = double.tryParse(widget.initialInputs!["L"] ?? "");
-      beamDeflectionSlope.f = double.tryParse(widget.initialInputs!["f"] ?? "");
-    }
+    final inputs = widget.initialInputs;
+    if (inputs == null) return;
+    _loadCase = inputs['Type'] ?? _loadCase;
+    _e = double.tryParse(inputs['E'] ?? '');
+    _i = double.tryParse(inputs['I'] ?? '');
+    _l = double.tryParse(inputs['L'] ?? '');
+    _f = double.tryParse(inputs['f'] ?? '');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon:
-                const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+      appBar: AppBar(title: Text(widget.title)),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _calculate,
+        icon: const Icon(Icons.analytics_rounded),
+        label: Text(S.of(context).Calculate),
+      ),
+      body: AppContent(
+        padding: EdgeInsets.zero,
+        child: ListView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          padding: EdgeInsets.fromLTRB(
+            context.tokens.space4,
+            context.tokens.space4,
+            context.tokens.space4,
+            100,
           ),
-          title: Text(widget.title),
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            setState(() {
-              validate = true;
-            });
-            _calculate();
-          },
-          label: Text(S.of(context).Calculate),
-        ),
-        body: SafeArea(
-            child: StaggeredGridView.countBuilder(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-                crossAxisCount: 8,
-                itemCount: 2,
-                staggeredTileBuilder: (int index) => StaggeredTile.fit(
-                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                itemBuilder: (BuildContext context, int index) {
-                  return [
-                    SimpleBeamDeflectionsSlopesRow(
-                      beamDeflectionSlope: beamDeflectionSlope,
-                      validate: validate,
-                      callback: (String dropValueNew) {
-                        setState(() {
-                          beamDeflectionSlope = BeamDeflectionSlopeModel();
-                          dropValue = dropValueNew;
-                        });
-                      },
+          children: [
+            AppSectionCard(
+              title: 'Deflections and Slopes of Simple Beams',
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DropdownButtonFormField<String>(
+                    initialValue: _loadCase,
+                    decoration: const InputDecoration(labelText: 'Load case'),
+                    items: _kLoadCases
+                        .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                        .toList(),
+                    onChanged: (c) => setState(() => _loadCase = c!),
+                  ),
+                  SizedBox(height: context.tokens.space3),
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: const Image(
+                        height: 130,
+                        image: AssetImage(
+                            'images/simple_beam/icon_simple_beam.png'),
+                        fit: BoxFit.fitHeight,
+                      ),
                     ),
-                    DescriptionItem(
-                        content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(4.0),
-                              child: Image(
-                                height: 150,
-                                image: AssetImage(
-                                    "images/simple_beam/icon_simple_beam.png"),
-                                fit: BoxFit.fitHeight,
-                              )),
-                        ),
-                        buildMathFormula(context),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text("""
-E: Young's modulus
-I: Moment of inertia
-L: Length of the beam
-v: Deflection in the y direction (positive upward)
-v': = dv/dx = Slope of the deflection curve
-δ_C: -v(L/2) = Deflection at midpoint C of the beam (positive downward)
-δ_max: -v_max = Maximum deflection (positive downward)
-θ_A: v'(0) = Angle of rotation at start A of the beam (positive clockwise)
-θ_B: v'(L) = Angle of rotation at end B of the beam (positive counterclockwise)
-""", style: Theme.of(context).textTheme.bodyMedium),
-                      ],
-                    ))
-                  ][index];
-                })));
+                  ),
+                  SizedBox(height: context.tokens.space3),
+                  _formula(context),
+                  SizedBox(height: context.tokens.space4),
+                  AdaptiveFieldGrid(children: [
+                    UnitField(
+                      label: 'Modulus, E',
+                      category: UnitCategory.modulus,
+                      signed: false,
+                      initialSI: _e,
+                      onChangedSI: (v) => _e = v,
+                    ),
+                    UnitField(
+                      label: 'Moment of inertia, I',
+                      category: UnitCategory.momentOfInertia,
+                      signed: false,
+                      initialSI: _i,
+                      onChangedSI: (v) => _i = v,
+                    ),
+                    UnitField(
+                      label: 'Length, L',
+                      category: UnitCategory.length,
+                      signed: false,
+                      initialSI: _l,
+                      onChangedSI: (v) => _l = v,
+                    ),
+                    UnitField(
+                      label:
+                          _loadCase.startsWith('Moment') ? 'Moment, M' : 'Load',
+                      category: _forceCategory(_loadCase),
+                      initialSI: _f,
+                      onChangedSI: (v) => _f = v,
+                    ),
+                  ]),
+                  SizedBox(height: context.tokens.space3),
+                  MaterialPresetButton(
+                    onSelected: (preset) => setState(() {
+                      if (preset.elasticModulusSI != null) {
+                        _e = preset.elasticModulusSI;
+                      }
+                    }),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-  Center buildMathFormula(BuildContext context) {
-    String mathFormula = r'''\begin{aligned}
-        v &= -\frac{Px}{48EI}(3L^2-4x^2) \\ (&0 \leq x \leq \frac{L}{2})\\ 
-        v' &= -\frac{P}{16EI}(L^2-4x^2) \\ (&0 \leq x \leq \frac{L}{2})\\ 
-        \delta_C &= \delta_{max} = \frac{PL^3}{48EI} \\ 
-        \theta_A &= \theta_B = \frac{PL^2}{16EI}
-        \end{aligned}
-        ''';
-
-    if (dropValue == "Point force at middle") {
-      mathFormula = r'''\begin{aligned}
-        v &= -\frac{Px}{48EI}(3L^2-4x^2) \\ (&0 \leq x \leq \frac{L}{2})\\ 
-        v' &= -\frac{P}{16EI}(L^2-4x^2) \\ (&0 \leq x \leq \frac{L}{2})\\ 
-        \delta_C &= \delta_{max} = \frac{PL^3}{48EI} \\ 
-        \theta_A &= \theta_B =  \frac{PL^2}{16EI}
-        \end{aligned}
-        ''';
-    } else if (dropValue == "Distributed force evenly") {
-      mathFormula = r'''\begin{aligned}
-        v &= -\frac{qx}{24EI}(L^3-2Lx^2+x^3) \\ 
-        v' &= -\frac{q}{24EI}(L^3-6Lx^2+4x^3) \\ 
-        \delta_C &= \delta_{max} = \frac{5qL^4}{384EI} \\ 
+  Widget _formula(BuildContext context) {
+    String tex;
+    switch (_loadCase) {
+      case 'Distributed force evenly':
+        tex = r'''\begin{aligned}
+        v &= -\frac{qx}{24EI}(L^3-2Lx^2+x^3) \\
+        \delta_C &= \delta_{max} = \frac{5qL^4}{384EI} \\
         \theta_A &= \theta_B = \frac{qL^3}{24EI}
-        \end{aligned}
-        ''';
-    } else if (dropValue == "Moment at middle") {
-      mathFormula = r'''\begin{aligned}
-        v &= -\frac{Mx}{24LEI}(L^2-4x^2) \\ (&0 \leq x \leq \frac{L}{2})\\ 
-        v' &= -\frac{M}{24LEI}(L^2-12x^2) \\ (&0 \leq x \leq \frac{L}{2})\\ 
-        \delta_C &= 0 \\ 
-        \theta_A &= \frac{ML}{24EI} \\ 
-        \theta_B &= -\frac{ML}{24EI}
-        \end{aligned}
-        ''';
+        \end{aligned}''';
+      case 'Moment at middle':
+        tex = r'''\begin{aligned}
+        v &= -\frac{Mx}{24LEI}(L^2-4x^2) \quad (0 \leq x \leq \tfrac{L}{2})\\
+        \delta_C &= 0 \\
+        \theta_A &= \frac{ML}{24EI}, \quad \theta_B = -\frac{ML}{24EI}
+        \end{aligned}''';
+      default:
+        tex = r'''\begin{aligned}
+        v &= -\frac{Px}{48EI}(3L^2-4x^2) \quad (0 \leq x \leq \tfrac{L}{2})\\
+        \delta_C &= \delta_{max} = \frac{PL^3}{48EI} \\
+        \theta_A &= \theta_B = \frac{PL^2}{16EI}
+        \end{aligned}''';
     }
-
     return Center(
       child: Math.tex(
-        mathFormula,
+        tex,
         mathStyle: MathStyle.display,
         textStyle: Theme.of(context).textTheme.titleMedium,
       ),
@@ -166,114 +189,135 @@ v': = dv/dx = Slope of the deflection curve
   }
 
   void _calculate() {
-    if (beamDeflectionSlope.isValid()) {
-      final precs = NumberPrecisionHelper();
+    try {
+      final e = _e;
+      final i = _i;
+      final l = _l;
+      final f = _f;
+      if (e == null || i == null || l == null || f == null) {
+        throw const FormatException('Enter E, I, L, and the load.');
+      }
+      if (e <= 0 || i <= 0 || l <= 0) {
+        throw const FormatException('E, I, and L must be positive.');
+      }
 
-      double E = beamDeflectionSlope.E!;
-      double I = beamDeflectionSlope.I!;
-      double L = beamDeflectionSlope.L!;
-      double f = beamDeflectionSlope.f!;
-      // double a = 0;
-      // if (beamDeflectionSlope is BeamDeflectionSlopeABModel) {
-      //   a = (beamDeflectionSlope as BeamDeflectionSlopeABModel).a!;
-      // }
+      final precs = context.read<NumberPrecisionHelper>();
+      // E is entered in GPa; the mm/N-based formulas need the numerically
+      // equivalent MPa value (1 GPa = 1000 MPa).
+      final ei = e * 1000 * i;
 
       List<String> deflectionTitles = [];
       List<String> deflectionValues = [];
-
       List<String> slopeTitles = [];
       List<String> slopeValues = [];
 
-      if (dropValue == "Point force at middle") {
-        deflectionTitles = ["v", "δ_C", "δ_max"];
-        slopeTitles = ["v'", "θ_A", "θ_B"];
-        double first = -f / (48 * E * I);
-        deflectionValues = [
-          (first * 3 * L * L).formatted(precs) +
-              "x" +
-              " + " +
-              (-first * 4).formatted(precs) +
-              "x^3",
-          (f * L * L * L / (48 * E * I)).formatted(precs),
-          (f * L * L * L / (48 * E * I)).formatted(precs)
-        ];
-        double second = -f / (16 * E * I);
-        slopeValues = [
-          (second * L * L).formatted(precs) +
-              " + " +
-              (-second * 4).formatted(precs) +
-              "x^2",
-          (f * L * L / (16 * E * I)).formatted(precs),
-          (f * L * L / (16 * E * I)).formatted(precs)
-        ];
-      } else if (dropValue == "Distributed force evenly") {
-        deflectionTitles = ["v", "δ_C", "δ_max"];
-        slopeTitles = ["v'", "θ_A", "θ_B"];
-        double first = -f / (24 * E * I);
-        deflectionValues = [
-          (first * L * L * L).formatted(precs) +
-              "x" +
-              " + " +
-              (-first * 2 * L).formatted(precs) +
-              "x^3" +
-              " + " +
-              (first).formatted(precs) +
-              "x^4",
-          (5 * f * L * L * L * L / (384 * E * I))
-              .formatted(precs),
-          (5 * f * L * L * L * L / (384 * E * I))
-              .formatted(precs)
-        ];
-        double second = -f / (24 * E * I);
-        slopeValues = [
-          (second * L * L * L).formatted(precs) +
-              " + " +
-              (-second * 6 * L).formatted(precs) +
-              "x^2" +
-              " + " +
-              (second * 4).formatted(precs) +
-              "x^3",
-          (f * L * L * L / (24 * E * I)).formatted(precs),
-          (f * L * L * L / (24 * E * I)).formatted(precs)
-        ];
-      } else if (dropValue == "Moment at middle") {
-        deflectionTitles = ["v", "δ_C"];
-        slopeTitles = ["v'", "θ_A", "θ_B"];
-        double first = -f / (24 * L * E * I);
-        deflectionValues = [
-          (first * L * L).formatted(precs) +
-              " + " +
-              (-first * 4).formatted(precs) +
-              "x^2",
-          "0"
-        ];
-        slopeValues = [
-          (first * L * L).formatted(precs) +
-              " + " +
-              (-first * 12).formatted(precs) +
-              "x^2",
-          (first * L * L).formatted(precs),
-          (-first * L * L).formatted(precs),
-        ];
+      switch (_loadCase) {
+        case 'Point force at middle':
+          deflectionTitles = ['v', 'δ_C', 'δ_max'];
+          slopeTitles = ["v'", 'θ_A', 'θ_B'];
+          final first = -f / (48 * ei);
+          deflectionValues = [
+            '${(first * 3 * l * l).formatted(precs)}x + ${(-first * 4).formatted(precs)}x^3',
+            (f * l * l * l / (48 * ei)).formatted(precs),
+            (f * l * l * l / (48 * ei)).formatted(precs),
+          ];
+          final second = -f / (16 * ei);
+          slopeValues = [
+            '${(second * l * l).formatted(precs)} + ${(-second * 4).formatted(precs)}x^2',
+            (f * l * l / (16 * ei)).formatted(precs),
+            (f * l * l / (16 * ei)).formatted(precs),
+          ];
+        case 'Distributed force evenly':
+          deflectionTitles = ['v', 'δ_C', 'δ_max'];
+          slopeTitles = ["v'", 'θ_A', 'θ_B'];
+          final first = -f / (24 * ei);
+          deflectionValues = [
+            '${(first * l * l * l).formatted(precs)}x + ${(-first * 2 * l).formatted(precs)}x^3 + ${(first).formatted(precs)}x^4',
+            (5 * f * l * l * l * l / (384 * ei)).formatted(precs),
+            (5 * f * l * l * l * l / (384 * ei)).formatted(precs),
+          ];
+          final second = -f / (24 * ei);
+          slopeValues = [
+            '${(second * l * l * l).formatted(precs)} + ${(-second * 6 * l).formatted(precs)}x^2 + ${(second * 4).formatted(precs)}x^3',
+            (f * l * l * l / (24 * ei)).formatted(precs),
+            (f * l * l * l / (24 * ei)).formatted(precs),
+          ];
+        case 'Moment at middle':
+          deflectionTitles = ['v', 'δ_C'];
+          slopeTitles = ["v'", 'θ_A', 'θ_B'];
+          final first = -f / (24 * l * ei);
+          deflectionValues = [
+            '${(first * l * l).formatted(precs)} + ${(-first * 4).formatted(precs)}x^2',
+            '0',
+          ];
+          slopeValues = [
+            '${(first * l * l).formatted(precs)} + ${(-first * 12).formatted(precs)}x^2',
+            (first * l * l).formatted(precs),
+            (-first * l * l).formatted(precs),
+          ];
       }
 
+      final curve = _sampleDeflectionCurve(_loadCase, ei, l, f);
+
       context.read<ToolHistory>().record(widget.toolId, inputs: {
-        "E": E.toString(),
-        "I": I.toString(),
-        "L": L.toString(),
-        "f": f.toString(),
-        "Type": dropValue,
+        'E': '$e',
+        'I': '$i',
+        'L': '$l',
+        'f': '$f',
+        'Type': _loadCase,
       });
 
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CantileverBeamDeflectionsSlopesResultPage(
-                    deflectionTitles: deflectionTitles,
-                    deflectionValues: deflectionValues,
-                    slopesTitles: slopeTitles,
-                    slopesValues: slopeValues,
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) => CantileverBeamDeflectionsSlopesResultPage(
+            toolTitle: widget.title,
+            deflectionTitles: deflectionTitles,
+            deflectionValues: deflectionValues,
+            slopesTitles: slopeTitles,
+            slopesValues: slopeValues,
+            deflectionCurve: curve,
+          ),
+        ),
+      );
+    } on FormatException catch (error) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(error.message)));
     }
   }
+}
+
+/// Samples the deflection curve (positive downward) across [0, L] for the
+/// diagram. `ei` is E (MPa-equivalent) × I (mm⁴); all lengths in mm.
+List<DiagramPoint> _sampleDeflectionCurve(
+    String loadCase, double ei, double l, double f) {
+  double vHalf(double x) {
+    switch (loadCase) {
+      case 'Point force at middle':
+        return -(f / (48 * ei)) * x * (3 * l * l - 4 * x * x);
+      case 'Moment at middle':
+        return -(f / (24 * l * ei)) * x * (l * l - 4 * x * x);
+      default:
+        return 0;
+    }
+  }
+
+  double vAt(double x) {
+    if (loadCase == 'Distributed force evenly') {
+      return -(f / (24 * ei)) * x * (l * l * l - 2 * l * x * x + x * x * x);
+    }
+    if (loadCase == 'Moment at middle') {
+      // Antisymmetric about midspan: v(L-x) = -v(x).
+      return x <= l / 2 ? vHalf(x) : -vHalf(l - x);
+    }
+    // Symmetric about midspan (point force at middle).
+    return x <= l / 2 ? vHalf(x) : vHalf(l - x);
+  }
+
+  const n = 60;
+  return List.generate(n + 1, (k) {
+    final x = l * k / n;
+    return DiagramPoint(x, -vAt(x));
+  });
 }

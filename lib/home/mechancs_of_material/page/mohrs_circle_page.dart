@@ -1,118 +1,143 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/model/mechanical_tensor_model.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/principal_stress_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/mohrs_circle_result_page.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/plane_stress_row.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class MohrsCirclePage extends StatefulWidget {
+  const MohrsCirclePage({
+    super.key,
+    required this.title,
+    required this.toolId,
+    this.initialInputs,
+  });
+
   final String title;
   final int toolId;
   final Map<String, String>? initialInputs;
-  const MohrsCirclePage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
-      : super(key: key);
 
   @override
-  _MohrsCirclePageState createState() => _MohrsCirclePageState();
+  State<MohrsCirclePage> createState() => _MohrsCirclePageState();
 }
 
 class _MohrsCirclePageState extends State<MohrsCirclePage> {
-  PlaneStress planeStress = PlaneStress();
-  bool validate = false;
+  double? _sx;
+  double? _sy;
+  double? _txy;
 
   @override
   void initState() {
     super.initState();
-    if (widget.initialInputs != null) {
-      planeStress.sigma11 = double.tryParse(widget.initialInputs!["σ_x"] ?? "");
-      planeStress.sigma22 = double.tryParse(widget.initialInputs!["σ_y"] ?? "");
-      planeStress.sigma12 = double.tryParse(widget.initialInputs!["τ_xy"] ?? "");
-    }
+    final inputs = widget.initialInputs;
+    if (inputs == null) return;
+    _sx = double.tryParse(inputs['σ_x'] ?? '');
+    _sy = double.tryParse(inputs['σ_y'] ?? '');
+    _txy = double.tryParse(inputs['τ_xy'] ?? '');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon:
-                const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+      appBar: AppBar(title: Text(widget.title)),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _calculate,
+        icon: const Icon(Icons.analytics_rounded),
+        label: Text(S.of(context).Calculate),
+      ),
+      body: AppContent(
+        padding: EdgeInsets.zero,
+        child: ListView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          padding: EdgeInsets.fromLTRB(
+            context.tokens.space4,
+            context.tokens.space4,
+            context.tokens.space4,
+            100,
           ),
-          title: Text(widget.title),
+          children: [
+            AppSectionCard(
+              title: "Mohr's Circle for Plane Stress",
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Mohr's circle plots the state of stress on every possible plane through a point, given σx, σy and τxy, and reads off the principal stresses, maximum in-plane shear, and orientation.",
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                  SizedBox(height: context.tokens.space4),
+                  AdaptiveFieldGrid(children: [
+                    UnitField(
+                      label: 'σx',
+                      category: UnitCategory.stress,
+                      initialSI: _sx,
+                      onChangedSI: (v) => _sx = v,
+                    ),
+                    UnitField(
+                      label: 'σy',
+                      category: UnitCategory.stress,
+                      initialSI: _sy,
+                      onChangedSI: (v) => _sy = v,
+                    ),
+                    UnitField(
+                      label: 'τxy',
+                      category: UnitCategory.stress,
+                      initialSI: _txy,
+                      onChangedSI: (v) => _txy = v,
+                    ),
+                  ]),
+                ],
+              ),
+            ),
+          ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            setState(() {
-              validate = true;
-            });
-            _calculate();
-          },
-          label: Text(S.of(context).Calculate),
-        ),
-        body: SafeArea(
-            child: StaggeredGridView.countBuilder(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-                crossAxisCount: 8,
-                itemCount: 2,
-                staggeredTileBuilder: (int index) => StaggeredTile.fit(
-                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                itemBuilder: (BuildContext context, int index) {
-                  return [
-                    PlaneStressRow(
-                        planeStress: planeStress, validate: validate),
-                    DescriptionItem(
-                        content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("""
-Mohr's circle is a graphical representation of the plane-stress transformation equations. Given σx, σy and τxy at a point, it plots the state of stress on every possible plane through that point, and reads off the principal stresses σ1, σ2, the maximum in-plane shear stress τmax, and the orientation of each.
-""", style: Theme.of(context).textTheme.bodyMedium),
-                      ],
-                    ))
-                  ][index];
-                })));
+      ),
+    );
   }
 
   void _calculate() {
-    if (planeStress.isValid()) {
-      final s11 = planeStress.sigma11!;
-      final s22 = planeStress.sigma22!;
-      final s12 = planeStress.sigma12!;
+    try {
+      final sx = _sx;
+      final sy = _sy;
+      final txy = _txy;
+      if (sx == null || sy == null || txy == null) {
+        throw const FormatException('Enter σx, σy, and τxy.');
+      }
 
       final result = PrincipalStressCalculator.calculate(
-        sigmaX: s11,
-        sigmaY: s22,
-        tauXY: s12,
+        sigmaX: sx,
+        sigmaY: sy,
+        tauXY: txy,
       );
 
       context.read<ToolHistory>().record(widget.toolId, inputs: {
-        "σ_x": s11.toString(),
-        "σ_y": s22.toString(),
-        "τ_xy": s12.toString(),
+        'σ_x': '$sx',
+        'σ_y': '$sy',
+        'τ_xy': '$txy',
       });
+
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => MohrsCircleResultPage(
             title: widget.title,
-            sigmaX: s11,
-            sigmaY: s22,
-            tauXY: s12,
+            sigmaX: sx,
+            sigmaY: sy,
+            tauXY: txy,
             result: result,
           ),
         ),
       );
+    } on FormatException catch (error) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(error.message)));
     }
   }
 }

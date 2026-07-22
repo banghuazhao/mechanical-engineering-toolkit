@@ -134,16 +134,15 @@ class _MonentsOfInertiaRowState extends State<MonentsOfInertiaRow> {
                           key: ValueKey('h-$dropValue'),
                           label: "h",
                           category: UnitCategory.length,
-                          initialSI: (widget.crossSectionModel
-                                  as CrossSectionBHModel)
-                              .h,
+                          initialSI:
+                              (widget.crossSectionModel as CrossSectionBHModel)
+                                  .h,
                           signed: false,
                           isDense: true,
                           contentPadding: const EdgeInsets.all(12),
                           border: const OutlineInputBorder(),
-                          errorText: (value) => widget.validate
-                              ? validateModulus(value)
-                              : null,
+                          errorText: (value) =>
+                              widget.validate ? validateModulus(value) : null,
                           errorStyle: const TextStyle(fontSize: 10),
                           onChangedSI: (value) {
                             (widget.crossSectionModel as CrossSectionBHModel)

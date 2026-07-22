@@ -74,7 +74,11 @@ class TransverselyIsotropicMaterial extends MechanicalMaterial {
   }
 
   isValid() {
-    if (e1 != null && e2 != null && g12 != null && nu12 != null && nu23 != null) {
+    if (e1 != null &&
+        e2 != null &&
+        g12 != null &&
+        nu12 != null &&
+        nu23 != null) {
       if (e1! > 0 && e2! > 0 && g12! > 0) {
         return true;
       }

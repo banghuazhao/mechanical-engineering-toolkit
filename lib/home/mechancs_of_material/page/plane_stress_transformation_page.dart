@@ -20,10 +20,7 @@ class PlaneStressTransformationPage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const PlaneStressTransformationPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -43,7 +40,8 @@ class _PlaneStressTransformationPageState
     if (widget.initialInputs != null) {
       planeStress.sigma11 = double.tryParse(widget.initialInputs!["σ_x"] ?? "");
       planeStress.sigma22 = double.tryParse(widget.initialInputs!["σ_y"] ?? "");
-      planeStress.sigma12 = double.tryParse(widget.initialInputs!["τ_xy"] ?? "");
+      planeStress.sigma12 =
+          double.tryParse(widget.initialInputs!["τ_xy"] ?? "");
       layupAngle.value = double.tryParse(widget.initialInputs!["θ"] ?? "");
     }
   }

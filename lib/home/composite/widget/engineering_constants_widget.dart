@@ -87,8 +87,7 @@ class EngineeringConstantsWidget extends StatelessWidget {
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleMedium
-                                    ?.copyWith(
-                                        color: const Color(0xFF6E6E73))),
+                                    ?.copyWith(color: const Color(0xFF6E6E73))),
                             Row(
                               children: [
                                 Text(
@@ -97,12 +96,12 @@ class EngineeringConstantsWidget extends StatelessWidget {
                                       .textTheme
                                       .bodyLarge
                                       ?.copyWith(
-                                        color: primary,
-                                        fontWeight: FontWeight.w600,
-                                        fontFeatures: const [
-                                          FontFeature.tabularFigures()
-                                        ],
-                                      ),
+                                    color: primary,
+                                    fontWeight: FontWeight.w600,
+                                    fontFeatures: const [
+                                      FontFeature.tabularFigures()
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(width: 6),
                                 Icon(Icons.copy_rounded,

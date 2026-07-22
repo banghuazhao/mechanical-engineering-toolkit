@@ -52,6 +52,10 @@ class Tool {
   AssetImage? image;
   final String title;
   final ToolType type;
+
+  /// Extra search terms (synonyms, related concepts) beyond the title —
+  /// e.g. "torque" on both Torsion Formula and Shaft Power/Torque.
+  final List<String> keywords;
   final Function(BuildContext context, String title, int toolId,
       {Map<String, String>? initialInputs}) action;
 
@@ -61,6 +65,7 @@ class Tool {
       this.image,
       required this.title,
       required this.type,
+      this.keywords = const [],
       required this.action});
 }
 
@@ -77,6 +82,7 @@ class ToolLibrary {
           image: AssetImage("images/icon_bar_force.png"),
           title: S.of(context).General_stress_calculation,
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['stress', 'strain', 'axial', 'hooke'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -90,6 +96,7 @@ class ToolLibrary {
           image: AssetImage("images/icon_bar_force.png"),
           title: S.of(context).Force_displacement_relation_of_bar,
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['axial', 'elongation', 'stiffness', 'spring constant'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -103,6 +110,7 @@ class ToolLibrary {
           image: AssetImage("images/cross_section/icon_cs_rectangle.png"),
           title: S.of(context).Moments_of_inertia_of_plane_areas,
           type: ToolType.beamEngineering,
+          keywords: const ['second moment', 'section properties', 'centroid'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -116,6 +124,7 @@ class ToolLibrary {
           image: AssetImage("images/icon_bar_torsion.png"),
           title: S.of(context).Torsion_formula_of_bar,
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['torque', 'shear stress', 'shaft', 'twist'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -129,6 +138,7 @@ class ToolLibrary {
           image: AssetImage("images/icon_beam_bending.png"),
           title: S.of(context).Flexure_formula_of_beam,
           type: ToolType.beamEngineering,
+          keywords: const ['bending stress', 'moment', 'section modulus'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -143,6 +153,7 @@ class ToolLibrary {
               "images/cantilever_beam/icon_cantilever_beam_point_force_end.png"),
           title: S.of(context).Deflections_and_slopes_of_cantilever_beams,
           type: ToolType.beamEngineering,
+          keywords: const ['deflection', 'slope', 'cantilever'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -157,6 +168,7 @@ class ToolLibrary {
               "images/simple_beam/icon_simple_beam_distributed_force_evenly.png"),
           title: S.of(context).Deflections_and_slopes_of_simple_beams,
           type: ToolType.beamEngineering,
+          keywords: const ['deflection', 'slope', 'simply supported'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -170,6 +182,7 @@ class ToolLibrary {
           image: AssetImage("images/icon_stress_element_inclined.png"),
           title: S.of(context).Plane_stresses_transformation,
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['stress transformation', 'rotated axes'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -183,6 +196,7 @@ class ToolLibrary {
           image: AssetImage("images/icon_stress_element.png"),
           title: S.of(context).Principal_stresses_and_plane,
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['principal stress', 'max shear', 'mohr'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -196,6 +210,7 @@ class ToolLibrary {
           image: AssetImage("images/icon_spherical_shell_stress.png"),
           title: S.of(context).Stresses_in_the_wall_of_a_spherical_shell,
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['pressure vessel', 'hoop stress', 'sphere'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -211,6 +226,7 @@ class ToolLibrary {
               .of(context)
               .Stresses_in_a_thin_walled_cylindrical_pressure_vessel,
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['hoop stress', 'longitudinal stress', 'thin wall'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -224,6 +240,7 @@ class ToolLibrary {
           image: AssetImage("images/buckling/icon_buckling_pinned_pinned.png"),
           title: S.of(context).Buckling_load_of_column,
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['euler buckling', 'critical load', 'slenderness'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -237,6 +254,7 @@ class ToolLibrary {
           icon: Icons.thermostat_rounded,
           title: S.of(context).Thermal_deformation_and_stress,
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['thermal expansion', 'cte', 'temperature'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -250,6 +268,7 @@ class ToolLibrary {
           icon: Icons.cut_rounded,
           title: S.of(context).Transverse_shear_stress_in_beam,
           type: ToolType.beamEngineering,
+          keywords: const ['shear flow', 'shear stress'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -263,6 +282,7 @@ class ToolLibrary {
           icon: Icons.rotate_right_rounded,
           title: S.of(context).Angle_of_twist,
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['torsion', 'shaft', 'twist angle'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -276,6 +296,7 @@ class ToolLibrary {
           icon: Icons.settings_rounded,
           title: S.of(context).Shaft_power_and_torque,
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['rpm', 'horsepower', 'torque', 'power transmission'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -289,6 +310,7 @@ class ToolLibrary {
           icon: Icons.warning_amber_rounded,
           title: S.of(context).Failure_criteria_von_Mises_Tresca,
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['yield', 'von mises', 'tresca', 'safety factor'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -302,6 +324,7 @@ class ToolLibrary {
           icon: Icons.view_agenda_outlined,
           title: 'Beam Section Properties',
           type: ToolType.beamEngineering,
+          keywords: const ['cross section', 'moment of inertia', 'section modulus'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -315,6 +338,7 @@ class ToolLibrary {
           icon: Icons.circle_outlined,
           title: "Mohr's Circle for Plane Stress",
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['principal stress', 'max shear stress'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -328,6 +352,7 @@ class ToolLibrary {
           icon: Icons.change_history_outlined,
           title: 'Fatigue Safety Factor (Modified Goodman)',
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['goodman', 's-n', 'endurance limit', 'fatigue'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -341,6 +366,7 @@ class ToolLibrary {
           icon: Icons.grid_4x4_rounded,
           title: 'Bolted / Riveted Joint',
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['bolt', 'rivet', 'shear', 'bearing stress'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -354,6 +380,7 @@ class ToolLibrary {
           icon: Icons.blur_circular_rounded,
           title: 'Combined Loading at a Point',
           type: ToolType.mechanicsOfMaterial,
+          keywords: const ['von mises', 'combined stress', 'factor of safety'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -368,6 +395,7 @@ class ToolLibrary {
           icon: Icons.calculate_rounded,
           title: S.of(context).Constitutive_relation_of_linear_elastic_material,
           type: ToolType.theoryOfElasticity,
+          keywords: const ["hooke's law", 'elastic modulus', 'poisson'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -381,6 +409,7 @@ class ToolLibrary {
           icon: Icons.calculate_rounded,
           title: S.of(context).Stressstrain_of_linear_elastic_material,
           type: ToolType.theoryOfElasticity,
+          keywords: const ["hooke's law", 'elastic constants'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -395,6 +424,7 @@ class ToolLibrary {
           image: AssetImage("images/lamina.png"),
           title: S.of(context).Lamina_stressstrain,
           type: ToolType.composite,
+          keywords: const ['ply', 'orthotropic'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -408,6 +438,7 @@ class ToolLibrary {
           image: AssetImage("images/lamina.png"),
           title: S.of(context).Lamina_engineering_constants,
           type: ToolType.composite,
+          keywords: const ['E1 E2 G12', 'ply'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -421,6 +452,7 @@ class ToolLibrary {
           image: AssetImage("images/laminate.png"),
           title: S.of(context).Laminate_stressstrain,
           type: ToolType.composite,
+          keywords: const ['laminate', 'clt'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -434,6 +466,7 @@ class ToolLibrary {
           image: AssetImage("images/laminate.png"),
           title: S.of(context).Laminate_plane_properties,
           type: ToolType.composite,
+          keywords: const ['abd matrix', 'laminate theory'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -447,6 +480,7 @@ class ToolLibrary {
           image: AssetImage("images/laminate.png"),
           title: S.of(context).Laminate_3D_properties,
           type: ToolType.composite,
+          keywords: const ['3d stiffness', 'laminate'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -460,6 +494,7 @@ class ToolLibrary {
           image: AssetImage("images/square_pack.png"),
           title: S.of(context).Rule_of_mixtures,
           type: ToolType.composite,
+          keywords: const ['volume fraction', 'fiber matrix'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -474,6 +509,7 @@ class ToolLibrary {
           icon: Icons.arrow_outward_rounded,
           title: 'Resultant of Forces (2D)',
           type: ToolType.statics,
+          keywords: const ['vector sum', 'force resultant'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -486,6 +522,7 @@ class ToolLibrary {
           icon: Icons.multiline_chart_rounded,
           title: 'Beam Load Analysis',
           type: ToolType.beamEngineering,
+          keywords: const ['shear diagram', 'moment diagram', 'reactions', 'deflection'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -498,6 +535,7 @@ class ToolLibrary {
           icon: Icons.crop_free_rounded,
           title: 'Centroid of Composite Area',
           type: ToolType.statics,
+          keywords: const ['center of gravity', 'centroid'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -510,6 +548,7 @@ class ToolLibrary {
           icon: Icons.change_history_rounded,
           title: 'Truss Analysis (Method of Joints)',
           type: ToolType.statics,
+          keywords: const ['method of joints', 'truss', 'member force'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -523,6 +562,7 @@ class ToolLibrary {
           icon: Icons.swap_horiz_rounded,
           title: 'Unit Converter',
           type: ToolType.utilities,
+          keywords: const ['convert', 'units'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(

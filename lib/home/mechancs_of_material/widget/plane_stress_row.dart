@@ -55,9 +55,8 @@ class _PlaneStressRowState extends State<PlaneStressRow> {
                           isDense: true,
                           contentPadding: const EdgeInsets.all(12),
                           border: const OutlineInputBorder(),
-                          errorText: (value) => widget.validate
-                              ? validateForce(value)
-                              : null,
+                          errorText: (value) =>
+                              widget.validate ? validateForce(value) : null,
                           errorStyle: const TextStyle(fontSize: 10),
                           onChangedSI: (value) {
                             widget.planeStress.sigma11 = value;
@@ -73,9 +72,8 @@ class _PlaneStressRowState extends State<PlaneStressRow> {
                           isDense: true,
                           contentPadding: const EdgeInsets.all(12),
                           border: const OutlineInputBorder(),
-                          errorText: (value) => widget.validate
-                              ? validateForce(value)
-                              : null,
+                          errorText: (value) =>
+                              widget.validate ? validateForce(value) : null,
                           errorStyle: const TextStyle(fontSize: 10),
                           onChangedSI: (value) {
                             widget.planeStress.sigma22 = value;
@@ -95,9 +93,8 @@ class _PlaneStressRowState extends State<PlaneStressRow> {
                           isDense: true,
                           contentPadding: const EdgeInsets.all(12),
                           border: const OutlineInputBorder(),
-                          errorText: (value) => widget.validate
-                              ? validateForce(value)
-                              : null,
+                          errorText: (value) =>
+                              widget.validate ? validateForce(value) : null,
                           errorStyle: const TextStyle(fontSize: 10),
                           onChangedSI: (value) {
                             widget.planeStress.sigma12 = value;

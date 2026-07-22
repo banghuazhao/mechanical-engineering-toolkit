@@ -1,133 +1,149 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:mechanical_engineering_toolkit/home/history.dart';
-import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/beam_flexure_formula_model.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/stress_model.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/beam_flexure_formula_result.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/beam_flexure_formula_row.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
+import 'package:provider/provider.dart';
 
 class BeamFlexureFormulaPage extends StatefulWidget {
+  const BeamFlexureFormulaPage({
+    super.key,
+    required this.title,
+    required this.toolId,
+    this.initialInputs,
+  });
+
   final String title;
   final int toolId;
   final Map<String, String>? initialInputs;
-  const BeamFlexureFormulaPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
-      : super(key: key);
 
   @override
-  _BeamFlexureFormulaPageState createState() => _BeamFlexureFormulaPageState();
+  State<BeamFlexureFormulaPage> createState() => _BeamFlexureFormulaPageState();
 }
 
 class _BeamFlexureFormulaPageState extends State<BeamFlexureFormulaPage> {
-  BeamFlexureFormulaModel beamFlexureFormulaModel = BeamFlexureFormulaModel();
-  bool validate = false;
+  double? _m;
+  double? _y;
+  double? _i;
 
   @override
   void initState() {
     super.initState();
-    if (widget.initialInputs != null) {
-      beamFlexureFormulaModel.M = double.tryParse(widget.initialInputs!["M"] ?? "");
-      beamFlexureFormulaModel.y = double.tryParse(widget.initialInputs!["y"] ?? "");
-      beamFlexureFormulaModel.I = double.tryParse(widget.initialInputs!["I"] ?? "");
-    }
+    final inputs = widget.initialInputs;
+    if (inputs == null) return;
+    _m = double.tryParse(inputs['M'] ?? '');
+    _y = double.tryParse(inputs['y'] ?? '');
+    _i = double.tryParse(inputs['I'] ?? '');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon:
-                const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+      appBar: AppBar(title: Text(widget.title)),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _calculate,
+        icon: const Icon(Icons.analytics_rounded),
+        label: Text(S.of(context).Calculate),
+      ),
+      body: AppContent(
+        padding: EdgeInsets.zero,
+        child: ListView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          padding: EdgeInsets.fromLTRB(
+            context.tokens.space4,
+            context.tokens.space4,
+            context.tokens.space4,
+            100,
           ),
-          title: Text(widget.title),
+          children: [
+            AppSectionCard(
+              title: 'Flexure Formula of Beam',
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Bending stress varies linearly with distance y from the neutral axis. Leave y blank to see the stress as a function of y.',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                  SizedBox(height: context.tokens.space3),
+                  Center(
+                    child: Math.tex(
+                      r'''\sigma_x = -\frac{My}{I}''',
+                      mathStyle: MathStyle.display,
+                      textStyle: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                  SizedBox(height: context.tokens.space4),
+                  AdaptiveFieldGrid(children: [
+                    UnitField(
+                      label: 'Moment, M',
+                      category: UnitCategory.momentSection,
+                      initialSI: _m,
+                      onChangedSI: (v) => _m = v,
+                    ),
+                    UnitField(
+                      label: 'Moment of inertia, I',
+                      category: UnitCategory.momentOfInertia,
+                      signed: false,
+                      initialSI: _i,
+                      onChangedSI: (v) => _i = v,
+                    ),
+                    UnitField(
+                      label: 'Distance, y (optional)',
+                      category: UnitCategory.length,
+                      initialSI: _y,
+                      onChangedSI: (v) => _y = v,
+                    ),
+                  ]),
+                ],
+              ),
+            ),
+          ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            setState(() {
-              validate = true;
-            });
-            _calculate();
-          },
-          label: Text(S.of(context).Calculate),
-        ),
-        body: SafeArea(
-            child: StaggeredGridView.countBuilder(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-                crossAxisCount: 8,
-                itemCount: 2,
-                staggeredTileBuilder: (int index) => StaggeredTile.fit(
-                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                itemBuilder: (BuildContext context, int index) {
-                  return [
-                    BeamFlexureFormulaRow(
-                        beamFlexureFormulaModel: beamFlexureFormulaModel,
-                        validate: validate),
-                    DescriptionItem(
-                        content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(4.0),
-                              child: Image(
-                                height: 150,
-                                image:
-                                    AssetImage("images/icon_beam_bending.png"),
-                                fit: BoxFit.fitHeight,
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        Text("""
-The flexure formula of beam: The stresses on the cross section are directly proportional to the bending moment M and inversely proportional to the moment of inertia I of the cross section. Also, the stresses vary linearly with the distance y from the neutral axis:""",
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        Center(
-                          child: Math.tex(
-                            r'''\sigma_x = -\frac{My}{I}''',
-                            mathStyle: MathStyle.display,
-                            textStyle: Theme.of(context).textTheme.titleMedium,
-                          ),
-                        ),
-                      ],
-                    ))
-                  ][index];
-                })));
+      ),
+    );
   }
 
   void _calculate() {
-    if (beamFlexureFormulaModel.isValid()) {
-      double M = beamFlexureFormulaModel.M!;
-      double? y = beamFlexureFormulaModel.y;
-      double I = beamFlexureFormulaModel.I!;
+    try {
+      final m = _m;
+      final i = _i;
+      if (m == null || i == null) {
+        throw const FormatException('Enter M and I.');
+      }
+      if (i <= 0) {
+        throw const FormatException('Moment of inertia must be positive.');
+      }
+
+      final coefficient = -m / i;
+
       context.read<ToolHistory>().record(widget.toolId, inputs: {
-        "M": M.toString(),
-        "y": y?.toString() ?? "",
-        "I": I.toString(),
+        'M': '$m',
+        'y': _y == null ? '' : '$_y',
+        'I': '$i',
       });
+
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => BeamFlexureFormulaResultPage(
-                    stress: Stress(-M / I),
-                    y: y,
-                    M: M,
-                    I: I,
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) => BeamFlexureFormulaResultPage(
+            coefficient: coefficient,
+            y: _y,
+            m: m,
+            i: i,
+          ),
+        ),
+      );
+    } on FormatException catch (error) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(error.message)));
     }
   }
 }

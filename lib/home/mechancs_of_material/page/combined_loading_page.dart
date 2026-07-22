@@ -4,6 +4,7 @@ import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/combined_loading_result_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -155,6 +156,14 @@ class _CombinedLoadingPageState extends State<CombinedLoadingPage> {
                     signed: false,
                     initialSI: _sy,
                     onChangedSI: (v) => _sy = v,
+                  ),
+                  SizedBox(height: context.tokens.space2),
+                  MaterialPresetButton(
+                    onSelected: (preset) => setState(() {
+                      if (preset.yieldStrengthSI != null) {
+                        _sy = preset.yieldStrengthSI;
+                      }
+                    }),
                   ),
                 ],
               ),

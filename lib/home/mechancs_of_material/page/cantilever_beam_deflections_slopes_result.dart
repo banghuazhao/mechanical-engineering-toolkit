@@ -1,79 +1,138 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_fomula_row_result.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/xy_diagram_card.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
 
-class CantileverBeamDeflectionsSlopesResultPage extends StatefulWidget {
+/// Shared result page for both the Cantilever and Simple Beam
+/// Deflections & Slopes tools — the two beams differ only in which load
+/// cases and formulas apply, not in how the result is displayed.
+class CantileverBeamDeflectionsSlopesResultPage extends StatelessWidget {
+  CantileverBeamDeflectionsSlopesResultPage({
+    super.key,
+    required this.toolTitle,
+    required this.deflectionTitles,
+    required this.deflectionValues,
+    required this.slopesTitles,
+    required this.slopesValues,
+    this.deflectionCurve,
+  });
+
+  final String toolTitle;
   final List<String> deflectionTitles;
   final List<String> deflectionValues;
   final List<String> slopesTitles;
   final List<String> slopesValues;
 
-  const CantileverBeamDeflectionsSlopesResultPage(
-      {Key? key,
-      required this.deflectionTitles,
-      required this.deflectionValues,
-      required this.slopesTitles,
-      required this.slopesValues})
-      : super(key: key);
+  /// Numeric deflection v(x) sampled across the beam span, in mm (x) vs mm
+  /// (v) — for the deflection-curve diagram. Null when not computed for the
+  /// current load case.
+  final List<DiagramPoint>? deflectionCurve;
 
-  @override
-  _CantileverBeamDeflectionsSlopesResultPageState createState() =>
-      _CantileverBeamDeflectionsSlopesResultPageState();
-}
+  final _exportKey = GlobalKey();
 
-class _CantileverBeamDeflectionsSlopesResultPageState
-    extends State<CantileverBeamDeflectionsSlopesResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon:
-                const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+      appBar: AppBar(
+        title: Text(S.of(context).Result),
+        actions: [
+          IconButton(
+            tooltip: 'Share results',
+            icon: const Icon(Icons.share_rounded),
+            onPressed: _share,
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.share_rounded),
-              onPressed: () {
-                final lines = [
-                  'Deflections:',
-                  for (var i = 0; i < widget.deflectionTitles.length; i++)
-                    '  ${widget.deflectionTitles[i]} = ${widget.deflectionValues[i]}',
-                  '',
-                  'Slopes:',
-                  for (var i = 0; i < widget.slopesTitles.length; i++)
-                    '  ${widget.slopesTitles[i]} = ${widget.slopesValues[i]}',
-                ];
-                shareResult('Beam Deflections & Slopes', lines);
-              },
+          IconButton(
+            tooltip: 'Share as image',
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () => shareResultImage(_exportKey, toolTitle),
+          ),
+          IconButton(
+            tooltip: 'Settings',
+            icon: const Icon(Icons.settings_rounded),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ToolSettingPage()),
             ),
-          ],
-          title: Text(S.of(context).Result),
+          ),
+        ],
+      ),
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: AppContent(
+          padding: EdgeInsets.zero,
+          child: ListView(
+            padding: EdgeInsets.all(context.tokens.space4),
+            children: [
+              AppSectionCard(
+                title: S.of(context).Deflection,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (var i = 0; i < deflectionTitles.length; i++)
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: context.tokens.space1),
+                        child: Text(
+                          '${deflectionTitles[i]} = ${deflectionValues[i]}',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              SizedBox(height: context.tokens.space4),
+              AppSectionCard(
+                title: S.of(context).Slope,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    for (var i = 0; i < slopesTitles.length; i++)
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: context.tokens.space1),
+                        child: Text(
+                          '${slopesTitles[i]} = ${slopesValues[i]}',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              if (deflectionCurve != null) ...[
+                SizedBox(height: context.tokens.space4),
+                XYDiagramCard(
+                  title: 'Deflection curve',
+                  xUnitLabel: unitLabel(UnitCategory.length, UnitSystem.si),
+                  yUnitLabel:
+                      '${unitLabel(UnitCategory.length, UnitSystem.si)} downward',
+                  points: deflectionCurve!,
+                ),
+              ],
+            ],
+          ),
         ),
-        body: SafeArea(
-          child: StaggeredGridView.countBuilder(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-              crossAxisCount: 8,
-              itemCount: 2,
-              staggeredTileBuilder: (int index) => StaggeredTile.fit(
-                  MediaQuery.of(context).size.width > 600 ? 4 : 8),
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              itemBuilder: (BuildContext context, int index) {
-                return [
-                  MultipleFormulaRowResult(
-                      title: S.of(context).Deflection,
-                      resultTitles: widget.deflectionTitles,
-                      resultValues: widget.deflectionValues),
-                  MultipleFormulaRowResult(
-                      title: S.of(context).Slope,
-                      resultTitles: widget.slopesTitles,
-                      resultValues: widget.slopesValues)
-                ][index];
-              }),
-        ));
+      ),
+    );
+  }
+
+  void _share() {
+    final lines = [
+      'Deflections:',
+      for (var i = 0; i < deflectionTitles.length; i++)
+        '  ${deflectionTitles[i]} = ${deflectionValues[i]}',
+      '',
+      'Slopes:',
+      for (var i = 0; i < slopesTitles.length; i++)
+        '  ${slopesTitles[i]} = ${slopesValues[i]}',
+    ];
+    shareResult(toolTitle, lines);
   }
 }

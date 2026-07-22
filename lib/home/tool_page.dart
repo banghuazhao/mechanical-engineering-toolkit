@@ -87,6 +87,11 @@ class _ToolPageState extends State<ToolPage> {
     _updateSearch('');
   }
 
+  bool _matchesSearch(Tool tool) {
+    if (tool.title.toLowerCase().contains(_searchQuery)) return true;
+    return tool.keywords.any((k) => k.toLowerCase().contains(_searchQuery));
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -334,11 +339,7 @@ class _ToolPageState extends State<ToolPage> {
             .map(
               (section) => ToolSection(
                 section.title,
-                section.tools
-                    .where(
-                      (tool) => tool.title.toLowerCase().contains(_searchQuery),
-                    )
-                    .toList(),
+                section.tools.where((tool) => _matchesSearch(tool)).toList(),
               ),
             )
             .where((section) => section.tools.isNotEmpty)

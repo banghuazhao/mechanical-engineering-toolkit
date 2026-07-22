@@ -7,7 +7,9 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/thermal_constants_row.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +37,7 @@ class _LaminaEngineeringConstantsResultPageState
     extends State<LaminaEngineeringConstantsResultPage> {
   double layupAngle = 0.0;
   LaminaEngineeringConstantsOutput? _current;
+  final _exportKey = GlobalKey();
 
   // per-property chart data
   final Map<String, List<FlSpot>> _chartData = {};
@@ -61,14 +64,21 @@ class _LaminaEngineeringConstantsResultPageState
 
   void _buildChartData() {
     for (final key in [
-      'Ex', 'Ey', 'Gxy', 'νxy', 'η₁', 'η₂',
-      if (widget.analysisType == AnalysisType.thermalElastic)
-        'α₁₁', 'α₂₂', 'α₁₂'
+      'Ex',
+      'Ey',
+      'Gxy',
+      'νxy',
+      'η₁',
+      'η₂',
+      if (widget.analysisType == AnalysisType.thermalElastic) 'α₁₁',
+      'α₂₂',
+      'α₁₂'
     ]) {
       _chartData[key] = [];
     }
     for (int i = -90; i <= 90; i++) {
-      final o = LaminaEngineeringConstantsCalculator.calculate(_inputFor(i.toDouble()));
+      final o = LaminaEngineeringConstantsCalculator.calculate(
+          _inputFor(i.toDouble()));
       _chartData['Ex']!.add(FlSpot(i.toDouble(), o.E1));
       _chartData['Ey']!.add(FlSpot(i.toDouble(), o.E2));
       _chartData['Gxy']!.add(FlSpot(i.toDouble(), o.G12));
@@ -84,7 +94,8 @@ class _LaminaEngineeringConstantsResultPageState
   }
 
   void _updateCurrent() {
-    _current = LaminaEngineeringConstantsCalculator.calculate(_inputFor(layupAngle));
+    _current =
+        LaminaEngineeringConstantsCalculator.calculate(_inputFor(layupAngle));
   }
 
   @override
@@ -124,6 +135,11 @@ class _LaminaEngineeringConstantsResultPageState
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () =>
+                shareResultImage(_exportKey, 'Lamina Engineering Constants'),
+          ),
+          IconButton(
             icon: const Icon(Icons.settings_rounded),
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(builder: (_) => const ToolSettingPage())),
@@ -131,19 +147,23 @@ class _LaminaEngineeringConstantsResultPageState
         ],
         title: Text(S.of(context).Result),
       ),
-      body: SafeArea(
-        child: StaggeredGridView.countBuilder(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-          crossAxisCount: 8,
-          itemCount: 1 + chartItems.length,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          itemBuilder: (_, i) {
-            if (i == 0) return _angleSlider();
-            return chartItems[i - 1];
-          },
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: SafeArea(
+          child: StaggeredGridView.countBuilder(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+            crossAxisCount: 8,
+            itemCount: 1 + chartItems.length,
+            staggeredTileBuilder: (_) => StaggeredTile.fit(
+                MediaQuery.of(context).size.width > 600 ? 4 : 8),
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
+            itemBuilder: (_, i) {
+              if (i == 0) return _angleSlider();
+              return chartItems[i - 1];
+            },
+          ),
         ),
       ),
     );
@@ -202,7 +222,8 @@ class _ConstantRow extends StatelessWidget {
     final system = context.watch<UnitSystemPreference>().system;
     final displayValue =
         category == null ? value : fromSI(value, category!, system);
-    final unitSuffix = category == null ? '' : ' ${unitLabel(category!, system)}';
+    final unitSuffix =
+        category == null ? '' : ' ${unitLabel(category!, system)}';
 
     return Card(
       child: Padding(

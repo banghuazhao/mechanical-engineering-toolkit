@@ -1,135 +1,152 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:mechanical_engineering_toolkit/home/history.dart';
-import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/bar_torsion_formula_model.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/strain_model.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/bar_torsion_formula_result.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/bar_torsion_formula_row.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
+import 'package:mechanical_engineering_toolkit/util/units.dart';
+import 'package:provider/provider.dart';
 
 class BarTorsionFormulaPage extends StatefulWidget {
+  const BarTorsionFormulaPage({
+    super.key,
+    required this.title,
+    required this.toolId,
+    this.initialInputs,
+  });
+
   final String title;
   final int toolId;
   final Map<String, String>? initialInputs;
-  const BarTorsionFormulaPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
-      : super(key: key);
 
   @override
-  _BarTorsionFormulaPageState createState() => _BarTorsionFormulaPageState();
+  State<BarTorsionFormulaPage> createState() => _BarTorsionFormulaPageState();
 }
 
 class _BarTorsionFormulaPageState extends State<BarTorsionFormulaPage> {
-  BarTorsionFormulaModel barTorsionFormulaModel = BarTorsionFormulaModel();
-  bool validate = false;
+  double? _t;
+  double? _r;
+  double? _ip;
 
   @override
   void initState() {
     super.initState();
-    if (widget.initialInputs != null) {
-      barTorsionFormulaModel.T = double.tryParse(widget.initialInputs!["T"] ?? "");
-      barTorsionFormulaModel.r = double.tryParse(widget.initialInputs!["r"] ?? "");
-      barTorsionFormulaModel.Ip =
-          double.tryParse(widget.initialInputs!["Ip"] ?? "");
-    }
+    final inputs = widget.initialInputs;
+    if (inputs == null) return;
+    _t = double.tryParse(inputs['T'] ?? '');
+    _r = double.tryParse(inputs['r'] ?? '');
+    _ip = double.tryParse(inputs['Ip'] ?? '');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon:
-                const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+      appBar: AppBar(title: Text(widget.title)),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _calculate,
+        icon: const Icon(Icons.analytics_rounded),
+        label: Text(S.of(context).Calculate),
+      ),
+      body: AppContent(
+        padding: EdgeInsets.zero,
+        child: ListView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          padding: EdgeInsets.fromLTRB(
+            context.tokens.space4,
+            context.tokens.space4,
+            context.tokens.space4,
+            100,
           ),
-          title: Text(widget.title),
+          children: [
+            AppSectionCard(
+              title: 'Torsion Formula of Bar',
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'The maximum shear stress on the outer surface of a circular bar under torsion T, at radius r, for a cross-section with polar moment of inertia Ip.',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                  SizedBox(height: context.tokens.space3),
+                  Center(
+                    child: Math.tex(
+                      r'''\tau_{max} = \frac{Tr}{I_p}''',
+                      mathStyle: MathStyle.display,
+                      textStyle: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                  SizedBox(height: context.tokens.space4),
+                  AdaptiveFieldGrid(children: [
+                    UnitField(
+                      label: 'Torque, T',
+                      category: UnitCategory.momentSection,
+                      initialSI: _t,
+                      onChangedSI: (v) => _t = v,
+                    ),
+                    UnitField(
+                      label: 'Radius, r',
+                      category: UnitCategory.length,
+                      signed: false,
+                      initialSI: _r,
+                      onChangedSI: (v) => _r = v,
+                    ),
+                    UnitField(
+                      label: 'Polar moment, Ip',
+                      category: UnitCategory.momentOfInertia,
+                      signed: false,
+                      initialSI: _ip,
+                      onChangedSI: (v) => _ip = v,
+                    ),
+                  ]),
+                ],
+              ),
+            ),
+          ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            setState(() {
-              validate = true;
-            });
-            _calculate();
-          },
-          label: Text(S.of(context).Calculate),
-        ),
-        body: SafeArea(
-            child: StaggeredGridView.countBuilder(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-                crossAxisCount: 8,
-                itemCount: 2,
-                staggeredTileBuilder: (int index) => StaggeredTile.fit(
-                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                itemBuilder: (BuildContext context, int index) {
-                  return [
-                    BarTorsionFormulaRow(
-                        barTorsionFormulaModel: barTorsionFormulaModel,
-                        validate: validate),
-                    DescriptionItem(
-                        content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(4.0),
-                              child: Image(
-                                height: 150,
-                                image:
-                                    AssetImage("images/icon_bar_torsion.png"),
-                                fit: BoxFit.fitHeight,
-                              )),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        Text("""
-The torsion formula of bar: The maximum shear stress which occurs on the outer surface of a bar is proportional to torsional moment T, bar radius r and inversely proportional to the polar moment of inertia of the cross section Ip.""",
-                            style: Theme.of(context).textTheme.bodyMedium),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        Center(
-                          child: Math.tex(
-                            r'''\tau_{max} = \frac{Tr}{I_p}''',
-                            mathStyle: MathStyle.display,
-                            textStyle: Theme.of(context).textTheme.titleMedium,
-                          ),
-                        ),
-                      ],
-                    ))
-                  ][index];
-                })));
+      ),
+    );
   }
 
   void _calculate() {
-    if (barTorsionFormulaModel.isValid()) {
-      double T = barTorsionFormulaModel.T!;
-      double r = barTorsionFormulaModel.r!;
-      double Ip = barTorsionFormulaModel.Ip!;
-      Strain strain = Strain(T * r / Ip);
+    try {
+      final t = _t;
+      final r = _r;
+      final ip = _ip;
+      if (t == null || r == null || ip == null) {
+        throw const FormatException('Enter T, r, and Ip.');
+      }
+      if (r <= 0 || ip <= 0) {
+        throw const FormatException(
+            'Radius and polar moment must be positive.');
+      }
+
+      final tauMax = t * r / ip;
+
       context.read<ToolHistory>().record(widget.toolId, inputs: {
-        "T": T.toString(),
-        "r": r.toString(),
-        "Ip": Ip.toString(),
+        'T': '$t',
+        'r': '$r',
+        'Ip': '$ip',
       });
+
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => BarTorsionFormulaResultPage(
-                    strain: strain,
-                    T: T,
-                    c: r,
-                    J: Ip,
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) => BarTorsionFormulaResultPage(
+            tauMax: tauMax,
+            t: t,
+            r: r,
+            ip: ip,
+          ),
+        ),
+      );
+    } on FormatException catch (error) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(error.message)));
     }
   }
 }

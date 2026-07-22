@@ -59,7 +59,8 @@ class MultipleFormulaRowResult extends StatelessWidget {
                         ? () => _copyToClipboard(context, valueStr)
                         : null,
                     borderRadius: isLast
-                        ? const BorderRadius.vertical(bottom: Radius.circular(14))
+                        ? const BorderRadius.vertical(
+                            bottom: Radius.circular(14))
                         : BorderRadius.zero,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
@@ -68,7 +69,10 @@ class MultipleFormulaRowResult extends StatelessWidget {
                         children: [
                           Text(
                             resultTitles[index],
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
                                   color: const Color(0xFF6E6E73),
                                 ),
                           ),
@@ -80,7 +84,10 @@ class MultipleFormulaRowResult extends StatelessWidget {
                                   child: Text(
                                     valueStr.isNotEmpty ? valueStr : '—',
                                     textAlign: TextAlign.right,
-                                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(
                                           color: primary,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -88,7 +95,8 @@ class MultipleFormulaRowResult extends StatelessWidget {
                                 ),
                                 if (valueStr.isNotEmpty) ...[
                                   const SizedBox(width: 6),
-                                  Icon(Icons.copy_rounded, size: 12, color: Colors.grey[400]),
+                                  Icon(Icons.copy_rounded,
+                                      size: 12, color: Colors.grey[400]),
                                 ],
                               ],
                             ),
@@ -97,7 +105,8 @@ class MultipleFormulaRowResult extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (!isLast) const Divider(height: 1, indent: 16, endIndent: 16),
+                  if (!isLast)
+                    const Divider(height: 1, indent: 16, endIndent: 16),
                 ],
               );
             }),

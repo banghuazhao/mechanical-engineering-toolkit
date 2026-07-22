@@ -23,10 +23,7 @@ class LaminaStressStrainPage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const LaminaStressStrainPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -111,8 +108,8 @@ class _LaminaStressStrainPageState extends State<LaminaStressStrainPage> {
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
           itemCount: _itemCount,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          staggeredTileBuilder: (_) => StaggeredTile.fit(
+              MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           itemBuilder: (context, index) {
@@ -172,7 +169,9 @@ class _LaminaStressStrainPageState extends State<LaminaStressStrainPage> {
   }
 
   void _calculate() {
-    if (!material.isValidInPlane() || !layupAngle.isValid() || !mechanicalTensor.isValid()) {
+    if (!material.isValidInPlane() ||
+        !layupAngle.isValid() ||
+        !mechanicalTensor.isValid()) {
       return;
     }
     if (isThermal && (!thermalConstants.isValid() || deltaT == null)) return;
@@ -184,7 +183,9 @@ class _LaminaStressStrainPageState extends State<LaminaStressStrainPage> {
       'G12': material.g12.toString(),
       'ν12': material.nu12.toString(),
       S.of(context).Layup_Angle: layupAngle.value.toString(),
-      'Input Type': mechanicalTensor is PlaneStress ? S.of(context).Stress : S.of(context).Strain,
+      'Input Type': mechanicalTensor is PlaneStress
+          ? S.of(context).Stress
+          : S.of(context).Strain,
     };
     if (mechanicalTensor is PlaneStress) {
       final t = mechanicalTensor as PlaneStress;
@@ -205,7 +206,8 @@ class _LaminaStressStrainPageState extends State<LaminaStressStrainPage> {
     }
     context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
 
-    final tensorType = mechanicalTensor is PlaneStress ? TensorType.stress : TensorType.strain;
+    final tensorType =
+        mechanicalTensor is PlaneStress ? TensorType.stress : TensorType.strain;
     final input = LaminaStressStrainInput(
       analysisType: analysisType,
       E1: material.e1!,
@@ -218,19 +220,32 @@ class _LaminaStressStrainPageState extends State<LaminaStressStrainPage> {
       alpha12: thermalConstants.alpha12 ?? 0,
       deltaT: deltaT ?? 0,
       tensorType: tensorType,
-      sigma11: mechanicalTensor is PlaneStress ? (mechanicalTensor as PlaneStress).sigma11 ?? 0 : 0,
-      sigma22: mechanicalTensor is PlaneStress ? (mechanicalTensor as PlaneStress).sigma22 ?? 0 : 0,
-      sigma12: mechanicalTensor is PlaneStress ? (mechanicalTensor as PlaneStress).sigma12 ?? 0 : 0,
-      epsilon11: mechanicalTensor is PlaneStrain ? (mechanicalTensor as PlaneStrain).epsilon11 ?? 0 : 0,
-      epsilon22: mechanicalTensor is PlaneStrain ? (mechanicalTensor as PlaneStrain).epsilon22 ?? 0 : 0,
-      gamma12: mechanicalTensor is PlaneStrain ? (mechanicalTensor as PlaneStrain).gamma12 ?? 0 : 0,
+      sigma11: mechanicalTensor is PlaneStress
+          ? (mechanicalTensor as PlaneStress).sigma11 ?? 0
+          : 0,
+      sigma22: mechanicalTensor is PlaneStress
+          ? (mechanicalTensor as PlaneStress).sigma22 ?? 0
+          : 0,
+      sigma12: mechanicalTensor is PlaneStress
+          ? (mechanicalTensor as PlaneStress).sigma12 ?? 0
+          : 0,
+      epsilon11: mechanicalTensor is PlaneStrain
+          ? (mechanicalTensor as PlaneStrain).epsilon11 ?? 0
+          : 0,
+      epsilon22: mechanicalTensor is PlaneStrain
+          ? (mechanicalTensor as PlaneStrain).epsilon22 ?? 0
+          : 0,
+      gamma12: mechanicalTensor is PlaneStrain
+          ? (mechanicalTensor as PlaneStrain).gamma12 ?? 0
+          : 0,
     );
 
     final output = LaminaStressStrainCalculator.calculate(input);
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => LaminaStressStrainResultPage(output: output, analysisType: analysisType),
+        builder: (_) => LaminaStressStrainResultPage(
+            output: output, analysisType: analysisType),
       ),
     );
   }

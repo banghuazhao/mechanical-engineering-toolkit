@@ -18,10 +18,7 @@ class PrincipalStressPage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const PrincipalStressPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -38,7 +35,8 @@ class _PrincipalStressPageState extends State<PrincipalStressPage> {
     if (widget.initialInputs != null) {
       planeStress.sigma11 = double.tryParse(widget.initialInputs!["σ_x"] ?? "");
       planeStress.sigma22 = double.tryParse(widget.initialInputs!["σ_y"] ?? "");
-      planeStress.sigma12 = double.tryParse(widget.initialInputs!["τ_xy"] ?? "");
+      planeStress.sigma12 =
+          double.tryParse(widget.initialInputs!["τ_xy"] ?? "");
     }
   }
 
@@ -137,7 +135,10 @@ The principal stresses σ1 and σ2 (The maximum and minimum normal stresses) are
                     rowTitle: "Principal Stresses",
                     titles: const ["σ₁", "σ₂"],
                     values: [sigma_1, sigma_2],
-                    valueUnits: const [UnitCategory.stress, UnitCategory.stress],
+                    valueUnits: const [
+                      UnitCategory.stress,
+                      UnitCategory.stress
+                    ],
                     calculationSteps: [
                       'σ₁,₂ = (σₓ + σᵧ)/2 ± √((σₓ−σᵧ)²/4 + τ²)',
                       '= (${precs.formatValue(s11)} + ${precs.formatValue(s22)}) / 2 ± √(((${precs.formatValue(s11)}−${precs.formatValue(s22)})/2)² + ${precs.formatValue(s12)}²)',

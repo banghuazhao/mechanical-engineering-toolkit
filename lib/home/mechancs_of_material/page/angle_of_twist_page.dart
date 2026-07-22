@@ -2,12 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
@@ -15,273 +17,284 @@ import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
-import '../../tool_setting_page.dart';
-
-class _TwistModel {
-  double? T, L, G, J;
-  bool isValid() =>
-      T != null && L != null && G != null && J != null && G! != 0 && J! != 0;
-}
-
 class AngleOfTwistPage extends StatefulWidget {
+  const AngleOfTwistPage({
+    super.key,
+    required this.title,
+    required this.toolId,
+    this.initialInputs,
+  });
+
   final String title;
   final int toolId;
   final Map<String, String>? initialInputs;
-  const AngleOfTwistPage(
-      {Key? key, required this.title, required this.toolId, this.initialInputs})
-      : super(key: key);
 
   @override
-  _AngleOfTwistPageState createState() => _AngleOfTwistPageState();
+  State<AngleOfTwistPage> createState() => _AngleOfTwistPageState();
 }
 
 class _AngleOfTwistPageState extends State<AngleOfTwistPage> {
-  final _model = _TwistModel();
-  bool validate = false;
+  double? _t;
+  double? _l;
+  double? _g;
+  double? _j;
 
   @override
   void initState() {
     super.initState();
-    if (widget.initialInputs != null) {
-      _model.T = double.tryParse(widget.initialInputs!["T"] ?? "");
-      _model.L = double.tryParse(widget.initialInputs!["L"] ?? "");
-      _model.G = double.tryParse(widget.initialInputs!["G"] ?? "");
-      _model.J = double.tryParse(widget.initialInputs!["J"] ?? "");
-    }
+    final inputs = widget.initialInputs;
+    if (inputs == null) return;
+    _t = double.tryParse(inputs['T'] ?? '');
+    _l = double.tryParse(inputs['L'] ?? '');
+    _g = double.tryParse(inputs['G'] ?? '');
+    _j = double.tryParse(inputs['J'] ?? '');
   }
 
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).colorScheme.primary;
-
-    final fields = <_FieldDef>[
-      _FieldDef('T  (applied torque)', (v) => _model.T = v, () => _model.T,
-          UnitCategory.momentSection),
-      _FieldDef('L  (shaft length)', (v) => _model.L = v, () => _model.L,
-          UnitCategory.length),
-      _FieldDef('G  (shear modulus)', (v) => _model.G = v, () => _model.G,
-          UnitCategory.stress),
-      _FieldDef('J  (polar moment of inertia)', (v) => _model.J = v,
-          () => _model.J, UnitCategory.momentOfInertia),
-    ];
-
-    final items = [
-      Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
-              child: Text(
-                'INPUTS',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: primary,
-                      letterSpacing: 0.8,
-                    ),
-              ),
-            ),
-            const Divider(height: 14),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: Column(
-                children: fields
-                    .map((f) => Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: UnitField(
-                            label: f.label,
-                            category: f.category,
-                            initialSI: f.getter(),
-                            isDense: true,
-                            contentPadding: const EdgeInsets.all(12),
-                            border: const OutlineInputBorder(),
-                            errorText: (value) => validate && value == null
-                                ? S.of(context).Not_a_number
-                                : null,
-                            onChangedSI: (v) => setState(() => f.setter(v)),
-                          ),
-                        ))
-                    .toList(),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: Text(
-                'Tip: For a solid circular shaft of diameter d: J = πd⁴/32\nFor hollow shaft (d_o, d_i): J = π(d_o⁴ − d_i⁴)/32',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      DescriptionItem(
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'The angle of twist for a circular shaft under torque T:',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 12),
-            Center(
-              child: Math.tex(
-                r'''\phi = \frac{TL}{GJ}''',
-                mathStyle: MathStyle.display,
-                textStyle: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ];
-
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          setState(() => validate = true);
-          _calculate();
-        },
+        onPressed: _calculate,
+        icon: const Icon(Icons.analytics_rounded),
         label: Text(S.of(context).Calculate),
       ),
-      body: SafeArea(
-        child: StaggeredGridView.countBuilder(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-          crossAxisCount: 8,
-          itemCount: items.length,
-          staggeredTileBuilder: (_) => StaggeredTile.fit(
-              MediaQuery.of(context).size.width > 600 ? 4 : 8),
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          itemBuilder: (_, i) => items[i],
+      body: AppContent(
+        padding: EdgeInsets.zero,
+        child: ListView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          padding: EdgeInsets.fromLTRB(
+            context.tokens.space4,
+            context.tokens.space4,
+            context.tokens.space4,
+            100,
+          ),
+          children: [
+            AppSectionCard(
+              title: 'Angle of Twist',
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'The angle of twist for a circular shaft under torque T.',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                  SizedBox(height: context.tokens.space3),
+                  Center(
+                    child: Math.tex(
+                      r'''\phi = \frac{TL}{GJ}''',
+                      mathStyle: MathStyle.display,
+                      textStyle: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                  SizedBox(height: context.tokens.space4),
+                  AdaptiveFieldGrid(children: [
+                    UnitField(
+                      label: 'Torque, T',
+                      category: UnitCategory.momentSection,
+                      initialSI: _t,
+                      onChangedSI: (v) => _t = v,
+                    ),
+                    UnitField(
+                      label: 'Length, L',
+                      category: UnitCategory.length,
+                      signed: false,
+                      initialSI: _l,
+                      onChangedSI: (v) => _l = v,
+                    ),
+                    UnitField(
+                      label: 'Shear modulus, G',
+                      category: UnitCategory.modulus,
+                      signed: false,
+                      initialSI: _g,
+                      onChangedSI: (v) => _g = v,
+                    ),
+                    UnitField(
+                      label: 'Polar moment, J',
+                      category: UnitCategory.momentOfInertia,
+                      signed: false,
+                      initialSI: _j,
+                      onChangedSI: (v) => _j = v,
+                    ),
+                  ]),
+                  SizedBox(height: context.tokens.space3),
+                  MaterialPresetButton(
+                    onSelected: (preset) => setState(() {
+                      if (preset.shearModulusSI != null) {
+                        _g = preset.shearModulusSI;
+                      }
+                    }),
+                  ),
+                  SizedBox(height: context.tokens.space2),
+                  Text(
+                    'Tip: for a solid circular shaft of diameter d, J = πd⁴/32; for a hollow shaft (do, di), J = π(do⁴ − di⁴)/32.',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   void _calculate() {
-    if (!_model.isValid()) return;
-    final phiRad = _model.T! * _model.L! / (_model.G! * _model.J!);
-    final phiDeg = phiRad * 180 / pi;
-    context.read<ToolHistory>().record(widget.toolId, inputs: {
-      "T": _model.T!.toString(),
-      "L": _model.L!.toString(),
-      "G": _model.G!.toString(),
-      "J": _model.J!.toString(),
-    });
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => _TwistResultPage(
-          phiRad: phiRad,
-          phiDeg: phiDeg,
-          T: _model.T!,
-          L: _model.L!,
-          G: _model.G!,
-          J: _model.J!,
+    try {
+      final t = _t;
+      final l = _l;
+      final g = _g;
+      final j = _j;
+      if (t == null || l == null || g == null || j == null) {
+        throw const FormatException('Enter T, L, G, and J.');
+      }
+      if (g == 0 || j == 0) {
+        throw const FormatException('G and J must be nonzero.');
+      }
+
+      // G is entered in GPa; the mm/N-based formula needs the numerically
+      // equivalent MPa value (1 GPa = 1000 MPa).
+      final phiRad = t * l / (g * 1000 * j);
+      final phiDeg = phiRad * 180 / pi;
+
+      context.read<ToolHistory>().record(widget.toolId, inputs: {
+        'T': '$t',
+        'L': '$l',
+        'G': '$g',
+        'J': '$j',
+      });
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => _AngleOfTwistResultPage(
+            phiRad: phiRad,
+            phiDeg: phiDeg,
+            t: t,
+            l: l,
+            g: g,
+            j: j,
+          ),
         ),
-      ),
-    );
+      );
+    } on FormatException catch (error) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(error.message)));
+    }
   }
 }
 
-class _FieldDef {
-  final String label;
-  final void Function(double?) setter;
-  final double? Function() getter;
-  final UnitCategory? category;
-  _FieldDef(this.label, this.setter, this.getter, this.category);
-}
+class _AngleOfTwistResultPage extends StatelessWidget {
+  _AngleOfTwistResultPage({
+    required this.phiRad,
+    required this.phiDeg,
+    required this.t,
+    required this.l,
+    required this.g,
+    required this.j,
+  });
 
-class _TwistResultPage extends StatelessWidget {
-  final double phiRad, phiDeg, T, L, G, J;
-  const _TwistResultPage(
-      {required this.phiRad,
-      required this.phiDeg,
-      required this.T,
-      required this.L,
-      required this.G,
-      required this.J});
+  final double phiRad;
+  final double phiDeg;
+  final double t;
+  final double l;
+  final double g;
+  final double j;
+  final _exportKey = GlobalKey();
 
-  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
-    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
-    final system =
-        Provider.of<UnitSystemPreference>(context, listen: false).system;
-    final display = valueSI == null ? null : fromSI(valueSI, category, system);
-    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
-  }
+  String _fv(double valueSI, UnitCategory category, UnitSystem system,
+          NumberPrecisionHelper precs) =>
+      '${precs.formatValue(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
 
   @override
   Widget build(BuildContext context) {
-    context.watch<UnitSystemPreference>();
+    final system = context.watch<UnitSystemPreference>().system;
+    final precs = context.watch<NumberPrecisionHelper>();
+
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        title: const Text('Result'),
         actions: [
           IconButton(
+            tooltip: 'Share results',
             icon: const Icon(Icons.share_rounded),
-            onPressed: () {
-              final precs =
-                  Provider.of<NumberPrecisionHelper>(context, listen: false);
-              shareResult('Angle of Twist', [
-                'φ = ${precs.formatValue(phiRad)} rad  (${precs.formatValue(phiDeg)}°)',
-                '',
-                'Calculation:',
-                'φ = T·L / (G·J)',
-                '= ${_fv(context, T, UnitCategory.momentSection)} × ${_fv(context, L, UnitCategory.length)} / (${_fv(context, G, UnitCategory.stress)} × ${_fv(context, J, UnitCategory.momentOfInertia)})',
-                '= ${precs.formatValue(phiRad)} rad = ${precs.formatValue(phiDeg)}°',
-              ]);
-            },
+            onPressed: () => _share(system, precs),
           ),
           IconButton(
+            tooltip: 'Share as image',
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () => shareResultImage(_exportKey, 'Angle of Twist'),
+          ),
+          IconButton(
+            tooltip: 'Settings',
             icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const ToolSettingPage())),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ToolSettingPage()),
+            ),
           ),
         ],
-        title: Text(S.of(context).Result),
       ),
-      body: SafeArea(
-        child: StaggeredGridView.countBuilder(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-          crossAxisCount: 8,
-          itemCount: 2,
-          staggeredTileBuilder: (_) => StaggeredTile.fit(
-              MediaQuery.of(context).size.width > 600 ? 4 : 8),
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-          itemBuilder: (_, i) {
-            return [
-              MultipleRowResult(
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: AppContent(
+          padding: EdgeInsets.zero,
+          child: ListView(
+            padding: EdgeInsets.all(context.tokens.space4),
+            children: [
+              AppSectionCard(
                 title: 'Angle of Twist',
-                resultTitles: const ['φ  (radians)', 'φ  (degrees)'],
-                resultValues: [phiRad, phiDeg],
-                resultUnits: const [null, UnitCategory.angle],
-              ),
-              Consumer<NumberPrecisionHelper>(
-                builder: (context, precs, _) => CalculationCard(steps: [
-                  'φ = T·L / (G·J)',
-                  '= ${_fv(context, T, UnitCategory.momentSection)} × ${_fv(context, L, UnitCategory.length)} / (${_fv(context, G, UnitCategory.stress)} × ${_fv(context, J, UnitCategory.momentOfInertia)})',
-                  '= ${precs.formatValue(phiRad)} rad',
-                  '= ${precs.formatValue(phiDeg)}°',
+                child: Column(children: [
+                  AppCopyableValue(
+                    label: 'Angle, φ (radians)',
+                    value: precs.formatValue(phiRad),
+                  ),
+                  AppCopyableValue(
+                    label: 'Angle, φ (degrees)',
+                    valueSI: phiDeg,
+                    category: UnitCategory.angle,
+                  ),
                 ]),
               ),
-            ][i];
-          },
+              SizedBox(height: context.tokens.space4),
+              AppSectionCard(
+                title: 'Formula',
+                child: Text(
+                  'φ = T·L / (G·J)\n'
+                  '= ${_fv(t, UnitCategory.momentSection, system, precs)} × ${_fv(l, UnitCategory.length, system, precs)} / (${_fv(g, UnitCategory.modulus, system, precs)} × ${_fv(j, UnitCategory.momentOfInertia, system, precs)})\n'
+                  '= ${precs.formatValue(phiRad)} rad = ${precs.formatValue(phiDeg)}°',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+              SizedBox(height: context.tokens.space4),
+              ParameterSweepCard(
+                variableLabel: 'Length, L',
+                variableCategory: UnitCategory.length,
+                baseValueSI: l,
+                outputLabel: 'φ (rad)',
+                outputCategory: null,
+                compute: (variedL) => t * variedL / (g * 1000 * j),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+
+  void _share(UnitSystem system, NumberPrecisionHelper precs) =>
+      shareResult('Angle of Twist', [
+        'φ = ${precs.formatValue(phiRad)} rad (${precs.formatValue(phiDeg)}°)',
+        '',
+        'Calculation:',
+        'φ = T·L / (G·J)',
+        '= ${_fv(t, UnitCategory.momentSection, system, precs)} × ${_fv(l, UnitCategory.length, system, precs)} / (${_fv(g, UnitCategory.modulus, system, precs)} × ${_fv(j, UnitCategory.momentOfInertia, system, precs)})',
+        '= ${precs.formatValue(phiRad)} rad = ${precs.formatValue(phiDeg)}°',
+      ]);
 }

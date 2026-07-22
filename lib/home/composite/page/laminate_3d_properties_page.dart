@@ -22,10 +22,7 @@ class Laminate3DPropertiesPage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const Laminate3DPropertiesPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -129,8 +126,8 @@ class _Laminate3DPropertiesPageState extends State<Laminate3DPropertiesPage> {
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
           crossAxisCount: 8,
           itemCount: items.length,
-          staggeredTileBuilder: (_) =>
-              StaggeredTile.fit(MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          staggeredTileBuilder: (_) => StaggeredTile.fit(
+              MediaQuery.of(context).size.width > 600 ? 4 : 8),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           itemBuilder: (_, i) => items[i],

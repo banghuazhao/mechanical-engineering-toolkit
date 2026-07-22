@@ -97,7 +97,8 @@ class _BoltedJointPageState extends State<BoltedJointPage> {
                       ButtonSegment(value: true, label: Text('Double shear')),
                     ],
                     selected: {_doubleShear},
-                    onSelectionChanged: (s) => setState(() => _doubleShear = s.first),
+                    onSelectionChanged: (s) =>
+                        setState(() => _doubleShear = s.first),
                   ),
                   SizedBox(height: context.tokens.space4),
                   AdaptiveFieldGrid(children: [
@@ -118,7 +119,8 @@ class _BoltedJointPageState extends State<BoltedJointPage> {
                     TextField(
                       controller: _nController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'Number of bolts, n'),
+                      decoration: const InputDecoration(
+                          labelText: 'Number of bolts, n'),
                       onChanged: (v) => _n = int.tryParse(v) ?? 1,
                     ),
                     UnitField(

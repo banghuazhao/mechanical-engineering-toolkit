@@ -1,174 +1,112 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/strain_model.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/single_row_result.dart';
-import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
-import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
-import '../../tool_setting_page.dart';
+class BarTorsionFormulaResultPage extends StatelessWidget {
+  BarTorsionFormulaResultPage({
+    super.key,
+    required this.tauMax,
+    required this.t,
+    required this.r,
+    required this.ip,
+  });
 
-class BarTorsionFormulaResultPage extends StatefulWidget {
-  final Strain strain;
-  final double T;
-  final double c;
-  final double J;
+  final double tauMax;
+  final double t;
+  final double r;
+  final double ip;
+  final _exportKey = GlobalKey();
 
-  const BarTorsionFormulaResultPage({
-    Key? key,
-    required this.strain,
-    required this.T,
-    required this.c,
-    required this.J,
-  }) : super(key: key);
+  String _fmt(double value) =>
+      value.toStringAsFixed(3).replaceFirst(RegExp(r'\.?0+$'), '');
 
-  @override
-  _BarTorsionFormulaResultPageState createState() =>
-      _BarTorsionFormulaResultPageState();
-}
-
-class _BarTorsionFormulaResultPageState
-    extends State<BarTorsionFormulaResultPage> {
-  BannerAd? _anchoredAdaptiveAd;
-  bool _isLoaded = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _loadAd();
-  }
-
-  Future<void> _loadAd() async {
-    if (!await AdsManager.canRequestAds() || !mounted) return;
-
-    // Get an AnchoredAdaptiveBannerAdSize before loading the ad.
-    final AnchoredAdaptiveBannerAdSize? size =
-        await AdSize.getLargeAnchoredAdaptiveBannerAdSize(
-            MediaQuery.of(context).size.width.truncate());
-
-    if (size == null) {
-      print('Unable to get height of anchored banner.');
-      return;
-    }
-
-    _anchoredAdaptiveAd = BannerAd(
-      // TODO: replace these test ad units with your own ad unit.
-      adUnitId: AdsManager.bannerAdUnitId,
-      size: size,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (Ad ad) {
-          print('$ad loaded: ${ad.responseInfo}');
-          setState(() {
-            // When the ad is loaded, get the ad size and use it to set
-            // the height of the ad container.
-            _anchoredAdaptiveAd = ad as BannerAd;
-            _isLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          print('Anchored adaptive banner failedToLoad: $error');
-          ad.dispose();
-        },
-      ),
-    );
-    return _anchoredAdaptiveAd!.load();
-  }
-
-  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
-    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
-    final system =
-        Provider.of<UnitSystemPreference>(context, listen: false).system;
-    final display = valueSI == null ? null : fromSI(valueSI, category, system);
-    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
-  }
+  String _fv(double valueSI, UnitCategory category, UnitSystem system) =>
+      '${_fmt(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
 
   @override
   Widget build(BuildContext context) {
-    final adsRemoved = context.watch<RemoveAdsService>().isAdsRemoved;
-    context.watch<UnitSystemPreference>();
-    _disposeBannerWhenPurchased(adsRemoved);
+    final system = context.watch<UnitSystemPreference>().system;
     return Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.share_rounded),
-              onPressed: () {
-                shareResult('Torsion Formula', [
-                  'τ_max = ${_fv(context, widget.strain.value, UnitCategory.stress)}',
-                  '',
-                  'Calculation:',
-                  'τ = T·c / J',
-                  '= ${_fv(context, widget.T, UnitCategory.momentSection)} × ${_fv(context, widget.c, UnitCategory.length)} / ${_fv(context, widget.J, UnitCategory.momentOfInertia)}',
-                  '= ${_fv(context, widget.strain.value, UnitCategory.stress)}',
-                ]);
-              },
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ToolSettingPage()));
-              },
-              icon: const Icon(Icons.settings_rounded),
-            ),
-          ],
-          leading: IconButton(
-            icon:
-                const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+      appBar: AppBar(
+        title: const Text('Result'),
+        actions: [
+          IconButton(
+            tooltip: 'Share results',
+            icon: const Icon(Icons.share_rounded),
+            onPressed: () => _share(system),
           ),
-          title: Text(S.of(context).Result),
+          IconButton(
+            tooltip: 'Share as image',
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () => shareResultImage(_exportKey, 'Torsion Formula'),
+          ),
+          IconButton(
+            tooltip: 'Settings',
+            icon: const Icon(Icons.settings_rounded),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ToolSettingPage()),
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: AppContent(
+          padding: EdgeInsets.zero,
+          child: ListView(
+            padding: EdgeInsets.all(context.tokens.space4),
+            children: [
+              AppSectionCard(
+                title: 'Torsion Formula of Bar',
+                child: Column(children: [
+                  AppCopyableValue(
+                    label: 'Maximum shear stress, τ_max',
+                    valueSI: tauMax,
+                    category: UnitCategory.stress,
+                  ),
+                ]),
+              ),
+              SizedBox(height: context.tokens.space4),
+              AppSectionCard(
+                title: 'Formula',
+                child: Text(
+                  'τ = T·r / Ip\n'
+                  '= ${_fv(t, UnitCategory.momentSection, system)} × ${_fv(r, UnitCategory.length, system)} / ${_fv(ip, UnitCategory.momentOfInertia, system)}\n'
+                  '= ${_fv(tauMax, UnitCategory.stress, system)}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+              SizedBox(height: context.tokens.space4),
+              ParameterSweepCard(
+                variableLabel: 'Radius, r',
+                variableCategory: UnitCategory.length,
+                baseValueSI: r,
+                outputLabel: 'τ_max',
+                outputCategory: UnitCategory.stress,
+                compute: (variedR) => t * variedR / ip,
+              ),
+            ],
+          ),
         ),
-        body: SafeArea(
-          child: Stack(alignment: AlignmentDirectional.bottomCenter, children: [
-            StaggeredGridView.countBuilder(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, adsRemoved ? 20 : 100),
-                crossAxisCount: 8,
-                itemCount: 2,
-                staggeredTileBuilder: (int index) => StaggeredTile.fit(
-                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                itemBuilder: (BuildContext context, int index) {
-                  return [
-                    SingleRowResult(
-                        title: S.of(context).The_Maximum_Shear_Stress,
-                        resultTitle: "𝛕_max",
-                        resultValue: widget.strain.value,
-                        category: UnitCategory.stress),
-                    CalculationCard(steps: [
-                      'τ = T·c / J',
-                      '= ${_fv(context, widget.T, UnitCategory.momentSection)} × ${_fv(context, widget.c, UnitCategory.length)} / ${_fv(context, widget.J, UnitCategory.momentOfInertia)}',
-                      '= ${_fv(context, widget.strain.value, UnitCategory.stress)}',
-                    ]),
-                  ][index];
-                }),
-            if (!adsRemoved && _anchoredAdaptiveAd != null && _isLoaded)
-              Container(
-                color: Colors.transparent,
-                width: _anchoredAdaptiveAd!.size.width.toDouble(),
-                height: _anchoredAdaptiveAd!.size.height.toDouble(),
-                child: AdWidget(ad: _anchoredAdaptiveAd!),
-              )
-          ]),
-        ));
+      ),
+    );
   }
 
-  void _disposeBannerWhenPurchased(bool adsRemoved) {
-    if (!adsRemoved || _anchoredAdaptiveAd == null) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _anchoredAdaptiveAd?.dispose();
-      _anchoredAdaptiveAd = null;
-      _isLoaded = false;
-    });
-  }
+  void _share(UnitSystem system) => shareResult('Torsion Formula', [
+        'τ_max = ${_fv(tauMax, UnitCategory.stress, system)}',
+        '',
+        'Calculation:',
+        'τ = T·r / Ip',
+        '= ${_fv(t, UnitCategory.momentSection, system)} × ${_fv(r, UnitCategory.length, system)} / ${_fv(ip, UnitCategory.momentOfInertia, system)}',
+        '= ${_fv(tauMax, UnitCategory.stress, system)}',
+      ]);
 }

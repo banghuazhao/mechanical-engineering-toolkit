@@ -17,10 +17,7 @@ class StressStrainLinearElasticPage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const StressStrainLinearElasticPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -446,7 +443,9 @@ C_ij = Components of stiffness in i row and j column
     if (material.isValid() && mechanicalTensor.isValid()) {
       final Map<String, String> inputs = {
         'Material Type': dropValue,
-        'Input Type': mechanicalTensor is LinearStress ? S.of(context).Stress : S.of(context).Strain,
+        'Input Type': mechanicalTensor is LinearStress
+            ? S.of(context).Stress
+            : S.of(context).Strain,
       };
       if (material is IsotropicMaterial) {
         inputs['E'] = (material as IsotropicMaterial).e.toString();
@@ -486,23 +485,45 @@ C_ij = Components of stiffness in i row and j column
         inputs['η13,23'] = m.eta13_23.toString();
       } else if (material is AnisotropicMaterial) {
         final m = material as AnisotropicMaterial;
-        inputs['C11'] = m.c11.toString(); inputs['C12'] = m.c12.toString(); inputs['C13'] = m.c13.toString();
-        inputs['C14'] = m.c14.toString(); inputs['C15'] = m.c15.toString(); inputs['C16'] = m.c16.toString();
-        inputs['C22'] = m.c22.toString(); inputs['C23'] = m.c23.toString(); inputs['C24'] = m.c24.toString();
-        inputs['C25'] = m.c25.toString(); inputs['C26'] = m.c26.toString(); inputs['C33'] = m.c33.toString();
-        inputs['C34'] = m.c34.toString(); inputs['C35'] = m.c35.toString(); inputs['C36'] = m.c36.toString();
-        inputs['C44'] = m.c44.toString(); inputs['C45'] = m.c45.toString(); inputs['C46'] = m.c46.toString();
-        inputs['C55'] = m.c55.toString(); inputs['C56'] = m.c56.toString(); inputs['C66'] = m.c66.toString();
+        inputs['C11'] = m.c11.toString();
+        inputs['C12'] = m.c12.toString();
+        inputs['C13'] = m.c13.toString();
+        inputs['C14'] = m.c14.toString();
+        inputs['C15'] = m.c15.toString();
+        inputs['C16'] = m.c16.toString();
+        inputs['C22'] = m.c22.toString();
+        inputs['C23'] = m.c23.toString();
+        inputs['C24'] = m.c24.toString();
+        inputs['C25'] = m.c25.toString();
+        inputs['C26'] = m.c26.toString();
+        inputs['C33'] = m.c33.toString();
+        inputs['C34'] = m.c34.toString();
+        inputs['C35'] = m.c35.toString();
+        inputs['C36'] = m.c36.toString();
+        inputs['C44'] = m.c44.toString();
+        inputs['C45'] = m.c45.toString();
+        inputs['C46'] = m.c46.toString();
+        inputs['C55'] = m.c55.toString();
+        inputs['C56'] = m.c56.toString();
+        inputs['C66'] = m.c66.toString();
       }
 
       if (mechanicalTensor is LinearStress) {
         final t = mechanicalTensor as LinearStress;
-        inputs['σ11'] = t.s11.toString(); inputs['σ22'] = t.s22.toString(); inputs['σ33'] = t.s33.toString();
-        inputs['σ23'] = t.s23.toString(); inputs['σ13'] = t.s13.toString(); inputs['σ12'] = t.s12.toString();
+        inputs['σ11'] = t.s11.toString();
+        inputs['σ22'] = t.s22.toString();
+        inputs['σ33'] = t.s33.toString();
+        inputs['σ23'] = t.s23.toString();
+        inputs['σ13'] = t.s13.toString();
+        inputs['σ12'] = t.s12.toString();
       } else if (mechanicalTensor is LinearStrain) {
         final t = mechanicalTensor as LinearStrain;
-        inputs['ε11'] = t.epsilon11.toString(); inputs['ε22'] = t.epsilon22.toString(); inputs['ε33'] = t.epsilon33.toString();
-        inputs['ε23'] = t.epsilon23.toString(); inputs['ε13'] = t.epsilon13.toString(); inputs['ε12'] = t.epsilon12.toString();
+        inputs['ε11'] = t.epsilon11.toString();
+        inputs['ε22'] = t.epsilon22.toString();
+        inputs['ε33'] = t.epsilon33.toString();
+        inputs['ε23'] = t.epsilon23.toString();
+        inputs['ε13'] = t.epsilon13.toString();
+        inputs['ε12'] = t.epsilon12.toString();
       }
       context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
 

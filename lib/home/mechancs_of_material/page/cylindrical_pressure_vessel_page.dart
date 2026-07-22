@@ -16,10 +16,7 @@ class CylindricalPressureVesselPage extends StatefulWidget {
   final int toolId;
   final Map<String, String>? initialInputs;
   const CylindricalPressureVesselPage(
-      {Key? key,
-      required this.title,
-      required this.toolId,
-      this.initialInputs})
+      {Key? key, required this.title, required this.toolId, this.initialInputs})
       : super(key: key);
 
   @override
@@ -137,7 +134,10 @@ Where p is the pressure, r is the radius of the spherical and t is the thickness
               builder: (context) => SphericalShellStressResultPage(
                     titles: const ["σ₁  (hoop)", "σ₂  (axial)"],
                     values: [stress1, stress2],
-                    valueUnits: const [UnitCategory.stress, UnitCategory.stress],
+                    valueUnits: const [
+                      UnitCategory.stress,
+                      UnitCategory.stress
+                    ],
                     calculationSteps: [
                       'σ₁ = p·r / t   = ${precs.formatValue(p)} × ${precs.formatValue(r)} / ${precs.formatValue(t)}   = ${precs.formatValue(stress1)}',
                       'σ₂ = p·r / (2t) = ${precs.formatValue(p)} × ${precs.formatValue(r)} / (2 × ${precs.formatValue(t)}) = ${precs.formatValue(stress2)}',

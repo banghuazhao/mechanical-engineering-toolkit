@@ -91,8 +91,7 @@ class _LinearElasticStressStrainRowState
                 Expanded(
                   child: UnitField(
                     key: ValueKey('s11-$dropValue'),
-                    label:
-                        dropValue == S.of(context).Stress ? "σ11" : "ε11",
+                    label: dropValue == S.of(context).Stress ? "σ11" : "ε11",
                     category: dropValue == S.of(context).Stress
                         ? UnitCategory.stress
                         : null,
@@ -102,9 +101,8 @@ class _LinearElasticStressStrainRowState
                     isDense: true,
                     contentPadding: const EdgeInsets.all(12),
                     border: const OutlineInputBorder(),
-                    errorText: widget.validate
-                        ? (si) => validateTensor(si)
-                        : null,
+                    errorText:
+                        widget.validate ? (si) => validateTensor(si) : null,
                     errorStyle: const TextStyle(fontSize: 10),
                     onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {
@@ -122,8 +120,7 @@ class _LinearElasticStressStrainRowState
                 Expanded(
                   child: UnitField(
                     key: ValueKey('s22-$dropValue'),
-                    label:
-                        dropValue == S.of(context).Stress ? "σ22" : "ε22",
+                    label: dropValue == S.of(context).Stress ? "σ22" : "ε22",
                     category: dropValue == S.of(context).Stress
                         ? UnitCategory.stress
                         : null,
@@ -133,9 +130,8 @@ class _LinearElasticStressStrainRowState
                     isDense: true,
                     contentPadding: const EdgeInsets.all(12),
                     border: const OutlineInputBorder(),
-                    errorText: widget.validate
-                        ? (si) => validateTensor(si)
-                        : null,
+                    errorText:
+                        widget.validate ? (si) => validateTensor(si) : null,
                     errorStyle: const TextStyle(fontSize: 10),
                     onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {
@@ -160,8 +156,7 @@ class _LinearElasticStressStrainRowState
                 Expanded(
                   child: UnitField(
                     key: ValueKey('s33-$dropValue'),
-                    label:
-                        dropValue == S.of(context).Stress ? "σ33" : "ε33",
+                    label: dropValue == S.of(context).Stress ? "σ33" : "ε33",
                     category: dropValue == S.of(context).Stress
                         ? UnitCategory.stress
                         : null,
@@ -171,9 +166,8 @@ class _LinearElasticStressStrainRowState
                     isDense: true,
                     contentPadding: const EdgeInsets.all(12),
                     border: const OutlineInputBorder(),
-                    errorText: widget.validate
-                        ? (si) => validateTensor(si)
-                        : null,
+                    errorText:
+                        widget.validate ? (si) => validateTensor(si) : null,
                     errorStyle: const TextStyle(fontSize: 10),
                     onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {
@@ -191,8 +185,7 @@ class _LinearElasticStressStrainRowState
                 Expanded(
                   child: UnitField(
                     key: ValueKey('s23-$dropValue'),
-                    label:
-                        dropValue == S.of(context).Stress ? "σ23" : "ε23",
+                    label: dropValue == S.of(context).Stress ? "σ23" : "ε23",
                     category: dropValue == S.of(context).Stress
                         ? UnitCategory.stress
                         : null,
@@ -202,9 +195,8 @@ class _LinearElasticStressStrainRowState
                     isDense: true,
                     contentPadding: const EdgeInsets.all(12),
                     border: const OutlineInputBorder(),
-                    errorText: widget.validate
-                        ? (si) => validateTensor(si)
-                        : null,
+                    errorText:
+                        widget.validate ? (si) => validateTensor(si) : null,
                     errorStyle: const TextStyle(fontSize: 10),
                     onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {
@@ -229,8 +221,7 @@ class _LinearElasticStressStrainRowState
                 Expanded(
                   child: UnitField(
                     key: ValueKey('s13-$dropValue'),
-                    label:
-                        dropValue == S.of(context).Stress ? "σ13" : "ε13",
+                    label: dropValue == S.of(context).Stress ? "σ13" : "ε13",
                     category: dropValue == S.of(context).Stress
                         ? UnitCategory.stress
                         : null,
@@ -240,9 +231,8 @@ class _LinearElasticStressStrainRowState
                     isDense: true,
                     contentPadding: const EdgeInsets.all(12),
                     border: const OutlineInputBorder(),
-                    errorText: widget.validate
-                        ? (si) => validateTensor(si)
-                        : null,
+                    errorText:
+                        widget.validate ? (si) => validateTensor(si) : null,
                     errorStyle: const TextStyle(fontSize: 10),
                     onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {
@@ -260,8 +250,7 @@ class _LinearElasticStressStrainRowState
                 Expanded(
                   child: UnitField(
                     key: ValueKey('s12-$dropValue'),
-                    label:
-                        dropValue == S.of(context).Stress ? "σ12" : "ε12",
+                    label: dropValue == S.of(context).Stress ? "σ12" : "ε12",
                     category: dropValue == S.of(context).Stress
                         ? UnitCategory.stress
                         : null,
@@ -271,9 +260,8 @@ class _LinearElasticStressStrainRowState
                     isDense: true,
                     contentPadding: const EdgeInsets.all(12),
                     border: const OutlineInputBorder(),
-                    errorText: widget.validate
-                        ? (si) => validateTensor(si)
-                        : null,
+                    errorText:
+                        widget.validate ? (si) => validateTensor(si) : null,
                     errorStyle: const TextStyle(fontSize: 10),
                     onChangedSI: (value) {
                       if (dropValue == S.of(context).Stress) {

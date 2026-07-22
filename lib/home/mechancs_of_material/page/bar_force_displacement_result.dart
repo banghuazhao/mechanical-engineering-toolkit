@@ -1,176 +1,115 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/displacement_model.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/single_row_result.dart';
-import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
-import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
-import '../../tool_setting_page.dart';
+class BarForceDisplacementResultPage extends StatelessWidget {
+  BarForceDisplacementResultPage({
+    super.key,
+    required this.delta,
+    required this.f,
+    required this.l,
+    required this.e,
+    required this.a,
+  });
 
-class BarForceDisplacementResultPage extends StatefulWidget {
-  final Displacement displacement;
-  final double F;
-  final double L;
-  final double E;
-  final double A;
+  final double delta;
+  final double f;
+  final double l;
+  final double e;
+  final double a;
+  final _exportKey = GlobalKey();
 
-  const BarForceDisplacementResultPage({
-    Key? key,
-    required this.displacement,
-    required this.F,
-    required this.L,
-    required this.E,
-    required this.A,
-  }) : super(key: key);
+  String _fmt(double value) =>
+      value.toStringAsFixed(3).replaceFirst(RegExp(r'\.?0+$'), '');
 
-  @override
-  _BarForceDisplacementResultPageState createState() =>
-      _BarForceDisplacementResultPageState();
-}
-
-class _BarForceDisplacementResultPageState
-    extends State<BarForceDisplacementResultPage> {
-  BannerAd? _anchoredAdaptiveAd;
-  bool _isLoaded = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _loadAd();
-  }
-
-  Future<void> _loadAd() async {
-    if (!await AdsManager.canRequestAds() || !mounted) return;
-
-    // Get an AnchoredAdaptiveBannerAdSize before loading the ad.
-    final AnchoredAdaptiveBannerAdSize? size =
-        await AdSize.getLargeAnchoredAdaptiveBannerAdSize(
-            MediaQuery.of(context).size.width.truncate());
-
-    if (size == null) {
-      print('Unable to get height of anchored banner.');
-      return;
-    }
-
-    _anchoredAdaptiveAd = BannerAd(
-      // TODO: replace these test ad units with your own ad unit.
-      adUnitId: AdsManager.bannerAdUnitId,
-      size: size,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (Ad ad) {
-          print('$ad loaded: ${ad.responseInfo}');
-          setState(() {
-            // When the ad is loaded, get the ad size and use it to set
-            // the height of the ad container.
-            _anchoredAdaptiveAd = ad as BannerAd;
-            _isLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          print('Anchored adaptive banner failedToLoad: $error');
-          ad.dispose();
-        },
-      ),
-    );
-    return _anchoredAdaptiveAd!.load();
-  }
-
-  String _fv(BuildContext context, double? valueSI, UnitCategory category) {
-    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
-    final system =
-        Provider.of<UnitSystemPreference>(context, listen: false).system;
-    final display = valueSI == null ? null : fromSI(valueSI, category, system);
-    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
-  }
+  String _fv(double valueSI, UnitCategory category, UnitSystem system) =>
+      '${_fmt(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
 
   @override
   Widget build(BuildContext context) {
-    final adsRemoved = context.watch<RemoveAdsService>().isAdsRemoved;
-    context.watch<UnitSystemPreference>();
-    _disposeBannerWhenPurchased(adsRemoved);
+    final system = context.watch<UnitSystemPreference>().system;
     return Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.share_rounded),
-              onPressed: () {
-                shareResult('Bar Force & Displacement', [
-                  'δ = ${_fv(context, widget.displacement.value, UnitCategory.length)}',
-                  '',
-                  'Calculation:',
-                  'δ = F·L / (E·A)',
-                  '= ${_fv(context, widget.F, UnitCategory.force)} × ${_fv(context, widget.L, UnitCategory.length)} / (${_fv(context, widget.E, UnitCategory.stress)} × ${_fv(context, widget.A, UnitCategory.area)})',
-                  '= ${_fv(context, widget.displacement.value, UnitCategory.length)}',
-                ]);
-              },
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ToolSettingPage()));
-              },
-              icon: const Icon(Icons.settings_rounded),
-            ),
-          ],
-          leading: IconButton(
-            icon:
-                const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+      appBar: AppBar(
+        title: const Text('Result'),
+        actions: [
+          IconButton(
+            tooltip: 'Share results',
+            icon: const Icon(Icons.share_rounded),
+            onPressed: () => _share(system),
           ),
-          title: Text(S.of(context).Result),
+          IconButton(
+            tooltip: 'Share as image',
+            icon: const Icon(Icons.image_outlined),
+            onPressed: () =>
+                shareResultImage(_exportKey, 'Bar Force & Displacement'),
+          ),
+          IconButton(
+            tooltip: 'Settings',
+            icon: const Icon(Icons.settings_rounded),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ToolSettingPage()),
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: const AppBannerAd(),
+      body: RepaintBoundary(
+        key: _exportKey,
+        child: AppContent(
+          padding: EdgeInsets.zero,
+          child: ListView(
+            padding: EdgeInsets.all(context.tokens.space4),
+            children: [
+              AppSectionCard(
+                title: 'Bar Force & Displacement',
+                child: Column(children: [
+                  AppCopyableValue(
+                    label: 'Displacement, δ',
+                    valueSI: delta,
+                    category: UnitCategory.length,
+                  ),
+                ]),
+              ),
+              SizedBox(height: context.tokens.space4),
+              AppSectionCard(
+                title: 'Formula',
+                child: Text(
+                  'δ = F·L / (E·A)\n'
+                  '= ${_fv(f, UnitCategory.force, system)} × ${_fv(l, UnitCategory.length, system)} / (${_fv(e, UnitCategory.modulus, system)} × ${_fv(a, UnitCategory.area, system)})\n'
+                  '= ${_fv(delta, UnitCategory.length, system)}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+              SizedBox(height: context.tokens.space4),
+              ParameterSweepCard(
+                variableLabel: 'Length, L',
+                variableCategory: UnitCategory.length,
+                baseValueSI: l,
+                outputLabel: 'δ',
+                outputCategory: UnitCategory.length,
+                compute: (variedL) => f * variedL / (e * 1000 * a),
+              ),
+            ],
+          ),
         ),
-        body: SafeArea(
-          child: Stack(alignment: AlignmentDirectional.bottomCenter, children: [
-            StaggeredGridView.countBuilder(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, adsRemoved ? 20 : 100),
-                crossAxisCount: 8,
-                itemCount: 2,
-                staggeredTileBuilder: (int index) => StaggeredTile.fit(
-                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                itemBuilder: (BuildContext context, int index) {
-                  return [
-                    SingleRowResult(
-                        title: S.of(context).Displacement,
-                        resultTitle: "δ",
-                        resultValue: widget.displacement.value,
-                        category: UnitCategory.length),
-                    CalculationCard(steps: [
-                      'δ = F·L / (E·A)',
-                      '= ${_fv(context, widget.F, UnitCategory.force)} × ${_fv(context, widget.L, UnitCategory.length)} / (${_fv(context, widget.E, UnitCategory.stress)} × ${_fv(context, widget.A, UnitCategory.area)})',
-                      '= ${_fv(context, widget.displacement.value, UnitCategory.length)}',
-                    ]),
-                  ][index];
-                }),
-            if (!adsRemoved && _anchoredAdaptiveAd != null && _isLoaded)
-              Container(
-                color: Colors.transparent,
-                width: _anchoredAdaptiveAd!.size.width.toDouble(),
-                height: _anchoredAdaptiveAd!.size.height.toDouble(),
-                child: AdWidget(ad: _anchoredAdaptiveAd!),
-              )
-          ]),
-        ));
+      ),
+    );
   }
 
-  void _disposeBannerWhenPurchased(bool adsRemoved) {
-    if (!adsRemoved || _anchoredAdaptiveAd == null) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _anchoredAdaptiveAd?.dispose();
-      _anchoredAdaptiveAd = null;
-      _isLoaded = false;
-    });
-  }
+  void _share(UnitSystem system) => shareResult('Bar Force & Displacement', [
+        'δ = ${_fv(delta, UnitCategory.length, system)}',
+        '',
+        'Calculation:',
+        'δ = F·L / (E·A)',
+        '= ${_fv(f, UnitCategory.force, system)} × ${_fv(l, UnitCategory.length, system)} / (${_fv(e, UnitCategory.modulus, system)} × ${_fv(a, UnitCategory.area, system)})',
+        '= ${_fv(delta, UnitCategory.length, system)}',
+      ]);
 }
