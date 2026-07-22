@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -12,6 +13,7 @@ import 'package:provider/provider.dart';
 class BarForceDisplacementResultPage extends StatelessWidget {
   BarForceDisplacementResultPage({
     super.key,
+    required this.toolId,
     required this.delta,
     required this.f,
     required this.l,
@@ -19,6 +21,7 @@ class BarForceDisplacementResultPage extends StatelessWidget {
     required this.a,
   });
 
+  final int toolId;
   final double delta;
   final double f;
   final double l;
@@ -35,6 +38,7 @@ class BarForceDisplacementResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
+    final tool = ToolLibrary.shared.item(toolId, context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Result'),
@@ -68,6 +72,7 @@ class BarForceDisplacementResultPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(context.tokens.space4),
             children: [
+              ToolResultHeader(tool: tool),
               AppSectionCard(
                 title: 'Bar Force & Displacement',
                 child: Column(children: [

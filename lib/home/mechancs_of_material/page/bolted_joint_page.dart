@@ -213,6 +213,7 @@ class _BoltedJointPageState extends State<BoltedJointPage> {
         context,
         MaterialPageRoute(
           builder: (context) => BoltedJointResultPage(
+            toolId: widget.toolId,
             title: widget.title,
             tauShear: tauShear,
             sigmaBearing: sigmaBearing,

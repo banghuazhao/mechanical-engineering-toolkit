@@ -136,6 +136,7 @@ class _BarTorsionFormulaPageState extends State<BarTorsionFormulaPage> {
         context,
         MaterialPageRoute(
           builder: (context) => BarTorsionFormulaResultPage(
+            toolId: widget.toolId,
             tauMax: tauMax,
             t: t,
             r: r,

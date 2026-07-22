@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/engineering_constants_widget.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/result_list_matrix.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
@@ -11,12 +13,14 @@ import 'package:mechanical_engineering_toolkit/util/units.dart';
 import '../../tool_setting_page.dart';
 
 class Laminate3DPropertiesResultPage extends StatelessWidget {
+  final int toolId;
   final Laminate3DPropertiesOutput output;
   final AnalysisType analysisType;
   final _exportKey = GlobalKey();
 
   Laminate3DPropertiesResultPage({
     Key? key,
+    required this.toolId,
     required this.output,
     required this.analysisType,
   }) : super(key: key);
@@ -28,8 +32,10 @@ class Laminate3DPropertiesResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tool = ToolLibrary.shared.item(toolId, context);
     final ec = output.engineeringConstants;
     final items = <Widget>[
+      ToolResultHeader(tool: tool),
       ResultListMatrix(
           title: 'Effective 3D Stiffness Matrix', matrix: output.stiffness),
       ResultListMatrix(

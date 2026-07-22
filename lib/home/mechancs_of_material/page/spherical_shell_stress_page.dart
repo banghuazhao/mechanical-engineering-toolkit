@@ -128,7 +128,9 @@ Where p is the pressure, r is the radius of the spherical and t is the thickness
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  SphericalShellStressResultPage(titles: const [
+                  SphericalShellStressResultPage(
+                    toolId: widget.toolId,
+                    titles: const [
                     "σ"
                   ], values: [
                     stress

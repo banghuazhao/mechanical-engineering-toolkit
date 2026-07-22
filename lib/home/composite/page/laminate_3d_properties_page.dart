@@ -178,7 +178,9 @@ class _Laminate3DPropertiesPageState extends State<Laminate3DPropertiesPage> {
       context,
       MaterialPageRoute(
         builder: (_) => Laminate3DPropertiesResultPage(
-            output: output, analysisType: analysisType),
+            toolId: widget.toolId,
+            output: output,
+            analysisType: analysisType),
       ),
     );
   }

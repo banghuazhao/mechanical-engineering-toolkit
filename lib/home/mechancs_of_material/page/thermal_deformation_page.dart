@@ -3,6 +3,8 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
@@ -186,19 +188,20 @@ class _ThermalDeformationPageState extends State<ThermalDeformationPage> {
       "L": _model.length!.toString(),
       "E": _model.youngsModulus!.toString(),
     });
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => _ThermalResultPage(
-          delta: delta,
-          sigma: sigma,
-          alpha: _model.alpha!,
-          deltaT: _model.deltaT!,
-          length: _model.length!,
-          E: _model.youngsModulus!,
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => _ThermalResultPage(
+            toolId: widget.toolId,
+            delta: delta,
+            sigma: sigma,
+            alpha: _model.alpha!,
+            deltaT: _model.deltaT!,
+            length: _model.length!,
+            E: _model.youngsModulus!,
+          ),
         ),
-      ),
-    );
+      );
   }
 }
 
@@ -212,6 +215,7 @@ class _Field {
 }
 
 class _ThermalResultPage extends StatelessWidget {
+  final int toolId;
   final double delta;
   final double sigma;
   final double alpha;
@@ -219,7 +223,8 @@ class _ThermalResultPage extends StatelessWidget {
   final double length;
   final double E;
   _ThermalResultPage(
-      {required this.delta,
+      {required this.toolId,
+      required this.delta,
       required this.sigma,
       required this.alpha,
       required this.deltaT,
@@ -280,7 +285,9 @@ class _ThermalResultPage extends StatelessWidget {
         child: SafeArea(
           child: Consumer<NumberPrecisionHelper>(
             builder: (context, precs, _) {
+              final tool = ToolLibrary.shared.item(toolId, context);
               final items = [
+                ToolResultHeader(tool: tool),
                 MultipleRowResult(
                   title: 'Thermal Results',
                   resultTitles: const [
@@ -304,8 +311,10 @@ class _ThermalResultPage extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
                 crossAxisCount: 8,
                 itemCount: items.length,
-                staggeredTileBuilder: (_) => StaggeredTile.fit(
-                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
+                staggeredTileBuilder: (index) => StaggeredTile.fit(
+                    index == 0
+                        ? 8
+                        : (MediaQuery.of(context).size.width > 600 ? 4 : 8)),
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
                 itemBuilder: (_, i) => items[i],

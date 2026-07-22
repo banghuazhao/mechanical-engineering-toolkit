@@ -216,6 +216,7 @@ class _CombinedLoadingPageState extends State<CombinedLoadingPage> {
         context,
         MaterialPageRoute(
           builder: (context) => CombinedLoadingResultPage(
+            toolId: widget.toolId,
             title: widget.title,
             sigma: sigma,
             tau: tau,

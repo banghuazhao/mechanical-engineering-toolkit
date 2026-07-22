@@ -126,6 +126,7 @@ class _MohrsCirclePageState extends State<MohrsCirclePage> {
         context,
         MaterialPageRoute(
           builder: (context) => MohrsCircleResultPage(
+            toolId: widget.toolId,
             title: widget.title,
             sigmaX: sx,
             sigmaY: sy,

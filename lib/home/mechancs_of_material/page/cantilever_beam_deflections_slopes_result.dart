@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_fomula_row_result.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -16,6 +16,7 @@ import 'package:mechanical_engineering_toolkit/util/units.dart';
 class CantileverBeamDeflectionsSlopesResultPage extends StatelessWidget {
   CantileverBeamDeflectionsSlopesResultPage({
     super.key,
+    required this.toolId,
     required this.toolTitle,
     required this.deflectionTitles,
     required this.deflectionValues,
@@ -24,6 +25,7 @@ class CantileverBeamDeflectionsSlopesResultPage extends StatelessWidget {
     this.deflectionCurve,
   });
 
+  final int toolId;
   final String toolTitle;
   final List<String> deflectionTitles;
   final List<String> deflectionValues;
@@ -39,6 +41,7 @@ class CantileverBeamDeflectionsSlopesResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tool = ToolLibrary.shared.item(toolId, context);
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).Result),
@@ -71,6 +74,7 @@ class CantileverBeamDeflectionsSlopesResultPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(context.tokens.space4),
             children: [
+              ToolResultHeader(tool: tool),
               AppSectionCard(
                 title: S.of(context).Deflection,
                 child: Column(

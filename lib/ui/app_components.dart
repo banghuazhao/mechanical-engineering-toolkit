@@ -1,10 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
+
+class ToolResultHeader extends StatelessWidget {
+  const ToolResultHeader({super.key, required this.tool});
+
+  final Tool tool;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final tokens = context.tokens;
+    if (tool.image == null && tool.icon == null) {
+      return const SizedBox.shrink();
+    }
+    return Padding(
+      padding: EdgeInsets.only(bottom: tokens.space4),
+      child: Center(
+        child: tool.image != null
+            ? SizedBox(
+                width: 64,
+                height: 64,
+                child: Image(image: tool.image!, fit: BoxFit.contain),
+              )
+            : CircleAvatar(
+                backgroundColor: theme.colorScheme.primaryContainer,
+                radius: 32,
+                child: Icon(
+                  tool.icon,
+                  size: 32,
+                  color: theme.colorScheme.onPrimaryContainer,
+                ),
+              ),
+      ),
+    );
+  }
+}
 
 class AppContent extends StatelessWidget {
   const AppContent({

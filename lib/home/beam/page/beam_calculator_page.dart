@@ -191,6 +191,7 @@ EI\frac{d^2v}{dx^2}&=M(x)
         context,
         MaterialPageRoute(
           builder: (context) => BeamCalculatorResultPage(
+            toolId: widget.toolId,
             title: widget.title,
             input: input,
             result: result,

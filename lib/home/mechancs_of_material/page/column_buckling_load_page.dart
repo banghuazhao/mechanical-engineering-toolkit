@@ -212,6 +212,7 @@ class _ColumnBucklingLoadPageState extends State<ColumnBucklingLoadPage> {
         context,
         MaterialPageRoute(
           builder: (context) => ColumnBucklingLoadResultPage(
+            toolId: widget.toolId,
             pcr: pcr,
             e: e,
             i: i,

@@ -160,6 +160,7 @@ class _BarForceDisplacementRelationPageState
         context,
         MaterialPageRoute(
           builder: (context) => BarForceDisplacementResultPage(
+            toolId: widget.toolId,
             delta: delta,
             f: p,
             l: l,

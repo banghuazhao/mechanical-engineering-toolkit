@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -12,12 +13,14 @@ import 'package:provider/provider.dart';
 class BarTorsionFormulaResultPage extends StatelessWidget {
   BarTorsionFormulaResultPage({
     super.key,
+    required this.toolId,
     required this.tauMax,
     required this.t,
     required this.r,
     required this.ip,
   });
 
+  final int toolId;
   final double tauMax;
   final double t;
   final double r;
@@ -33,6 +36,7 @@ class BarTorsionFormulaResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
+    final tool = ToolLibrary.shared.item(toolId, context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Result'),
@@ -65,6 +69,7 @@ class BarTorsionFormulaResultPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(context.tokens.space4),
             children: [
+              ToolResultHeader(tool: tool),
               AppSectionCard(
                 title: 'Torsion Formula of Bar',
                 child: Column(children: [

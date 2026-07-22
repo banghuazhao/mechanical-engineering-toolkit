@@ -2,6 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
@@ -316,6 +318,7 @@ class _CentroidPageState extends State<CentroidPage> {
       context,
       MaterialPageRoute(
         builder: (_) => _ResultPage(
+          toolId: widget.toolId,
           title: widget.title,
           totalA: totalA,
           xBar: xBar,
@@ -333,12 +336,14 @@ class _CentroidPageState extends State<CentroidPage> {
 }
 
 class _ResultPage extends StatelessWidget {
+  final int toolId;
   final String title;
   final double totalA, xBar, yBar, sumAx, sumAy;
   final List<({_ShapeType type, bool subtract, double a, double cx, double cy})>
       shapeCalcs;
 
   _ResultPage({
+    required this.toolId,
     required this.title,
     required this.totalA,
     required this.xBar,
@@ -388,6 +393,7 @@ class _ResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
+    final tool = ToolLibrary.shared.item(toolId, context);
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -411,7 +417,10 @@ class _ResultPage extends StatelessWidget {
         key: _exportKey,
         child: ListView(
           padding: const EdgeInsets.all(16),
-          children: [CalculationCard(steps: _steps(system))],
+          children: [
+            ToolResultHeader(tool: tool),
+            CalculationCard(steps: _steps(system)),
+          ],
         ),
       ),
     );

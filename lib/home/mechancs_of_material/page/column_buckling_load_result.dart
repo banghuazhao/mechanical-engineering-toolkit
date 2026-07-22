@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -15,6 +16,7 @@ import 'package:provider/provider.dart';
 class ColumnBucklingLoadResultPage extends StatelessWidget {
   ColumnBucklingLoadResultPage({
     super.key,
+    required this.toolId,
     required this.pcr,
     required this.e,
     required this.i,
@@ -23,6 +25,7 @@ class ColumnBucklingLoadResultPage extends StatelessWidget {
     required this.endCondition,
   });
 
+  final int toolId;
   final double pcr;
   final double e;
   final double i;
@@ -41,6 +44,7 @@ class ColumnBucklingLoadResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final precs = context.watch<NumberPrecisionHelper>();
+    final tool = ToolLibrary.shared.item(toolId, context);
     final cStr = c == 1.0 ? 'π²' : '${precs.formatValue(c)} × π²';
 
     return Scaffold(
@@ -76,6 +80,7 @@ class ColumnBucklingLoadResultPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(context.tokens.space4),
             children: [
+              ToolResultHeader(tool: tool),
               AppSectionCard(
                 title: 'Buckling Load of Column',
                 child: Column(children: [

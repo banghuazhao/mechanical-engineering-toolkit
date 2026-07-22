@@ -132,6 +132,7 @@ The principal stresses σ1 and σ2 (The maximum and minimum normal stresses) are
           context,
           MaterialPageRoute(
               builder: (context) => SphericalShellStressResultPage(
+                    toolId: widget.toolId,
                     rowTitle: "Principal Stresses",
                     titles: const ["σ₁", "σ₂"],
                     values: [sigma_1, sigma_2],

@@ -3,7 +3,9 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -15,6 +17,7 @@ import 'package:provider/provider.dart';
 /// spherical shell stress, cylindrical pressure vessel, plane-stress
 /// transformation, and principal stress.
 class SphericalShellStressResultPage extends StatefulWidget {
+  final int toolId;
   final List<String> titles;
   final List<double?> values;
   final List<UnitCategory?>? valueUnits;
@@ -23,6 +26,7 @@ class SphericalShellStressResultPage extends StatefulWidget {
 
   const SphericalShellStressResultPage({
     Key? key,
+    required this.toolId,
     required this.titles,
     required this.values,
     this.valueUnits,
@@ -53,6 +57,7 @@ class _SphericalShellStressResultPageState
   @override
   Widget build(BuildContext context) {
     context.watch<UnitSystemPreference>();
+    final tool = ToolLibrary.shared.item(widget.toolId, context);
     final hasCalc =
         widget.calculationSteps != null && widget.calculationSteps!.isNotEmpty;
 
@@ -91,13 +96,16 @@ class _SphericalShellStressResultPageState
             child: StaggeredGridView.countBuilder(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
                 crossAxisCount: 8,
-                itemCount: hasCalc ? 2 : 1,
+                itemCount: (hasCalc ? 2 : 1) + 1,
                 staggeredTileBuilder: (int index) => StaggeredTile.fit(
-                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
+                    index == 0
+                        ? 8
+                        : (MediaQuery.of(context).size.width > 600 ? 4 : 8)),
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
                 itemBuilder: (BuildContext context, int index) {
                   return [
+                    ToolResultHeader(tool: tool),
                     MultipleRowResult(
                         title: widget.rowTitle,
                         resultTitles: widget.titles,

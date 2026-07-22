@@ -129,7 +129,25 @@ class _ParameterSweepCardState extends State<ParameterSweepCard> {
                   ),
                 ),
                 lineTouchData: LineTouchData(
-                  touchTooltipData: const LineTouchTooltipData(),
+                  touchTooltipData: LineTouchTooltipData(
+                    getTooltipColor: (_) =>
+                        Theme.of(context).colorScheme.surfaceContainerHighest,
+                    getTooltipItems: (touchedSpots) => touchedSpots
+                        .map(
+                          (spot) => LineTooltipItem(
+                            '${widget.variableLabel} = '
+                            '${fv(spot.x, widget.variableCategory)} $varUnit\n'
+                            '→ ${widget.outputLabel} = '
+                            '${fv(spot.y, widget.outputCategory)} $outUnit',
+                            TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
                   touchCallback: (event, response) {
                     final bars = response?.lineBarSpots;
                     if (bars != null && bars.isNotEmpty) {

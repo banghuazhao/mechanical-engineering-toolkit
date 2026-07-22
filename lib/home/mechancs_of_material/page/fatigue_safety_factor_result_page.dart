@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -12,6 +13,7 @@ import 'package:provider/provider.dart';
 class FatigueSafetyFactorResultPage extends StatelessWidget {
   FatigueSafetyFactorResultPage({
     super.key,
+    required this.toolId,
     required this.title,
     required this.sigmaA,
     required this.sigmaM,
@@ -20,6 +22,7 @@ class FatigueSafetyFactorResultPage extends StatelessWidget {
     required this.safetyFactor,
   });
 
+  final int toolId;
   final String title;
   final double sigmaA;
   final double sigmaM;
@@ -37,6 +40,7 @@ class FatigueSafetyFactorResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
+    final tool = ToolLibrary.shared.item(toolId, context);
     final scheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
@@ -70,6 +74,7 @@ class FatigueSafetyFactorResultPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(context.tokens.space4),
             children: [
+              ToolResultHeader(tool: tool),
               AppSectionCard(
                 title: title,
                 child: Column(children: [

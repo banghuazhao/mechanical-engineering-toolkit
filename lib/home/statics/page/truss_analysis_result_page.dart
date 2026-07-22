@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/model/truss_solver.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
@@ -11,12 +12,14 @@ import 'package:provider/provider.dart';
 class TrussAnalysisResultPage extends StatelessWidget {
   TrussAnalysisResultPage({
     super.key,
+    required this.toolId,
     required this.title,
     required this.joints,
     required this.members,
     required this.solution,
   });
 
+  final int toolId;
   final String title;
   final List<TrussJoint> joints;
   final List<TrussMember> members;
@@ -32,6 +35,7 @@ class TrussAnalysisResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
+    final tool = ToolLibrary.shared.item(toolId, context);
     final scheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
@@ -57,6 +61,7 @@ class TrussAnalysisResultPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(context.tokens.space4),
             children: [
+              ToolResultHeader(tool: tool),
               AppSectionCard(
                 title: 'Truss Geometry',
                 child: Column(

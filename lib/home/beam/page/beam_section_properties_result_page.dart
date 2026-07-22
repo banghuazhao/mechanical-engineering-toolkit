@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/beam/model/beam_section_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -13,11 +14,13 @@ import 'package:provider/provider.dart';
 class BeamSectionPropertiesResultPage extends StatelessWidget {
   BeamSectionPropertiesResultPage({
     super.key,
+    required this.toolId,
     required this.title,
     required this.input,
     required this.result,
   });
 
+  final int toolId;
   final String title;
   final BeamSectionInput input;
   final BeamSectionResult result;
@@ -26,6 +29,7 @@ class BeamSectionPropertiesResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
+    final tool = ToolLibrary.shared.item(toolId, context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Result'),
@@ -60,6 +64,7 @@ class BeamSectionPropertiesResultPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(context.tokens.space4),
             children: [
+              ToolResultHeader(tool: tool),
               AppSectionCard(
                 title: title,
                 child: Column(children: [

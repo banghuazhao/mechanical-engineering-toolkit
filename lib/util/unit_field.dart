@@ -47,11 +47,23 @@ class UnitField extends StatefulWidget {
 class _UnitFieldState extends State<UnitField> {
   final TextEditingController _controller = TextEditingController();
   UnitSystem? _lastSystem;
+  double? _lastInitialSI;
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(UnitField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialSI != _lastInitialSI) {
+      _lastInitialSI = widget.initialSI;
+      final system = _lastSystem ?? UnitSystem.si;
+      final si = widget.initialSI;
+      _controller.text = si == null ? '' : _fmt(_toDisplay(si, system));
+    }
   }
 
   double _toDisplay(double si, UnitSystem system) {
@@ -68,6 +80,7 @@ class _UnitFieldState extends State<UnitField> {
     if (_lastSystem == null) {
       final si = widget.initialSI;
       _controller.text = si == null ? '' : _fmt(_toDisplay(si, system));
+      _lastInitialSI = si;
       _lastSystem = system;
       return;
     }

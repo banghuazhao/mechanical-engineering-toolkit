@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/engineering_constants_widget.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/result_list_matrix.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
@@ -11,18 +13,21 @@ import 'package:mechanical_engineering_toolkit/util/units.dart';
 import '../../tool_setting_page.dart';
 
 class LaminaStressStrainResultPage extends StatelessWidget {
+  final int toolId;
   final LaminaStressStrainOutput output;
   final AnalysisType analysisType;
   final _exportKey = GlobalKey();
 
   LaminaStressStrainResultPage({
     Key? key,
+    required this.toolId,
     required this.output,
     required this.analysisType,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final tool = ToolLibrary.shared.item(toolId, context);
     final isStress = output.tensorType == TensorType.stress;
 
     final resultConstants = isStress
@@ -38,6 +43,7 @@ class LaminaStressStrainResultPage extends StatelessWidget {
           };
 
     final items = [
+      ToolResultHeader(tool: tool),
       EngineeringConstantsWidget(
         title: isStress ? 'Stress Result' : 'Strain Result',
         constants: resultConstants,

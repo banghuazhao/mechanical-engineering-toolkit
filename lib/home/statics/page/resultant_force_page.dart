@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
@@ -182,6 +184,7 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
       context,
       MaterialPageRoute(
         builder: (_) => _ResultPage(
+          toolId: widget.toolId,
           title: widget.title,
           forces: _forces
               .map((f) => (
@@ -200,11 +203,13 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
 }
 
 class _ResultPage extends StatelessWidget {
+  final int toolId;
   final String title;
   final List<({double fx, double fy})> forces;
   final double sumFx, sumFy, R, theta;
 
   _ResultPage({
+    required this.toolId,
     required this.title,
     required this.forces,
     required this.sumFx,
@@ -226,6 +231,7 @@ class _ResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
+    final tool = ToolLibrary.shared.item(toolId, context);
     final fxTerms = forces
         .map((f) => _fmt(fromSI(f.fx, UnitCategory.force, system)))
         .join(' + ');
@@ -268,7 +274,10 @@ class _ResultPage extends StatelessWidget {
         key: _exportKey,
         child: ListView(
           padding: const EdgeInsets.all(16),
-          children: [CalculationCard(steps: steps)],
+          children: [
+            ToolResultHeader(tool: tool),
+            CalculationCard(steps: steps),
+          ],
         ),
       ),
     );

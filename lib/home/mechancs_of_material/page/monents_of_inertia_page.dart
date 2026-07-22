@@ -240,6 +240,7 @@ Ip = Ix + Iy = Polar moment of inertia with respect to the origin of the x and y
           context,
           MaterialPageRoute(
               builder: (context) => MomentsOfInertiaResultPage(
+                    toolId: widget.toolId,
                     Ix: Ix,
                     Iy: Iy,
                     Ixy: Ixy,

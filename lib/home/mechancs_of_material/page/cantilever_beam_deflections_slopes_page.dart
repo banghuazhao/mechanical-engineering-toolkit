@@ -358,6 +358,7 @@ class _CantileverBeamDeflectionsSlopesPageState
         context,
         MaterialPageRoute(
           builder: (context) => CantileverBeamDeflectionsSlopesResultPage(
+            toolId: widget.toolId,
             toolTitle: widget.title,
             deflectionTitles: deflectionTitles,
             deflectionValues: deflectionValues,

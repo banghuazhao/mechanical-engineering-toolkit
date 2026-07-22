@@ -161,6 +161,7 @@ The transformation equations for plane stress are:
           context,
           MaterialPageRoute(
               builder: (context) => SphericalShellStressResultPage(
+                    toolId: widget.toolId,
                     rowTitle: "Transformed Stresses",
                     titles: const ["σ_x'", "σ_y'", "τ_x'y'"],
                     values: [sigma_x1, sigma_y1, sigma_xy],

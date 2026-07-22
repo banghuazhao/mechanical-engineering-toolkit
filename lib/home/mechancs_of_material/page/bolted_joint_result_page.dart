@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 class BoltedJointResultPage extends StatelessWidget {
   BoltedJointResultPage({
     super.key,
+    required this.toolId,
     required this.title,
     required this.tauShear,
     required this.sigmaBearing,
@@ -19,6 +21,7 @@ class BoltedJointResultPage extends StatelessWidget {
     this.allowBearing,
   });
 
+  final int toolId;
   final String title;
   final double tauShear;
   final double sigmaBearing;
@@ -36,6 +39,7 @@ class BoltedJointResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
+    final tool = ToolLibrary.shared.item(toolId, context);
     final governingStress =
         [tauShear, sigmaBearing, sigmaTearOut].reduce((a, b) => a > b ? a : b);
     return Scaffold(
@@ -70,6 +74,7 @@ class BoltedJointResultPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(context.tokens.space4),
             children: [
+              ToolResultHeader(tool: tool),
               AppSectionCard(
                 title: title,
                 child: Column(children: [

@@ -225,7 +225,9 @@ class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
       context,
       MaterialPageRoute(
         builder: (_) => RulesOfMixtureResultPage(
-            output: output, analysisType: analysisType),
+            toolId: widget.toolId,
+            output: output,
+            analysisType: analysisType),
       ),
     );
   }

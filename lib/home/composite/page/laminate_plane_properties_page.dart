@@ -176,7 +176,9 @@ class _LaminatePlanePropertiesPageState
       context,
       MaterialPageRoute(
         builder: (_) => LaminatePlanePropertiesResultPage(
-            output: output, analysisType: analysisType),
+            toolId: widget.toolId,
+            output: output,
+            analysisType: analysisType),
       ),
     );
   }

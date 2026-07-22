@@ -125,6 +125,7 @@ class _GeneralStressPageState extends State<GeneralStressPage> {
         context,
         MaterialPageRoute(
           builder: (context) => GeneralStressResultPage(
+            toolId: widget.toolId,
             sigma: sigma,
             f: f,
             a: a,

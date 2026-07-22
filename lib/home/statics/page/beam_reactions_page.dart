@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
@@ -204,6 +206,7 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
       context,
       MaterialPageRoute(
         builder: (_) => _ResultPage(
+          toolId: widget.toolId,
           title: widget.title,
           loadType: _loadType,
           L: L,
@@ -220,12 +223,14 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
 }
 
 class _ResultPage extends StatelessWidget {
+  final int toolId;
   final String title;
   final _LoadType loadType;
   final double L;
   final double? P, a, w;
 
   _ResultPage({
+    required this.toolId,
     required this.title,
     required this.loadType,
     required this.L,
@@ -306,6 +311,7 @@ class _ResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
+    final tool = ToolLibrary.shared.item(toolId, context);
     final solved = _solve(system);
     return Scaffold(
       appBar: AppBar(
@@ -330,7 +336,10 @@ class _ResultPage extends StatelessWidget {
         key: _exportKey,
         child: ListView(
           padding: const EdgeInsets.all(16),
-          children: [CalculationCard(steps: solved.steps)],
+          children: [
+            ToolResultHeader(tool: tool),
+            CalculationCard(steps: solved.steps),
+          ],
         ),
       ),
     );

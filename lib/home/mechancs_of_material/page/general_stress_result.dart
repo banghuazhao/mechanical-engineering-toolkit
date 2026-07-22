@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -12,11 +13,13 @@ import 'package:provider/provider.dart';
 class GeneralStressResultPage extends StatelessWidget {
   GeneralStressResultPage({
     super.key,
+    required this.toolId,
     required this.sigma,
     required this.f,
     required this.a,
   });
 
+  final int toolId;
   final double sigma;
   final double f;
   final double a;
@@ -31,6 +34,7 @@ class GeneralStressResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
+    final tool = ToolLibrary.shared.item(toolId, context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Result'),
@@ -63,6 +67,7 @@ class GeneralStressResultPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(context.tokens.space4),
             children: [
+              ToolResultHeader(tool: tool),
               AppSectionCard(
                 title: 'General Stress',
                 child: Column(children: [

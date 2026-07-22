@@ -339,6 +339,7 @@ class _TrussAnalysisPageState extends State<TrussAnalysisPage> {
         context,
         MaterialPageRoute(
           builder: (_) => TrussAnalysisResultPage(
+            toolId: widget.toolId,
             title: widget.title,
             joints: joints,
             members: members,

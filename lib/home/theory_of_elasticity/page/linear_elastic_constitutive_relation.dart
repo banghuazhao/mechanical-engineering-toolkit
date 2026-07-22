@@ -505,8 +505,8 @@ G_ij = Shear modulus in the i-j plane
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  LinearElasticConstitutiveResultPage(C: C, S: S_matrix)));
+              builder: (context) => LinearElasticConstitutiveResultPage(
+                  toolId: widget.toolId, C: C, S: S_matrix)));
     }
   }
 }

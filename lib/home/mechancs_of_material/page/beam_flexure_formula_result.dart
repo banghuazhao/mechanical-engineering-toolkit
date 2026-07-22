@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -15,11 +16,14 @@ import 'package:provider/provider.dart';
 class BeamFlexureFormulaResultPage extends StatelessWidget {
   BeamFlexureFormulaResultPage({
     super.key,
+    required this.toolId,
     required this.coefficient,
     required this.y,
     required this.m,
     required this.i,
   });
+
+  final int toolId;
 
   /// -M/I, so that stress at a given y is coefficient * y.
   final double coefficient;
@@ -38,6 +42,7 @@ class BeamFlexureFormulaResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final precs = context.watch<NumberPrecisionHelper>();
+    final tool = ToolLibrary.shared.item(toolId, context);
     final sigmaAtY = y != null ? coefficient * y! : null;
 
     return Scaffold(
@@ -73,6 +78,7 @@ class BeamFlexureFormulaResultPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(context.tokens.space4),
             children: [
+              ToolResultHeader(tool: tool),
               AppSectionCard(
                 title: 'Flexure Formula of Beam',
                 child: Column(children: [

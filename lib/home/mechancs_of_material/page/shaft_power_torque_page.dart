@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -167,6 +168,7 @@ class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
         context,
         MaterialPageRoute(
           builder: (context) => _ShaftPowerTorqueResultPage(
+            toolId: widget.toolId,
             torque: torque,
             power: power,
             omega: omega,
@@ -185,6 +187,7 @@ class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
 
 class _ShaftPowerTorqueResultPage extends StatelessWidget {
   _ShaftPowerTorqueResultPage({
+    required this.toolId,
     required this.torque,
     required this.power,
     required this.omega,
@@ -192,6 +195,7 @@ class _ShaftPowerTorqueResultPage extends StatelessWidget {
     required this.mode,
   });
 
+  final int toolId;
   final double torque;
   final double power;
   final double omega;
@@ -207,6 +211,7 @@ class _ShaftPowerTorqueResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final precs = context.watch<NumberPrecisionHelper>();
+    final tool = ToolLibrary.shared.item(toolId, context);
     final steps = mode == _SolveFor.torque
         ? [
             'ω = 2π·n / 60 = 2π × ${precs.formatValue(rpm)} / 60 = ${precs.formatValue(omega)} rad/s',
@@ -250,6 +255,7 @@ class _ShaftPowerTorqueResultPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(context.tokens.space4),
             children: [
+              ToolResultHeader(tool: tool),
               AppSectionCard(
                 title: 'Shaft Power & Torque',
                 child: Column(children: [

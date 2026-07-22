@@ -718,7 +718,10 @@ C_ij = Components of stiffness in i row and j column
             context,
             MaterialPageRoute(
                 builder: (context) => StressStrainLinearElasticResultPage(
-                    mechanicalTensor: resultTensor, C: C, S: S_matrix)));
+                    toolId: widget.toolId,
+                    mechanicalTensor: resultTensor,
+                    C: C,
+                    S: S_matrix)));
       }
 
       Matrix S_matrix = Matrix([
@@ -785,7 +788,10 @@ C_ij = Components of stiffness in i row and j column
           context,
           MaterialPageRoute(
               builder: (context) => StressStrainLinearElasticResultPage(
-                  mechanicalTensor: resultTensor, C: C, S: S_matrix)));
+                  toolId: widget.toolId,
+                  mechanicalTensor: resultTensor,
+                  C: C,
+                  S: S_matrix)));
     }
   }
 }

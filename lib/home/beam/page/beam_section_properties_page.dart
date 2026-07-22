@@ -199,6 +199,7 @@ class _BeamSectionPropertiesPageState extends State<BeamSectionPropertiesPage> {
         context,
         MaterialPageRoute(
           builder: (context) => BeamSectionPropertiesResultPage(
+            toolId: widget.toolId,
             title: widget.title,
             input: input,
             result: result,

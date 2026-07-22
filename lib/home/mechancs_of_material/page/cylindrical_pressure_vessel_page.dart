@@ -132,6 +132,7 @@ Where p is the pressure, r is the radius of the spherical and t is the thickness
           context,
           MaterialPageRoute(
               builder: (context) => SphericalShellStressResultPage(
+                    toolId: widget.toolId,
                     titles: const ["σ₁  (hoop)", "σ₂  (axial)"],
                     values: [stress1, stress2],
                     valueUnits: const [

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -172,6 +173,7 @@ class _AngleOfTwistPageState extends State<AngleOfTwistPage> {
         context,
         MaterialPageRoute(
           builder: (context) => _AngleOfTwistResultPage(
+            toolId: widget.toolId,
             phiRad: phiRad,
             phiDeg: phiDeg,
             t: t,
@@ -191,6 +193,7 @@ class _AngleOfTwistPageState extends State<AngleOfTwistPage> {
 
 class _AngleOfTwistResultPage extends StatelessWidget {
   _AngleOfTwistResultPage({
+    required this.toolId,
     required this.phiRad,
     required this.phiDeg,
     required this.t,
@@ -199,6 +202,7 @@ class _AngleOfTwistResultPage extends StatelessWidget {
     required this.j,
   });
 
+  final int toolId;
   final double phiRad;
   final double phiDeg;
   final double t;
@@ -215,6 +219,7 @@ class _AngleOfTwistResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final precs = context.watch<NumberPrecisionHelper>();
+    final tool = ToolLibrary.shared.item(toolId, context);
 
     return Scaffold(
       appBar: AppBar(
@@ -248,6 +253,7 @@ class _AngleOfTwistResultPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(context.tokens.space4),
             children: [
+              ToolResultHeader(tool: tool),
               AppSectionCard(
                 title: 'Angle of Twist',
                 child: Column(children: [

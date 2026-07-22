@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
@@ -12,6 +14,7 @@ import 'package:provider/provider.dart';
 import '../../tool_setting_page.dart';
 
 class MomentsOfInertiaResultPage extends StatefulWidget {
+  final int toolId;
   final double Ix;
   final double Iy;
   final double Ixy;
@@ -19,6 +22,7 @@ class MomentsOfInertiaResultPage extends StatefulWidget {
 
   const MomentsOfInertiaResultPage(
       {Key? key,
+      required this.toolId,
       required this.Ix,
       required this.Iy,
       required this.Ixy,
@@ -47,6 +51,7 @@ class _MomentsOfInertiaResultPageState
   @override
   Widget build(BuildContext context) {
     context.watch<UnitSystemPreference>();
+    final tool = ToolLibrary.shared.item(widget.toolId, context);
     return Scaffold(
         appBar: AppBar(
           actions: [
@@ -90,13 +95,16 @@ class _MomentsOfInertiaResultPageState
             child: StaggeredGridView.countBuilder(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
                 crossAxisCount: 8,
-                itemCount: 1,
+                itemCount: 2,
                 staggeredTileBuilder: (int index) => StaggeredTile.fit(
-                    MediaQuery.of(context).size.width > 600 ? 4 : 8),
+                    index == 0
+                        ? 8
+                        : (MediaQuery.of(context).size.width > 600 ? 4 : 8)),
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
                 itemBuilder: (BuildContext context, int index) {
                   return [
+                    ToolResultHeader(tool: tool),
                     MultipleRowResult(
                         title: S.of(context).Moments_of_Inertia,
                         resultTitles: [

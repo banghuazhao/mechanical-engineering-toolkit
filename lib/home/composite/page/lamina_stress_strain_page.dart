@@ -245,7 +245,9 @@ class _LaminaStressStrainPageState extends State<LaminaStressStrainPage> {
       context,
       MaterialPageRoute(
         builder: (_) => LaminaStressStrainResultPage(
-            output: output, analysisType: analysisType),
+            toolId: widget.toolId,
+            output: output,
+            analysisType: analysisType),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/principal_stress_calculator.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
@@ -15,12 +16,14 @@ import 'package:provider/provider.dart';
 class CombinedLoadingResultPage extends StatelessWidget {
   CombinedLoadingResultPage({
     super.key,
+    required this.toolId,
     required this.title,
     required this.sigma,
     required this.tau,
     this.yieldStrength,
   });
 
+  final int toolId;
   final String title;
   final double sigma;
   final double tau;
@@ -36,6 +39,7 @@ class CombinedLoadingResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
+    final tool = ToolLibrary.shared.item(toolId, context);
     final principal = PrincipalStressCalculator.calculate(
       sigmaX: sigma,
       sigmaY: 0,
@@ -76,6 +80,7 @@ class CombinedLoadingResultPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(context.tokens.space4),
             children: [
+              ToolResultHeader(tool: tool),
               AppSectionCard(
                 title: title,
                 child: Column(children: [

@@ -133,6 +133,7 @@ class _BeamFlexureFormulaPageState extends State<BeamFlexureFormulaPage> {
         context,
         MaterialPageRoute(
           builder: (context) => BeamFlexureFormulaResultPage(
+            toolId: widget.toolId,
             coefficient: coefficient,
             y: _y,
             m: m,

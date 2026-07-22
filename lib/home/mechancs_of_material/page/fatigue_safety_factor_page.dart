@@ -178,6 +178,7 @@ class _FatigueSafetyFactorPageState extends State<FatigueSafetyFactorPage> {
         context,
         MaterialPageRoute(
           builder: (context) => FatigueSafetyFactorResultPage(
+            toolId: widget.toolId,
             title: widget.title,
             sigmaA: sigmaA,
             sigmaM: sigmaM,

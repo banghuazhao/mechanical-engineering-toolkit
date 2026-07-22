@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/engineering_constants_widget.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
@@ -15,12 +17,14 @@ import 'package:linalg/matrix.dart';
 import '../../tool_setting_page.dart';
 
 class LaminateStressStrainResultPage extends StatefulWidget {
+  final int toolId;
   final LaminarStressStrainOutput output;
   final LaminarStressStrainInput input;
   final TransverselyIsotropicMaterial material;
 
   const LaminateStressStrainResultPage({
     Key? key,
+    required this.toolId,
     required this.output,
     required this.input,
     required this.material,
@@ -110,6 +114,7 @@ class _LaminateStressStrainResultPageState
 
   @override
   Widget build(BuildContext context) {
+    final tool = ToolLibrary.shared.item(widget.toolId, context);
     final o = widget.output;
     final isStress = o.tensorType == TensorType.stress;
 
@@ -132,6 +137,7 @@ class _LaminateStressStrainResultPageState
           };
 
     final items = <Widget>[
+      ToolResultHeader(tool: tool),
       EngineeringConstantsWidget(
         title:
             isStress ? 'Stress Resultants' : 'Mid-plane Strains & Curvatures',

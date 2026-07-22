@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/thermal_constants_row.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
@@ -17,12 +19,14 @@ import 'package:provider/provider.dart';
 import '../../tool_setting_page.dart';
 
 class LaminaEngineeringConstantsResultPage extends StatefulWidget {
+  final int toolId;
   final TransverselyIsotropicMaterial material;
   final AnalysisType analysisType;
   final ThermalConstants thermalConstants;
 
   const LaminaEngineeringConstantsResultPage({
     Key? key,
+    required this.toolId,
     required this.material,
     required this.analysisType,
     required this.thermalConstants,
@@ -100,6 +104,7 @@ class _LaminaEngineeringConstantsResultPageState
 
   @override
   Widget build(BuildContext context) {
+    final tool = ToolLibrary.shared.item(widget.toolId, context);
     final isThermal = widget.analysisType == AnalysisType.thermalElastic;
     final elasticRows = <(String, double?, UnitCategory?)>[
       ('Ex', _current?.E1, UnitCategory.modulus),
@@ -151,19 +156,22 @@ class _LaminaEngineeringConstantsResultPageState
       body: RepaintBoundary(
         key: _exportKey,
         child: SafeArea(
-          child: StaggeredGridView.countBuilder(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-            crossAxisCount: 8,
-            itemCount: 1 + chartItems.length,
-            staggeredTileBuilder: (_) => StaggeredTile.fit(
-                MediaQuery.of(context).size.width > 600 ? 4 : 8),
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
-            itemBuilder: (_, i) {
-              if (i == 0) return _angleSlider();
-              return chartItems[i - 1];
-            },
-          ),
+            child: StaggeredGridView.countBuilder(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+              crossAxisCount: 8,
+              itemCount: 2 + chartItems.length,
+              staggeredTileBuilder: (i) => StaggeredTile.fit(
+                  i == 0
+                      ? 8
+                      : (MediaQuery.of(context).size.width > 600 ? 4 : 8)),
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              itemBuilder: (_, i) {
+                if (i == 0) return ToolResultHeader(tool: tool);
+                if (i == 1) return _angleSlider();
+                return chartItems[i - 2];
+              },
+            ),
         ),
       ),
     );

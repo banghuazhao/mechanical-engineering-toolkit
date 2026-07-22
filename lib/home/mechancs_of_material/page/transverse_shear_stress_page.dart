@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -151,6 +152,7 @@ class _TransverseShearStressPageState extends State<TransverseShearStressPage> {
         context,
         MaterialPageRoute(
           builder: (context) => _TransverseShearStressResultPage(
+            toolId: widget.toolId,
             tau: tau,
             v: v,
             q: q,
@@ -169,6 +171,7 @@ class _TransverseShearStressPageState extends State<TransverseShearStressPage> {
 
 class _TransverseShearStressResultPage extends StatelessWidget {
   _TransverseShearStressResultPage({
+    required this.toolId,
     required this.tau,
     required this.v,
     required this.q,
@@ -176,6 +179,7 @@ class _TransverseShearStressResultPage extends StatelessWidget {
     required this.t,
   });
 
+  final int toolId;
   final double tau;
   final double v;
   final double q;
@@ -192,6 +196,7 @@ class _TransverseShearStressResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
+    final tool = ToolLibrary.shared.item(toolId, context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Result'),
@@ -225,6 +230,7 @@ class _TransverseShearStressResultPage extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(context.tokens.space4),
             children: [
+              ToolResultHeader(tool: tool),
               AppSectionCard(
                 title: 'Transverse Shear Stress',
                 child: Column(children: [
