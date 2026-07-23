@@ -90,6 +90,7 @@ flutter:
     - images/cantilever_beam/
     - images/simple_beam/
     - images/app_icons/
+    - images/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

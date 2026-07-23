@@ -266,7 +266,7 @@ class ToolLibrary {
                       )))),
       Tool(
           id: 112,
-          icon: Icons.thermostat_rounded,
+          image: AssetImage("images/icons/icon_thermal_deformation.png"),
           title: S.of(context).Thermal_deformation_and_stress,
           type: ToolType.mechanicsOfMaterial,
           keywords: const ['thermal expansion', 'cte', 'temperature'],
@@ -280,7 +280,7 @@ class ToolLibrary {
                       )))),
       Tool(
           id: 113,
-          icon: Icons.cut_rounded,
+          image: AssetImage("images/icons/icon_transverse_shear.png"),
           title: S.of(context).Transverse_shear_stress_in_beam,
           type: ToolType.beamEngineering,
           keywords: const ['shear flow', 'shear stress'],
@@ -294,7 +294,7 @@ class ToolLibrary {
                       )))),
       Tool(
           id: 114,
-          icon: Icons.rotate_right_rounded,
+          image: AssetImage("images/icons/icon_angle_of_twist.png"),
           title: S.of(context).Angle_of_twist,
           type: ToolType.mechanicsOfMaterial,
           keywords: const ['torsion', 'shaft', 'twist angle'],
@@ -308,7 +308,7 @@ class ToolLibrary {
                       )))),
       Tool(
           id: 115,
-          icon: Icons.settings_rounded,
+          image: AssetImage("images/icons/icon_shaft_power.png"),
           title: S.of(context).Shaft_power_and_torque,
           type: ToolType.mechanicsOfMaterial,
           keywords: const ['rpm', 'horsepower', 'torque', 'power transmission'],
@@ -322,7 +322,7 @@ class ToolLibrary {
                       )))),
       Tool(
           id: 116,
-          icon: Icons.warning_amber_rounded,
+          image: AssetImage("images/icons/icon_failure_criteria.png"),
           title: S.of(context).Failure_criteria_von_Mises_Tresca,
           type: ToolType.mechanicsOfMaterial,
           keywords: const ['yield', 'von mises', 'tresca', 'safety factor'],
@@ -336,7 +336,7 @@ class ToolLibrary {
                       )))),
       Tool(
           id: 117,
-          icon: Icons.view_agenda_outlined,
+          image: AssetImage("images/icons/icon_beam_section.png"),
           title: 'Beam Section Properties',
           type: ToolType.beamEngineering,
           keywords: const [
@@ -354,7 +354,7 @@ class ToolLibrary {
                       )))),
       Tool(
           id: 118,
-          icon: Icons.circle_outlined,
+          image: AssetImage("images/icons/icon_mohr_circle.png"),
           title: "Mohr's Circle for Plane Stress",
           type: ToolType.mechanicsOfMaterial,
           keywords: const ['principal stress', 'max shear stress'],
@@ -368,7 +368,7 @@ class ToolLibrary {
                       )))),
       Tool(
           id: 119,
-          icon: Icons.change_history_outlined,
+          image: AssetImage("images/icons/icon_goodman.png"),
           title: 'Fatigue Safety Factor (Modified Goodman)',
           type: ToolType.mechanicsOfMaterial,
           keywords: const ['goodman', 's-n', 'endurance limit', 'fatigue'],
@@ -382,7 +382,7 @@ class ToolLibrary {
                       )))),
       Tool(
           id: 120,
-          icon: Icons.grid_4x4_rounded,
+          image: AssetImage("images/icons/icon_bolted_joint.png"),
           title: 'Bolted / Riveted Joint',
           type: ToolType.mechanicsOfMaterial,
           keywords: const ['bolt', 'rivet', 'shear', 'bearing stress'],
@@ -396,7 +396,7 @@ class ToolLibrary {
                       )))),
       Tool(
           id: 121,
-          icon: Icons.blur_circular_rounded,
+          image: AssetImage("images/icons/icon_combined_loading.png"),
           title: 'Combined Loading at a Point',
           type: ToolType.mechanicsOfMaterial,
           keywords: const ['von mises', 'combined stress', 'factor of safety'],
@@ -411,7 +411,7 @@ class ToolLibrary {
       // Theory of Elasticity
       Tool(
           id: 200,
-          icon: Icons.calculate_rounded,
+          image: AssetImage("images/icons/icon_constitutive.png"),
           title: S.of(context).Constitutive_relation_of_linear_elastic_material,
           type: ToolType.theoryOfElasticity,
           keywords: const ["hooke's law", 'elastic modulus', 'poisson'],
@@ -425,7 +425,7 @@ class ToolLibrary {
                       )))),
       Tool(
           id: 201,
-          icon: Icons.calculate_rounded,
+          image: AssetImage("images/icons/icon_stress_strain_bar.png"),
           title: S.of(context).Stressstrain_of_linear_elastic_material,
           type: ToolType.theoryOfElasticity,
           keywords: const ["hooke's law", 'elastic constants'],
@@ -524,7 +524,7 @@ class ToolLibrary {
                       )))),
       Tool(
           id: 306,
-          icon: Icons.fact_check_rounded,
+          image: AssetImage("images/icons/icon_composite_lamina.png"),
           title: 'Composite Failure Criteria (Tsai-Hill / Tsai-Wu)',
           type: ToolType.composite,
           keywords: const [
@@ -544,7 +544,7 @@ class ToolLibrary {
       // Statics
       Tool(
           id: 400,
-          icon: Icons.arrow_outward_rounded,
+          image: AssetImage("images/icons/icon_resultant_forces.png"),
           title: 'Resultant of Forces (2D)',
           type: ToolType.statics,
           keywords: const ['vector sum', 'force resultant'],
@@ -557,7 +557,7 @@ class ToolLibrary {
                       initialInputs: initialInputs)))),
       Tool(
           id: 401,
-          icon: Icons.multiline_chart_rounded,
+          image: AssetImage("images/icons/icon_beam_load.png"),
           title: 'Beam Load Analysis',
           type: ToolType.beamEngineering,
           keywords: const [
@@ -575,7 +575,7 @@ class ToolLibrary {
                       initialInputs: initialInputs)))),
       Tool(
           id: 402,
-          icon: Icons.crop_free_rounded,
+          image: AssetImage("images/icons/icon_centroid.png"),
           title: 'Centroid of Composite Area',
           type: ToolType.statics,
           keywords: const ['center of gravity', 'centroid'],
@@ -588,7 +588,7 @@ class ToolLibrary {
                       initialInputs: initialInputs)))),
       Tool(
           id: 403,
-          icon: Icons.change_history_rounded,
+          image: AssetImage("images/icons/icon_truss.png"),
           title: 'Truss Analysis (Method of Joints)',
           type: ToolType.statics,
           keywords: const ['method of joints', 'truss', 'member force'],
@@ -602,7 +602,7 @@ class ToolLibrary {
       // Utilities
       Tool(
           id: 500,
-          icon: Icons.swap_horiz_rounded,
+          image: AssetImage("images/icons/icon_unit_converter.png"),
           title: 'Unit Converter',
           type: ToolType.utilities,
           keywords: const ['convert', 'units'],
@@ -616,7 +616,7 @@ class ToolLibrary {
       // Machine Design
       Tool(
           id: 701,
-          icon: Icons.waves_rounded,
+          image: AssetImage("images/icons/icon_spring.png"),
           title: 'Helical Compression Spring',
           type: ToolType.machineDesign,
           keywords: const [
@@ -634,7 +634,7 @@ class ToolLibrary {
                       initialInputs: initialInputs)))),
       Tool(
           id: 702,
-          icon: Icons.settings_suggest_rounded,
+          image: AssetImage("images/icons/icon_spur_gear.png"),
           title: 'Spur Gear Geometry',
           type: ToolType.machineDesign,
           keywords: const [
@@ -652,7 +652,7 @@ class ToolLibrary {
                       initialInputs: initialInputs)))),
       Tool(
           id: 703,
-          icon: Icons.autorenew_rounded,
+          image: AssetImage("images/icons/icon_shaft_fatigue.png"),
           title: 'Shaft Fatigue Design (DE-Goodman)',
           type: ToolType.machineDesign,
           keywords: const [
@@ -670,7 +670,7 @@ class ToolLibrary {
                       initialInputs: initialInputs)))),
       Tool(
           id: 704,
-          icon: Icons.trip_origin_rounded,
+          image: AssetImage("images/icons/icon_bearing.png"),
           title: 'Bearing L10 Life',
           type: ToolType.machineDesign,
           keywords: const [
@@ -688,7 +688,7 @@ class ToolLibrary {
                       initialInputs: initialInputs)))),
       Tool(
           id: 705,
-          icon: Icons.link_rounded,
+          image: AssetImage("images/icons/icon_belt_drive.png"),
           title: 'Belt / Chain Drive',
           type: ToolType.machineDesign,
           keywords: const ['pulley', 'sprocket', 'wrap angle', 'speed ratio'],
@@ -701,7 +701,7 @@ class ToolLibrary {
                       initialInputs: initialInputs)))),
       Tool(
           id: 706,
-          icon: Icons.hardware_rounded,
+          image: AssetImage("images/icons/icon_bolt_preload.png"),
           title: 'Bolt Preload / Torque-Tension',
           type: ToolType.machineDesign,
           keywords: const ['nut factor', 'tightening torque', 'bolted joint'],
@@ -714,7 +714,7 @@ class ToolLibrary {
                       initialInputs: initialInputs)))),
       Tool(
           id: 707,
-          icon: Icons.local_fire_department_rounded,
+          image: AssetImage("images/icons/icon_fillet_weld.png"),
           title: 'Fillet Weld Strength',
           type: ToolType.machineDesign,
           keywords: const ['throat', 'weld shear', 'leg size'],
@@ -727,7 +727,7 @@ class ToolLibrary {
                       initialInputs: initialInputs)))),
       Tool(
           id: 708,
-          icon: Icons.compress_rounded,
+          image: AssetImage("images/icons/icon_press_fit.png"),
           title: 'Press / Shrink-Fit Interference',
           type: ToolType.machineDesign,
           keywords: const [
