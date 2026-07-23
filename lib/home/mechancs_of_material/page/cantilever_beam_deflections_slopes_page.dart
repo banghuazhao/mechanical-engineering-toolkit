@@ -3,6 +3,7 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/cantilever_beam_deflections_slopes_result.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
@@ -74,6 +75,7 @@ class _CantileverBeamDeflectionsSlopesPageState
 
   @override
   Widget build(BuildContext context) {
+    final tool = ToolLibrary.shared.item(widget.toolId, context);
     final needsA = _needsA(_loadCase);
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
@@ -93,6 +95,7 @@ class _CantileverBeamDeflectionsSlopesPageState
             100,
           ),
           children: [
+            ToolResultHeader(tool: tool),
             AppSectionCard(
               title: 'Deflections and Slopes of Cantilever Beams',
               child: Column(

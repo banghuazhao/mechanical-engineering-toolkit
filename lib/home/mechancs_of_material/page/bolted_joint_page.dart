@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/bolted_joint_result_page.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
@@ -61,6 +62,7 @@ class _BoltedJointPageState extends State<BoltedJointPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tool = ToolLibrary.shared.item(widget.toolId, context);
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       floatingActionButton: FloatingActionButton.extended(
@@ -79,6 +81,7 @@ class _BoltedJointPageState extends State<BoltedJointPage> {
             100,
           ),
           children: [
+            ToolResultHeader(tool: tool),
             AppSectionCard(
               title: 'Bolted / Riveted Joint',
               child: Column(

@@ -22,21 +22,24 @@ class ToolResultHeader extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: tokens.space4),
       child: Center(
-        child: tool.image != null
-            ? SizedBox(
-                width: 64,
-                height: 64,
-                child: Image(image: tool.image!, fit: BoxFit.contain),
-              )
-            : CircleAvatar(
-                backgroundColor: theme.colorScheme.primaryContainer,
-                radius: 32,
-                child: Icon(
-                  tool.icon,
-                  size: 32,
-                  color: theme.colorScheme.onPrimaryContainer,
+        child: Hero(
+          tag: 'tool_icon_${tool.id}',
+          child: tool.image != null
+              ? SizedBox(
+                  width: 64,
+                  height: 64,
+                  child: Image(image: tool.image!, fit: BoxFit.contain),
+                )
+              : CircleAvatar(
+                  backgroundColor: theme.colorScheme.primaryContainer,
+                  radius: 32,
+                  child: Icon(
+                    tool.icon,
+                    size: 32,
+                    color: theme.colorScheme.onPrimaryContainer,
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }

@@ -491,26 +491,29 @@ class ToolRowWidget extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(14, 12, 8, 12),
           child: Row(children: [
-            Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primaryContainer,
-                borderRadius:
-                    BorderRadius.circular(context.tokens.radiusMedium),
-              ),
-              child: model.icon != null
-                  ? Icon(model.icon, size: 26, color: primary)
-                  : ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(context.tokens.radiusMedium),
-                      child: Image(
-                        height: 48,
-                        width: 48,
-                        image: model.image!,
-                        fit: BoxFit.cover,
+            Hero(
+              tag: 'tool_icon_${model.id}',
+              child: Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  borderRadius:
+                      BorderRadius.circular(context.tokens.radiusMedium),
+                ),
+                child: model.icon != null
+                    ? Icon(model.icon, size: 26, color: primary)
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            context.tokens.radiusMedium),
+                        child: Image(
+                          height: 48,
+                          width: 48,
+                          image: model.image!,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
+              ),
             ),
             const SizedBox(width: 14),
             Expanded(
@@ -583,24 +586,27 @@ class ToolGridTile extends StatelessWidget {
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  Container(
-                    width: 38,
-                    height: 38,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      borderRadius:
-                          BorderRadius.circular(context.tokens.radiusSmall),
-                    ),
-                    child: model.icon != null
-                        ? Icon(model.icon, size: 21, color: primary)
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                context.tokens.radiusSmall),
-                            child: Image(
-                              image: model.image!,
-                              fit: BoxFit.cover,
+                  Hero(
+                    tag: 'tool_icon_${model.id}',
+                    child: Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        borderRadius:
+                            BorderRadius.circular(context.tokens.radiusSmall),
+                      ),
+                      child: model.icon != null
+                          ? Icon(model.icon, size: 21, color: primary)
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  context.tokens.radiusSmall),
+                              child: Image(
+                                image: model.image!,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
+                    ),
                   ),
                   Positioned(
                     top: -6,

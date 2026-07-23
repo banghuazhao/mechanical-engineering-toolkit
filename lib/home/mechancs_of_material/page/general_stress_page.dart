@@ -3,6 +3,7 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/general_stress_result.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
@@ -40,6 +41,7 @@ class _GeneralStressPageState extends State<GeneralStressPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tool = ToolLibrary.shared.item(widget.toolId, context);
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       floatingActionButton: FloatingActionButton.extended(
@@ -58,6 +60,7 @@ class _GeneralStressPageState extends State<GeneralStressPage> {
             100,
           ),
           children: [
+            ToolResultHeader(tool: tool),
             AppSectionCard(
               title: 'General Stress',
               child: Column(

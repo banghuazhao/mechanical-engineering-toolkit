@@ -3,6 +3,7 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/fatigue_safety_factor_result_page.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
@@ -46,6 +47,7 @@ class _FatigueSafetyFactorPageState extends State<FatigueSafetyFactorPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tool = ToolLibrary.shared.item(widget.toolId, context);
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       floatingActionButton: FloatingActionButton.extended(
@@ -64,6 +66,7 @@ class _FatigueSafetyFactorPageState extends State<FatigueSafetyFactorPage> {
             100,
           ),
           children: [
+            ToolResultHeader(tool: tool),
             AppSectionCard(
               title: 'Fatigue Safety Factor',
               child: Column(

@@ -4,6 +4,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/model/spur_gear_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/page/spur_gear_result_page.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
@@ -49,6 +50,7 @@ class _SpurGearPageState extends State<SpurGearPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tool = ToolLibrary.shared.item(widget.toolId, context);
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       floatingActionButton: FloatingActionButton.extended(
@@ -67,6 +69,7 @@ class _SpurGearPageState extends State<SpurGearPage> {
             100,
           ),
           children: [
+            ToolResultHeader(tool: tool),
             AppSectionCard(
               title: 'Spur Gear Geometry',
               child: Column(

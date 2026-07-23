@@ -4,6 +4,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/model/spring_design_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/page/spring_design_result_page.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
@@ -50,6 +51,7 @@ class _SpringDesignPageState extends State<SpringDesignPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tool = ToolLibrary.shared.item(widget.toolId, context);
     return Scaffold(
       appBar: AppBar(title: Text(widget.title)),
       floatingActionButton: FloatingActionButton.extended(
@@ -68,6 +70,7 @@ class _SpringDesignPageState extends State<SpringDesignPage> {
             100,
           ),
           children: [
+            ToolResultHeader(tool: tool),
             AppSectionCard(
               title: 'Helical Compression Spring',
               child: Column(
