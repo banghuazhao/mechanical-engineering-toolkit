@@ -192,6 +192,9 @@ enum UnitCategory {
 
   /// Density.
   density,
+
+  /// Frequency (e.g. spring natural/surge frequency).
+  frequency,
 }
 
 class _UnitPair {
@@ -340,6 +343,12 @@ final Map<UnitCategory, _UnitPair> _pairs = {
     imperialLabel: 'lb/ft³',
     siToImperial: kgm3_2_lbft3,
     imperialToSi: lbft3_2_kgm3,
+  ),
+  UnitCategory.frequency: _UnitPair(
+    siLabel: 'Hz',
+    imperialLabel: 'Hz',
+    siToImperial: id,
+    imperialToSi: id,
   ),
 };
 

@@ -51,6 +51,19 @@
 - **Laminate plane properties**
 - **Laminate 3D properties**
 - **Rule of mixtures**
+- **Composite failure criteria (Tsai-Hill / Tsai-Wu)**
+
+### 4. ⚙️ Machine Design
+- **Helical compression spring** (rate, Wahl factor, natural frequency)
+- **Spur gear geometry** (pitch diameters, Lewis bending stress, contact stress estimate)
+- **Shaft fatigue design** (DE-Goodman diameter sizing)
+- **Bearing L10 life**
+- **Belt / chain drive** (ratio, length, wrap angle)
+- **Bolt preload / torque-tension**
+- **Fillet weld strength**
+- **Press / shrink-fit interference**
+
+*(This list covers the major categories; the in-app search finds every tool by name or keyword — see [tool_model.dart](lib/home/tool_model.dart) for the full, current registry.)*
 
 ## 🛠️ Technical Information
 

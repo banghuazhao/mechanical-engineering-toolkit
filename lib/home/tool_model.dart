@@ -27,6 +27,15 @@ import 'composite/page/laminate_3d_properties_page.dart';
 import 'composite/page/laminate_plane_properties_page.dart';
 import 'composite/page/laminate_stress_strain_page.dart';
 import 'composite/page/rules_of_mixture_page.dart';
+import 'composite/page/tsai_failure_page.dart';
+import 'machine_design/page/bearing_life_page.dart';
+import 'machine_design/page/belt_drive_page.dart';
+import 'machine_design/page/bolt_preload_page.dart';
+import 'machine_design/page/fillet_weld_page.dart';
+import 'machine_design/page/press_fit_page.dart';
+import 'machine_design/page/shaft_fatigue_page.dart';
+import 'machine_design/page/spring_design_page.dart';
+import 'machine_design/page/spur_gear_page.dart';
 import 'mechancs_of_material/page/angle_of_twist_page.dart';
 import 'mechancs_of_material/page/bar_torsion_formula_page.dart';
 import 'mechancs_of_material/page/failure_criteria_page.dart';
@@ -44,6 +53,7 @@ enum ToolType {
   composite,
   statics,
   utilities,
+  machineDesign,
 }
 
 class Tool {
@@ -96,7 +106,12 @@ class ToolLibrary {
           image: AssetImage("images/icon_bar_force.png"),
           title: S.of(context).Force_displacement_relation_of_bar,
           type: ToolType.mechanicsOfMaterial,
-          keywords: const ['axial', 'elongation', 'stiffness', 'spring constant'],
+          keywords: const [
+            'axial',
+            'elongation',
+            'stiffness',
+            'spring constant'
+          ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -324,7 +339,11 @@ class ToolLibrary {
           icon: Icons.view_agenda_outlined,
           title: 'Beam Section Properties',
           type: ToolType.beamEngineering,
-          keywords: const ['cross section', 'moment of inertia', 'section modulus'],
+          keywords: const [
+            'cross section',
+            'moment of inertia',
+            'section modulus'
+          ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -503,6 +522,25 @@ class ToolLibrary {
                         toolId: toolId,
                         initialInputs: initialInputs,
                       )))),
+      Tool(
+          id: 306,
+          icon: Icons.fact_check_rounded,
+          title: 'Composite Failure Criteria (Tsai-Hill / Tsai-Wu)',
+          type: ToolType.composite,
+          keywords: const [
+            'lamina failure',
+            'tsai-hill',
+            'tsai-wu',
+            'strength ratio'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TsaiFailurePage(
+                        title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
+                      )))),
       // Statics
       Tool(
           id: 400,
@@ -522,7 +560,12 @@ class ToolLibrary {
           icon: Icons.multiline_chart_rounded,
           title: 'Beam Load Analysis',
           type: ToolType.beamEngineering,
-          keywords: const ['shear diagram', 'moment diagram', 'reactions', 'deflection'],
+          keywords: const [
+            'shear diagram',
+            'moment diagram',
+            'reactions',
+            'deflection'
+          ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
               MaterialPageRoute(
@@ -567,6 +610,136 @@ class ToolLibrary {
               context,
               MaterialPageRoute(
                   builder: (context) => UnitConverterPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      // Machine Design
+      Tool(
+          id: 701,
+          icon: Icons.waves_rounded,
+          title: 'Helical Compression Spring',
+          type: ToolType.machineDesign,
+          keywords: const [
+            'spring rate',
+            'wahl factor',
+            'natural frequency',
+            'coil'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => SpringDesignPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 702,
+          icon: Icons.settings_suggest_rounded,
+          title: 'Spur Gear Geometry',
+          type: ToolType.machineDesign,
+          keywords: const [
+            'module',
+            'lewis form factor',
+            'pitch diameter',
+            'gear ratio'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => SpurGearPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 703,
+          icon: Icons.autorenew_rounded,
+          title: 'Shaft Fatigue Design (DE-Goodman)',
+          type: ToolType.machineDesign,
+          keywords: const [
+            'keyway',
+            'stress concentration',
+            'goodman',
+            'shaft diameter'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ShaftFatiguePage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 704,
+          icon: Icons.trip_origin_rounded,
+          title: 'Bearing L10 Life',
+          type: ToolType.machineDesign,
+          keywords: const [
+            'dynamic load rating',
+            'rating life',
+            'ball bearing',
+            'roller bearing'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BearingLifePage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 705,
+          icon: Icons.link_rounded,
+          title: 'Belt / Chain Drive',
+          type: ToolType.machineDesign,
+          keywords: const ['pulley', 'sprocket', 'wrap angle', 'speed ratio'],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BeltDrivePage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 706,
+          icon: Icons.hardware_rounded,
+          title: 'Bolt Preload / Torque-Tension',
+          type: ToolType.machineDesign,
+          keywords: const ['nut factor', 'tightening torque', 'bolted joint'],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BoltPreloadPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 707,
+          icon: Icons.local_fire_department_rounded,
+          title: 'Fillet Weld Strength',
+          type: ToolType.machineDesign,
+          keywords: const ['throat', 'weld shear', 'leg size'],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => FilletWeldPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 708,
+          icon: Icons.compress_rounded,
+          title: 'Press / Shrink-Fit Interference',
+          type: ToolType.machineDesign,
+          keywords: const [
+            'interference fit',
+            'shrink fit',
+            'contact pressure',
+            'hoop stress'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PressFitPage(
                       title: title,
                       toolId: toolId,
                       initialInputs: initialInputs)))),

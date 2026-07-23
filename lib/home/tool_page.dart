@@ -110,6 +110,11 @@ class _ToolPageState extends State<ToolPage> {
     ));
 
     sections.add(ToolSection(
+      'Machine Design',
+      allTools.where((e) => e.type == ToolType.machineDesign).toList(),
+    ));
+
+    sections.add(ToolSection(
       S.of(context).Truss_Statics,
       allTools.where((e) => e.type == ToolType.statics).toList(),
     ));
