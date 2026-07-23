@@ -13,9 +13,15 @@ class AppBannerAd extends StatefulWidget {
 }
 
 class _AppBannerAdState extends State<AppBannerAd> {
+  static const _size = AdSize.banner;
+
   BannerAd? _ad;
-  AnchoredAdaptiveBannerAdSize? _size;
-  int? _loadedWidth;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
 
   @override
   void dispose() {
@@ -23,20 +29,11 @@ class _AppBannerAdState extends State<AppBannerAd> {
     super.dispose();
   }
 
-  Future<void> _load(int width) async {
-    if (_loadedWidth == width) return;
-    _loadedWidth = width;
+  Future<void> _load() async {
     if (!await AdsManager.canRequestAds() || !mounted) return;
-    final size = await AdSize.getLargeAnchoredAdaptiveBannerAdSize(
-      width,
-    );
-    if (size == null || !mounted) return;
-    setState(() => _size = size);
-
-    final oldAd = _ad;
     final ad = BannerAd(
       adUnitId: AdsManager.bannerAdUnitId,
-      size: size,
+      size: _size,
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (loadedAd) {
@@ -44,7 +41,6 @@ class _AppBannerAdState extends State<AppBannerAd> {
             loadedAd.dispose();
             return;
           }
-          oldAd?.dispose();
           setState(() => _ad = loadedAd as BannerAd);
         },
         onAdFailedToLoad: (failedAd, error) {
@@ -60,43 +56,30 @@ class _AppBannerAdState extends State<AppBannerAd> {
   Widget build(BuildContext context) {
     final adsRemoved = context.watch<RemoveAdsService>().isAdsRemoved;
     if (adsRemoved) {
-      if (_ad != null || _size != null) {
+      if (_ad != null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _ad?.dispose();
-          if (mounted) {
-            setState(() {
-              _ad = null;
-              _size = null;
-            });
-          }
+          if (mounted) setState(() => _ad = null);
         });
       }
       return const SizedBox.shrink();
     }
     return SafeArea(
       top: false,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final width = constraints.maxWidth.floor();
-          if (width > 0) {
-            WidgetsBinding.instance.addPostFrameCallback((_) => _load(width));
-          }
-          final size = _size;
-          if (size == null) return const SizedBox.shrink();
-          return ColoredBox(
-            color: Theme.of(context).colorScheme.surfaceContainerLow,
-            child: SizedBox(
-              height: size.height.toDouble(),
-              child: Center(
-                child: SizedBox(
-                  width: size.width.toDouble(),
-                  height: size.height.toDouble(),
-                  child: _ad == null ? null : AdWidget(ad: _ad!),
-                ),
-              ),
-            ),
-          );
-        },
+      child: ColoredBox(
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        child: SizedBox(
+          height: _size.height.toDouble(),
+          child: Center(
+            child: _ad == null
+                ? null
+                : SizedBox(
+                    width: _size.width.toDouble(),
+                    height: _size.height.toDouble(),
+                    child: AdWidget(ad: _ad!),
+                  ),
+          ),
+        ),
       ),
     );
   }

@@ -107,14 +107,30 @@ flutter run
 
 ### Building for Production
 
-To build the app for production:
+Release builds read their AdMob IDs, signing config, and version from a set of
+**untracked** files that are not in this repository (restore them from your
+secret backup before building):
+
+- `lib/util/secrets.dart` — production AdMob **ad unit** IDs (banner + app-open,
+  per platform). Consumed by `AdsManager`; Google **test** unit IDs are used
+  automatically in debug builds only.
+- `ios/SecretsRelease.xcconfig` / `ios/SecretsDebug.xcconfig` — the AdMob
+  **app** ID (`GADAPP_ID`), wired into `Info.plist`'s `GADApplicationIdentifier`
+  as the project-level base xcconfig.
+- `android/local.properties` — `AdMobAppId` (Android AdMob **app** ID, injected
+  into the manifest as `com.google.android.gms.ads.APPLICATION_ID`) plus
+  `flutter.versionName` / `flutter.versionCode`. If `AdMobAppId` is missing the
+  build falls back to a Google **test** app id, so keep this file present.
+- `android/key.properties` + the referenced keystore — release signing.
+
+Then build the store artifacts:
 
 ```bash
-# For iOS
-flutter build ios
+# Android App Bundle (signed release)
+flutter build appbundle --release
 
-# For Android
-flutter build apk
+# iOS App Store IPA (archive + export)
+flutter build ipa --release
 ```
 
 ## 🧩 Adding a New Calculator

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.6.0 - 2026-07-23
+
+- Added a new Machine Design category: helical compression spring, spur gear geometry, shaft fatigue sizing, bearing L10 life, belt/chain drive, bolt preload, fillet weld strength, and press/shrink-fit interference calculators.
+- Added Composite failure criteria (Tsai-Hill and Tsai-Wu).
+- Added custom tool illustrations and animated icon transitions from the list into each calculator and its results.
+- Improved "Recommended by Major" coverage so more tools surface under each major.
+- Refined the material preset picker, parameter sweep, and result page headers.
+
 ## 1.5.0 - 2026-07-17
 
 - Added Mohr's Circle, Bolted Joint, Combined Loading, and Fatigue Safety Factor calculators.
