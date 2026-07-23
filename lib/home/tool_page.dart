@@ -10,6 +10,7 @@ import 'package:mechanical_engineering_toolkit/home/tool_favorites.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/more/more_app_page.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/more/more_row.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_page.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
@@ -419,7 +420,10 @@ class _ToolPageState extends State<ToolPage> {
         delegate: SliverChildBuilderDelegate(
           (context, index) => Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: ToolRowWidget(model: tools[index]),
+            child: StaggeredEntrance(
+              index: index,
+              child: ToolRowWidget(model: tools[index]),
+            ),
           ),
           childCount: tools.length,
         ),
@@ -438,7 +442,10 @@ class _ToolPageState extends State<ToolPage> {
           mainAxisExtent: 126,
         ),
         delegate: SliverChildBuilderDelegate(
-          (context, index) => ToolGridTile(model: tools[index]),
+          (context, index) => StaggeredEntrance(
+            index: index,
+            child: ToolGridTile(model: tools[index]),
+          ),
           childCount: tools.length,
         ),
       ),

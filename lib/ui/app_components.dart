@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
@@ -6,6 +8,54 @@ import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
+
+/// Fades and slides [child] into place once, with a delay proportional to
+/// [index]. Intended for list/grid items so a screen's contents cascade in
+/// on first appearance instead of popping in all at once.
+class StaggeredEntrance extends StatefulWidget {
+  const StaggeredEntrance({super.key, required this.index, required this.child});
+
+  final int index;
+  final Widget child;
+
+  @override
+  State<StaggeredEntrance> createState() => _StaggeredEntranceState();
+}
+
+class _StaggeredEntranceState extends State<StaggeredEntrance> {
+  bool _visible = false;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    final delay = Duration(milliseconds: 20 * widget.index.clamp(0, 15));
+    _timer = Timer(delay, () {
+      if (mounted) setState(() => _visible = true);
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedOpacity(
+      opacity: _visible ? 1 : 0,
+      duration: const Duration(milliseconds: 260),
+      curve: Curves.easeOut,
+      child: AnimatedSlide(
+        offset: _visible ? Offset.zero : const Offset(0, 0.08),
+        duration: const Duration(milliseconds: 260),
+        curve: Curves.easeOut,
+        child: widget.child,
+      ),
+    );
+  }
+}
 
 class ToolResultHeader extends StatelessWidget {
   const ToolResultHeader({super.key, required this.tool});
@@ -247,12 +297,26 @@ class AppCopyableValue extends StatelessWidget {
               ),
             ),
             Flexible(
-              child: Text(
-                displayValue.isEmpty ? '—' : displayValue,
-                textAlign: TextAlign.end,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontFeatures: const [FontFeature.tabularFigures()],
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 220),
+                transitionBuilder: (child, animation) => FadeTransition(
+                  opacity: animation,
+                  child: SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0, 0.25),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: child,
+                  ),
+                ),
+                child: Text(
+                  displayValue.isEmpty ? '—' : displayValue,
+                  key: ValueKey(displayValue),
+                  textAlign: TextAlign.end,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.primary,
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                  ),
                 ),
               ),
             ),

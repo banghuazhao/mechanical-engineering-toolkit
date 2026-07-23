@@ -177,6 +177,18 @@ surprised to find the older style there today.
    strongly preferred. For an x-vs-y curve (a beam moment/deflection diagram,
    etc.), use the shared [`XYDiagramCard`](lib/ui/xy_diagram_card.dart) rather
    than writing a new `CustomPainter`.
+7. **Wire up the icon Hero animation.** Add `ToolResultHeader(tool: tool)` —
+   with `final tool = ToolLibrary.shared.item(widget.toolId, context);` at the
+   top of `build()` — as the *first* child of both the input page's list and
+   the result page's list. Because `ToolResultHeader` already wraps its
+   icon/image in a `Hero(tag: 'tool_icon_${tool.id}')`, and the list/grid
+   tiles in `tool_page.dart` carry the matching tag, this alone makes the
+   tool's icon fly from the list into the input page, then into the result
+   page — no extra code needed. Skip only for tools with no natural
+   single-result moment (e.g. Unit Converter). List/grid entrance animation
+   (`StaggeredEntrance`) and result-value fade transitions
+   (`AppCopyableValue`) are automatic from the shared widgets — nothing to do
+   for those beyond using the widgets as normal.
 
 ### Also expected of every new tool
 
@@ -210,6 +222,11 @@ surprised to find the older style there today.
   is non-trivial (see `truss_solver_test.dart`, `beam_calculators_test.dart`
   for style).
 - Add the new tool to this README's [Available Categories](#-available-categories) list.
+- Add the new tool's id to any relevant major(s) in
+  [`major_recommendation.dart`](lib/home/major_recommendation.dart) — new
+  tools are easy to forget here since nothing fails if you skip it, but
+  "Recommended by Major" is a primary discovery path and silently misses
+  anything not listed.
 
 ### A note on units: two internal conventions coexist
 
