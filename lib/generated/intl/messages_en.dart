@@ -134,6 +134,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Clearance close"),
         "Clearance_Free":
             MessageLookupByLibrary.simpleMessage("Clearance free"),
+        "Clearance_um": MessageLookupByLibrary.simpleMessage("Clearance (µm)"),
         "Combined_Loading_at_a_Point": MessageLookupByLibrary.simpleMessage(
           "Combined Loading at a Point",
         ),
@@ -379,6 +380,13 @@ class MessageLookup extends MessageLookupByLibrary {
           "Fillet Weld Strength",
         ),
         "FinanceGo": MessageLookupByLibrary.simpleMessage("Finance Go"),
+        "Fit": MessageLookupByLibrary.simpleMessage("Fit"),
+        "Fits_Footnote": MessageLookupByLibrary.simpleMessage(
+          "Hole-basis fits for 1–500 mm. Each cell is the upper limit over the lower, in µm from the nominal size; a negative clearance is interference. Bands run over the lower bound up to the upper. The c, s and u shaft fits are not listed because their deviations split into finer size bands.",
+        ),
+        "Fits_Tolerances": MessageLookupByLibrary.simpleMessage(
+          "Fits & Tolerances (ISO 286)",
+        ),
         "Flange_Thickness": MessageLookupByLibrary.simpleMessage(
           "Flange thickness",
         ),
@@ -412,6 +420,7 @@ class MessageLookup extends MessageLookupByLibrary {
           "Helical Compression Spring",
         ),
         "History": MessageLookupByLibrary.simpleMessage("History"),
+        "Hole_um": MessageLookupByLibrary.simpleMessage("Hole (µm)"),
         "Hub_Hoop_Stress": MessageLookupByLibrary.simpleMessage(
           "Hub bore hoop stress, σt",
         ),
@@ -556,6 +565,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage(
           "Nominal diameter, d",
         ),
+        "Nominal_Size_mm": MessageLookupByLibrary.simpleMessage("Size (mm)"),
         "None": MessageLookupByLibrary.simpleMessage("None"),
         "Not_a_number": MessageLookupByLibrary.simpleMessage("Not a number"),
         "Note_Polar_Moment": MessageLookupByLibrary.simpleMessage(
@@ -698,6 +708,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "Search_Materials": MessageLookupByLibrary.simpleMessage(
           "Search materials",
         ),
+        "Search_Size_Or_Fit": MessageLookupByLibrary.simpleMessage(
+          "Search a diameter or fit",
+        ),
         "Search_Thread_Size": MessageLookupByLibrary.simpleMessage(
           "Search a thread size",
         ),
@@ -726,6 +739,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Shaft_power_and_torque": MessageLookupByLibrary.simpleMessage(
           "Shaft power and torque",
         ),
+        "Shaft_um": MessageLookupByLibrary.simpleMessage("Shaft (µm)"),
         "Shape": MessageLookupByLibrary.simpleMessage("Shape"),
         "Shape_Type": MessageLookupByLibrary.simpleMessage("Shape type"),
         "Share_Results": MessageLookupByLibrary.simpleMessage("Share results"),

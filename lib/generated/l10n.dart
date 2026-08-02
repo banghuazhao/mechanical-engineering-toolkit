@@ -3398,6 +3398,71 @@ class S {
       args: [],
     );
   }
+
+  /// `Fits & Tolerances (ISO 286)`
+  String get Fits_Tolerances {
+    return Intl.message(
+      'Fits & Tolerances (ISO 286)',
+      name: 'Fits_Tolerances',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search a diameter or fit`
+  String get Search_Size_Or_Fit {
+    return Intl.message(
+      'Search a diameter or fit',
+      name: 'Search_Size_Or_Fit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Size (mm)`
+  String get Nominal_Size_mm {
+    return Intl.message(
+      'Size (mm)',
+      name: 'Nominal_Size_mm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fit`
+  String get Fit {
+    return Intl.message('Fit', name: 'Fit', desc: '', args: []);
+  }
+
+  /// `Hole (µm)`
+  String get Hole_um {
+    return Intl.message('Hole (µm)', name: 'Hole_um', desc: '', args: []);
+  }
+
+  /// `Shaft (µm)`
+  String get Shaft_um {
+    return Intl.message('Shaft (µm)', name: 'Shaft_um', desc: '', args: []);
+  }
+
+  /// `Clearance (µm)`
+  String get Clearance_um {
+    return Intl.message(
+      'Clearance (µm)',
+      name: 'Clearance_um',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hole-basis fits for 1–500 mm. Each cell is the upper limit over the lower, in µm from the nominal size; a negative clearance is interference. Bands run over the lower bound up to the upper. The c, s and u shaft fits are not listed because their deviations split into finer size bands.`
+  String get Fits_Footnote {
+    return Intl.message(
+      'Hole-basis fits for 1–500 mm. Each cell is the upper limit over the lower, in µm from the nominal size; a negative clearance is interference. Bands run over the lower bound up to the upper. The c, s and u shaft fits are not listed because their deviations split into finer size bands.',
+      name: 'Fits_Footnote',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

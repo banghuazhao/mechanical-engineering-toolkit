@@ -56,6 +56,7 @@ class ReferenceTablePage<T> extends StatefulWidget {
     required this.rows,
     required this.columns,
     required this.searchText,
+    this.matcher,
     this.filters = const [],
     this.searchHint,
     this.footnote,
@@ -67,6 +68,11 @@ class ReferenceTablePage<T> extends StatefulWidget {
 
   /// Haystack the search field matches against, e.g. `'M8 1.25 coarse'`.
   final String Function(T row) searchText;
+
+  /// Replaces the default substring match on [searchText] — for tables where a
+  /// query means something other than text, such as a diameter that has to
+  /// fall inside a row's size range. [query] is trimmed and lowercased.
+  final bool Function(T row, String query)? matcher;
 
   final List<ReferenceFilter<T>> filters;
   final String? searchHint;
@@ -91,14 +97,18 @@ class _ReferenceTablePageState<T> extends State<ReferenceTablePage<T>> {
     super.dispose();
   }
 
+  bool _matches(T row) {
+    if (_query.isEmpty) return true;
+    final matcher = widget.matcher;
+    if (matcher != null) return matcher(row, _query);
+    return widget.searchText(row).toLowerCase().contains(_query);
+  }
+
   List<T> get _visibleRows {
     final filter = _filterIndex < 0 ? null : widget.filters[_filterIndex];
     return [
       for (final row in widget.rows)
-        if ((filter == null || filter.test(row)) &&
-            (_query.isEmpty ||
-                widget.searchText(row).toLowerCase().contains(_query)))
-          row,
+        if ((filter == null || filter.test(row)) && _matches(row)) row,
     ];
   }
 
@@ -207,6 +217,7 @@ class _ReferenceTablePageState<T> extends State<ReferenceTablePage<T>> {
                 const Divider(height: 1),
                 Expanded(
                   child: ListView.builder(
+                    key: const Key('referenceTable'),
                     itemCount: rows.length,
                     itemBuilder: (context, index) =>
                         _buildRow(context, rows[index], index, widths),

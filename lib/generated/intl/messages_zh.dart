@@ -97,6 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Clear_Search": MessageLookupByLibrary.simpleMessage("清除搜索"),
         "Clearance_Close": MessageLookupByLibrary.simpleMessage("过孔紧配"),
         "Clearance_Free": MessageLookupByLibrary.simpleMessage("过孔松配"),
+        "Clearance_um": MessageLookupByLibrary.simpleMessage("间隙（µm）"),
         "Combined_Loading_at_a_Point": MessageLookupByLibrary.simpleMessage(
           "一点处的组合载荷",
         ),
@@ -282,6 +283,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "Feedback": MessageLookupByLibrary.simpleMessage("反馈"),
         "Fillet_Weld_Strength": MessageLookupByLibrary.simpleMessage("角焊缝强度"),
         "FinanceGo": MessageLookupByLibrary.simpleMessage("美股财报通"),
+        "Fit": MessageLookupByLibrary.simpleMessage("配合"),
+        "Fits_Footnote": MessageLookupByLibrary.simpleMessage(
+          "基孔制配合，适用 1–500 mm。每格上为上偏差、下为下偏差，单位为相对公称尺寸的 µm；间隙为负表示过盈。尺寸段为大于下限、小于等于上限。c、s、u 轴的偏差按更细的尺寸段划分，故未列入。",
+        ),
+        "Fits_Tolerances":
+            MessageLookupByLibrary.simpleMessage("配合与公差（ISO 286）"),
         "Flange_Thickness": MessageLookupByLibrary.simpleMessage("翼缘厚度"),
         "Flexure_formula_of_beam":
             MessageLookupByLibrary.simpleMessage("梁的弯曲公式"),
@@ -308,6 +315,7 @@ class MessageLookup extends MessageLookupByLibrary {
           "螺旋压缩弹簧",
         ),
         "History": MessageLookupByLibrary.simpleMessage("历史记录"),
+        "Hole_um": MessageLookupByLibrary.simpleMessage("孔（µm）"),
         "Hub_Hoop_Stress": MessageLookupByLibrary.simpleMessage("轮毂内孔周向应力 σt"),
         "Hub_Outer_Radius_Ro": MessageLookupByLibrary.simpleMessage("轮毂外半径 ro"),
         "Image_Guru": MessageLookupByLibrary.simpleMessage("咕噜滤镜"),
@@ -404,6 +412,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "No_Materials_Found": MessageLookupByLibrary.simpleMessage("未找到材料"),
         "No_Tools_Found": MessageLookupByLibrary.simpleMessage("未找到工具"),
         "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage("公称直径 d"),
+        "Nominal_Size_mm": MessageLookupByLibrary.simpleMessage("尺寸（mm）"),
         "None": MessageLookupByLibrary.simpleMessage("无"),
         "Not_a_number": MessageLookupByLibrary.simpleMessage("非数值"),
         "Note_Polar_Moment": MessageLookupByLibrary.simpleMessage(
@@ -501,6 +510,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Save": MessageLookupByLibrary.simpleMessage("保存"),
         "Search": MessageLookupByLibrary.simpleMessage("搜索"),
         "Search_Materials": MessageLookupByLibrary.simpleMessage("搜索材料"),
+        "Search_Size_Or_Fit": MessageLookupByLibrary.simpleMessage("搜索直径或配合"),
         "Search_Thread_Size": MessageLookupByLibrary.simpleMessage("搜索螺纹规格"),
         "Search_Tools": MessageLookupByLibrary.simpleMessage("搜索工具"),
         "Second_Moment_I": MessageLookupByLibrary.simpleMessage("截面惯性矩 I"),
@@ -516,6 +526,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("轴表面应力 σs"),
         "Shaft_power_and_torque":
             MessageLookupByLibrary.simpleMessage("轴功率与转矩"),
+        "Shaft_um": MessageLookupByLibrary.simpleMessage("轴（µm）"),
         "Shape": MessageLookupByLibrary.simpleMessage("形状"),
         "Shape_Type": MessageLookupByLibrary.simpleMessage("形状类型"),
         "Share_Results": MessageLookupByLibrary.simpleMessage("分享结果"),

@@ -385,5 +385,13 @@
   "Tap_Drill": "底孔鑽頭",
   "Clearance_Close": "過孔緊配",
   "Clearance_Free": "過孔鬆配",
-  "Drill_Tap_Footnote": "直徑單位為 mm；英制鑽頭顯示規格代號，下方為對應毫米值。底孔鑽頭按鋼件約 75% 牙深選取，公制過孔依據 ISO 273（緊配與鬆配系列）。點按任意行可複製。"
+  "Drill_Tap_Footnote": "直徑單位為 mm；英制鑽頭顯示規格代號，下方為對應毫米值。底孔鑽頭按鋼件約 75% 牙深選取，公制過孔依據 ISO 273（緊配與鬆配系列）。點按任意行可複製。",
+  "Fits_Tolerances": "配合與公差（ISO 286）",
+  "Search_Size_Or_Fit": "搜尋直徑或配合",
+  "Nominal_Size_mm": "尺寸（mm）",
+  "Fit": "配合",
+  "Hole_um": "孔（µm）",
+  "Shaft_um": "軸（µm）",
+  "Clearance_um": "間隙（µm）",
+  "Fits_Footnote": "基孔制配合，適用 1–500 mm。每格上為上偏差、下為下偏差，單位為相對公稱尺寸的 µm；間隙為負表示過盈。尺寸段為大於下限、小於等於上限。c、s、u 軸的偏差按更細的尺寸段劃分，故未列入。"
 }

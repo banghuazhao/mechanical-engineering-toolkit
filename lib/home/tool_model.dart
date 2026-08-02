@@ -6,6 +6,7 @@ import 'package:mechanical_engineering_toolkit/home/statics/page/centroid_page.d
 import 'package:mechanical_engineering_toolkit/home/statics/page/resultant_force_page.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/page/truss_analysis_page.dart';
 import 'package:mechanical_engineering_toolkit/home/reference/drill_tap_chart_page.dart';
+import 'package:mechanical_engineering_toolkit/home/reference/fits_tolerances_page.dart';
 import 'package:mechanical_engineering_toolkit/home/unit_converter/unit_converter_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/bar_force_displacement_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/beam_flexure_formula_page.dart';
@@ -632,6 +633,27 @@ class ToolLibrary {
               context,
               MaterialPageRoute(
                   builder: (context) => DrillTapChartPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 502,
+          icon: Icons.adjust_rounded,
+          title: S.of(context).Fits_Tolerances,
+          type: ToolType.utilities,
+          keywords: const [
+            'fit',
+            'tolerance',
+            'iso 286',
+            'clearance',
+            'interference',
+            'shaft',
+            'hole'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => FitsTolerancesPage(
                       title: title,
                       toolId: toolId,
                       initialInputs: initialInputs)))),

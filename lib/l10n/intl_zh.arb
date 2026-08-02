@@ -385,5 +385,13 @@
   "Tap_Drill": "底孔钻头",
   "Clearance_Close": "过孔紧配",
   "Clearance_Free": "过孔松配",
-  "Drill_Tap_Footnote": "直径单位为 mm；英制钻头显示规格代号，下方为对应毫米值。底孔钻头按钢件约 75% 牙深选取，公制过孔依据 ISO 273（紧配与松配系列）。点按任意行可复制。"
+  "Drill_Tap_Footnote": "直径单位为 mm；英制钻头显示规格代号，下方为对应毫米值。底孔钻头按钢件约 75% 牙深选取，公制过孔依据 ISO 273（紧配与松配系列）。点按任意行可复制。",
+  "Fits_Tolerances": "配合与公差（ISO 286）",
+  "Search_Size_Or_Fit": "搜索直径或配合",
+  "Nominal_Size_mm": "尺寸（mm）",
+  "Fit": "配合",
+  "Hole_um": "孔（µm）",
+  "Shaft_um": "轴（µm）",
+  "Clearance_um": "间隙（µm）",
+  "Fits_Footnote": "基孔制配合，适用 1–500 mm。每格上为上偏差、下为下偏差，单位为相对公称尺寸的 µm；间隙为负表示过盈。尺寸段为大于下限、小于等于上限。c、s、u 轴的偏差按更细的尺寸段划分，故未列入。"
 }

@@ -386,5 +386,13 @@
   "Tap_Drill": "Tap drill",
   "Clearance_Close": "Clearance close",
   "Clearance_Free": "Clearance free",
-  "Drill_Tap_Footnote": "Diameters are in mm; inch drills show the designation with its millimetre equivalent below. Tap drills give about 75% thread engagement in steel, and metric clearance holes follow ISO 273 (close and free series). Tap a row to copy it."
+  "Drill_Tap_Footnote": "Diameters are in mm; inch drills show the designation with its millimetre equivalent below. Tap drills give about 75% thread engagement in steel, and metric clearance holes follow ISO 273 (close and free series). Tap a row to copy it.",
+  "Fits_Tolerances": "Fits & Tolerances (ISO 286)",
+  "Search_Size_Or_Fit": "Search a diameter or fit",
+  "Nominal_Size_mm": "Size (mm)",
+  "Fit": "Fit",
+  "Hole_um": "Hole (µm)",
+  "Shaft_um": "Shaft (µm)",
+  "Clearance_um": "Clearance (µm)",
+  "Fits_Footnote": "Hole-basis fits for 1–500 mm. Each cell is the upper limit over the lower, in µm from the nominal size; a negative clearance is interference. Bands run over the lower bound up to the upper. The c, s and u shaft fits are not listed because their deviations split into finer size bands."
 }
