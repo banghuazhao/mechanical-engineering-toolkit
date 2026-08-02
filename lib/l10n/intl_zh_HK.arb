@@ -369,5 +369,21 @@
   "Ball_Bearing": "球軸承（p = 3）",
   "Roller_Bearing": "滾子軸承（p = 10/3）",
   "Language": "語言",
-  "System_Default": "跟隨系統"
+  "System_Default": "跟隨系統",
+  "Search": "搜尋",
+  "All": "全部",
+  "No_Matches": "無匹配結果",
+  "No_Matches_Description": "請換一個規格或清除篩選條件。",
+  "Drill_Tap_Chart": "鑽孔與攻絲對照表",
+  "Search_Thread_Size": "搜尋螺紋規格",
+  "Thread": "螺紋",
+  "Pitch_TPI": "螺距 / 每英寸牙數",
+  "Metric_Coarse": "公制粗牙",
+  "Metric_Fine": "公制細牙",
+  "Unified_Coarse": "英制粗牙（UNC）",
+  "Unified_Fine": "英制細牙（UNF）",
+  "Tap_Drill": "底孔鑽頭",
+  "Clearance_Close": "過孔緊配",
+  "Clearance_Free": "過孔鬆配",
+  "Drill_Tap_Footnote": "直徑單位為 mm；英制鑽頭顯示規格代號，下方為對應毫米值。底孔鑽頭按鋼件約 75% 牙深選取，公制過孔依據 ISO 273（緊配與鬆配系列）。點按任意行可複製。"
 }

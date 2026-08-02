@@ -3273,6 +3273,131 @@ class S {
       args: [],
     );
   }
+
+  /// `Search`
+  String get Search {
+    return Intl.message('Search', name: 'Search', desc: '', args: []);
+  }
+
+  /// `All`
+  String get All {
+    return Intl.message('All', name: 'All', desc: '', args: []);
+  }
+
+  /// `No matches`
+  String get No_Matches {
+    return Intl.message('No matches', name: 'No_Matches', desc: '', args: []);
+  }
+
+  /// `Try a different size or clear the filters.`
+  String get No_Matches_Description {
+    return Intl.message(
+      'Try a different size or clear the filters.',
+      name: 'No_Matches_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Drill & Tap Chart`
+  String get Drill_Tap_Chart {
+    return Intl.message(
+      'Drill & Tap Chart',
+      name: 'Drill_Tap_Chart',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search a thread size`
+  String get Search_Thread_Size {
+    return Intl.message(
+      'Search a thread size',
+      name: 'Search_Thread_Size',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thread`
+  String get Thread {
+    return Intl.message('Thread', name: 'Thread', desc: '', args: []);
+  }
+
+  /// `Pitch / TPI`
+  String get Pitch_TPI {
+    return Intl.message('Pitch / TPI', name: 'Pitch_TPI', desc: '', args: []);
+  }
+
+  /// `Metric coarse`
+  String get Metric_Coarse {
+    return Intl.message(
+      'Metric coarse',
+      name: 'Metric_Coarse',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Metric fine`
+  String get Metric_Fine {
+    return Intl.message('Metric fine', name: 'Metric_Fine', desc: '', args: []);
+  }
+
+  /// `Unified coarse (UNC)`
+  String get Unified_Coarse {
+    return Intl.message(
+      'Unified coarse (UNC)',
+      name: 'Unified_Coarse',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unified fine (UNF)`
+  String get Unified_Fine {
+    return Intl.message(
+      'Unified fine (UNF)',
+      name: 'Unified_Fine',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap drill`
+  String get Tap_Drill {
+    return Intl.message('Tap drill', name: 'Tap_Drill', desc: '', args: []);
+  }
+
+  /// `Clearance close`
+  String get Clearance_Close {
+    return Intl.message(
+      'Clearance close',
+      name: 'Clearance_Close',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clearance free`
+  String get Clearance_Free {
+    return Intl.message(
+      'Clearance free',
+      name: 'Clearance_Free',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Diameters are in mm; inch drills show the designation with its millimetre equivalent below. Tap drills give about 75% thread engagement in steel, and metric clearance holes follow ISO 273 (close and free series). Tap a row to copy it.`
+  String get Drill_Tap_Footnote {
+    return Intl.message(
+      'Diameters are in mm; inch drills show the designation with its millimetre equivalent below. Tap drills give about 75% thread engagement in steel, and metric clearance holes follow ISO 273 (close and free series). Tap a row to copy it.',
+      name: 'Drill_Tap_Footnote',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

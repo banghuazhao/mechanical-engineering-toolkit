@@ -27,7 +27,7 @@ const List<MajorRecommendation> majorRecommendations = [
     title: _mechanical,
     icon: Icons.precision_manufacturing_rounded,
     toolIds: [
-      100, 101, 102, 103, 104, 114, 115, 112, 116, 500,
+      100, 101, 102, 103, 104, 114, 115, 112, 116, 500, 501,
       118, 119, 120, 121, // stress analysis / joint design
       701, 702, 703, 704, 705, 706, 707, 708, // machine element sizing
     ],

@@ -46,6 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Aerospace_Engineering": MessageLookupByLibrary.simpleMessage(
           "Aerospace Engineering",
         ),
+        "All": MessageLookupByLibrary.simpleMessage("All"),
         "Allowable_Shear_Stress_Optional": MessageLookupByLibrary.simpleMessage(
           "Allowable shear stress (optional)",
         ),
@@ -129,6 +130,10 @@ class MessageLookup extends MessageLookupByLibrary {
           "Clear history?",
         ),
         "Clear_Search": MessageLookupByLibrary.simpleMessage("Clear search"),
+        "Clearance_Close":
+            MessageLookupByLibrary.simpleMessage("Clearance close"),
+        "Clearance_Free":
+            MessageLookupByLibrary.simpleMessage("Clearance free"),
         "Combined_Loading_at_a_Point": MessageLookupByLibrary.simpleMessage(
           "Combined Loading at a Point",
         ),
@@ -216,6 +221,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "Display_Format":
             MessageLookupByLibrary.simpleMessage("DISPLAY FORMAT"),
         "Drag_Along_Line": m1,
+        "Drill_Tap_Chart": MessageLookupByLibrary.simpleMessage(
+          "Drill & Tap Chart",
+        ),
+        "Drill_Tap_Footnote": MessageLookupByLibrary.simpleMessage(
+          "Diameters are in mm; inch drills show the designation with its millimetre equivalent below. Tap drills give about 75% thread engagement in steel, and metric clearance holes follow ISO 273 (close and free series). Tap a row to copy it.",
+        ),
         "Driving_Torque_T1": MessageLookupByLibrary.simpleMessage(
           "Driving torque, T1",
         ),
@@ -498,6 +509,8 @@ class MessageLookup extends MessageLookupByLibrary {
           "Member Forces (+ tension, \\u2212 compression)",
         ),
         "Members": MessageLookupByLibrary.simpleMessage("Members"),
+        "Metric_Coarse": MessageLookupByLibrary.simpleMessage("Metric coarse"),
+        "Metric_Fine": MessageLookupByLibrary.simpleMessage("Metric fine"),
         "Metronome_Go": MessageLookupByLibrary.simpleMessage("Metronome Go"),
         "Mint_Translate":
             MessageLookupByLibrary.simpleMessage("Mint Translate"),
@@ -531,6 +544,10 @@ class MessageLookup extends MessageLookupByLibrary {
         ),
         "No_History_Yet":
             MessageLookupByLibrary.simpleMessage("No history yet"),
+        "No_Matches": MessageLookupByLibrary.simpleMessage("No matches"),
+        "No_Matches_Description": MessageLookupByLibrary.simpleMessage(
+          "Try a different size or clear the filters.",
+        ),
         "No_Materials_Found": MessageLookupByLibrary.simpleMessage(
           "No materials found",
         ),
@@ -575,6 +592,7 @@ class MessageLookup extends MessageLookupByLibrary {
         ),
         "Pinion_Teeth_N1":
             MessageLookupByLibrary.simpleMessage("Pinion teeth, N1"),
+        "Pitch_TPI": MessageLookupByLibrary.simpleMessage("Pitch / TPI"),
         "Plane_Stresses":
             MessageLookupByLibrary.simpleMessage("Plane Stresses"),
         "Plane_stresses_transformation": MessageLookupByLibrary.simpleMessage(
@@ -676,8 +694,12 @@ class MessageLookup extends MessageLookupByLibrary {
           "Rule of mixtures",
         ),
         "Save": MessageLookupByLibrary.simpleMessage("Save"),
+        "Search": MessageLookupByLibrary.simpleMessage("Search"),
         "Search_Materials": MessageLookupByLibrary.simpleMessage(
           "Search materials",
+        ),
+        "Search_Thread_Size": MessageLookupByLibrary.simpleMessage(
+          "Search a thread size",
         ),
         "Search_Tools": MessageLookupByLibrary.simpleMessage("Search tools"),
         "Second_Moment_I":
@@ -783,6 +805,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Tangential_Load_Wt": MessageLookupByLibrary.simpleMessage(
           "Tangential load, Wt",
         ),
+        "Tap_Drill": MessageLookupByLibrary.simpleMessage("Tap drill"),
         "Target_Factor_of_Safety_N": MessageLookupByLibrary.simpleMessage(
           "Target factor of safety, n",
         ),
@@ -801,6 +824,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Thermal_deformation_and_stress": MessageLookupByLibrary.simpleMessage(
           "Thermal deformation and stress",
         ),
+        "Thread": MessageLookupByLibrary.simpleMessage("Thread"),
         "Tightening_Torque_T": MessageLookupByLibrary.simpleMessage(
           "Tightening torque, T",
         ),
@@ -827,6 +851,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "Ultimate_Strength_Sut": MessageLookupByLibrary.simpleMessage(
           "Ultimate strength, Sut",
         ),
+        "Unified_Coarse": MessageLookupByLibrary.simpleMessage(
+          "Unified coarse (UNC)",
+        ),
+        "Unified_Fine":
+            MessageLookupByLibrary.simpleMessage("Unified fine (UNF)"),
         "Uniform_Distributed_Load_Full_Span":
             MessageLookupByLibrary.simpleMessage(
           "Uniform Distributed Load (full span)",

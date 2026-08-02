@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
           "感谢您支持工程工具箱。",
         ),
         "Aerospace_Engineering": MessageLookupByLibrary.simpleMessage("航空航天工程"),
+        "All": MessageLookupByLibrary.simpleMessage("全部"),
         "Allowable_Shear_Stress_Optional": MessageLookupByLibrary.simpleMessage(
           "许用剪应力（可选）",
         ),
@@ -94,6 +95,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Clear_History_Question":
             MessageLookupByLibrary.simpleMessage("确定清除历史记录？"),
         "Clear_Search": MessageLookupByLibrary.simpleMessage("清除搜索"),
+        "Clearance_Close": MessageLookupByLibrary.simpleMessage("过孔紧配"),
+        "Clearance_Free": MessageLookupByLibrary.simpleMessage("过孔松配"),
         "Combined_Loading_at_a_Point": MessageLookupByLibrary.simpleMessage(
           "一点处的组合载荷",
         ),
@@ -164,6 +167,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "Displacement": MessageLookupByLibrary.simpleMessage("位移"),
         "Display_Format": MessageLookupByLibrary.simpleMessage("显示格式"),
         "Drag_Along_Line": m1,
+        "Drill_Tap_Chart": MessageLookupByLibrary.simpleMessage("钻孔与攻丝对照表"),
+        "Drill_Tap_Footnote": MessageLookupByLibrary.simpleMessage(
+          "直径单位为 mm；英制钻头显示规格代号，下方为对应毫米值。底孔钻头按钢件约 75% 牙深选取，公制过孔依据 ISO 273（紧配与松配系列）。点按任意行可复制。",
+        ),
         "Driving_Torque_T1": MessageLookupByLibrary.simpleMessage("主动轮转矩 T1"),
         "Dynamic_Load_Rating_C":
             MessageLookupByLibrary.simpleMessage("额定动载荷 C"),
@@ -363,6 +370,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Mechanics_of_Material": MessageLookupByLibrary.simpleMessage("材料力学"),
         "Member_Forces": MessageLookupByLibrary.simpleMessage("杆件内力（+ 拉，− 压）"),
         "Members": MessageLookupByLibrary.simpleMessage("杆件"),
+        "Metric_Coarse": MessageLookupByLibrary.simpleMessage("公制粗牙"),
+        "Metric_Fine": MessageLookupByLibrary.simpleMessage("公制细牙"),
         "Metronome_Go": MessageLookupByLibrary.simpleMessage("打拍节拍器"),
         "Mint_Translate": MessageLookupByLibrary.simpleMessage("薄荷翻译"),
         "Module_M": MessageLookupByLibrary.simpleMessage("模数 m"),
@@ -388,6 +397,10 @@ class MessageLookup extends MessageLookupByLibrary {
         ),
         "No_Favorites_Yet": MessageLookupByLibrary.simpleMessage("暂无收藏"),
         "No_History_Yet": MessageLookupByLibrary.simpleMessage("暂无历史记录"),
+        "No_Matches": MessageLookupByLibrary.simpleMessage("无匹配结果"),
+        "No_Matches_Description": MessageLookupByLibrary.simpleMessage(
+          "请换一个规格或清除筛选条件。",
+        ),
         "No_Materials_Found": MessageLookupByLibrary.simpleMessage("未找到材料"),
         "No_Tools_Found": MessageLookupByLibrary.simpleMessage("未找到工具"),
         "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage("公称直径 d"),
@@ -421,6 +434,7 @@ class MessageLookup extends MessageLookupByLibrary {
           "小齿轮分度圆直径 d1",
         ),
         "Pinion_Teeth_N1": MessageLookupByLibrary.simpleMessage("小齿轮齿数 N1"),
+        "Pitch_TPI": MessageLookupByLibrary.simpleMessage("螺距 / 每英寸牙数"),
         "Plane_Stresses": MessageLookupByLibrary.simpleMessage("平面应力"),
         "Plane_stresses_transformation": MessageLookupByLibrary.simpleMessage(
           "平面应力变换",
@@ -485,7 +499,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "Roller_Vertical": MessageLookupByLibrary.simpleMessage("滚轴支座（竖向反力）"),
         "Rule_of_mixtures": MessageLookupByLibrary.simpleMessage("复合材料混合定律"),
         "Save": MessageLookupByLibrary.simpleMessage("保存"),
+        "Search": MessageLookupByLibrary.simpleMessage("搜索"),
         "Search_Materials": MessageLookupByLibrary.simpleMessage("搜索材料"),
+        "Search_Thread_Size": MessageLookupByLibrary.simpleMessage("搜索螺纹规格"),
         "Search_Tools": MessageLookupByLibrary.simpleMessage("搜索工具"),
         "Second_Moment_I": MessageLookupByLibrary.simpleMessage("截面惯性矩 I"),
         "Second_Moment_Ix": MessageLookupByLibrary.simpleMessage("惯性矩 Ix"),
@@ -550,6 +566,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("SwiftComp:复合材料仿真建模分析工具"),
         "System_Default": MessageLookupByLibrary.simpleMessage("跟随系统"),
         "Tangential_Load_Wt": MessageLookupByLibrary.simpleMessage("圆周力 Wt"),
+        "Tap_Drill": MessageLookupByLibrary.simpleMessage("底孔钻头"),
         "Target_Factor_of_Safety_N": MessageLookupByLibrary.simpleMessage(
           "目标安全系数 n",
         ),
@@ -562,6 +579,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Thermal_deformation_and_stress": MessageLookupByLibrary.simpleMessage(
           "热变形与热应力",
         ),
+        "Thread": MessageLookupByLibrary.simpleMessage("螺纹"),
         "Tightening_Torque_T": MessageLookupByLibrary.simpleMessage("拧紧力矩 T"),
         "Torsion_formula_of_bar":
             MessageLookupByLibrary.simpleMessage("杆的扭力公式"),
@@ -580,6 +598,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Ultimate_Strength": MessageLookupByLibrary.simpleMessage("抗拉强度"),
         "Ultimate_Strength_Sut":
             MessageLookupByLibrary.simpleMessage("抗拉强度 Sut"),
+        "Unified_Coarse": MessageLookupByLibrary.simpleMessage("英制粗牙（UNC）"),
+        "Unified_Fine": MessageLookupByLibrary.simpleMessage("英制细牙（UNF）"),
         "Uniform_Distributed_Load_Full_Span":
             MessageLookupByLibrary.simpleMessage(
           "满跨均布载荷",

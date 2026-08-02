@@ -370,5 +370,21 @@
   "Ball_Bearing": "Ball bearing (p = 3)",
   "Roller_Bearing": "Roller bearing (p = 10/3)",
   "Language": "Language",
-  "System_Default": "System default"
+  "System_Default": "System default",
+  "Search": "Search",
+  "All": "All",
+  "No_Matches": "No matches",
+  "No_Matches_Description": "Try a different size or clear the filters.",
+  "Drill_Tap_Chart": "Drill & Tap Chart",
+  "Search_Thread_Size": "Search a thread size",
+  "Thread": "Thread",
+  "Pitch_TPI": "Pitch / TPI",
+  "Metric_Coarse": "Metric coarse",
+  "Metric_Fine": "Metric fine",
+  "Unified_Coarse": "Unified coarse (UNC)",
+  "Unified_Fine": "Unified fine (UNF)",
+  "Tap_Drill": "Tap drill",
+  "Clearance_Close": "Clearance close",
+  "Clearance_Free": "Clearance free",
+  "Drill_Tap_Footnote": "Diameters are in mm; inch drills show the designation with its millimetre equivalent below. Tap drills give about 75% thread engagement in steel, and metric clearance holes follow ISO 273 (close and free series). Tap a row to copy it."
 }
