@@ -87,6 +87,15 @@ class MyApp extends StatelessWidget {
                 return const Locale('zh', ''); //简体
               }
             }
+            if (locale?.languageCode == 'de') {
+              return const Locale('de', '');
+            }
+            if (locale?.languageCode == 'fr') {
+              return const Locale('fr', '');
+            }
+            if (locale?.languageCode == 'ja') {
+              return const Locale('ja', '');
+            }
             return const Locale('en', '');
           },
           title: 'ME Toolkit',

@@ -8,7 +8,10 @@ enum AppLanguage {
   system(null),
   english(Locale('en')),
   simplifiedChinese(Locale('zh')),
-  traditionalChinese(Locale('zh', 'HK'));
+  traditionalChinese(Locale('zh', 'HK')),
+  german(Locale('de')),
+  french(Locale('fr')),
+  japanese(Locale('ja'));
 
   const AppLanguage(this.locale);
 
@@ -26,6 +29,12 @@ enum AppLanguage {
         return '简体中文';
       case AppLanguage.traditionalChinese:
         return '繁體中文';
+      case AppLanguage.german:
+        return 'Deutsch';
+      case AppLanguage.french:
+        return 'Français';
+      case AppLanguage.japanese:
+        return '日本語';
     }
   }
 }
