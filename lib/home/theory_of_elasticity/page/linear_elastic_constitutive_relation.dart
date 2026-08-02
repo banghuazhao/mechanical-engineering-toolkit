@@ -342,7 +342,6 @@ G_ij = Shear modulus in the i-j plane
   }
 
   void _calculate() {
-    print(dropValue);
     if (material.isValid()) {
       final Map<String, String> inputs = {
         'Material Type': dropValue,
