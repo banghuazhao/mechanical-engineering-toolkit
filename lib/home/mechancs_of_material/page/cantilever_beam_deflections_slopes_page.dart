@@ -245,7 +245,7 @@ class _CantileverBeamDeflectionsSlopesPageState
       }
       final needsA = _needsA(_loadCase);
       final a = needsA ? _a : 0.0;
-      if (needsA && (a == null || a < 0 || a! > l)) {
+      if (needsA && (a == null || a < 0 || a > l)) {
         throw const FormatException('Position a must be between 0 and L.');
       }
 
@@ -341,7 +341,7 @@ class _CantileverBeamDeflectionsSlopesPageState
           final second = -f / ei;
           slopeValues = [
             '${(second).formatted(precs)}x',
-            (second * a!).formatted(precs),
+            (second * a).formatted(precs),
             (-second * a).formatted(precs),
           ];
       }

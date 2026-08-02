@@ -7,6 +7,10 @@ import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+/// Shown in-app as well as on both store listings, so the two never drift.
+const privacyPolicyUrl = 'https://apps-bay.github.io/Apps-Bay-Website/privacy/';
 
 String _fmtPreview(double v) =>
     v == v.roundToDouble() ? v.toStringAsFixed(0) : v.toStringAsFixed(2);
@@ -341,44 +345,78 @@ class ToolSettingPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 12),
-                          FutureBuilder<bool>(
-                            future: AdsManager.isPrivacyOptionsRequired(),
-                            builder: (context, snapshot) {
-                              if (snapshot.data != true) {
-                                return const SizedBox.shrink();
-                              }
-                              return AppSectionCard(
-                                title: S.of(context).Privacy,
-                                child: ListTile(
+                          AppSectionCard(
+                            title: S.of(context).Privacy,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ListTile(
                                   contentPadding:
                                       const EdgeInsets.symmetric(vertical: 4),
-                                  leading:
-                                      const Icon(Icons.privacy_tip_rounded),
-                                  title: Text(S.of(context).Privacy_Choices),
-                                  subtitle: Text(
-                                    S.of(context).Privacy_Choices_Description,
-                                  ),
+                                  leading: const Icon(Icons.policy_rounded),
+                                  title: Text(S.of(context).Privacy_Policy),
                                   trailing:
-                                      const Icon(Icons.chevron_right_rounded),
-                                  onTap: () async {
-                                    final error =
-                                        await AdsManager.showPrivacyOptions();
-                                    if (!context.mounted || error == null) {
-                                      return;
+                                      const Icon(Icons.open_in_new_rounded),
+                                  onTap: () => launchUrl(
+                                    Uri.parse(privacyPolicyUrl),
+                                    mode: LaunchMode.externalApplication,
+                                  ),
+                                ),
+                                // Only meaningful where a consent choice was
+                                // actually collected (EEA/UK and similar).
+                                FutureBuilder<bool>(
+                                  future: AdsManager.isPrivacyOptionsRequired(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.data != true) {
+                                      return const SizedBox.shrink();
                                     }
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          S
-                                              .of(context)
-                                              .Privacy_Choices_Unavailable,
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Divider(
+                                            height: 1,
+                                            indent: 16,
+                                            endIndent: 16),
+                                        ListTile(
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 4),
+                                          leading: const Icon(
+                                              Icons.privacy_tip_rounded),
+                                          title: Text(
+                                              S.of(context).Privacy_Choices),
+                                          subtitle: Text(
+                                            S
+                                                .of(context)
+                                                .Privacy_Choices_Description,
+                                          ),
+                                          trailing: const Icon(
+                                              Icons.chevron_right_rounded),
+                                          onTap: () async {
+                                            final error = await AdsManager
+                                                .showPrivacyOptions();
+                                            if (!context.mounted ||
+                                                error == null) {
+                                              return;
+                                            }
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  S
+                                                      .of(context)
+                                                      .Privacy_Choices_Unavailable,
+                                                ),
+                                              ),
+                                            );
+                                          },
                                         ),
-                                      ),
+                                      ],
                                     );
                                   },
                                 ),
-                              );
-                            },
+                              ],
+                            ),
                           ),
                         ],
                       ),

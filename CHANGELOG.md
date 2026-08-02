@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.7.0 - 2026-08-02
+
+- Added a searchable drill & tap chart covering standard tap and clearance drill sizes.
+- Added an ISO 286 fits & tolerances reference table.
+- Added an in-app language switcher in the side menu.
+- Added German, French, and Japanese translations.
+- Fixed the Android minimum supported version, which was raised to Android 16 by mistake in 1.6.0 and prevented installation on most devices.
+
 ## 1.6.0 - 2026-07-23
 
 - Added a new Machine Design category: helical compression spring, spur gear geometry, shaft fatigue sizing, bearing L10 life, belt/chain drive, bolt preload, fillet weld strength, and press/shrink-fit interference calculators.

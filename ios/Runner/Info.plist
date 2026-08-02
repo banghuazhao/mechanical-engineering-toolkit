@@ -35,13 +35,8 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>This identifier will be used to deliver personalized ads to you.</string>
+	<string>Mechanical Engineering Toolkit uses your device's advertising identifier to choose which ads appear below your calculation results — for example, showing ads for CAD software or engineering suppliers rather than unrelated products. Every calculator works exactly the same whichever you choose.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

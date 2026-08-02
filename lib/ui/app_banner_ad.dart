@@ -34,7 +34,7 @@ class _AppBannerAdState extends State<AppBannerAd> {
     final ad = BannerAd(
       adUnitId: AdsManager.bannerAdUnitId,
       size: _size,
-      request: const AdRequest(),
+      request: AdsManager.buildAdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (loadedAd) {
           if (!mounted) {

@@ -658,6 +658,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Privacy_Choices_Unavailable": MessageLookupByLibrary.simpleMessage(
       "Les choix de confidentialité ne sont pas disponibles pour le moment. Réessayez plus tard.",
     ),
+    "Privacy_Policy": MessageLookupByLibrary.simpleMessage(
+      "Politique de confidentialité",
+    ),
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "« Supprimer les publicités » n\'est pas encore disponible sur l\'App Store.",
     ),

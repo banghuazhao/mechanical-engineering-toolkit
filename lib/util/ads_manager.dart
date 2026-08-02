@@ -16,6 +16,7 @@ class AdsManager {
   static Future<bool>? _consentFuture;
   static Future<InitializationStatus>? _mobileAdsInitialization;
   static bool _adsRemoved = false;
+  static bool _trackingAuthorized = false;
   static final Set<AppOpenAdManager> _appOpenManagers = {};
 
   static bool get adsRemoved => _adsRemoved;
@@ -51,8 +52,6 @@ class AdsManager {
   }
 
   static Future<bool> _requestConsent() async {
-    if (!await _requestTrackingAuthorizationIfNeeded()) return false;
-
     final completer = Completer<bool>();
     final parameters = ConsentRequestParameters();
 
@@ -77,26 +76,31 @@ class AdsManager {
     return completer.future;
   }
 
-  /// Requests iOS App Tracking Transparency permission before UMP or Mobile
-  /// Ads performs any work. The system prompt is only available while the app
-  /// is active and only while the authorization state is not determined.
+  /// Requests iOS App Tracking Transparency permission, and reports whether
+  /// the user allows tracking. Runs *after* UMP consent has been gathered,
+  /// which is the order Google documents for apps using both.
+  ///
+  /// The system prompt is only available while the app is active, and iOS only
+  /// shows it while the authorization state is undetermined — an earlier
+  /// denial is read back and never re-asked. Platforms without ATT have no
+  /// such restriction and report `true`.
   static Future<bool> _requestTrackingAuthorizationIfNeeded() async {
     if (!Platform.isIOS) return true;
 
     try {
       var status = await AppTrackingTransparency.trackingAuthorizationStatus;
-      if (status != TrackingStatus.notDetermined) return true;
-
-      await _waitUntilAppIsResumed();
-      // Allow the first frame and launch transition to settle before asking
-      // iOS to present its native permission sheet.
-      await Future<void>.delayed(const Duration(milliseconds: 350));
-      status = await AppTrackingTransparency.requestTrackingAuthorization();
-      return status != TrackingStatus.notDetermined;
+      if (status == TrackingStatus.notDetermined) {
+        await _waitUntilAppIsResumed();
+        // Allow the first frame and launch transition to settle before asking
+        // iOS to present its native permission sheet.
+        await Future<void>.delayed(const Duration(milliseconds: 350));
+        status = await AppTrackingTransparency.requestTrackingAuthorization();
+      }
+      return status == TrackingStatus.authorized;
     } catch (error) {
       debugPrint(
           'Unable to request App Tracking Transparency permission: $error');
-      // Do not initialize or request ads if the ATT request could not finish.
+      // An unusable ATT result is never treated as permission to track.
       return false;
     }
   }
@@ -119,6 +123,10 @@ class AdsManager {
   static Future<void> _finishConsentRequest(Completer<bool> completer) async {
     if (completer.isCompleted) return;
 
+    // UMP consent has been gathered by this point; ask for ATT second, per
+    // Google's documented order for apps that use both.
+    _trackingAuthorized = await _requestTrackingAuthorizationIfNeeded();
+
     final allowed =
         !_adsRemoved && await ConsentInformation.instance.canRequestAds();
     if (allowed) {
@@ -127,6 +135,20 @@ class AdsManager {
     }
     if (!completer.isCompleted) completer.complete(allowed);
   }
+
+  /// Whether the user allows tracking. Always `true` off iOS, where there is
+  /// no ATT prompt and UMP alone governs.
+  static bool get trackingAuthorized => _trackingAuthorized;
+
+  /// The single source of truth for "may we personalize this ad".
+  ///
+  /// Combines the UMP consent state (which the SDK applies from stored
+  /// consent) with the iOS ATT answer. The most restrictive of the two wins
+  /// regardless of which prompt the user saw first: a denial in either one
+  /// yields a non-personalized request, and iOS additionally withholds the
+  /// advertising identifier on its own.
+  static AdRequest buildAdRequest() =>
+      AdRequest(nonPersonalizedAds: !_trackingAuthorized);
 
   static String get bannerAdUnitId {
     if (Platform.isAndroid) {
@@ -228,7 +250,7 @@ class AppOpenAdManager {
 
     AppOpenAd.load(
       adUnitId: AdsManager.openAdUnitID,
-      request: const AdRequest(),
+      request: AdsManager.buildAdRequest(),
       adLoadCallback: AppOpenAdLoadCallback(
         onAdLoaded: (ad) {
           debugPrint('$ad loaded');

@@ -2979,6 +2979,16 @@ class S {
     return Intl.message('Privacy', name: 'Privacy', desc: '', args: []);
   }
 
+  /// `Privacy policy`
+  String get Privacy_Policy {
+    return Intl.message(
+      'Privacy policy',
+      name: 'Privacy_Policy',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `UNIT SYSTEM`
   String get Unit_System {
     return Intl.message('UNIT SYSTEM', name: 'Unit_System', desc: '', args: []);

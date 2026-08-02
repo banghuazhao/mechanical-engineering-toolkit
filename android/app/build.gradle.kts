@@ -49,7 +49,10 @@ android {
 
     defaultConfig {
         applicationId = "com.appsbay.mechanical_engineering_toolkit"
-        minSdk = 36
+        // Android 7.0. Pinned explicitly: it was raised to 36 by accident in
+        // aacfe4c alongside the targetSdk bump, which made v1.6.0 uninstallable
+        // on virtually every device. Do not raise without a deliberate decision.
+        minSdk = 24
         targetSdk = 36
         versionCode = flutterVersionCode.toInt()
         versionName = flutterVersionName

@@ -626,6 +626,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Privacy_Choices_Unavailable": MessageLookupByLibrary.simpleMessage(
       "Datenschutzeinstellungen sind derzeit nicht verfügbar. Bitte später erneut versuchen.",
     ),
+    "Privacy_Policy": MessageLookupByLibrary.simpleMessage(
+      "Datenschutzerklärung",
+    ),
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "„Werbung entfernen“ ist im App Store noch nicht verfügbar.",
     ),

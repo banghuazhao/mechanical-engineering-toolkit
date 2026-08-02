@@ -477,6 +477,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Privacy_Choices_Unavailable": MessageLookupByLibrary.simpleMessage(
       "プライバシー設定は現在ご利用いただけません。後でもう一度お試しください。",
     ),
+    "Privacy_Policy": MessageLookupByLibrary.simpleMessage("プライバシーポリシー"),
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "「広告を削除」はまだApp Storeでご利用いただけません。",
     ),

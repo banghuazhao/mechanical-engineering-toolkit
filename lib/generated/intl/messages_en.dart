@@ -606,6 +606,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Privacy_Choices_Unavailable": MessageLookupByLibrary.simpleMessage(
       "Privacy choices are unavailable. Try again later.",
     ),
+    "Privacy_Policy": MessageLookupByLibrary.simpleMessage("Privacy policy"),
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Remove Ads is not available from the App Store yet.",
     ),

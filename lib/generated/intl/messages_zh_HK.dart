@@ -437,6 +437,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Privacy_Choices_Unavailable": MessageLookupByLibrary.simpleMessage(
       "隱私選項暫不可用，請稍後再試。",
     ),
+    "Privacy_Policy": MessageLookupByLibrary.simpleMessage("隱私政策"),
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "App Store 暫未提供移除廣告項目。",
     ),
