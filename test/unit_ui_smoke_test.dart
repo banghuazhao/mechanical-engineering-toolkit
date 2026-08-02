@@ -42,6 +42,13 @@ Widget _wrap(Widget child) => MultiProvider(
       ),
     );
 
+/// Major names in the active locale. Resolved from a context inside the
+/// pumped app so the localizations delegate is in scope.
+List<String> _majorTitles(WidgetTester tester) {
+  final context = tester.element(find.byType(Scaffold).first);
+  return [for (final major in majorRecommendations) major.title(context)];
+}
+
 void main() {
   setUp(() async {
     SharedPreferences.setMockInitialValues({});
@@ -95,8 +102,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('RECOMMENDED BY MAJOR'), findsNothing);
-    for (final major in majorRecommendations) {
-      expect(find.text(major.title), findsNothing);
+    for (final title in _majorTitles(tester)) {
+      expect(find.text(title), findsNothing);
     }
   });
 
@@ -113,20 +120,20 @@ void main() {
     final row = find.text('Recommended by Major');
     expect(row, findsOneWidget);
     // Majors themselves are not inlined in the drawer anymore.
-    for (final major in majorRecommendations) {
-      expect(find.text(major.title), findsNothing);
+    for (final title in _majorTitles(tester)) {
+      expect(find.text(title), findsNothing);
     }
 
     await tester.tap(row);
     await tester.pumpAndSettle();
 
     expect(find.byType(MajorListPage), findsOneWidget);
-    for (final major in majorRecommendations) {
-      expect(find.text(major.title), findsOneWidget);
+    for (final title in _majorTitles(tester)) {
+      expect(find.text(title), findsOneWidget);
     }
 
     // Tapping a major navigates to its curated tool list.
-    await tester.tap(find.text(majorRecommendations.first.title));
+    await tester.tap(find.text(_majorTitles(tester).first));
     await tester.pumpAndSettle();
     expect(find.byType(MajorToolsPage), findsOneWidget);
   });

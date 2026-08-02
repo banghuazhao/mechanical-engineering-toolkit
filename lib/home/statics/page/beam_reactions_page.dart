@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
-import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -62,11 +62,11 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Beam Configuration',
+                  Text(S.of(context).Beam_Configuration,
                       style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 4),
                   Text(
-                    'Simply supported beam — pin at A (left), roller at B (right)',
+                    S.of(context).Simply_Supported_Beam_Note,
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium
@@ -74,22 +74,25 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
                   ),
                   const SizedBox(height: 12),
                   UnitField(
-                    label: 'Span L',
+                    label: S.of(context).Span_L_Short,
                     category: UnitCategory.span,
                     initialSI: _span,
                     onChangedSI: (v) => _span = v,
                   ),
                   const SizedBox(height: 16),
-                  Text('Load Type',
+                  Text(S.of(context).Load_Type,
                       style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 8),
                   SegmentedButton<_LoadType>(
-                    segments: const [
+                    segments: [
                       ButtonSegment(
                           value: _LoadType.pointLoad,
-                          label: Text('Point Load')),
-                      ButtonSegment(value: _LoadType.udl, label: Text('UDL')),
-                      ButtonSegment(value: _LoadType.both, label: Text('Both')),
+                          label: Text(S.of(context).Point_Load)),
+                      ButtonSegment(
+                          value: _LoadType.udl, label: Text(S.of(context).UDL)),
+                      ButtonSegment(
+                          value: _LoadType.both,
+                          label: Text(S.of(context).Both)),
                     ],
                     selected: {_loadType},
                     onSelectionChanged: (s) =>
@@ -98,14 +101,14 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
                   const SizedBox(height: 16),
                   if (_loadType == _LoadType.pointLoad ||
                       _loadType == _LoadType.both) ...[
-                    Text('Point Load',
+                    Text(S.of(context).Point_Load,
                         style: Theme.of(context).textTheme.titleSmall),
                     const SizedBox(height: 8),
                     Row(
                       children: [
                         Expanded(
                           child: UnitField(
-                            label: 'P (load)',
+                            label: S.of(context).P_Load,
                             category: UnitCategory.force,
                             initialSI: _p,
                             onChangedSI: (v) => _p = v,
@@ -114,7 +117,7 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: UnitField(
-                            label: 'a (from A)',
+                            label: S.of(context).A_From_A,
                             category: UnitCategory.span,
                             initialSI: _a,
                             onChangedSI: (v) => _a = v,
@@ -126,11 +129,11 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
                   ],
                   if (_loadType == _LoadType.udl ||
                       _loadType == _LoadType.both) ...[
-                    Text('Uniform Distributed Load (full span)',
+                    Text(S.of(context).Uniform_Distributed_Load_Full_Span,
                         style: Theme.of(context).textTheme.titleSmall),
                     const SizedBox(height: 8),
                     UnitField(
-                      label: 'w (intensity)',
+                      label: S.of(context).W_Intensity,
                       category: UnitCategory.distributedLoad,
                       initialSI: _w,
                       onChangedSI: (v) => _w = v,
@@ -150,7 +153,8 @@ class _BeamReactionsPageState extends State<BeamReactionsPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
             ),
-            child: const Text('Calculate', style: TextStyle(fontSize: 16)),
+            child:
+                Text(S.of(context).Calculate, style: TextStyle(fontSize: 16)),
           ),
         ],
       ),
@@ -229,7 +233,7 @@ class _ResultPage extends StatelessWidget {
   final double L;
   final double? P, a, w;
 
-  _ResultPage({
+  const _ResultPage({
     required this.toolId,
     required this.title,
     required this.loadType,
@@ -239,15 +243,8 @@ class _ResultPage extends StatelessWidget {
     required this.w,
   });
 
-  final _exportKey = GlobalKey();
-
-  String _fmt(double v) => v
-      .toStringAsFixed(4)
-      .replaceAll(RegExp(r'0+$'), '')
-      .replaceAll(RegExp(r'\.$'), '');
-
   String _fv(double valueSI, UnitCategory category, UnitSystem system) =>
-      '${_fmt(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
+      '${formatFixed4(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
 
   ({double Ra, double Rb, double maxM, List<String> steps}) _solve(
       UnitSystem system) {
@@ -313,35 +310,18 @@ class _ResultPage extends StatelessWidget {
     final system = context.watch<UnitSystemPreference>().system;
     final tool = ToolLibrary.shared.item(toolId, context);
     final solved = _solve(system);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.share_rounded),
-            onPressed: () => shareResult(title, [
-              'Ra = ${_fv(solved.Ra, UnitCategory.force, system)}',
-              'Rb = ${_fv(solved.Rb, UnitCategory.force, system)}',
-              'M_max = ${_fv(solved.maxM, UnitCategory.torque, system)}',
-            ]),
-          ),
-          IconButton(
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () => shareResultImage(_exportKey, title),
-          ),
-        ],
-      ),
-      bottomNavigationBar: const AppBannerAd(),
-      body: RepaintBoundary(
-        key: _exportKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            ToolResultHeader(tool: tool),
-            CalculationCard(steps: solved.steps),
-          ],
-        ),
-      ),
+    return ResultScaffold(
+      title: title,
+      toolName: title,
+      shareLines: () => [
+        'Ra = ${_fv(solved.Ra, UnitCategory.force, system)}',
+        'Rb = ${_fv(solved.Rb, UnitCategory.force, system)}',
+        'M_max = ${_fv(solved.maxM, UnitCategory.torque, system)}',
+      ],
+      children: [
+        ToolResultHeader(tool: tool),
+        CalculationCard(steps: solved.steps),
+      ],
     );
   }
 }

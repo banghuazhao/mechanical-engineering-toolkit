@@ -84,12 +84,12 @@ class _BeamSectionPropertiesPageState extends State<BeamSectionPropertiesPage> {
           children: [
             ToolResultHeader(tool: tool),
             AppSectionCard(
-              title: 'Cross-section',
+              title: S.of(context).Cross_Section,
               child: Column(
                 children: [
                   DropdownButtonFormField<BeamSectionType>(
                     initialValue: _type,
-                    decoration: const InputDecoration(labelText: 'Shape'),
+                    decoration: InputDecoration(labelText: S.of(context).Shape),
                     items: BeamSectionType.values
                         .map((type) => DropdownMenuItem(
                               value: type,
@@ -110,27 +110,27 @@ class _BeamSectionPropertiesPageState extends State<BeamSectionPropertiesPage> {
                       ),
                       if (!isCircular)
                         UnitField(
-                          label: 'Overall height',
+                          label: S.of(context).Overall_Height,
                           category: UnitCategory.length,
                           initialSI: _height,
                           onChangedSI: (v) => _height = v,
                         ),
                       if (isHollow)
                         UnitField(
-                          label: 'Wall thickness',
+                          label: S.of(context).Wall_Thickness,
                           category: UnitCategory.length,
                           initialSI: _wall,
                           onChangedSI: (v) => _wall = v,
                         ),
                       if (isISection) ...[
                         UnitField(
-                          label: 'Flange thickness',
+                          label: S.of(context).Flange_Thickness,
                           category: UnitCategory.length,
                           initialSI: _flange,
                           onChangedSI: (v) => _flange = v,
                         ),
                         UnitField(
-                          label: 'Web thickness',
+                          label: S.of(context).Web_Thickness,
                           category: UnitCategory.length,
                           initialSI: _web,
                           onChangedSI: (v) => _web = v,
@@ -143,12 +143,12 @@ class _BeamSectionPropertiesPageState extends State<BeamSectionPropertiesPage> {
             ),
             SizedBox(height: context.tokens.space4),
             AppSectionCard(
-              title: 'Description and formulas',
+              title: S.of(context).Description_and_Formulas,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Calculates centroidal geometric properties used in beam bending and stress calculations. The x-axis is horizontal through the centroid and the y-axis is vertical through the centroid.',
+                    S.of(context).Desc_Section_Properties,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   SizedBox(height: context.tokens.space4),

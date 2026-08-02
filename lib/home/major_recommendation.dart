@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 class MajorRecommendation {
-  final String title;
+  /// Resolves the display name in the active locale. Takes the lookup rather
+  /// than a literal so the list below can stay `const`.
+  final String Function(S) _title;
   final IconData icon;
   final List<int> toolIds;
 
   const MajorRecommendation({
-    required this.title,
+    required String Function(S) title,
     required this.icon,
     required this.toolIds,
-  });
+  }) : _title = title;
+
+  String title(BuildContext context) => _title(S.of(context));
 }
+
+String _mechanical(S s) => s.Mechanical_Engineering;
+String _civil(S s) => s.Civil_Structural_Engineering;
+String _aerospace(S s) => s.Aerospace_Engineering;
+String _materials(S s) => s.Materials_Science_Engineering;
 
 const List<MajorRecommendation> majorRecommendations = [
   MajorRecommendation(
-    title: 'Mechanical Engineering',
+    title: _mechanical,
     icon: Icons.precision_manufacturing_rounded,
     toolIds: [
       100, 101, 102, 103, 104, 114, 115, 112, 116, 500,
@@ -23,12 +33,12 @@ const List<MajorRecommendation> majorRecommendations = [
     ],
   ),
   MajorRecommendation(
-    title: 'Civil / Structural Engineering',
+    title: _civil,
     icon: Icons.foundation_rounded,
     toolIds: [401, 105, 106, 117, 102, 111, 400, 402, 113, 403, 118, 120, 707],
   ),
   MajorRecommendation(
-    title: 'Aerospace Engineering',
+    title: _aerospace,
     icon: Icons.flight_rounded,
     toolIds: [
       300, 301, 302, 303, 304, 305, 110, 109, 111,
@@ -36,7 +46,7 @@ const List<MajorRecommendation> majorRecommendations = [
     ],
   ),
   MajorRecommendation(
-    title: 'Materials Science Engineering',
+    title: _materials,
     icon: Icons.science_rounded,
     toolIds: [116, 108, 107, 301, 305, 200, 201, 112, 306],
   ),

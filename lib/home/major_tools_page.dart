@@ -13,7 +13,7 @@ class MajorToolsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(major.title)),
+      appBar: AppBar(title: Text(major.title(context))),
       bottomNavigationBar: const AppBannerAd(),
       body: AppContent(
         padding: EdgeInsets.symmetric(vertical: context.tokens.space2),

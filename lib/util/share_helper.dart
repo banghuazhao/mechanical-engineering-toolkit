@@ -22,7 +22,13 @@ Future<void> shareResultImage(GlobalKey boundaryKey, String toolName) async {
   final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
   if (byteData == null) return;
   final bytes = byteData.buffer.asUint8List();
-  final fileName = '${toolName.replaceAll(RegExp(r'[^A-Za-z0-9]+'), '_')}.png';
+  // Keep the filename ASCII-safe for every share target. A fully localized
+  // name (Chinese, say) sanitizes down to nothing, so fall back to a generic
+  // stem rather than shipping a file called "_.png".
+  final stem = toolName
+      .replaceAll(RegExp(r'[^A-Za-z0-9]+'), '_')
+      .replaceAll(RegExp(r'^_+|_+$'), '');
+  final fileName = '${stem.isEmpty ? 'me_toolkit_result' : stem}.png';
   await SharePlus.instance.share(
     ShareParams(
       files: [XFile.fromData(bytes, mimeType: 'image/png', name: fileName)],

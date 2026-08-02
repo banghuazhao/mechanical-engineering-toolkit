@@ -68,12 +68,12 @@ class _BeltDrivePageState extends State<BeltDrivePage> {
           children: [
             ToolResultHeader(tool: tool),
             AppSectionCard(
-              title: 'Belt / Chain Drive',
+              title: S.of(context).Belt_Chain_Drive,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Open-belt (or roller-chain, using pitch diameters) drive geometry: speed ratio, approximate belt length, and pulley wrap angles.',
+                    S.of(context).Desc_Belt_Drive,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
@@ -81,35 +81,35 @@ class _BeltDrivePageState extends State<BeltDrivePage> {
                   SizedBox(height: context.tokens.space4),
                   AdaptiveFieldGrid(children: [
                     UnitField(
-                      label: 'Small pulley diameter, d1',
+                      label: S.of(context).Small_Pulley_Diameter_D1,
                       category: UnitCategory.length,
                       signed: false,
                       initialSI: _d1,
                       onChangedSI: (v) => _d1 = v,
                     ),
                     UnitField(
-                      label: 'Large pulley diameter, d2',
+                      label: S.of(context).Large_Pulley_Diameter_D2,
                       category: UnitCategory.length,
                       signed: false,
                       initialSI: _d2,
                       onChangedSI: (v) => _d2 = v,
                     ),
                     UnitField(
-                      label: 'Center distance, C',
+                      label: S.of(context).Center_Distance_C,
                       category: UnitCategory.length,
                       signed: false,
                       initialSI: _c,
                       onChangedSI: (v) => _c = v,
                     ),
                     UnitField(
-                      label: 'Input speed, n1',
+                      label: S.of(context).Input_Speed_N1,
                       category: UnitCategory.angularVelocity,
                       signed: false,
                       initialSI: _n1,
                       onChangedSI: (v) => _n1 = v,
                     ),
                     UnitField(
-                      label: 'Power (optional)',
+                      label: S.of(context).Power_Optional,
                       category: UnitCategory.power,
                       signed: false,
                       initialSI: _power,
@@ -132,7 +132,7 @@ class _BeltDrivePageState extends State<BeltDrivePage> {
       final c = _c;
       final n1 = _n1;
       if (d1 == null || d2 == null || c == null || n1 == null) {
-        throw const FormatException('Enter d1, d2, C, and n1.');
+        throw FormatException(S.of(context).Err_Enter_D1_D2_C_N1);
       }
 
       final result = BeltDriveCalculator.calculate(BeltDriveInput(

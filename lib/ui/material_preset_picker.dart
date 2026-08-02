@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:provider/provider.dart';
 
 import '../util/material_library.dart';
@@ -26,7 +27,7 @@ class MaterialPresetButton extends StatelessWidget {
       child: TextButton.icon(
         onPressed: () => _openPicker(context),
         icon: const Icon(Icons.science_outlined, size: 18),
-        label: const Text('Pick material'),
+        label: Text(S.of(context).Pick_Material),
       ),
     );
   }
@@ -71,11 +72,11 @@ class _MaterialPickerSheetState extends State<_MaterialPickerSheet> {
             child: Row(
               children: [
                 Expanded(
-                  child: Text('Material presets',
+                  child: Text(S.of(context).Material_Presets,
                       style: Theme.of(context).textTheme.titleMedium),
                 ),
                 IconButton(
-                  tooltip: 'Add custom material',
+                  tooltip: S.of(context).Add_Custom_Material,
                   icon: const Icon(Icons.add_circle_outline_rounded),
                   onPressed: () => _openAddCustomSheet(context),
                 ),
@@ -85,8 +86,8 @@ class _MaterialPickerSheetState extends State<_MaterialPickerSheet> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
-              decoration: const InputDecoration(
-                hintText: 'Search materials',
+              decoration: InputDecoration(
+                hintText: S.of(context).Search_Materials,
                 prefixIcon: Icon(Icons.search_rounded),
                 isDense: true,
               ),
@@ -96,7 +97,7 @@ class _MaterialPickerSheetState extends State<_MaterialPickerSheet> {
           const SizedBox(height: 8),
           Expanded(
             child: all.isEmpty
-                ? const Center(child: Text('No materials found'))
+                ? Center(child: Text(S.of(context).No_Materials_Found))
                 : ListView.builder(
                     controller: scrollController,
                     itemCount: all.length,
@@ -107,7 +108,7 @@ class _MaterialPickerSheetState extends State<_MaterialPickerSheet> {
                         subtitle: Text(_subtitle(m, system)),
                         trailing: m.isCustom
                             ? IconButton(
-                                tooltip: 'Delete',
+                                tooltip: S.of(context).Delete,
                                 icon: const Icon(Icons.delete_outline_rounded),
                                 onPressed: () => context
                                     .read<MaterialLibrary>()
@@ -186,45 +187,45 @@ class _AddCustomMaterialSheetState extends State<_AddCustomMaterialSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Add custom material',
+            Text(S.of(context).Add_Custom_Material,
                 style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 12),
             TextField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Name'),
+              decoration: InputDecoration(labelText: S.of(context).Name),
             ),
             const SizedBox(height: 12),
             AdaptiveFieldGrid(children: [
               UnitField(
-                label: 'E (modulus)',
+                label: S.of(context).E_Modulus,
                 category: UnitCategory.modulus,
                 signed: false,
                 initialSI: _e,
                 onChangedSI: (v) => _e = v,
               ),
               UnitField(
-                label: 'G (shear modulus)',
+                label: S.of(context).G_Shear_Modulus,
                 category: UnitCategory.modulus,
                 signed: false,
                 initialSI: _g,
                 onChangedSI: (v) => _g = v,
               ),
               UnitField(
-                label: 'Yield strength',
+                label: S.of(context).Yield_Strength,
                 category: UnitCategory.stress,
                 signed: false,
                 initialSI: _yield,
                 onChangedSI: (v) => _yield = v,
               ),
               UnitField(
-                label: 'Ultimate strength',
+                label: S.of(context).Ultimate_Strength,
                 category: UnitCategory.stress,
                 signed: false,
                 initialSI: _ultimate,
                 onChangedSI: (v) => _ultimate = v,
               ),
               UnitField(
-                label: 'Density',
+                label: S.of(context).Density,
                 category: UnitCategory.density,
                 signed: false,
                 initialSI: _density,
@@ -250,7 +251,7 @@ class _AddCustomMaterialSheetState extends State<_AddCustomMaterialSheet> {
                   ),
                 );
               },
-              child: const Text('Save'),
+              child: Text(S.of(context).Save),
             ),
           ],
         ),

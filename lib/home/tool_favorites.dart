@@ -19,9 +19,9 @@ class ToolFavoritesPage extends StatelessWidget {
       body: Consumer<Favorites>(
         builder: (context, favorites, _) {
           if (favorites.items.isEmpty) {
-            return const AppEmptyState(
+            return AppEmptyState(
               icon: Icons.star_outline_rounded,
-              title: 'No favorites yet',
+              title: S.of(context).No_Favorites_Yet,
               message: 'Save frequently used tools to keep them close at hand.',
             );
           }
@@ -85,7 +85,7 @@ class _FavoriteToolCard extends StatelessWidget {
             if (!context.mounted) return;
             context.read<Favorites>().remove(tool.id);
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Removed from favorites')),
+              SnackBar(content: Text(S.of(context).Removed_from_Favorites)),
             );
           },
         ),

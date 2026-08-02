@@ -71,12 +71,12 @@ class _SpurGearPageState extends State<SpurGearPage> {
           children: [
             ToolResultHeader(tool: tool),
             AppSectionCard(
-              title: 'Spur Gear Geometry',
+              title: S.of(context).Spur_Gear_Geometry,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '20° full-depth involute spur gear pair: pitch diameters, center distance, and basic (Lewis) bending stress with a simplified contact-stress estimate. Not a full AGMA design check.',
+                    S.of(context).Desc_Spur_Gear,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
@@ -92,7 +92,7 @@ class _SpurGearPageState extends State<SpurGearPage> {
                   SizedBox(height: context.tokens.space4),
                   AdaptiveFieldGrid(children: [
                     UnitField(
-                      label: 'Module, m',
+                      label: S.of(context).Module_M,
                       category: UnitCategory.length,
                       signed: false,
                       initialSI: _module,
@@ -101,19 +101,19 @@ class _SpurGearPageState extends State<SpurGearPage> {
                     TextFormField(
                       initialValue: _n1?.toString(),
                       keyboardType: TextInputType.number,
-                      decoration:
-                          const InputDecoration(labelText: 'Pinion teeth, N1'),
+                      decoration: InputDecoration(
+                          labelText: S.of(context).Pinion_Teeth_N1),
                       onChanged: (v) => _n1 = int.tryParse(v),
                     ),
                     TextFormField(
                       initialValue: _n2?.toString(),
                       keyboardType: TextInputType.number,
-                      decoration:
-                          const InputDecoration(labelText: 'Gear teeth, N2'),
+                      decoration: InputDecoration(
+                          labelText: S.of(context).Gear_Teeth_N2),
                       onChanged: (v) => _n2 = int.tryParse(v),
                     ),
                     UnitField(
-                      label: 'Face width, F',
+                      label: S.of(context).Face_Width_F,
                       category: UnitCategory.length,
                       signed: false,
                       initialSI: _faceWidth,
@@ -122,7 +122,7 @@ class _SpurGearPageState extends State<SpurGearPage> {
                   ]),
                   SizedBox(height: context.tokens.space3),
                   Text(
-                    'Optional — for bending/contact stress',
+                    S.of(context).Optional_For_Bending_Contact,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                         ),
@@ -130,7 +130,7 @@ class _SpurGearPageState extends State<SpurGearPage> {
                   SizedBox(height: context.tokens.space2),
                   AdaptiveFieldGrid(children: [
                     UnitField(
-                      label: 'Tangential load, Wt',
+                      label: S.of(context).Tangential_Load_Wt,
                       category: UnitCategory.force,
                       signed: false,
                       initialSI: _wt,
@@ -140,8 +140,8 @@ class _SpurGearPageState extends State<SpurGearPage> {
                       initialValue: _cp.toString(),
                       keyboardType:
                           const TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(
-                          labelText: 'Elastic coeff., Cp (√MPa)'),
+                      decoration: InputDecoration(
+                          labelText: S.of(context).Elastic_Coefficient_Cp),
                       onChanged: (v) => _cp = double.tryParse(v) ?? _cp,
                     ),
                   ]),
@@ -161,7 +161,7 @@ class _SpurGearPageState extends State<SpurGearPage> {
       final n2 = _n2;
       final f = _faceWidth;
       if (m == null || n1 == null || n2 == null || f == null) {
-        throw const FormatException('Enter module, N1, N2, and face width.');
+        throw FormatException(S.of(context).Err_Enter_Module_N1_N2_Face);
       }
 
       final result = SpurGearCalculator.calculate(SpurGearInput(

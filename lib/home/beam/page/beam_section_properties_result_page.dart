@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/beam/model/beam_section_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
-import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
-import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class BeamSectionPropertiesResultPage extends StatelessWidget {
-  BeamSectionPropertiesResultPage({
+  const BeamSectionPropertiesResultPage({
     super.key,
     required this.toolId,
     required this.title,
@@ -24,88 +22,48 @@ class BeamSectionPropertiesResultPage extends StatelessWidget {
   final String title;
   final BeamSectionInput input;
   final BeamSectionResult result;
-  final _exportKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final tool = ToolLibrary.shared.item(toolId, context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Result'),
-        actions: [
-          IconButton(
-            tooltip: 'Share results',
-            icon: const Icon(Icons.share_rounded),
-            onPressed: () => _share(system),
-          ),
-          IconButton(
-            tooltip: 'Share as image',
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () => shareResultImage(_exportKey, title),
-          ),
-          IconButton(
-            tooltip: 'Settings',
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ToolSettingPage(),
-              ),
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: const AppBannerAd(),
-      body: RepaintBoundary(
-        key: _exportKey,
-        child: AppContent(
-          padding: EdgeInsets.zero,
-          child: ListView(
-            padding: EdgeInsets.all(context.tokens.space4),
-            children: [
-              ToolResultHeader(tool: tool),
-              AppSectionCard(
-                title: title,
-                child: Column(children: [
-                  AppCopyableValue(
-                      label: 'Area, A',
-                      value: _fv(result.area, UnitCategory.area, system)),
-                  AppCopyableValue(
-                      label: 'Second moment, Ix',
-                      value:
-                          _fv(result.ix, UnitCategory.momentOfInertia, system)),
-                  AppCopyableValue(
-                      label: 'Second moment, Iy',
-                      value:
-                          _fv(result.iy, UnitCategory.momentOfInertia, system)),
-                  AppCopyableValue(
-                      label: 'Section modulus, Zx',
-                      value:
-                          _fv(result.zx, UnitCategory.sectionModulus, system)),
-                  AppCopyableValue(
-                      label: 'Section modulus, Zy',
-                      value:
-                          _fv(result.zy, UnitCategory.sectionModulus, system)),
-                  AppCopyableValue(
-                      label: 'Polar area moment, J',
-                      value: _fv(result.polarMoment,
-                          UnitCategory.momentOfInertia, system)),
-                ]),
-              ),
-              SizedBox(height: context.tokens.space4),
-              CalculationCard(steps: _calculationSteps(system)),
-              SizedBox(height: context.tokens.space3),
-              Text(
-                'J = Ix + Iy is the polar area moment. It is not the Saint-Venant torsion constant for non-circular sections.',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-              ),
-            ],
-          ),
+    return ResultScaffold(
+      toolName: title,
+      shareLines: () => _shareLines(system),
+      children: [
+        ToolResultHeader(tool: tool),
+        AppSectionCard(
+          title: title,
+          child: Column(children: [
+            AppCopyableValue(
+                label: S.of(context).Area_A,
+                value: _fv(result.area, UnitCategory.area, system)),
+            AppCopyableValue(
+                label: S.of(context).Second_Moment_Ix,
+                value: _fv(result.ix, UnitCategory.momentOfInertia, system)),
+            AppCopyableValue(
+                label: S.of(context).Second_Moment_Iy,
+                value: _fv(result.iy, UnitCategory.momentOfInertia, system)),
+            AppCopyableValue(
+                label: S.of(context).Section_Modulus_Zx,
+                value: _fv(result.zx, UnitCategory.sectionModulus, system)),
+            AppCopyableValue(
+                label: S.of(context).Section_Modulus_Zy,
+                value: _fv(result.zy, UnitCategory.sectionModulus, system)),
+            AppCopyableValue(
+                label: S.of(context).Polar_Area_Moment_J,
+                value: _fv(
+                    result.polarMoment, UnitCategory.momentOfInertia, system)),
+          ]),
         ),
-      ),
+        CalculationCard(steps: _calculationSteps(system)),
+        Text(
+          S.of(context).Note_Polar_Moment,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+        ),
+      ],
     );
   }
 
@@ -172,7 +130,7 @@ class BeamSectionPropertiesResultPage extends StatelessWidget {
     };
   }
 
-  void _share(UnitSystem system) => shareResult(title, [
+  List<String> _shareLines(UnitSystem system) => [
         'A = ${_fv(result.area, UnitCategory.area, system)}',
         'Ix = ${_fv(result.ix, UnitCategory.momentOfInertia, system)}',
         'Iy = ${_fv(result.iy, UnitCategory.momentOfInertia, system)}',
@@ -180,7 +138,7 @@ class BeamSectionPropertiesResultPage extends StatelessWidget {
         'Zy = ${_fv(result.zy, UnitCategory.sectionModulus, system)}',
         '',
         ..._calculationSteps(system),
-      ]);
+      ];
 
   String _f(double value) => value.abs() >= 1e6
       ? value.toStringAsExponential(4)

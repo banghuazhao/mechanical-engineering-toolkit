@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/principal_stress_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
-import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
-import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -30,91 +28,48 @@ class MohrsCircleResultPage extends StatelessWidget {
   final double sigmaY;
   final double tauXY;
   final PrincipalStressResult result;
-  final _exportKey = GlobalKey();
-
-  String _f(double value) =>
-      value.toStringAsFixed(3).replaceFirst(RegExp(r'\.?0+$'), '');
-
-  String _fv(double valueSI, UnitCategory category, UnitSystem system) =>
-      '${_f(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
-
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final tool = ToolLibrary.shared.item(toolId, context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Result'),
-        actions: [
-          IconButton(
-            tooltip: 'Share results',
-            icon: const Icon(Icons.share_rounded),
-            onPressed: () => _share(system),
-          ),
-          IconButton(
-            tooltip: 'Share as image',
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () => shareResultImage(_exportKey, title),
-          ),
-          IconButton(
-            tooltip: 'Settings',
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ToolSettingPage(),
-              ),
+    return ResultScaffold(
+      toolName: title,
+      shareLines: () => _shareLines(system),
+      children: [
+        ToolResultHeader(tool: tool),
+        AppSectionCard(
+          title: title,
+          child: Column(children: [
+            AppCopyableValue(
+              label: 'Maximum principal stress, σ1',
+              valueSI: result.sigma1,
+              category: UnitCategory.stress,
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: const AppBannerAd(),
-      body: RepaintBoundary(
-        key: _exportKey,
-        child: AppContent(
-          padding: EdgeInsets.zero,
-          child: ListView(
-            padding: EdgeInsets.all(context.tokens.space4),
-            children: [
-              ToolResultHeader(tool: tool),
-              AppSectionCard(
-                title: title,
-                child: Column(children: [
-                  AppCopyableValue(
-                    label: 'Maximum principal stress, σ1',
-                    valueSI: result.sigma1,
-                    category: UnitCategory.stress,
-                  ),
-                  AppCopyableValue(
-                    label: 'Minimum principal stress, σ2',
-                    valueSI: result.sigma2,
-                    category: UnitCategory.stress,
-                  ),
-                  AppCopyableValue(
-                    label: 'Maximum in-plane shear, τmax',
-                    valueSI: result.tauMax,
-                    category: UnitCategory.stress,
-                  ),
-                  AppCopyableValue(
-                    label: 'Principal-plane angle, θp',
-                    valueSI: result.thetaP,
-                    category: UnitCategory.angle,
-                  ),
-                  AppCopyableValue(
-                    label: 'Max-shear-plane angle, θs',
-                    valueSI: result.thetaS,
-                    category: UnitCategory.angle,
-                  ),
-                ]),
-              ),
-              SizedBox(height: context.tokens.space4),
-              _circleCard(context, system),
-              SizedBox(height: context.tokens.space4),
-              CalculationCard(steps: _steps(system)),
-            ],
-          ),
+            AppCopyableValue(
+              label: 'Minimum principal stress, σ2',
+              valueSI: result.sigma2,
+              category: UnitCategory.stress,
+            ),
+            AppCopyableValue(
+              label: 'Maximum in-plane shear, τmax',
+              valueSI: result.tauMax,
+              category: UnitCategory.stress,
+            ),
+            AppCopyableValue(
+              label: 'Principal-plane angle, θp',
+              valueSI: result.thetaP,
+              category: UnitCategory.angle,
+            ),
+            AppCopyableValue(
+              label: 'Max-shear-plane angle, θs',
+              valueSI: result.thetaS,
+              category: UnitCategory.angle,
+            ),
+          ]),
         ),
-      ),
+        _circleCard(context, system),
+        CalculationCard(steps: _steps(system)),
+      ],
     );
   }
 
@@ -147,22 +102,22 @@ class MohrsCircleResultPage extends StatelessWidget {
       );
 
   List<String> _steps(UnitSystem system) => [
-        'σavg = (σx + σy)/2 = (${_fv(sigmaX, UnitCategory.stress, system)} + ${_fv(sigmaY, UnitCategory.stress, system)}) / 2 = ${_fv(result.sigmaAvg, UnitCategory.stress, system)}',
-        'R = √(((σx−σy)/2)² + τxy²) = ${_fv(result.tauMax, UnitCategory.stress, system)}',
-        'σ1,2 = σavg ± R = ${_fv(result.sigma1, UnitCategory.stress, system)}, ${_fv(result.sigma2, UnitCategory.stress, system)}',
-        'θp = ½·atan2(2τxy, σx−σy) = ${_fv(result.thetaP, UnitCategory.angle, system)}',
-        'θs = θp − 45° = ${_fv(result.thetaS, UnitCategory.angle, system)}',
+        'σavg = (σx + σy)/2 = (${formatFixedSI(sigmaX, UnitCategory.stress, system)} + ${formatFixedSI(sigmaY, UnitCategory.stress, system)}) / 2 = ${formatFixedSI(result.sigmaAvg, UnitCategory.stress, system)}',
+        'R = √(((σx−σy)/2)² + τxy²) = ${formatFixedSI(result.tauMax, UnitCategory.stress, system)}',
+        'σ1,2 = σavg ± R = ${formatFixedSI(result.sigma1, UnitCategory.stress, system)}, ${formatFixedSI(result.sigma2, UnitCategory.stress, system)}',
+        'θp = ½·atan2(2τxy, σx−σy) = ${formatFixedSI(result.thetaP, UnitCategory.angle, system)}',
+        'θs = θp − 45° = ${formatFixedSI(result.thetaS, UnitCategory.angle, system)}',
       ];
 
-  void _share(UnitSystem system) => shareResult(title, [
-        'σ1 = ${_fv(result.sigma1, UnitCategory.stress, system)}',
-        'σ2 = ${_fv(result.sigma2, UnitCategory.stress, system)}',
-        'τmax = ${_fv(result.tauMax, UnitCategory.stress, system)}',
-        'θp = ${_fv(result.thetaP, UnitCategory.angle, system)}',
-        'θs = ${_fv(result.thetaS, UnitCategory.angle, system)}',
+  List<String> _shareLines(UnitSystem system) => [
+        'σ1 = ${formatFixedSI(result.sigma1, UnitCategory.stress, system)}',
+        'σ2 = ${formatFixedSI(result.sigma2, UnitCategory.stress, system)}',
+        'τmax = ${formatFixedSI(result.tauMax, UnitCategory.stress, system)}',
+        'θp = ${formatFixedSI(result.thetaP, UnitCategory.angle, system)}',
+        'θs = ${formatFixedSI(result.thetaS, UnitCategory.angle, system)}',
         '',
         ..._steps(system),
-      ]);
+      ];
 }
 
 class _MohrsCirclePainter extends CustomPainter {

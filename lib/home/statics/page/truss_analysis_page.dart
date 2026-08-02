@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/model/truss_solver.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/page/truss_analysis_result_page.dart';
@@ -32,7 +33,11 @@ class TrussAnalysisPage extends StatefulWidget {
 }
 
 class _TrussAnalysisPageState extends State<TrussAnalysisPage> {
-  final List<_JointEntry> _joints = [_JointEntry(), _JointEntry(), _JointEntry()];
+  final List<_JointEntry> _joints = [
+    _JointEntry(),
+    _JointEntry(),
+    _JointEntry()
+  ];
   final List<_MemberEntry> _members = [];
 
   @override
@@ -93,18 +98,22 @@ class _TrussAnalysisPageState extends State<TrussAnalysisPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Joints', style: Theme.of(context).textTheme.titleMedium),
+                  Text(S.of(context).Joints,
+                      style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 4),
                   Text(
-                    'A statically determinate 2D truss needs members + reactions = 2 × joints. Give at least one pin and one roller support.',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+                    S.of(context).Desc_Truss_Determinacy,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 12),
                   ...List.generate(_joints.length, _buildJointCard),
                   TextButton.icon(
                     onPressed: () => setState(() => _joints.add(_JointEntry())),
                     icon: const Icon(Icons.add_circle_outline_rounded),
-                    label: const Text('Add Joint'),
+                    label: Text(S.of(context).Add_Joint),
                   ),
                 ],
               ),
@@ -117,7 +126,8 @@ class _TrussAnalysisPageState extends State<TrussAnalysisPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Members', style: Theme.of(context).textTheme.titleMedium),
+                  Text(S.of(context).Members,
+                      style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 12),
                   ...List.generate(_members.length, _buildMemberCard),
                   TextButton.icon(
@@ -125,7 +135,7 @@ class _TrussAnalysisPageState extends State<TrussAnalysisPage> {
                         ? () => setState(() => _members.add(_MemberEntry()))
                         : null,
                     icon: const Icon(Icons.add_circle_outline_rounded),
-                    label: const Text('Add Member'),
+                    label: Text(S.of(context).Add_Member),
                   ),
                 ],
               ),
@@ -138,9 +148,11 @@ class _TrussAnalysisPageState extends State<TrussAnalysisPage> {
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
             ),
-            child: const Text('Calculate', style: TextStyle(fontSize: 16)),
+            child:
+                Text(S.of(context).Calculate, style: TextStyle(fontSize: 16)),
           ),
         ],
       ),
@@ -167,11 +179,14 @@ class _TrussAnalysisPageState extends State<TrussAnalysisPage> {
           children: [
             Row(
               children: [
-                Text('J${index + 1}', style: const TextStyle(fontWeight: FontWeight.w600)),
+                Text('J${index + 1}',
+                    style: const TextStyle(fontWeight: FontWeight.w600)),
                 const Spacer(),
                 IconButton(
-                  icon: const Icon(Icons.remove_circle_outline_rounded, color: Colors.red),
-                  onPressed: _joints.length > 2 ? () => _removeJoint(index) : null,
+                  icon: const Icon(Icons.remove_circle_outline_rounded,
+                      color: Colors.red),
+                  onPressed:
+                      _joints.length > 2 ? () => _removeJoint(index) : null,
                 ),
               ],
             ),
@@ -199,14 +214,18 @@ class _TrussAnalysisPageState extends State<TrussAnalysisPage> {
             const SizedBox(height: 8),
             DropdownButtonFormField<TrussSupport>(
               initialValue: joint.support,
-              decoration: const InputDecoration(labelText: 'Support'),
-              items: const [
-                DropdownMenuItem(value: TrussSupport.none, child: Text('None')),
-                DropdownMenuItem(value: TrussSupport.pin, child: Text('Pin')),
+              decoration: InputDecoration(labelText: S.of(context).Support),
+              items: [
                 DropdownMenuItem(
-                    value: TrussSupport.rollerX, child: Text('Roller (horizontal reaction)')),
+                    value: TrussSupport.none, child: Text(S.of(context).None)),
                 DropdownMenuItem(
-                    value: TrussSupport.rollerY, child: Text('Roller (vertical reaction)')),
+                    value: TrussSupport.pin, child: Text(S.of(context).Pin)),
+                DropdownMenuItem(
+                    value: TrussSupport.rollerX,
+                    child: Text(S.of(context).Roller_Horizontal)),
+                DropdownMenuItem(
+                    value: TrussSupport.rollerY,
+                    child: Text(S.of(context).Roller_Vertical)),
               ],
               onChanged: (v) => setState(() => joint.support = v!),
             ),
@@ -215,7 +234,7 @@ class _TrussAnalysisPageState extends State<TrussAnalysisPage> {
               children: [
                 Expanded(
                   child: UnitField(
-                    label: 'Load Fx',
+                    label: S.of(context).Load_Fx,
                     category: UnitCategory.force,
                     initialSI: joint.loadFx,
                     onChangedSI: (v) => joint.loadFx = v,
@@ -224,7 +243,7 @@ class _TrussAnalysisPageState extends State<TrussAnalysisPage> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: UnitField(
-                    label: 'Load Fy',
+                    label: S.of(context).Load_Fy,
                     category: UnitCategory.force,
                     initialSI: joint.loadFy,
                     onChangedSI: (v) => joint.loadFy = v,
@@ -247,11 +266,13 @@ class _TrussAnalysisPageState extends State<TrussAnalysisPage> {
         children: [
           Expanded(
             child: DropdownButtonFormField<_JointEntry>(
-              initialValue: _joints.contains(member.jointA) ? member.jointA : null,
-              decoration: const InputDecoration(labelText: 'From'),
+              initialValue:
+                  _joints.contains(member.jointA) ? member.jointA : null,
+              decoration: InputDecoration(labelText: S.of(context).From),
               items: List.generate(
                 _joints.length,
-                (i) => DropdownMenuItem(value: _joints[i], child: Text(_jointLabel(i))),
+                (i) => DropdownMenuItem(
+                    value: _joints[i], child: Text(_jointLabel(i))),
               ),
               onChanged: (v) => setState(() => member.jointA = v),
             ),
@@ -259,17 +280,20 @@ class _TrussAnalysisPageState extends State<TrussAnalysisPage> {
           const SizedBox(width: 8),
           Expanded(
             child: DropdownButtonFormField<_JointEntry>(
-              initialValue: _joints.contains(member.jointB) ? member.jointB : null,
+              initialValue:
+                  _joints.contains(member.jointB) ? member.jointB : null,
               decoration: const InputDecoration(labelText: 'To'),
               items: List.generate(
                 _joints.length,
-                (i) => DropdownMenuItem(value: _joints[i], child: Text(_jointLabel(i))),
+                (i) => DropdownMenuItem(
+                    value: _joints[i], child: Text(_jointLabel(i))),
               ),
               onChanged: (v) => setState(() => member.jointB = v),
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.remove_circle_outline_rounded, color: Colors.red),
+            icon: const Icon(Icons.remove_circle_outline_rounded,
+                color: Colors.red),
             onPressed: () => setState(() => _members.removeAt(index)),
           ),
         ],

@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'number.dart';
 import 'unit_system.dart';
 
 // Length
@@ -369,4 +370,38 @@ double toSI(double value, UnitCategory category, UnitSystem from) {
 double fromSI(double siValue, UnitCategory category, UnitSystem to) {
   if (to == UnitSystem.si) return siValue;
   return _pairs[category]!.siToImperial(siValue);
+}
+
+/// Formats [value] with at most [decimals] places, dropping trailing zeros.
+///
+/// Used by result pages whose derivation steps read better at a fixed width
+/// than at the user's chosen display precision.
+String formatFixed(double value, {int decimals = 3}) =>
+    value.toStringAsFixed(decimals).replaceFirst(RegExp(r'\.?0+$'), '');
+
+/// [formatFixed] at four decimal places.
+String formatFixed4(double value) => formatFixed(value, decimals: 4);
+
+/// [formatFixed] applied to a value converted out of the app's SI display
+/// unit for [category], with the matching unit label appended.
+String formatFixedSI(
+  double valueSI,
+  UnitCategory category,
+  UnitSystem system, {
+  int decimals = 3,
+}) =>
+    '${formatFixed(fromSI(valueSI, category, system), decimals: decimals)} '
+    '${unitLabel(category, system)}';
+
+extension SIValueFormatting on NumberPrecisionHelper {
+  /// Formats [valueSI] — expressed in the app's SI display unit for
+  /// [category] — for the given [system], appending the matching unit label.
+  ///
+  /// Pass a null [category] for a dimensionless quantity, which is formatted
+  /// without a unit suffix.
+  String formatSI(double valueSI, UnitCategory? category, UnitSystem system) {
+    if (category == null) return formatValue(valueSI);
+    return '${formatValue(fromSI(valueSI, category, system))} '
+        '${unitLabel(category, system)}';
+  }
 }

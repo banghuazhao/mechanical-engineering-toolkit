@@ -337,7 +337,7 @@ class ToolLibrary {
       Tool(
           id: 117,
           image: AssetImage("images/icons/icon_beam_section.png"),
-          title: 'Beam Section Properties',
+          title: S.of(context).Beam_Section_Properties,
           type: ToolType.beamEngineering,
           keywords: const [
             'cross section',
@@ -355,7 +355,7 @@ class ToolLibrary {
       Tool(
           id: 118,
           image: AssetImage("images/icons/icon_mohr_circle.png"),
-          title: "Mohr's Circle for Plane Stress",
+          title: S.of(context).Mohrs_Circle_for_Plane_Stress,
           type: ToolType.mechanicsOfMaterial,
           keywords: const ['principal stress', 'max shear stress'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
@@ -369,7 +369,7 @@ class ToolLibrary {
       Tool(
           id: 119,
           image: AssetImage("images/icons/icon_goodman.png"),
-          title: 'Fatigue Safety Factor (Modified Goodman)',
+          title: S.of(context).Fatigue_Safety_Factor,
           type: ToolType.mechanicsOfMaterial,
           keywords: const ['goodman', 's-n', 'endurance limit', 'fatigue'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
@@ -383,7 +383,7 @@ class ToolLibrary {
       Tool(
           id: 120,
           image: AssetImage("images/icons/icon_bolted_joint.png"),
-          title: 'Bolted / Riveted Joint',
+          title: S.of(context).Bolted_Riveted_Joint,
           type: ToolType.mechanicsOfMaterial,
           keywords: const ['bolt', 'rivet', 'shear', 'bearing stress'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
@@ -397,7 +397,7 @@ class ToolLibrary {
       Tool(
           id: 121,
           image: AssetImage("images/icons/icon_combined_loading.png"),
-          title: 'Combined Loading at a Point',
+          title: S.of(context).Combined_Loading_at_a_Point,
           type: ToolType.mechanicsOfMaterial,
           keywords: const ['von mises', 'combined stress', 'factor of safety'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
@@ -525,7 +525,7 @@ class ToolLibrary {
       Tool(
           id: 306,
           image: AssetImage("images/icons/icon_composite_lamina.png"),
-          title: 'Composite Failure Criteria (Tsai-Hill / Tsai-Wu)',
+          title: S.of(context).Composite_Failure_Criteria,
           type: ToolType.composite,
           keywords: const [
             'lamina failure',
@@ -545,7 +545,7 @@ class ToolLibrary {
       Tool(
           id: 400,
           image: AssetImage("images/icons/icon_resultant_forces.png"),
-          title: 'Resultant of Forces (2D)',
+          title: S.of(context).Resultant_of_Forces_2D,
           type: ToolType.statics,
           keywords: const ['vector sum', 'force resultant'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
@@ -558,7 +558,7 @@ class ToolLibrary {
       Tool(
           id: 401,
           image: AssetImage("images/icons/icon_beam_load.png"),
-          title: 'Beam Load Analysis',
+          title: S.of(context).Beam_Load_Analysis,
           type: ToolType.beamEngineering,
           keywords: const [
             'shear diagram',
@@ -576,7 +576,7 @@ class ToolLibrary {
       Tool(
           id: 402,
           image: AssetImage("images/icons/icon_centroid.png"),
-          title: 'Centroid of Composite Area',
+          title: S.of(context).Centroid_of_Composite_Area,
           type: ToolType.statics,
           keywords: const ['center of gravity', 'centroid'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
@@ -589,7 +589,7 @@ class ToolLibrary {
       Tool(
           id: 403,
           image: AssetImage("images/icons/icon_truss.png"),
-          title: 'Truss Analysis (Method of Joints)',
+          title: S.of(context).Truss_Analysis_Method_of_Joints,
           type: ToolType.statics,
           keywords: const ['method of joints', 'truss', 'member force'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
@@ -603,7 +603,7 @@ class ToolLibrary {
       Tool(
           id: 500,
           image: AssetImage("images/icons/icon_unit_converter.png"),
-          title: 'Unit Converter',
+          title: S.of(context).Unit_Converter,
           type: ToolType.utilities,
           keywords: const ['convert', 'units'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
@@ -617,7 +617,7 @@ class ToolLibrary {
       Tool(
           id: 701,
           image: AssetImage("images/icons/icon_spring.png"),
-          title: 'Helical Compression Spring',
+          title: S.of(context).Helical_Compression_Spring,
           type: ToolType.machineDesign,
           keywords: const [
             'spring rate',
@@ -635,7 +635,7 @@ class ToolLibrary {
       Tool(
           id: 702,
           image: AssetImage("images/icons/icon_spur_gear.png"),
-          title: 'Spur Gear Geometry',
+          title: S.of(context).Spur_Gear_Geometry,
           type: ToolType.machineDesign,
           keywords: const [
             'module',
@@ -653,7 +653,7 @@ class ToolLibrary {
       Tool(
           id: 703,
           image: AssetImage("images/icons/icon_shaft_fatigue.png"),
-          title: 'Shaft Fatigue Design (DE-Goodman)',
+          title: S.of(context).Shaft_Fatigue_Design,
           type: ToolType.machineDesign,
           keywords: const [
             'keyway',
@@ -671,7 +671,7 @@ class ToolLibrary {
       Tool(
           id: 704,
           image: AssetImage("images/icons/icon_bearing.png"),
-          title: 'Bearing L10 Life',
+          title: S.of(context).Bearing_L10_Life,
           type: ToolType.machineDesign,
           keywords: const [
             'dynamic load rating',
@@ -689,7 +689,7 @@ class ToolLibrary {
       Tool(
           id: 705,
           image: AssetImage("images/icons/icon_belt_drive.png"),
-          title: 'Belt / Chain Drive',
+          title: S.of(context).Belt_Chain_Drive,
           type: ToolType.machineDesign,
           keywords: const ['pulley', 'sprocket', 'wrap angle', 'speed ratio'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
@@ -702,7 +702,7 @@ class ToolLibrary {
       Tool(
           id: 706,
           image: AssetImage("images/icons/icon_bolt_preload.png"),
-          title: 'Bolt Preload / Torque-Tension',
+          title: S.of(context).Bolt_Preload_Torque_Tension,
           type: ToolType.machineDesign,
           keywords: const ['nut factor', 'tightening torque', 'bolted joint'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
@@ -715,7 +715,7 @@ class ToolLibrary {
       Tool(
           id: 707,
           image: AssetImage("images/icons/icon_fillet_weld.png"),
-          title: 'Fillet Weld Strength',
+          title: S.of(context).Fillet_Weld_Strength,
           type: ToolType.machineDesign,
           keywords: const ['throat', 'weld shear', 'leg size'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
@@ -728,7 +728,7 @@ class ToolLibrary {
       Tool(
           id: 708,
           image: AssetImage("images/icons/icon_press_fit.png"),
-          title: 'Press / Shrink-Fit Interference',
+          title: S.of(context).Press_Shrink_Fit_Interference,
           type: ToolType.machineDesign,
           keywords: const [
             'interference fit',

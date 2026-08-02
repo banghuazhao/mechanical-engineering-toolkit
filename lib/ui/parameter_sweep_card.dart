@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:provider/provider.dart';
 
 import '../util/number.dart';
@@ -86,20 +87,24 @@ class _ParameterSweepCardState extends State<ParameterSweepCard> {
     final primary = Theme.of(context).colorScheme.primary;
     final outline = Theme.of(context).colorScheme.outlineVariant;
 
-    final touchIndex = (_touchedIndex ?? spots.length ~/ 2).clamp(0, spots.length - 1);
+    final touchIndex =
+        (_touchedIndex ?? spots.length ~/ 2).clamp(0, spots.length - 1);
     final touched = spots[touchIndex];
-    final varUnit =
-        widget.variableCategory == null ? '' : unitLabel(widget.variableCategory!, system);
-    final outUnit =
-        widget.outputCategory == null ? '' : unitLabel(widget.outputCategory!, system);
+    final varUnit = widget.variableCategory == null
+        ? ''
+        : unitLabel(widget.variableCategory!, system);
+    final outUnit = widget.outputCategory == null
+        ? ''
+        : unitLabel(widget.outputCategory!, system);
 
     String fv(double siValue, UnitCategory? category) {
-      final display = category == null ? siValue : fromSI(siValue, category, system);
+      final display =
+          category == null ? siValue : fromSI(siValue, category, system);
       return precs.formatValue(display);
     }
 
     return AppSectionCard(
-      title: 'What if: ${widget.variableLabel}',
+      title: S.of(context).What_If(widget.variableLabel),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -162,8 +167,8 @@ class _ParameterSweepCardState extends State<ParameterSweepCard> {
                     color: primary,
                     barWidth: 2,
                     dotData: const FlDotData(show: false),
-                    belowBarData:
-                        BarAreaData(show: true, color: primary.withValues(alpha: 0.08)),
+                    belowBarData: BarAreaData(
+                        show: true, color: primary.withValues(alpha: 0.08)),
                   ),
                 ],
               ),
@@ -171,7 +176,7 @@ class _ParameterSweepCardState extends State<ParameterSweepCard> {
           ),
           SizedBox(height: context.tokens.space1),
           Text(
-            'Drag along the line to explore other values of ${widget.variableLabel}.',
+            S.of(context).Drag_Along_Line(widget.variableLabel),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall,
           ),

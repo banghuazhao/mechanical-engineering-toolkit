@@ -75,12 +75,12 @@ class _BeamCalculatorPageState extends State<BeamCalculatorPage> {
           children: [
             ToolResultHeader(tool: tool),
             AppSectionCard(
-              title: 'Simply supported beam',
+              title: S.of(context).Simply_Supported_Beam,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Pin support at the left, roller support at the right. Combine one downward point load with a full-span uniformly distributed load.',
+                    S.of(context).Desc_Beam_Supports,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
@@ -88,37 +88,37 @@ class _BeamCalculatorPageState extends State<BeamCalculatorPage> {
                   SizedBox(height: context.tokens.space4),
                   AdaptiveFieldGrid(children: [
                     UnitField(
-                      label: 'Span, L',
+                      label: S.of(context).Span_L,
                       category: UnitCategory.span,
                       initialSI: _span,
                       onChangedSI: (v) => _span = v,
                     ),
                     UnitField(
-                      label: 'Point load, P',
+                      label: S.of(context).Point_Load_P,
                       category: UnitCategory.forceStructural,
                       initialSI: _pointLoad,
                       onChangedSI: (v) => _pointLoad = v,
                     ),
                     UnitField(
-                      label: 'Point position, a',
+                      label: S.of(context).Point_Position_A,
                       category: UnitCategory.span,
                       initialSI: _pointPosition,
                       onChangedSI: (v) => _pointPosition = v,
                     ),
                     UnitField(
-                      label: 'Full-span UDL, w',
+                      label: S.of(context).Full_Span_UDL_W,
                       category: UnitCategory.distributedLoadStructural,
                       initialSI: _udl,
                       onChangedSI: (v) => _udl = v,
                     ),
                     UnitField(
-                      label: 'Elastic modulus, E',
+                      label: S.of(context).Elastic_Modulus_E,
                       category: UnitCategory.modulus,
                       initialSI: _elasticModulus,
                       onChangedSI: (v) => _elasticModulus = v,
                     ),
                     UnitField(
-                      label: 'Second moment, I',
+                      label: S.of(context).Second_Moment_I,
                       category: UnitCategory.momentOfInertia,
                       initialSI: _secondMoment,
                       onChangedSI: (v) => _secondMoment = v,
@@ -137,12 +137,12 @@ class _BeamCalculatorPageState extends State<BeamCalculatorPage> {
             ),
             SizedBox(height: context.tokens.space4),
             AppSectionCard(
-              title: 'Description and formulas',
+              title: S.of(context).Description_and_Formulas,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Uses static equilibrium and Euler–Bernoulli beam theory for a simply supported beam. A downward point load and a full-span uniformly distributed load may be used separately or together.',
+                    S.of(context).Desc_Beam_Analysis,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   SizedBox(height: context.tokens.space4),

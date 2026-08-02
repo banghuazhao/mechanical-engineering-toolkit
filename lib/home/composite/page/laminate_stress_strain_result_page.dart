@@ -5,16 +5,12 @@ import 'package:composite_calculator/utils/layup_parser.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/engineering_constants_widget.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
-import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:linalg/matrix.dart';
-
-import '../../tool_setting_page.dart';
 
 class LaminateStressStrainResultPage extends StatefulWidget {
   final int toolId;
@@ -40,7 +36,6 @@ class _LaminateStressStrainResultPageState
   late List<List<FlSpot>>
       _chartSpots; // indexed: 0=ε11,1=ε22,2=ε12,3=σ11,4=σ22,5=σ12
   late List<String> _chartTitles;
-  final _exportKey = GlobalKey();
 
   @override
   void initState() {
@@ -147,40 +142,18 @@ class _LaminateStressStrainResultPageState
           (e) => _ThicknessChart(title: _chartTitles[e.key], spots: e.value)),
     ];
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () =>
-                shareResultImage(_exportKey, 'Laminate Stress-Strain'),
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const ToolSettingPage())),
-          ),
-        ],
-        title: Text(S.of(context).Result),
-      ),
-      bottomNavigationBar: const AppBannerAd(),
-      body: RepaintBoundary(
-        key: _exportKey,
-        child: SafeArea(
-          child: StaggeredGridView.countBuilder(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-            crossAxisCount: 8,
-            itemCount: items.length,
-            staggeredTileBuilder: (_) => StaggeredTile.fit(
-                MediaQuery.of(context).size.width > 600 ? 4 : 8),
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
-            itemBuilder: (_, i) => items[i],
-          ),
+    return ResultScaffold(
+      toolName: 'Laminate Stress-Strain',
+      body: SafeArea(
+        child: StaggeredGridView.countBuilder(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+          crossAxisCount: 8,
+          itemCount: items.length,
+          staggeredTileBuilder: (_) => StaggeredTile.fit(
+              MediaQuery.of(context).size.width > 600 ? 4 : 8),
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          itemBuilder: (_, i) => items[i],
         ),
       ),
     );

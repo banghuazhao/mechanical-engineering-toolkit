@@ -5,13 +5,11 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
-import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
-import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -201,11 +199,6 @@ class _ShaftPowerTorqueResultPage extends StatelessWidget {
   final double omega;
   final double rpm;
   final _SolveFor mode;
-  final _exportKey = GlobalKey();
-
-  String _fv(double valueSI, UnitCategory category, UnitSystem system,
-          NumberPrecisionHelper precs) =>
-      '${precs.formatValue(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
 
   @override
   Widget build(BuildContext context) {
@@ -215,104 +208,68 @@ class _ShaftPowerTorqueResultPage extends StatelessWidget {
     final steps = mode == _SolveFor.torque
         ? [
             'ω = 2π·n / 60 = 2π × ${precs.formatValue(rpm)} / 60 = ${precs.formatValue(omega)} rad/s',
-            'T = P / ω = ${precs.formatValue(power)} / ${precs.formatValue(omega)} = ${_fv(torque, UnitCategory.torque, system, precs)}',
+            'T = P / ω = ${precs.formatValue(power)} / ${precs.formatValue(omega)} = ${precs.formatSI(torque, UnitCategory.torque, system)}',
           ]
         : [
             'ω = 2π·n / 60 = 2π × ${precs.formatValue(rpm)} / 60 = ${precs.formatValue(omega)} rad/s',
-            'P = T × ω = ${_fv(torque, UnitCategory.torque, system, precs)} × ${precs.formatValue(omega)} = ${precs.formatValue(power)} W',
+            'P = T × ω = ${precs.formatSI(torque, UnitCategory.torque, system)} × ${precs.formatValue(omega)} = ${precs.formatValue(power)} W',
           ];
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Result'),
-        actions: [
-          IconButton(
-            tooltip: 'Share results',
-            icon: const Icon(Icons.share_rounded),
-            onPressed: () => _share(system, precs),
-          ),
-          IconButton(
-            tooltip: 'Share as image',
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () =>
-                shareResultImage(_exportKey, 'Shaft Power & Torque'),
-          ),
-          IconButton(
-            tooltip: 'Settings',
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ToolSettingPage()),
+    return ResultScaffold(
+      toolName: 'Shaft Power & Torque',
+      shareLines: () => _shareLines(system, precs),
+      children: [
+        ToolResultHeader(tool: tool),
+        AppSectionCard(
+          title: 'Shaft Power & Torque',
+          child: Column(children: [
+            AppCopyableValue(
+              label: 'Torque, T',
+              valueSI: torque,
+              category: UnitCategory.torque,
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: const AppBannerAd(),
-      body: RepaintBoundary(
-        key: _exportKey,
-        child: AppContent(
-          padding: EdgeInsets.zero,
-          child: ListView(
-            padding: EdgeInsets.all(context.tokens.space4),
-            children: [
-              ToolResultHeader(tool: tool),
-              AppSectionCard(
-                title: 'Shaft Power & Torque',
-                child: Column(children: [
-                  AppCopyableValue(
-                    label: 'Torque, T',
-                    valueSI: torque,
-                    category: UnitCategory.torque,
-                  ),
-                  AppCopyableValue(
-                    label: 'Power, P',
-                    valueSI: power / 1000,
-                    category: UnitCategory.power,
-                  ),
-                  AppCopyableValue(
-                    label: 'Angular velocity, ω',
-                    value: '${precs.formatValue(omega)} rad/s',
-                  ),
-                ]),
-              ),
-              SizedBox(height: context.tokens.space4),
-              AppSectionCard(
-                title: 'Formula',
-                child: Text(steps.join('\n'),
-                    style: Theme.of(context).textTheme.bodyMedium),
-              ),
-              SizedBox(height: context.tokens.space4),
-              ParameterSweepCard(
-                variableLabel: 'Speed, n',
-                variableCategory: UnitCategory.angularVelocity,
-                baseValueSI: rpm,
-                outputLabel: mode == _SolveFor.torque ? 'T' : 'P (W)',
-                outputCategory:
-                    mode == _SolveFor.torque ? UnitCategory.torque : null,
-                compute: (variedRpm) {
-                  final w = 2 * pi * variedRpm / 60;
-                  return mode == _SolveFor.torque ? power / w : torque * w;
-                },
-              ),
-            ],
-          ),
+            AppCopyableValue(
+              label: 'Power, P',
+              valueSI: power / 1000,
+              category: UnitCategory.power,
+            ),
+            AppCopyableValue(
+              label: 'Angular velocity, ω',
+              value: '${precs.formatValue(omega)} rad/s',
+            ),
+          ]),
         ),
-      ),
+        AppSectionCard(
+          title: 'Formula',
+          child: Text(steps.join('\n'),
+              style: Theme.of(context).textTheme.bodyMedium),
+        ),
+        ParameterSweepCard(
+          variableLabel: 'Speed, n',
+          variableCategory: UnitCategory.angularVelocity,
+          baseValueSI: rpm,
+          outputLabel: mode == _SolveFor.torque ? 'T' : 'P (W)',
+          outputCategory: mode == _SolveFor.torque ? UnitCategory.torque : null,
+          compute: (variedRpm) {
+            final w = 2 * pi * variedRpm / 60;
+            return mode == _SolveFor.torque ? power / w : torque * w;
+          },
+        ),
+      ],
     );
   }
 
-  void _share(UnitSystem system, NumberPrecisionHelper precs) {
-    final lines = mode == _SolveFor.torque
+  List<String> _shareLines(UnitSystem system, NumberPrecisionHelper precs) {
+    return mode == _SolveFor.torque
         ? [
-            'T = ${_fv(torque, UnitCategory.torque, system, precs)}',
-            'P = ${precs.formatValue(power)} W (${_fv(power / 1000, UnitCategory.power, system, precs)})',
+            'T = ${precs.formatSI(torque, UnitCategory.torque, system)}',
+            'P = ${precs.formatValue(power)} W (${precs.formatSI(power / 1000, UnitCategory.power, system)})',
             'ω = ${precs.formatValue(omega)} rad/s',
           ]
         : [
-            'P = ${precs.formatValue(power)} W (${_fv(power / 1000, UnitCategory.power, system, precs)})',
-            'T = ${_fv(torque, UnitCategory.torque, system, precs)}',
+            'P = ${precs.formatValue(power)} W (${precs.formatSI(power / 1000, UnitCategory.power, system)})',
+            'T = ${precs.formatSI(torque, UnitCategory.torque, system)}',
             'ω = ${precs.formatValue(omega)} rad/s',
           ];
-    shareResult('Shaft Power & Torque', lines);
   }
 }

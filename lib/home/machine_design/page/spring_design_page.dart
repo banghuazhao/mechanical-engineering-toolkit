@@ -72,12 +72,12 @@ class _SpringDesignPageState extends State<SpringDesignPage> {
           children: [
             ToolResultHeader(tool: tool),
             AppSectionCard(
-              title: 'Helical Compression Spring',
+              title: S.of(context).Helical_Compression_Spring,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Spring index, Wahl stress-correction factor, rate, and an estimated fundamental natural frequency (both ends fixed) for a round-wire helical compression spring.',
+                    S.of(context).Desc_Spring_Design,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
@@ -93,14 +93,14 @@ class _SpringDesignPageState extends State<SpringDesignPage> {
                   SizedBox(height: context.tokens.space4),
                   AdaptiveFieldGrid(children: [
                     UnitField(
-                      label: 'Wire diameter, d',
+                      label: S.of(context).Wire_Diameter_D,
                       category: UnitCategory.length,
                       signed: false,
                       initialSI: _d,
                       onChangedSI: (v) => _d = v,
                     ),
                     UnitField(
-                      label: 'Mean coil diameter, D',
+                      label: S.of(context).Mean_Coil_Diameter_D,
                       category: UnitCategory.length,
                       signed: false,
                       initialSI: _coilD,
@@ -110,12 +110,12 @@ class _SpringDesignPageState extends State<SpringDesignPage> {
                       initialValue: _na?.toString(),
                       keyboardType:
                           const TextInputType.numberWithOptions(decimal: true),
-                      decoration:
-                          const InputDecoration(labelText: 'Active coils, Na'),
+                      decoration: InputDecoration(
+                          labelText: S.of(context).Active_Coils_Na),
                       onChanged: (v) => _na = double.tryParse(v),
                     ),
                     UnitField(
-                      label: 'Shear modulus, G',
+                      label: S.of(context).Shear_Modulus_G,
                       category: UnitCategory.modulus,
                       signed: false,
                       initialSI: _g,
@@ -135,7 +135,7 @@ class _SpringDesignPageState extends State<SpringDesignPage> {
                   ),
                   SizedBox(height: context.tokens.space3),
                   Text(
-                    'Optional — for operating deflection/stress and frequency',
+                    S.of(context).Optional_For_Deflection_Frequency,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                         ),
@@ -143,14 +143,14 @@ class _SpringDesignPageState extends State<SpringDesignPage> {
                   SizedBox(height: context.tokens.space2),
                   AdaptiveFieldGrid(children: [
                     UnitField(
-                      label: 'Operating force, F',
+                      label: S.of(context).Operating_Force_F,
                       category: UnitCategory.force,
                       signed: false,
                       initialSI: _f,
                       onChangedSI: (v) => _f = v,
                     ),
                     UnitField(
-                      label: 'Material density (default steel)',
+                      label: S.of(context).Material_Density_Default_Steel,
                       category: UnitCategory.density,
                       signed: false,
                       initialSI: _density,
@@ -173,7 +173,7 @@ class _SpringDesignPageState extends State<SpringDesignPage> {
       final na = _na;
       final g = _g;
       if (d == null || coilD == null || na == null || g == null) {
-        throw const FormatException('Enter d, D, Na, and G.');
+        throw FormatException(S.of(context).Err_Enter_D_BigD_Na_G);
       }
 
       final result = SpringDesignCalculator.calculate(SpringDesignInput(

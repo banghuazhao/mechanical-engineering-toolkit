@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/beam/model/simply_supported_beam_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
-import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/xy_diagram_card.dart';
-import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class BeamCalculatorResultPage extends StatelessWidget {
-  BeamCalculatorResultPage({
+  const BeamCalculatorResultPage({
     super.key,
     required this.toolId,
     required this.title,
@@ -25,113 +23,67 @@ class BeamCalculatorResultPage extends StatelessWidget {
   final String title;
   final BeamAnalysisInput input;
   final BeamAnalysisResult result;
-  final _exportKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final tool = ToolLibrary.shared.item(toolId, context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Result'),
-        actions: [
-          IconButton(
-            tooltip: 'Share results',
-            icon: const Icon(Icons.share_rounded),
-            onPressed: () => _share(system),
-          ),
-          IconButton(
-            tooltip: 'Share as image',
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () => shareResultImage(_exportKey, title),
-          ),
-          IconButton(
-            tooltip: 'Settings',
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ToolSettingPage(),
-              ),
+    return ResultScaffold(
+      toolName: title,
+      shareLines: () => _shareLines(system),
+      children: [
+        ToolResultHeader(tool: tool),
+        AppSectionCard(
+          title: title,
+          child: Column(children: [
+            AppCopyableValue(
+                label: S.of(context).Left_Reaction_RA,
+                value: _fv(
+                    result.leftReaction, UnitCategory.forceStructural, system)),
+            AppCopyableValue(
+                label: S.of(context).Right_Reaction_RB,
+                value: _fv(result.rightReaction, UnitCategory.forceStructural,
+                    system)),
+            AppCopyableValue(
+              label: S.of(context).Maximum_Bending_Moment,
+              value:
+                  '${_fv(result.maximumMoment, UnitCategory.momentStructural, system)} at x = ${_fv(result.maximumMomentPosition, UnitCategory.span, system)}',
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: const AppBannerAd(),
-      body: RepaintBoundary(
-        key: _exportKey,
-        child: AppContent(
-          padding: EdgeInsets.zero,
-          child: ListView(
-            padding: EdgeInsets.all(context.tokens.space4),
-            children: [
-              ToolResultHeader(tool: tool),
-              AppSectionCard(
-                title: title,
-                child: Column(children: [
-                  AppCopyableValue(
-                      label: 'Left reaction, RA',
-                      value: _fv(result.leftReaction,
-                          UnitCategory.forceStructural, system)),
-                  AppCopyableValue(
-                      label: 'Right reaction, RB',
-                      value: _fv(result.rightReaction,
-                          UnitCategory.forceStructural, system)),
-                  AppCopyableValue(
-                    label: 'Maximum bending moment',
-                    value:
-                        '${_fv(result.maximumMoment, UnitCategory.momentStructural, system)} at x = ${_fv(result.maximumMomentPosition, UnitCategory.span, system)}',
-                  ),
-                  AppCopyableValue(
-                    label: 'Maximum downward deflection',
-                    value:
-                        '${_fv(result.maximumDeflection, UnitCategory.length, system)} at x = ${_fv(result.maximumDeflectionPosition, UnitCategory.span, system)}',
-                  ),
-                ]),
-              ),
-              SizedBox(height: context.tokens.space4),
-              CalculationCard(steps: _reactionSteps(system)),
-              SizedBox(height: context.tokens.space3),
-              CalculationCard(steps: _responseSteps(system)),
-              SizedBox(height: context.tokens.space4),
-              XYDiagramCard(
-                title: 'Shear-force diagram',
-                xUnitLabel: unitLabel(UnitCategory.span, system),
-                yUnitLabel: unitLabel(UnitCategory.forceStructural, system),
-                points: result.shear
-                    .map((p) => DiagramPoint(p.x, p.value))
-                    .toList(),
-              ),
-              SizedBox(height: context.tokens.space3),
-              XYDiagramCard(
-                title: 'Bending-moment diagram',
-                xUnitLabel: unitLabel(UnitCategory.span, system),
-                yUnitLabel: unitLabel(UnitCategory.momentStructural, system),
-                points: result.moment
-                    .map((p) => DiagramPoint(p.x, p.value))
-                    .toList(),
-              ),
-              SizedBox(height: context.tokens.space3),
-              XYDiagramCard(
-                title: 'Elastic deflection',
-                xUnitLabel: unitLabel(UnitCategory.span, system),
-                yUnitLabel:
-                    '${unitLabel(UnitCategory.length, system)} downward',
-                points: result.deflection
-                    .map((p) => DiagramPoint(p.x, p.value))
-                    .toList(),
-              ),
-              SizedBox(height: context.tokens.space3),
-              Text(
-                'Linear-elastic Euler–Bernoulli analysis. Self-weight and shear deformation are excluded unless entered as part of the UDL. Diagram extrema are evaluated at 200 intervals.',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-              ),
-            ],
-          ),
+            AppCopyableValue(
+              label: S.of(context).Maximum_Downward_Deflection,
+              value:
+                  '${_fv(result.maximumDeflection, UnitCategory.length, system)} at x = ${_fv(result.maximumDeflectionPosition, UnitCategory.span, system)}',
+            ),
+          ]),
         ),
-      ),
+        CalculationCard(steps: _reactionSteps(system)),
+        CalculationCard(steps: _responseSteps(system)),
+        XYDiagramCard(
+          title: S.of(context).Shear_Force_Diagram,
+          xUnitLabel: unitLabel(UnitCategory.span, system),
+          yUnitLabel: unitLabel(UnitCategory.forceStructural, system),
+          points: result.shear.map((p) => DiagramPoint(p.x, p.value)).toList(),
+        ),
+        XYDiagramCard(
+          title: S.of(context).Bending_Moment_Diagram,
+          xUnitLabel: unitLabel(UnitCategory.span, system),
+          yUnitLabel: unitLabel(UnitCategory.momentStructural, system),
+          points: result.moment.map((p) => DiagramPoint(p.x, p.value)).toList(),
+        ),
+        XYDiagramCard(
+          title: S.of(context).Elastic_Deflection,
+          xUnitLabel: unitLabel(UnitCategory.span, system),
+          yUnitLabel: '${unitLabel(UnitCategory.length, system)} downward',
+          points:
+              result.deflection.map((p) => DiagramPoint(p.x, p.value)).toList(),
+        ),
+        Text(
+          'Linear-elastic Euler\u2013Bernoulli analysis. Self-weight and shear deformation are excluded unless entered as part of the UDL. Diagram extrema are evaluated at 200 intervals.',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+        ),
+      ],
     );
   }
 
@@ -158,7 +110,7 @@ class BeamCalculatorResultPage extends StatelessWidget {
         'vmax = ${_fv(result.maximumDeflection, UnitCategory.length, system)} downward at x = ${_fv(result.maximumDeflectionPosition, UnitCategory.span, system)}',
       ];
 
-  void _share(UnitSystem system) => shareResult(title, [
+  List<String> _shareLines(UnitSystem system) => [
         'RA = ${_fv(result.leftReaction, UnitCategory.forceStructural, system)}',
         'RB = ${_fv(result.rightReaction, UnitCategory.forceStructural, system)}',
         'Mmax = ${_fv(result.maximumMoment, UnitCategory.momentStructural, system)} at ${_fv(result.maximumMomentPosition, UnitCategory.span, system)}',
@@ -167,7 +119,7 @@ class BeamCalculatorResultPage extends StatelessWidget {
         ..._reactionSteps(system),
         '',
         ..._responseSteps(system),
-      ]);
+      ];
 
   String _f(double value) =>
       value.toStringAsFixed(3).replaceFirst(RegExp(r'\.?0+$'), '');

@@ -48,7 +48,7 @@ class ToolSettingPage extends StatelessWidget {
                                   padding:
                                       const EdgeInsets.fromLTRB(16, 14, 16, 0),
                                   child: Text(
-                                    'UNIT SYSTEM',
+                                    S.of(context).Unit_System,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium
@@ -61,10 +61,13 @@ class ToolSettingPage extends StatelessWidget {
                                   ),
                                 ),
                                 const Divider(height: 14),
-                                ...UnitSystem.values.asMap().entries.map((entry) {
+                                ...UnitSystem.values
+                                    .asMap()
+                                    .entries
+                                    .map((entry) {
                                   final system = entry.value;
-                                  final isLast = entry.key ==
-                                      UnitSystem.values.length - 1;
+                                  final isLast =
+                                      entry.key == UnitSystem.values.length - 1;
                                   final isSelected = unitPref.system == system;
                                   return Column(
                                     children: [
@@ -104,7 +107,8 @@ class ToolSettingPage extends StatelessWidget {
                                                     ),
                                                     const SizedBox(height: 2),
                                                     Text(
-                                                      _unitSystemPreview(system),
+                                                      _unitSystemPreview(
+                                                          system),
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .bodySmall
@@ -151,7 +155,7 @@ class ToolSettingPage extends StatelessWidget {
                                   padding:
                                       const EdgeInsets.fromLTRB(16, 14, 16, 0),
                                   child: Text(
-                                    'PRECISION',
+                                    S.of(context).Precision,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium
@@ -243,7 +247,7 @@ class ToolSettingPage extends StatelessWidget {
                                   padding:
                                       const EdgeInsets.fromLTRB(16, 14, 16, 0),
                                   child: Text(
-                                    'DISPLAY FORMAT',
+                                    S.of(context).Display_Format,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium
@@ -344,15 +348,15 @@ class ToolSettingPage extends StatelessWidget {
                                 return const SizedBox.shrink();
                               }
                               return AppSectionCard(
-                                title: 'Privacy',
+                                title: S.of(context).Privacy,
                                 child: ListTile(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 4),
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(vertical: 4),
                                   leading:
                                       const Icon(Icons.privacy_tip_rounded),
-                                  title: const Text('Privacy choices'),
-                                  subtitle: const Text(
-                                    'Review or change your advertising consent.',
+                                  title: Text(S.of(context).Privacy_Choices),
+                                  subtitle: Text(
+                                    S.of(context).Privacy_Choices_Description,
                                   ),
                                   trailing:
                                       const Icon(Icons.chevron_right_rounded),
@@ -363,9 +367,11 @@ class ToolSettingPage extends StatelessWidget {
                                       return;
                                     }
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
+                                      SnackBar(
                                         content: Text(
-                                          'Privacy choices are unavailable. Try again later.',
+                                          S
+                                              .of(context)
+                                              .Privacy_Choices_Unavailable,
                                         ),
                                       ),
                                     );

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
@@ -13,7 +14,8 @@ import 'package:provider/provider.dart';
 /// [index]. Intended for list/grid items so a screen's contents cascade in
 /// on first appearance instead of popping in all at once.
 class StaggeredEntrance extends StatefulWidget {
-  const StaggeredEntrance({super.key, required this.index, required this.child});
+  const StaggeredEntrance(
+      {super.key, required this.index, required this.child});
 
   final int index;
   final Widget child;
@@ -274,7 +276,8 @@ class AppCopyableValue extends StatelessWidget {
     if (!context.mounted) return;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('Copied $label')));
+      ..showSnackBar(
+          SnackBar(content: Text(S.of(context).Copied_Value(label))));
   }
 
   @override

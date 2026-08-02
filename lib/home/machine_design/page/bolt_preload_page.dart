@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
-import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
-import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -69,12 +67,12 @@ class _BoltPreloadPageState extends State<BoltPreloadPage> {
           children: [
             ToolResultHeader(tool: tool),
             AppSectionCard(
-              title: 'Bolt Preload / Torque-Tension',
+              title: S.of(context).Bolt_Preload_Torque_Tension,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Estimates the tightening torque needed to reach a target bolt preload, using the short-form torque-tension equation.',
+                    S.of(context).Desc_Bolt_Preload,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
@@ -90,14 +88,14 @@ class _BoltPreloadPageState extends State<BoltPreloadPage> {
                   SizedBox(height: context.tokens.space4),
                   AdaptiveFieldGrid(children: [
                     UnitField(
-                      label: 'Target preload, F',
+                      label: S.of(context).Target_Preload_F,
                       category: UnitCategory.force,
                       signed: false,
                       initialSI: _f,
                       onChangedSI: (v) => _f = v,
                     ),
                     UnitField(
-                      label: 'Nominal diameter, d',
+                      label: S.of(context).Nominal_Diameter_D,
                       category: UnitCategory.length,
                       signed: false,
                       initialSI: _d,
@@ -106,7 +104,7 @@ class _BoltPreloadPageState extends State<BoltPreloadPage> {
                   ]),
                   SizedBox(height: context.tokens.space3),
                   Text(
-                    'Nut factor, K (default 0.2 — typical for non-lubricated steel; use ~0.15 lubricated/plated, ~0.2-0.3 dry)',
+                    S.of(context).Nut_Factor_K,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
@@ -133,13 +131,13 @@ class _BoltPreloadPageState extends State<BoltPreloadPage> {
       final f = _f;
       final d = _d;
       if (f == null || d == null) {
-        throw const FormatException('Enter F and d.');
+        throw FormatException(S.of(context).Err_Enter_F_D);
       }
       if (f <= 0 || d <= 0) {
-        throw const FormatException('F and d must be positive.');
+        throw FormatException(S.of(context).Err_F_D_Positive);
       }
       if (_k <= 0) {
-        throw const FormatException('Nut factor K must be positive.');
+        throw FormatException(S.of(context).Err_Nut_Factor_Positive);
       }
 
       // d is in mm; T = K*F*d needs d in meters to give torque in N·m.
@@ -171,7 +169,7 @@ class _BoltPreloadPageState extends State<BoltPreloadPage> {
 }
 
 class _BoltPreloadResultPage extends StatelessWidget {
-  _BoltPreloadResultPage({
+  const _BoltPreloadResultPage({
     required this.torque,
     required this.f,
     required this.d,
@@ -182,93 +180,49 @@ class _BoltPreloadResultPage extends StatelessWidget {
   final double f;
   final double d;
   final double k;
-  final _exportKey = GlobalKey();
-
-  String _fv(double valueSI, UnitCategory category, UnitSystem system,
-          NumberPrecisionHelper precs) =>
-      '${precs.formatValue(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
 
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final precs = context.watch<NumberPrecisionHelper>();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Result'),
-        actions: [
-          IconButton(
-            tooltip: 'Share results',
-            icon: const Icon(Icons.share_rounded),
-            onPressed: () => _share(system, precs),
-          ),
-          IconButton(
-            tooltip: 'Share as image',
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () =>
-                shareResultImage(_exportKey, 'Bolt Preload / Torque-Tension'),
-          ),
-          IconButton(
-            tooltip: 'Settings',
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ToolSettingPage()),
+    return ResultScaffold(
+      toolName: S.of(context).Bolt_Preload_Torque_Tension,
+      shareLines: () => _shareLines(system, precs),
+      children: [
+        AppSectionCard(
+          title: S.of(context).Bolt_Preload_Torque_Tension,
+          child: Column(children: [
+            AppCopyableValue(
+              label: S.of(context).Tightening_Torque_T,
+              valueSI: torque,
+              category: UnitCategory.torque,
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: const AppBannerAd(),
-      body: RepaintBoundary(
-        key: _exportKey,
-        child: AppContent(
-          padding: EdgeInsets.zero,
-          child: ListView(
-            padding: EdgeInsets.all(context.tokens.space4),
-            children: [
-              AppSectionCard(
-                title: 'Bolt Preload / Torque-Tension',
-                child: Column(children: [
-                  AppCopyableValue(
-                    label: 'Tightening torque, T',
-                    valueSI: torque,
-                    category: UnitCategory.torque,
-                  ),
-                ]),
-              ),
-              SizedBox(height: context.tokens.space4),
-              AppSectionCard(
-                title: 'Formula',
-                child: Text(
-                  'T = K·F·d\n'
-                  '= ${precs.formatValue(k)} × ${_fv(f, UnitCategory.force, system, precs)} × ${_fv(d, UnitCategory.length, system, precs)}\n'
-                  '= ${_fv(torque, UnitCategory.torque, system, precs)}',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-              SizedBox(height: context.tokens.space4),
-              ParameterSweepCard(
-                variableLabel: 'Diameter, d',
-                variableCategory: UnitCategory.length,
-                baseValueSI: d,
-                outputLabel: 'T',
-                outputCategory: UnitCategory.torque,
-                compute: (variedD) => k * f * (variedD / 1000),
-              ),
-            ],
-          ),
+          ]),
         ),
-      ),
+        FormulaCard(steps: _steps(system, precs)),
+        ParameterSweepCard(
+          variableLabel: S.of(context).Diameter_D,
+          variableCategory: UnitCategory.length,
+          baseValueSI: d,
+          outputLabel: 'T',
+          outputCategory: UnitCategory.torque,
+          compute: (variedD) => k * f * (variedD / 1000),
+        ),
+      ],
     );
   }
 
-  void _share(UnitSystem system, NumberPrecisionHelper precs) =>
-      shareResult('Bolt Preload / Torque-Tension', [
-        'T = ${_fv(torque, UnitCategory.torque, system, precs)}',
+  List<String> _steps(UnitSystem system, NumberPrecisionHelper precs) => [
+        'T = K\u00b7F\u00b7d',
+        '= ${precs.formatValue(k)} \u00d7 ${precs.formatSI(f, UnitCategory.force, system)} \u00d7 ${precs.formatSI(d, UnitCategory.length, system)}',
+        '= ${precs.formatSI(torque, UnitCategory.torque, system)}',
+      ];
+
+  List<String> _shareLines(UnitSystem system, NumberPrecisionHelper precs) => [
+        'T = ${precs.formatSI(torque, UnitCategory.torque, system)}',
         '',
         'Calculation:',
-        'T = K·F·d',
-        '= ${precs.formatValue(k)} × ${_fv(f, UnitCategory.force, system, precs)} × ${_fv(d, UnitCategory.length, system, precs)}',
-        '= ${_fv(torque, UnitCategory.torque, system, precs)}',
-      ]);
+        ..._steps(system, precs),
+      ];
 }

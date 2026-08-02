@@ -78,12 +78,12 @@ class _ShaftFatiguePageState extends State<ShaftFatiguePage> {
           children: [
             ToolResultHeader(tool: tool),
             AppSectionCard(
-              title: 'Shaft Fatigue Design (DE-Goodman)',
+              title: S.of(context).Shaft_Fatigue_Design,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Minimum shaft diameter for combined fluctuating bending and torsion, using the distortion-energy/modified-Goodman criterion (Shigley). Leave mean moment/torque at 0 for a fully-reversed-bending, steady-torque shaft — the common case.',
+                    S.of(context).Desc_Shaft_Fatigue,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
@@ -102,42 +102,42 @@ class _ShaftFatiguePageState extends State<ShaftFatiguePage> {
                   SizedBox(height: context.tokens.space4),
                   AdaptiveFieldGrid(children: [
                     UnitField(
-                      label: 'Alternating moment, Ma',
+                      label: S.of(context).Alternating_Moment_Ma,
                       category: UnitCategory.momentSection,
                       signed: false,
                       initialSI: _ma,
                       onChangedSI: (v) => _ma = v,
                     ),
                     UnitField(
-                      label: 'Mean moment, Mm',
+                      label: S.of(context).Mean_Moment_Mm,
                       category: UnitCategory.momentSection,
                       signed: false,
                       initialSI: _mm,
                       onChangedSI: (v) => _mm = v,
                     ),
                     UnitField(
-                      label: 'Alternating torque, Ta',
+                      label: S.of(context).Alternating_Torque_Ta,
                       category: UnitCategory.momentSection,
                       signed: false,
                       initialSI: _ta,
                       onChangedSI: (v) => _ta = v,
                     ),
                     UnitField(
-                      label: 'Mean torque, Tm',
+                      label: S.of(context).Mean_Torque_Tm,
                       category: UnitCategory.momentSection,
                       signed: false,
                       initialSI: _tm,
                       onChangedSI: (v) => _tm = v,
                     ),
                     UnitField(
-                      label: 'Endurance limit, Se',
+                      label: S.of(context).Endurance_Limit_Se,
                       category: UnitCategory.stress,
                       signed: false,
                       initialSI: _se,
                       onChangedSI: (v) => _se = v,
                     ),
                     UnitField(
-                      label: 'Ultimate strength, Sut',
+                      label: S.of(context).Ultimate_Strength_Sut,
                       category: UnitCategory.stress,
                       signed: false,
                       initialSI: _sut,
@@ -154,7 +154,7 @@ class _ShaftFatiguePageState extends State<ShaftFatiguePage> {
                   ),
                   SizedBox(height: context.tokens.space3),
                   Text(
-                    'Stress-concentration factors (defaults: profiled keyway) and target safety factor',
+                    S.of(context).Stress_Concentration_Defaults,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                         ),
@@ -166,7 +166,7 @@ class _ShaftFatiguePageState extends State<ShaftFatiguePage> {
                       keyboardType:
                           const TextInputType.numberWithOptions(decimal: true),
                       decoration:
-                          const InputDecoration(labelText: 'Kf (bending)'),
+                          InputDecoration(labelText: S.of(context).Kf_Bending),
                       onChanged: (v) => _kf = double.tryParse(v) ?? _kf,
                     ),
                     TextFormField(
@@ -174,15 +174,15 @@ class _ShaftFatiguePageState extends State<ShaftFatiguePage> {
                       keyboardType:
                           const TextInputType.numberWithOptions(decimal: true),
                       decoration:
-                          const InputDecoration(labelText: 'Kfs (torsion)'),
+                          InputDecoration(labelText: S.of(context).Kfs_Torsion),
                       onChanged: (v) => _kfs = double.tryParse(v) ?? _kfs,
                     ),
                     TextFormField(
                       initialValue: _n.toString(),
                       keyboardType:
                           const TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(
-                          labelText: 'Target factor of safety, n'),
+                      decoration: InputDecoration(
+                          labelText: S.of(context).Target_Factor_of_Safety_N),
                       onChanged: (v) => _n = double.tryParse(v) ?? _n,
                     ),
                   ]),
@@ -200,7 +200,7 @@ class _ShaftFatiguePageState extends State<ShaftFatiguePage> {
       final se = _se;
       final sut = _sut;
       if (se == null || sut == null) {
-        throw const FormatException('Enter Se and Sut.');
+        throw FormatException(S.of(context).Err_Enter_Se_Sut);
       }
 
       final result = ShaftFatigueCalculator.calculate(ShaftFatigueInput(

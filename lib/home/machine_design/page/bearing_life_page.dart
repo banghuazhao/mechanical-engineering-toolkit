@@ -66,12 +66,12 @@ class _BearingLifePageState extends State<BearingLifePage> {
           children: [
             ToolResultHeader(tool: tool),
             AppSectionCard(
-              title: 'Bearing L10 Life',
+              title: S.of(context).Bearing_L10_Life,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Basic rating life from catalog dynamic load rating C, equivalent applied load P, and speed n: L10 = (C/P)^p.',
+                    S.of(context).Desc_Bearing_Life,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
@@ -81,10 +81,10 @@ class _BearingLifePageState extends State<BearingLifePage> {
                     segments: [
                       ButtonSegment(
                           value: BearingType.ball,
-                          label: Text(BearingType.ball.label)),
+                          label: Text(BearingType.ball.label(context))),
                       ButtonSegment(
                           value: BearingType.roller,
-                          label: Text(BearingType.roller.label)),
+                          label: Text(BearingType.roller.label(context))),
                     ],
                     selected: {_type},
                     onSelectionChanged: (s) => setState(() => _type = s.first),
@@ -92,21 +92,21 @@ class _BearingLifePageState extends State<BearingLifePage> {
                   SizedBox(height: context.tokens.space4),
                   AdaptiveFieldGrid(children: [
                     UnitField(
-                      label: 'Dynamic load rating, C',
+                      label: S.of(context).Dynamic_Load_Rating_C,
                       category: UnitCategory.forceStructural,
                       signed: false,
                       initialSI: _c,
                       onChangedSI: (v) => _c = v,
                     ),
                     UnitField(
-                      label: 'Equivalent load, P',
+                      label: S.of(context).Equivalent_Load_P,
                       category: UnitCategory.forceStructural,
                       signed: false,
                       initialSI: _p,
                       onChangedSI: (v) => _p = v,
                     ),
                     UnitField(
-                      label: 'Speed, n',
+                      label: S.of(context).Speed_N,
                       category: UnitCategory.angularVelocity,
                       signed: false,
                       initialSI: _rpm,
@@ -128,7 +128,7 @@ class _BearingLifePageState extends State<BearingLifePage> {
       final p = _p;
       final rpm = _rpm;
       if (c == null || p == null || rpm == null) {
-        throw const FormatException('Enter C, P, and n.');
+        throw FormatException(S.of(context).Err_Enter_C_P_N);
       }
 
       final result = BearingLifeCalculator.calculate(

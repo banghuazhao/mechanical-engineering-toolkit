@@ -69,12 +69,12 @@ class _PressFitPageState extends State<PressFitPage> {
           children: [
             ToolResultHeader(tool: tool),
             AppSectionCard(
-              title: 'Press / Shrink-Fit Interference',
+              title: S.of(context).Press_Shrink_Fit_Interference,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Contact pressure and hoop stress for a solid shaft pressed into a hub, same material assumed for both parts (a standard simplified case — Poisson\'s ratio cancels out).',
+                    S.of(context).Desc_Press_Fit,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
@@ -82,28 +82,28 @@ class _PressFitPageState extends State<PressFitPage> {
                   SizedBox(height: context.tokens.space4),
                   AdaptiveFieldGrid(children: [
                     UnitField(
-                      label: 'Interface radius, r',
+                      label: S.of(context).Interface_Radius_R,
                       category: UnitCategory.length,
                       signed: false,
                       initialSI: _r,
                       onChangedSI: (v) => _r = v,
                     ),
                     UnitField(
-                      label: 'Hub outer radius, ro',
+                      label: S.of(context).Hub_Outer_Radius_Ro,
                       category: UnitCategory.length,
                       signed: false,
                       initialSI: _ro,
                       onChangedSI: (v) => _ro = v,
                     ),
                     UnitField(
-                      label: 'Diametral interference, δ',
+                      label: S.of(context).Diametral_Interference,
                       category: UnitCategory.length,
                       signed: false,
                       initialSI: _delta,
                       onChangedSI: (v) => _delta = v,
                     ),
                     UnitField(
-                      label: 'Modulus, E',
+                      label: S.of(context).Modulus_E,
                       category: UnitCategory.modulus,
                       signed: false,
                       initialSI: _e,
@@ -134,7 +134,7 @@ class _PressFitPageState extends State<PressFitPage> {
       final delta = _delta;
       final e = _e;
       if (r == null || ro == null || delta == null || e == null) {
-        throw const FormatException('Enter r, ro, δ, and E.');
+        throw FormatException(S.of(context).Err_Enter_R_Ro_Delta_E);
       }
 
       final result = PressFitCalculator.calculate(PressFitInput(

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'dart:math' as math;
 
 enum BearingType { ball, roller }
@@ -6,9 +8,11 @@ extension BearingTypeExponent on BearingType {
   /// Life exponent p in L10 = (C/P)^p.
   double get exponent => this == BearingType.ball ? 3.0 : 10.0 / 3.0;
 
-  String get label => this == BearingType.ball
-      ? 'Ball bearing (p = 3)'
-      : 'Roller bearing (p = 10/3)';
+  /// Display name in the active locale. Takes a context rather than
+  /// returning a literal so the model stays free of hard-coded English.
+  String label(BuildContext context) => this == BearingType.ball
+      ? S.of(context).Ball_Bearing
+      : S.of(context).Roller_Bearing;
 }
 
 class BearingLifeResult {

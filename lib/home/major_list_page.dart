@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/major_recommendation.dart';
 import 'package:mechanical_engineering_toolkit/home/major_tools_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
@@ -11,7 +12,7 @@ class MajorListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Recommended by Major')),
+      appBar: AppBar(title: Text(S.of(context).Recommended_by_Major)),
       bottomNavigationBar: const AppBannerAd(),
       body: AppContent(
         padding: EdgeInsets.symmetric(vertical: context.tokens.space2),
@@ -49,7 +50,7 @@ class _MajorCard extends StatelessWidget {
           ),
           child: Icon(major.icon, color: scheme.onPrimaryContainer),
         ),
-        title: Text(major.title),
+        title: Text(major.title(context)),
         subtitle: Text('${major.toolIds.length} tools'),
         trailing: const Icon(Icons.chevron_right_rounded),
         onTap: () => Navigator.push(

@@ -1,11 +1,11 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
-import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -112,7 +112,7 @@ class _CentroidPageState extends State<CentroidPage> {
           TextButton.icon(
             onPressed: () => setState(() => _shapes.add(_Shape())),
             icon: const Icon(Icons.add_circle_outline_rounded),
-            label: const Text('Add Shape'),
+            label: Text(S.of(context).Add_Shape),
           ),
           const SizedBox(height: 8),
           ElevatedButton(
@@ -124,7 +124,8 @@ class _CentroidPageState extends State<CentroidPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
             ),
-            child: const Text('Calculate', style: TextStyle(fontSize: 16)),
+            child:
+                Text(S.of(context).Calculate, style: TextStyle(fontSize: 16)),
           ),
         ],
       ),
@@ -161,7 +162,7 @@ class _CentroidPageState extends State<CentroidPage> {
                 Text('Shape ${i + 1}',
                     style: Theme.of(context).textTheme.titleSmall),
                 const Spacer(),
-                const Text('Subtract'),
+                Text(S.of(context).Subtract),
                 Switch(
                   value: s.subtract,
                   onChanged: (v) => setState(() => s.subtract = v),
@@ -179,7 +180,7 @@ class _CentroidPageState extends State<CentroidPage> {
             ),
             DropdownButtonFormField<_ShapeType>(
               initialValue: s.type,
-              decoration: const InputDecoration(labelText: 'Shape type'),
+              decoration: InputDecoration(labelText: S.of(context).Shape_Type),
               items: _ShapeType.values
                   .map((t) =>
                       DropdownMenuItem(value: t, child: Text(_shapeLabel(t))))
@@ -201,7 +202,7 @@ class _CentroidPageState extends State<CentroidPage> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: UnitField(
-                      label: 'Height h',
+                      label: S.of(context).Height_H,
                       category: UnitCategory.span,
                       initialSI: s.dim2,
                       onChangedSI: (v) => s.dim2 = v,
@@ -342,7 +343,7 @@ class _ResultPage extends StatelessWidget {
   final List<({_ShapeType type, bool subtract, double a, double cx, double cy})>
       shapeCalcs;
 
-  _ResultPage({
+  const _ResultPage({
     required this.toolId,
     required this.title,
     required this.totalA,
@@ -353,25 +354,18 @@ class _ResultPage extends StatelessWidget {
     required this.shapeCalcs,
   });
 
-  final _exportKey = GlobalKey();
-
-  String _fmt(double v) => v
-      .toStringAsFixed(4)
-      .replaceAll(RegExp(r'0+$'), '')
-      .replaceAll(RegExp(r'\.$'), '');
-
   String _fvArea(double valueSI, UnitSystem system) =>
-      '${_fmt(fromSI(valueSI, UnitCategory.areaStructural, system))} ${unitLabel(UnitCategory.areaStructural, system)}';
+      '${formatFixed4(fromSI(valueSI, UnitCategory.areaStructural, system))} ${unitLabel(UnitCategory.areaStructural, system)}';
 
   String _fvSpan(double valueSI, UnitSystem system) =>
-      '${_fmt(fromSI(valueSI, UnitCategory.span, system))} ${unitLabel(UnitCategory.span, system)}';
+      '${formatFixed4(fromSI(valueSI, UnitCategory.span, system))} ${unitLabel(UnitCategory.span, system)}';
 
   // First moment of area (area x length): m^3 <-> ft^3. Used only to keep the
   // illustrative "sumAx / totalA = xBar" step arithmetic dimensionally
   // consistent; not a general-purpose unit category.
   String _fvAreaMoment(double valueSI, UnitSystem system) {
-    if (system == UnitSystem.si) return '${_fmt(valueSI)} m³';
-    return '${_fmt(valueSI / 0.028316846592)} ft³';
+    if (system == UnitSystem.si) return '${formatFixed4(valueSI)} m³';
+    return '${formatFixed4(valueSI / 0.028316846592)} ft³';
   }
 
   List<String> _steps(UnitSystem system) {
@@ -394,35 +388,18 @@ class _ResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final tool = ToolLibrary.shared.item(toolId, context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.share_rounded),
-            onPressed: () => shareResult(title, [
-              'Total Area = ${_fvArea(totalA, system)}',
-              'Centroid x̄ = ${_fvSpan(xBar, system)}',
-              'Centroid ȳ = ${_fvSpan(yBar, system)}',
-            ]),
-          ),
-          IconButton(
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () => shareResultImage(_exportKey, title),
-          ),
-        ],
-      ),
-      bottomNavigationBar: const AppBannerAd(),
-      body: RepaintBoundary(
-        key: _exportKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            ToolResultHeader(tool: tool),
-            CalculationCard(steps: _steps(system)),
-          ],
-        ),
-      ),
+    return ResultScaffold(
+      title: title,
+      toolName: title,
+      shareLines: () => [
+        'Total Area = ${_fvArea(totalA, system)}',
+        'Centroid x\u0304 = ${_fvSpan(xBar, system)}',
+        'Centroid y\u0304 = ${_fvSpan(yBar, system)}',
+      ],
+      children: [
+        ToolResultHeader(tool: tool),
+        CalculationCard(steps: _steps(system)),
+      ],
     );
   }
 }

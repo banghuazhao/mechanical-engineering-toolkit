@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
-import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
-import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -71,12 +69,12 @@ class _FilletWeldPageState extends State<FilletWeldPage> {
           children: [
             ToolResultHeader(tool: tool),
             AppSectionCard(
-              title: 'Fillet Weld Strength',
+              title: S.of(context).Fillet_Weld_Strength,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Shear stress on the weld throat for a fillet weld of leg size w and effective length L, treating the throat as the failure plane (the standard simplified approach).',
+                    S.of(context).Desc_Fillet_Weld,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
@@ -92,21 +90,21 @@ class _FilletWeldPageState extends State<FilletWeldPage> {
                   SizedBox(height: context.tokens.space4),
                   AdaptiveFieldGrid(children: [
                     UnitField(
-                      label: 'Leg size, w',
+                      label: S.of(context).Leg_Size_W,
                       category: UnitCategory.length,
                       signed: false,
                       initialSI: _w,
                       onChangedSI: (v) => _w = v,
                     ),
                     UnitField(
-                      label: 'Effective length, L',
+                      label: S.of(context).Effective_Length_L,
                       category: UnitCategory.length,
                       signed: false,
                       initialSI: _l,
                       onChangedSI: (v) => _l = v,
                     ),
                     UnitField(
-                      label: 'Applied force, F',
+                      label: S.of(context).Applied_Force_F,
                       category: UnitCategory.force,
                       signed: false,
                       initialSI: _f,
@@ -115,7 +113,7 @@ class _FilletWeldPageState extends State<FilletWeldPage> {
                   ]),
                   SizedBox(height: context.tokens.space3),
                   UnitField(
-                    label: 'Allowable shear stress (optional)',
+                    label: S.of(context).Allowable_Shear_Stress_Optional,
                     category: UnitCategory.stress,
                     signed: false,
                     initialSI: _allow,
@@ -136,10 +134,10 @@ class _FilletWeldPageState extends State<FilletWeldPage> {
       final l = _l;
       final f = _f;
       if (w == null || l == null || f == null) {
-        throw const FormatException('Enter w, L, and F.');
+        throw FormatException(S.of(context).Err_Enter_W_L_F);
       }
       if (w <= 0 || l <= 0 || f <= 0) {
-        throw const FormatException('w, L, and F must be positive.');
+        throw FormatException(S.of(context).Err_W_L_F_Positive);
       }
 
       final throat = 0.707 * w;
@@ -174,7 +172,7 @@ class _FilletWeldPageState extends State<FilletWeldPage> {
 }
 
 class _FilletWeldResultPage extends StatelessWidget {
-  _FilletWeldResultPage({
+  const _FilletWeldResultPage({
     required this.tau,
     required this.w,
     required this.l,
@@ -187,11 +185,6 @@ class _FilletWeldResultPage extends StatelessWidget {
   final double l;
   final double f;
   final double? allow;
-  final _exportKey = GlobalKey();
-
-  String _fv(double valueSI, UnitCategory category, UnitSystem system,
-          NumberPrecisionHelper precs) =>
-      '${precs.formatValue(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
 
   @override
   Widget build(BuildContext context) {
@@ -200,88 +193,51 @@ class _FilletWeldResultPage extends StatelessWidget {
     final hasAllow = allow != null && allow! > 0;
     final fos = hasAllow ? allow! / tau : null;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Result'),
-        actions: [
-          IconButton(
-            tooltip: 'Share results',
-            icon: const Icon(Icons.share_rounded),
-            onPressed: () => _share(system, precs, fos),
-          ),
-          IconButton(
-            tooltip: 'Share as image',
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () =>
-                shareResultImage(_exportKey, 'Fillet Weld Strength'),
-          ),
-          IconButton(
-            tooltip: 'Settings',
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ToolSettingPage()),
+    return ResultScaffold(
+      toolName: S.of(context).Fillet_Weld_Strength,
+      shareLines: () => _shareLines(system, precs, fos),
+      children: [
+        AppSectionCard(
+          title: S.of(context).Fillet_Weld_Strength,
+          child: Column(children: [
+            AppCopyableValue(
+              label: 'Shear stress, \u03c4',
+              valueSI: tau,
+              category: UnitCategory.stress,
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: const AppBannerAd(),
-      body: RepaintBoundary(
-        key: _exportKey,
-        child: AppContent(
-          padding: EdgeInsets.zero,
-          child: ListView(
-            padding: EdgeInsets.all(context.tokens.space4),
-            children: [
-              AppSectionCard(
-                title: 'Fillet Weld Strength',
-                child: Column(children: [
-                  AppCopyableValue(
-                    label: 'Shear stress, τ',
-                    valueSI: tau,
-                    category: UnitCategory.stress,
-                  ),
-                  if (fos != null)
-                    AppCopyableValue(
-                      label: 'Factor of safety',
-                      value: precs.formatValue(fos),
-                    ),
-                ]),
+            if (fos != null)
+              AppCopyableValue(
+                label: S.of(context).Factor_of_Safety,
+                value: precs.formatValue(fos),
               ),
-              SizedBox(height: context.tokens.space4),
-              AppSectionCard(
-                title: 'Formula',
-                child: Text(
-                  'τ = F / (0.707·w·L)\n'
-                  '= ${_fv(f, UnitCategory.force, system, precs)} / (0.707 × ${_fv(w, UnitCategory.length, system, precs)} × ${_fv(l, UnitCategory.length, system, precs)})\n'
-                  '= ${_fv(tau, UnitCategory.stress, system, precs)}',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-              SizedBox(height: context.tokens.space4),
-              ParameterSweepCard(
-                variableLabel: 'Leg size, w',
-                variableCategory: UnitCategory.length,
-                baseValueSI: w,
-                outputLabel: 'τ',
-                outputCategory: UnitCategory.stress,
-                compute: (variedW) => f / (0.707 * variedW * l),
-              ),
-            ],
-          ),
+          ]),
         ),
-      ),
+        FormulaCard(steps: _steps(system, precs)),
+        ParameterSweepCard(
+          variableLabel: S.of(context).Leg_Size_W,
+          variableCategory: UnitCategory.length,
+          baseValueSI: w,
+          outputLabel: '\u03c4',
+          outputCategory: UnitCategory.stress,
+          compute: (variedW) => f / (0.707 * variedW * l),
+        ),
+      ],
     );
   }
 
-  void _share(UnitSystem system, NumberPrecisionHelper precs, double? fos) =>
-      shareResult('Fillet Weld Strength', [
-        'τ = ${_fv(tau, UnitCategory.stress, system, precs)}',
+  List<String> _steps(UnitSystem system, NumberPrecisionHelper precs) => [
+        '\u03c4 = F / (0.707\u00b7w\u00b7L)',
+        '= ${precs.formatSI(f, UnitCategory.force, system)} / (0.707 \u00d7 ${precs.formatSI(w, UnitCategory.length, system)} \u00d7 ${precs.formatSI(l, UnitCategory.length, system)})',
+        '= ${precs.formatSI(tau, UnitCategory.stress, system)}',
+      ];
+
+  List<String> _shareLines(
+          UnitSystem system, NumberPrecisionHelper precs, double? fos) =>
+      [
+        '\u03c4 = ${precs.formatSI(tau, UnitCategory.stress, system)}',
         if (fos != null) 'FoS = ${precs.formatValue(fos)}',
         '',
         'Calculation:',
-        'τ = F / (0.707·w·L)',
-        '= ${_fv(f, UnitCategory.force, system, precs)} / (0.707 × ${_fv(w, UnitCategory.length, system, precs)} × ${_fv(l, UnitCategory.length, system, precs)})',
-        '= ${_fv(tau, UnitCategory.stress, system, precs)}',
-      ]);
+        ..._steps(system, precs),
+      ];
 }

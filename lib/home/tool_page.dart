@@ -106,12 +106,12 @@ class _ToolPageState extends State<ToolPage> {
     ));
 
     sections.add(ToolSection(
-      'Beam Engineering',
+      S.of(context).Beam_Engineering,
       allTools.where((e) => e.type == ToolType.beamEngineering).toList(),
     ));
 
     sections.add(ToolSection(
-      'Machine Design',
+      S.of(context).Machine_Design,
       allTools.where((e) => e.type == ToolType.machineDesign).toList(),
     ));
 
@@ -165,7 +165,9 @@ class _ToolPageState extends State<ToolPage> {
         actions: [
           IconButton(
             onPressed: _toggleViewMode,
-            tooltip: _viewMode == ToolViewMode.list ? 'Grid view' : 'List view',
+            tooltip: _viewMode == ToolViewMode.list
+                ? S.of(context).Grid_View
+                : S.of(context).List_View,
             icon: Icon(_viewMode == ToolViewMode.list
                 ? Icons.grid_view_rounded
                 : Icons.view_list_rounded),
@@ -204,7 +206,7 @@ class _ToolPageState extends State<ToolPage> {
               ),
             ),
             MoreRow(
-              title: 'Recommended by Major',
+              title: S.of(context).Recommended_by_Major,
               leadingIcon: Icons.school_rounded,
               onTap: () {
                 Navigator.pop(context);
@@ -365,13 +367,13 @@ class _ToolPageState extends State<ToolPage> {
                   onChanged: _updateSearch,
                   textInputAction: TextInputAction.search,
                   decoration: InputDecoration(
-                    hintText: 'Search tools',
+                    hintText: S.of(context).Search_Tools,
                     prefixIcon: const Icon(Icons.search_rounded),
                     suffixIcon: _searchQuery.isEmpty
                         ? null
                         : IconButton(
                             key: const Key('clearToolSearch'),
-                            tooltip: 'Clear search',
+                            tooltip: S.of(context).Clear_Search,
                             onPressed: _clearSearch,
                             icon: const Icon(Icons.close_rounded),
                           ),
@@ -392,13 +394,13 @@ class _ToolPageState extends State<ToolPage> {
                 _buildGridSliver(context, section.tools),
             ],
             if (visibleSections.isEmpty)
-              const SliverFillRemaining(
+              SliverFillRemaining(
                 hasScrollBody: false,
                 child: Center(
                   child: Padding(
                     padding: EdgeInsets.all(24),
                     child: Text(
-                      'No tools found',
+                      S.of(context).No_Tools_Found,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -511,8 +513,8 @@ class ToolRowWidget extends StatelessWidget {
                 child: model.icon != null
                     ? Icon(model.icon, size: 26, color: primary)
                     : ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                            context.tokens.radiusMedium),
+                        borderRadius:
+                            BorderRadius.circular(context.tokens.radiusMedium),
                         child: Image(
                           height: 48,
                           width: 48,

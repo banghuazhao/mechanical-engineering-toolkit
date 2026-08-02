@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
@@ -18,18 +19,18 @@ class ToolHistoryPage extends StatelessWidget {
       context: context,
       builder: (dialogContext) => AlertDialog.adaptive(
         icon: const Icon(Icons.delete_sweep_rounded),
-        title: const Text('Clear history?'),
-        content: const Text(
-          'This removes every saved calculation from this device.',
+        title: Text(S.of(context).Clear_History_Question),
+        content: Text(
+          S.of(context).Clear_History_Description,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext, false),
-            child: const Text('Cancel'),
+            child: Text(S.of(context).Cancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(dialogContext, true),
-            child: const Text('Clear'),
+            child: Text(S.of(context).Clear),
           ),
         ],
       ),
@@ -44,14 +45,14 @@ class ToolHistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('History'),
+        title: Text(S.of(context).History),
         actions: [
           Consumer<ToolHistory>(
             builder: (context, history, _) => history.entries.isEmpty
                 ? const SizedBox.shrink()
                 : IconButton(
                     icon: const Icon(Icons.delete_sweep_rounded),
-                    tooltip: 'Clear history',
+                    tooltip: S.of(context).Clear_History,
                     onPressed: () => _confirmClear(context, history),
                   ),
           ),
@@ -61,9 +62,9 @@ class ToolHistoryPage extends StatelessWidget {
         builder: (context, history, _) {
           final entries = history.entries;
           if (entries.isEmpty) {
-            return const AppEmptyState(
+            return AppEmptyState(
               icon: Icons.history_rounded,
-              title: 'No history yet',
+              title: S.of(context).No_History_Yet,
               message:
                   'Completed calculations will appear here for quick access.',
             );

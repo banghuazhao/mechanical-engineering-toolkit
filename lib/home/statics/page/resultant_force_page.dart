@@ -1,11 +1,11 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
-import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -77,11 +77,11 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Forces',
+                  Text(S.of(context).Forces,
                       style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 4),
                   Text(
-                    'Enter Fx and Fy components for each force (N)',
+                    S.of(context).Enter_Fx_Fy_Components,
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium
@@ -92,7 +92,7 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
                   TextButton.icon(
                     onPressed: () => setState(() => _forces.add(_ForceEntry())),
                     icon: const Icon(Icons.add_circle_outline_rounded),
-                    label: const Text('Add Force'),
+                    label: Text(S.of(context).Add_Force),
                   ),
                 ],
               ),
@@ -108,7 +108,8 @@ class _ResultantForcePageState extends State<ResultantForcePage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
             ),
-            child: const Text('Calculate', style: TextStyle(fontSize: 16)),
+            child:
+                Text(S.of(context).Calculate, style: TextStyle(fontSize: 16)),
           ),
         ],
       ),
@@ -208,7 +209,7 @@ class _ResultPage extends StatelessWidget {
   final List<({double fx, double fy})> forces;
   final double sumFx, sumFy, R, theta;
 
-  _ResultPage({
+  const _ResultPage({
     required this.toolId,
     required this.title,
     required this.forces,
@@ -218,68 +219,44 @@ class _ResultPage extends StatelessWidget {
     required this.theta,
   });
 
-  final _exportKey = GlobalKey();
-
-  String _fmt(double v) => v
-      .toStringAsFixed(4)
-      .replaceAll(RegExp(r'0+$'), '')
-      .replaceAll(RegExp(r'\.$'), '');
-
   String _fv(double valueSI, UnitSystem system) =>
-      '${_fmt(fromSI(valueSI, UnitCategory.force, system))} ${unitLabel(UnitCategory.force, system)}';
+      '${formatFixed4(fromSI(valueSI, UnitCategory.force, system))} ${unitLabel(UnitCategory.force, system)}';
 
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final tool = ToolLibrary.shared.item(toolId, context);
     final fxTerms = forces
-        .map((f) => _fmt(fromSI(f.fx, UnitCategory.force, system)))
+        .map((f) => formatFixed4(fromSI(f.fx, UnitCategory.force, system)))
         .join(' + ');
     final fyTerms = forces
-        .map((f) => _fmt(fromSI(f.fy, UnitCategory.force, system)))
+        .map((f) => formatFixed4(fromSI(f.fy, UnitCategory.force, system)))
         .join(' + ');
 
     final steps = [
-      'ΣFx = $fxTerms = ${_fv(sumFx, system)}',
-      'ΣFy = $fyTerms = ${_fv(sumFy, system)}',
-      'R = √(ΣFx² + ΣFy²)',
-      '  = √(${_fv(sumFx, system)}² + ${_fv(sumFy, system)}²)',
+      '\u03a3Fx = $fxTerms = ${_fv(sumFx, system)}',
+      '\u03a3Fy = $fyTerms = ${_fv(sumFy, system)}',
+      'R = \u221a(\u03a3Fx\u00b2 + \u03a3Fy\u00b2)',
+      '  = \u221a(${_fv(sumFx, system)}\u00b2 + ${_fv(sumFy, system)}\u00b2)',
       '  = ${_fv(R, system)}',
-      'θ = atan2(ΣFy, ΣFx)',
+      '\u03b8 = atan2(\u03a3Fy, \u03a3Fx)',
       '  = atan2(${_fv(sumFy, system)}, ${_fv(sumFx, system)})',
-      '  = ${_fmt(theta)}°',
+      '  = ${formatFixed4(theta)}\u00b0',
     ];
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.share_rounded),
-            onPressed: () => shareResult(title, [
-              'ΣFx = ${_fv(sumFx, system)}',
-              'ΣFy = ${_fv(sumFy, system)}',
-              'R = ${_fv(R, system)}',
-              'θ = ${_fmt(theta)}°',
-            ]),
-          ),
-          IconButton(
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () => shareResultImage(_exportKey, title),
-          ),
-        ],
-      ),
-      bottomNavigationBar: const AppBannerAd(),
-      body: RepaintBoundary(
-        key: _exportKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            ToolResultHeader(tool: tool),
-            CalculationCard(steps: steps),
-          ],
-        ),
-      ),
+    return ResultScaffold(
+      title: title,
+      toolName: title,
+      shareLines: () => [
+        '\u03a3Fx = ${_fv(sumFx, system)}',
+        '\u03a3Fy = ${_fv(sumFy, system)}',
+        'R = ${_fv(R, system)}',
+        '\u03b8 = ${formatFixed4(theta)}\u00b0',
+      ],
+      children: [
+        ToolResultHeader(tool: tool),
+        CalculationCard(steps: steps),
+      ],
     );
   }
 }

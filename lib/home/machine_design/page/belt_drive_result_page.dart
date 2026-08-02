@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/model/belt_drive_calculator.dart';
-import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
-import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
 class BeltDriveResultPage extends StatelessWidget {
-  BeltDriveResultPage({
+  const BeltDriveResultPage({
     super.key,
     required this.result,
     required this.d1,
@@ -26,133 +24,91 @@ class BeltDriveResultPage extends StatelessWidget {
   final double d2;
   final double c;
   final double n1;
-  final _exportKey = GlobalKey();
-
-  String _fv(double valueSI, UnitCategory category, UnitSystem system,
-          NumberPrecisionHelper precs) =>
-      '${precs.formatValue(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
 
   @override
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final precs = context.watch<NumberPrecisionHelper>();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Result'),
-        actions: [
-          IconButton(
-            tooltip: 'Share results',
-            icon: const Icon(Icons.share_rounded),
-            onPressed: () => _share(system, precs),
-          ),
-          IconButton(
-            tooltip: 'Share as image',
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () => shareResultImage(_exportKey, 'Belt / Chain Drive'),
-          ),
-          IconButton(
-            tooltip: 'Settings',
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ToolSettingPage()),
+    return ResultScaffold(
+      toolName: S.of(context).Belt_Chain_Drive,
+      shareLines: () => _shareLines(system, precs),
+      children: [
+        AppSectionCard(
+          title: S.of(context).Belt_Chain_Drive,
+          child: Column(children: [
+            AppCopyableValue(
+              label: S.of(context).Speed_Ratio,
+              value: precs.formatValue(result.ratio),
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: const AppBannerAd(),
-      body: RepaintBoundary(
-        key: _exportKey,
-        child: AppContent(
-          padding: EdgeInsets.zero,
-          child: ListView(
-            padding: EdgeInsets.all(context.tokens.space4),
-            children: [
-              AppSectionCard(
-                title: 'Belt / Chain Drive',
-                child: Column(children: [
-                  AppCopyableValue(
-                    label: 'Speed ratio',
-                    value: precs.formatValue(result.ratio),
-                  ),
-                  AppCopyableValue(
-                    label: 'Output speed, n2',
-                    valueSI: result.outputSpeedRpm,
-                    category: UnitCategory.angularVelocity,
-                  ),
-                  AppCopyableValue(
-                    label: 'Belt length, L',
-                    valueSI: result.beltLength,
-                    category: UnitCategory.length,
-                  ),
-                  AppCopyableValue(
-                    label: 'Wrap angle, small pulley',
-                    value: '${precs.formatValue(result.smallWrapAngleDeg)}°',
-                  ),
-                  AppCopyableValue(
-                    label: 'Wrap angle, large pulley',
-                    value: '${precs.formatValue(result.largeWrapAngleDeg)}°',
-                  ),
-                  if (result.drivingTorqueNm != null)
-                    AppCopyableValue(
-                      label: 'Driving torque, T1',
-                      valueSI: result.drivingTorqueNm,
-                      category: UnitCategory.torque,
-                    ),
-                  if (result.beltPullN != null)
-                    AppCopyableValue(
-                      label: 'Belt pull, Ft',
-                      valueSI: result.beltPullN,
-                      category: UnitCategory.force,
-                    ),
-                ]),
+            AppCopyableValue(
+              label: S.of(context).Output_Speed_N2,
+              valueSI: result.outputSpeedRpm,
+              category: UnitCategory.angularVelocity,
+            ),
+            AppCopyableValue(
+              label: S.of(context).Belt_Length_L,
+              valueSI: result.beltLength,
+              category: UnitCategory.length,
+            ),
+            AppCopyableValue(
+              label: S.of(context).Wrap_Angle_Small_Pulley,
+              value: '${precs.formatValue(result.smallWrapAngleDeg)}°',
+            ),
+            AppCopyableValue(
+              label: S.of(context).Wrap_Angle_Large_Pulley,
+              value: '${precs.formatValue(result.largeWrapAngleDeg)}°',
+            ),
+            if (result.drivingTorqueNm != null)
+              AppCopyableValue(
+                label: S.of(context).Driving_Torque_T1,
+                valueSI: result.drivingTorqueNm,
+                category: UnitCategory.torque,
               ),
-              SizedBox(height: context.tokens.space4),
-              AppSectionCard(
-                title: 'Formula',
-                child: Text(
-                  'ratio = d2/d1 = ${_fv(d2, UnitCategory.length, system, precs)} / ${_fv(d1, UnitCategory.length, system, precs)} = ${precs.formatValue(result.ratio)}\n'
-                  'L = 2C + (π/2)(d1+d2) + (d2−d1)²/(4C)\n'
-                  '= ${_fv(result.beltLength, UnitCategory.length, system, precs)}\n'
-                  'Wrap: θ = π ∓ 2·asin((d2−d1)/(2C))'
-                  '${result.drivingTorqueNm != null ? '\nT1 = P/ω1, Ft = T1/(d1/2) — required driving force, not a belt-capacity rating.' : ''}',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+            if (result.beltPullN != null)
+              AppCopyableValue(
+                label: S.of(context).Belt_Pull_Ft,
+                valueSI: result.beltPullN,
+                category: UnitCategory.force,
               ),
-              SizedBox(height: context.tokens.space4),
-              ParameterSweepCard(
-                variableLabel: 'Center distance, C',
-                variableCategory: UnitCategory.length,
-                baseValueSI: c,
-                outputLabel: 'Belt length, L',
-                outputCategory: UnitCategory.length,
-                compute: (variedC) {
-                  final r = BeltDriveCalculator.calculate(BeltDriveInput(
-                    smallPulleyDiameter: d1,
-                    largePulleyDiameter: d2,
-                    centerDistance: variedC,
-                    inputSpeedRpm: n1,
-                  ));
-                  return r.beltLength;
-                },
-              ),
-            ],
-          ),
+          ]),
         ),
-      ),
+        FormulaCard(steps: [
+          'ratio = d2/d1 = ${precs.formatSI(d2, UnitCategory.length, system)} / ${precs.formatSI(d1, UnitCategory.length, system)} = ${precs.formatValue(result.ratio)}',
+          'L = 2C + (π/2)(d1+d2) + (d2−d1)²/(4C)',
+          '= ${precs.formatSI(result.beltLength, UnitCategory.length, system)}',
+          'Wrap: θ = π ∓ 2·asin((d2−d1)/(2C))',
+          if (result.drivingTorqueNm != null)
+            'T1 = P/ω1, Ft = T1/(d1/2) — required driving force, not a belt-capacity rating.',
+        ]),
+        ParameterSweepCard(
+          variableLabel: S.of(context).Center_Distance_C,
+          variableCategory: UnitCategory.length,
+          baseValueSI: c,
+          outputLabel: S.of(context).Belt_Length_L,
+          outputCategory: UnitCategory.length,
+          compute: (variedC) {
+            final r = BeltDriveCalculator.calculate(BeltDriveInput(
+              smallPulleyDiameter: d1,
+              largePulleyDiameter: d2,
+              centerDistance: variedC,
+              inputSpeedRpm: n1,
+            ));
+            return r.beltLength;
+          },
+        ),
+      ],
     );
   }
 
-  void _share(UnitSystem system, NumberPrecisionHelper precs) =>
-      shareResult('Belt / Chain Drive', [
+  List<String> _shareLines(UnitSystem system, NumberPrecisionHelper precs) => [
         'ratio = ${precs.formatValue(result.ratio)}',
-        'n2 = ${_fv(result.outputSpeedRpm, UnitCategory.angularVelocity, system, precs)}',
-        'L = ${_fv(result.beltLength, UnitCategory.length, system, precs)}',
+        'n2 = ${precs.formatSI(result.outputSpeedRpm, UnitCategory.angularVelocity, system)}',
+        'L = ${precs.formatSI(result.beltLength, UnitCategory.length, system)}',
         'θ_small = ${precs.formatValue(result.smallWrapAngleDeg)}°, θ_large = ${precs.formatValue(result.largeWrapAngleDeg)}°',
         if (result.drivingTorqueNm != null)
-          'T1 = ${_fv(result.drivingTorqueNm!, UnitCategory.torque, system, precs)}',
+          'T1 = ${precs.formatSI(result.drivingTorqueNm!, UnitCategory.torque, system)}',
         if (result.beltPullN != null)
-          'Ft = ${_fv(result.beltPullN!, UnitCategory.force, system, precs)}',
-      ]);
+          'Ft = ${precs.formatSI(result.beltPullN!, UnitCategory.force, system)}',
+      ];
 }

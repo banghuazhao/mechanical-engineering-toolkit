@@ -5,18 +5,15 @@ import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
-import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
-
-import '../../tool_setting_page.dart';
 
 class _ThermalModel {
   double? alpha, deltaT, length, youngsModulus;
@@ -188,20 +185,20 @@ class _ThermalDeformationPageState extends State<ThermalDeformationPage> {
       "L": _model.length!.toString(),
       "E": _model.youngsModulus!.toString(),
     });
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => _ThermalResultPage(
-            toolId: widget.toolId,
-            delta: delta,
-            sigma: sigma,
-            alpha: _model.alpha!,
-            deltaT: _model.deltaT!,
-            length: _model.length!,
-            E: _model.youngsModulus!,
-          ),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => _ThermalResultPage(
+          toolId: widget.toolId,
+          delta: delta,
+          sigma: sigma,
+          alpha: _model.alpha!,
+          deltaT: _model.deltaT!,
+          length: _model.length!,
+          E: _model.youngsModulus!,
         ),
-      );
+      ),
+    );
   }
 }
 
@@ -231,8 +228,6 @@ class _ThermalResultPage extends StatelessWidget {
       required this.length,
       required this.E});
 
-  final _exportKey = GlobalKey();
-
   String _fv(BuildContext context, double? valueSI, UnitCategory category) {
     final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
     final system =
@@ -244,85 +239,60 @@ class _ThermalResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.watch<UnitSystemPreference>();
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.share_rounded),
-            onPressed: () {
-              final precs =
-                  Provider.of<NumberPrecisionHelper>(context, listen: false);
-              shareResult('Thermal Deformation & Stress', [
-                'δ_T = ${_fv(context, delta, UnitCategory.length)}',
-                'σ_T = ${_fv(context, sigma, UnitCategory.stress)}',
+    return ResultScaffold(
+      toolName: 'Thermal Deformation & Stress',
+      shareLines: () => _shareLines(context),
+      body: SafeArea(
+        child: Consumer<NumberPrecisionHelper>(
+          builder: (context, precs, _) {
+            final tool = ToolLibrary.shared.item(toolId, context);
+            final items = [
+              ToolResultHeader(tool: tool),
+              MultipleRowResult(
+                title: 'Thermal Results',
+                resultTitles: const [
+                  'δ_T  (thermal deformation)',
+                  'σ_T  (thermal stress, constrained)'
+                ],
+                resultValues: [delta, sigma],
+                resultUnits: const [UnitCategory.length, UnitCategory.stress],
+              ),
+              CalculationCard(steps: [
+                'δ_T = α × ΔT × L',
+                '= ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} × ${_fv(context, length, UnitCategory.length)}',
+                '= ${_fv(context, delta, UnitCategory.length)}',
                 '',
-                'Calculation:',
-                'δ_T = α × ΔT × L = ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} × ${_fv(context, length, UnitCategory.length)} = ${_fv(context, delta, UnitCategory.length)}',
-                'σ_T = −E × α × ΔT = −${_fv(context, E, UnitCategory.stress)} × ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} = ${_fv(context, sigma, UnitCategory.stress)}',
-              ]);
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () =>
-                shareResultImage(_exportKey, 'Thermal Deformation & Stress'),
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const ToolSettingPage())),
-          ),
-        ],
-        title: Text(S.of(context).Result),
-      ),
-      bottomNavigationBar: const AppBannerAd(),
-      body: RepaintBoundary(
-        key: _exportKey,
-        child: SafeArea(
-          child: Consumer<NumberPrecisionHelper>(
-            builder: (context, precs, _) {
-              final tool = ToolLibrary.shared.item(toolId, context);
-              final items = [
-                ToolResultHeader(tool: tool),
-                MultipleRowResult(
-                  title: 'Thermal Results',
-                  resultTitles: const [
-                    'δ_T  (thermal deformation)',
-                    'σ_T  (thermal stress, constrained)'
-                  ],
-                  resultValues: [delta, sigma],
-                  resultUnits: const [UnitCategory.length, UnitCategory.stress],
-                ),
-                CalculationCard(steps: [
-                  'δ_T = α × ΔT × L',
-                  '= ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} × ${_fv(context, length, UnitCategory.length)}',
-                  '= ${_fv(context, delta, UnitCategory.length)}',
-                  '',
-                  'σ_T = −E × α × ΔT',
-                  '= −${_fv(context, E, UnitCategory.stress)} × ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)}',
-                  '= ${_fv(context, sigma, UnitCategory.stress)}',
-                ]),
-              ];
-              return StaggeredGridView.countBuilder(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-                crossAxisCount: 8,
-                itemCount: items.length,
-                staggeredTileBuilder: (index) => StaggeredTile.fit(
-                    index == 0
-                        ? 8
-                        : (MediaQuery.of(context).size.width > 600 ? 4 : 8)),
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                itemBuilder: (_, i) => items[i],
-              );
-            },
-          ),
+                'σ_T = −E × α × ΔT',
+                '= −${_fv(context, E, UnitCategory.stress)} × ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)}',
+                '= ${_fv(context, sigma, UnitCategory.stress)}',
+              ]),
+            ];
+            return StaggeredGridView.countBuilder(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+              crossAxisCount: 8,
+              itemCount: items.length,
+              staggeredTileBuilder: (index) => StaggeredTile.fit(index == 0
+                  ? 8
+                  : (MediaQuery.of(context).size.width > 600 ? 4 : 8)),
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              itemBuilder: (_, i) => items[i],
+            );
+          },
         ),
       ),
     );
+  }
+
+  List<String> _shareLines(BuildContext context) {
+    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
+    return [
+      'δ_T = ${_fv(context, delta, UnitCategory.length)}',
+      'σ_T = ${_fv(context, sigma, UnitCategory.stress)}',
+      '',
+      'Calculation:',
+      'δ_T = α × ΔT × L = ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} × ${_fv(context, length, UnitCategory.length)} = ${_fv(context, delta, UnitCategory.length)}',
+      'σ_T = −E × α × ΔT = −${_fv(context, E, UnitCategory.stress)} × ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} = ${_fv(context, sigma, UnitCategory.stress)}',
+    ];
   }
 }

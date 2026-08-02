@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart' as units;
 
@@ -6,7 +7,8 @@ class _UnitCategory {
   final String name;
   final IconData icon;
   final List<_Unit> units;
-  const _UnitCategory({required this.name, required this.icon, required this.units});
+  const _UnitCategory(
+      {required this.name, required this.icon, required this.units});
 }
 
 class _Unit {
@@ -15,7 +17,8 @@ class _Unit {
   final double Function(double) toBase;
   // fromBase converts the SI base unit to this unit
   final double Function(double) fromBase;
-  const _Unit({required this.label, required this.toBase, required this.fromBase});
+  const _Unit(
+      {required this.label, required this.toBase, required this.fromBase});
 }
 
 const _categories = <_UnitCategory>[
@@ -25,7 +28,7 @@ const _categories = <_UnitCategory>[
     units: [
       _Unit(label: 'mm', toBase: units.mm2m, fromBase: units.m2mm),
       _Unit(label: 'cm', toBase: units.cm2m, fromBase: units.m2cm),
-      _Unit(label: 'm',  toBase: units.id,   fromBase: units.id),
+      _Unit(label: 'm', toBase: units.id, fromBase: units.id),
       _Unit(label: 'km', toBase: units.km2m, fromBase: units.m2km),
       _Unit(label: 'in', toBase: units.in2m, fromBase: units.m2in),
       _Unit(label: 'ft', toBase: units.ft2m, fromBase: units.m2ft),
@@ -37,36 +40,36 @@ const _categories = <_UnitCategory>[
     name: 'Force',
     icon: Icons.arrow_downward_rounded,
     units: [
-      _Unit(label: 'N',   toBase: units.id,     fromBase: units.id),
-      _Unit(label: 'kN',  toBase: units.kN2N,   fromBase: units.N2kN),
-      _Unit(label: 'MN',  toBase: units.MN2N,   fromBase: units.N2MN),
-      _Unit(label: 'lbf', toBase: units.lbf2N,  fromBase: units.N2lbf),
-      _Unit(label: 'kip', toBase: units.kip2N,  fromBase: units.N2kip),
+      _Unit(label: 'N', toBase: units.id, fromBase: units.id),
+      _Unit(label: 'kN', toBase: units.kN2N, fromBase: units.N2kN),
+      _Unit(label: 'MN', toBase: units.MN2N, fromBase: units.N2MN),
+      _Unit(label: 'lbf', toBase: units.lbf2N, fromBase: units.N2lbf),
+      _Unit(label: 'kip', toBase: units.kip2N, fromBase: units.N2kip),
     ],
   ),
   _UnitCategory(
     name: 'Stress / Pressure',
     icon: Icons.compress_rounded,
     units: [
-      _Unit(label: 'Pa',  toBase: units.id,      fromBase: units.id),
-      _Unit(label: 'kPa', toBase: units.kPa2Pa,  fromBase: units.Pa2kPa),
-      _Unit(label: 'MPa', toBase: units.MPa2Pa,  fromBase: units.Pa2MPa),
-      _Unit(label: 'GPa', toBase: units.GPa2Pa,  fromBase: units.Pa2GPa),
-      _Unit(label: 'psi', toBase: units.psi2Pa,  fromBase: units.Pa2psi),
-      _Unit(label: 'ksi', toBase: units.ksi2Pa,  fromBase: units.Pa2ksi),
-      _Unit(label: 'atm', toBase: units.atm2Pa,  fromBase: units.Pa2atm),
-      _Unit(label: 'bar', toBase: units.bar2Pa,  fromBase: units.Pa2bar),
+      _Unit(label: 'Pa', toBase: units.id, fromBase: units.id),
+      _Unit(label: 'kPa', toBase: units.kPa2Pa, fromBase: units.Pa2kPa),
+      _Unit(label: 'MPa', toBase: units.MPa2Pa, fromBase: units.Pa2MPa),
+      _Unit(label: 'GPa', toBase: units.GPa2Pa, fromBase: units.Pa2GPa),
+      _Unit(label: 'psi', toBase: units.psi2Pa, fromBase: units.Pa2psi),
+      _Unit(label: 'ksi', toBase: units.ksi2Pa, fromBase: units.Pa2ksi),
+      _Unit(label: 'atm', toBase: units.atm2Pa, fromBase: units.Pa2atm),
+      _Unit(label: 'bar', toBase: units.bar2Pa, fromBase: units.Pa2bar),
     ],
   ),
   _UnitCategory(
     name: 'Mass',
     icon: Icons.scale_rounded,
     units: [
-      _Unit(label: 'g',    toBase: units.g2kg,    fromBase: units.kg2g),
-      _Unit(label: 'kg',   toBase: units.id,      fromBase: units.id),
-      _Unit(label: 'tonne',toBase: units.t2kg,    fromBase: units.kg2t),
-      _Unit(label: 'oz',   toBase: units.oz2kg,   fromBase: units.kg2oz),
-      _Unit(label: 'lb',   toBase: units.lb2kg,   fromBase: units.kg2lb),
+      _Unit(label: 'g', toBase: units.g2kg, fromBase: units.kg2g),
+      _Unit(label: 'kg', toBase: units.id, fromBase: units.id),
+      _Unit(label: 'tonne', toBase: units.t2kg, fromBase: units.kg2t),
+      _Unit(label: 'oz', toBase: units.oz2kg, fromBase: units.kg2oz),
+      _Unit(label: 'lb', toBase: units.lb2kg, fromBase: units.kg2lb),
       _Unit(label: 'slug', toBase: units.slug2kg, fromBase: units.kg2slug),
     ],
   ),
@@ -74,17 +77,17 @@ const _categories = <_UnitCategory>[
     name: 'Temperature',
     icon: Icons.thermostat_rounded,
     units: [
-      _Unit(label: '°C', toBase: units.id,   fromBase: units.id),
-      _Unit(label: '°F', toBase: units.F2C,  fromBase: units.C2F),
-      _Unit(label: 'K',  toBase: units.K2C,  fromBase: units.C2K),
+      _Unit(label: '°C', toBase: units.id, fromBase: units.id),
+      _Unit(label: '°F', toBase: units.F2C, fromBase: units.C2F),
+      _Unit(label: 'K', toBase: units.K2C, fromBase: units.C2K),
     ],
   ),
   _UnitCategory(
     name: 'Torque',
     icon: Icons.rotate_right_rounded,
     units: [
-      _Unit(label: 'N·m',    toBase: units.id,        fromBase: units.id),
-      _Unit(label: 'kN·m',   toBase: units.kNm2Nm,   fromBase: units.Nm2kNm),
+      _Unit(label: 'N·m', toBase: units.id, fromBase: units.id),
+      _Unit(label: 'kN·m', toBase: units.kNm2Nm, fromBase: units.Nm2kNm),
       _Unit(label: 'lbf·ft', toBase: units.lbfft2Nm, fromBase: units.Nm2lbfft),
       _Unit(label: 'lbf·in', toBase: units.lbfin2Nm, fromBase: units.Nm2lbfin),
     ],
@@ -93,27 +96,27 @@ const _categories = <_UnitCategory>[
     name: 'Power',
     icon: Icons.bolt_rounded,
     units: [
-      _Unit(label: 'W',  toBase: units.id,    fromBase: units.id),
-      _Unit(label: 'kW', toBase: units.kW2W,  fromBase: units.W2kW),
-      _Unit(label: 'MW', toBase: units.MW2W,  fromBase: units.W2MW),
-      _Unit(label: 'hp', toBase: units.hp2W,  fromBase: units.W2hp),
+      _Unit(label: 'W', toBase: units.id, fromBase: units.id),
+      _Unit(label: 'kW', toBase: units.kW2W, fromBase: units.W2kW),
+      _Unit(label: 'MW', toBase: units.MW2W, fromBase: units.W2MW),
+      _Unit(label: 'hp', toBase: units.hp2W, fromBase: units.W2hp),
     ],
   ),
   _UnitCategory(
     name: 'Angular Velocity',
     icon: Icons.settings_rounded,
     units: [
-      _Unit(label: 'rad/s', toBase: units.id,       fromBase: units.id),
-      _Unit(label: 'rpm',   toBase: units.rpm2rads, fromBase: units.rads2rpm),
-      _Unit(label: 'deg/s', toBase: units.degs2rads,fromBase: units.rads2degs),
+      _Unit(label: 'rad/s', toBase: units.id, fromBase: units.id),
+      _Unit(label: 'rpm', toBase: units.rpm2rads, fromBase: units.rads2rpm),
+      _Unit(label: 'deg/s', toBase: units.degs2rads, fromBase: units.rads2degs),
     ],
   ),
   _UnitCategory(
     name: 'Angle',
     icon: Icons.architecture_rounded,
     units: [
-      _Unit(label: 'rad', toBase: units.id,         fromBase: units.id),
-      _Unit(label: 'deg', toBase: units.deg2rad,    fromBase: units.rad2deg),
+      _Unit(label: 'rad', toBase: units.id, fromBase: units.id),
+      _Unit(label: 'deg', toBase: units.deg2rad, fromBase: units.rad2deg),
     ],
   ),
 ];
@@ -122,7 +125,9 @@ class UnitConverterPage extends StatefulWidget {
   final String? title;
   final int? toolId;
   final Map<String, String>? initialInputs;
-  const UnitConverterPage({Key? key, this.title, this.toolId, this.initialInputs}) : super(key: key);
+  const UnitConverterPage(
+      {Key? key, this.title, this.toolId, this.initialInputs})
+      : super(key: key);
 
   @override
   State<UnitConverterPage> createState() => _UnitConverterPageState();
@@ -184,7 +189,9 @@ class _UnitConverterPageState extends State<UnitConverterPage> {
       return v.toStringAsExponential(6).replaceAll(RegExp(r'0+e'), 'e');
     }
     final s = v.toStringAsFixed(8);
-    return s.contains('.') ? s.replaceAll(RegExp(r'0+$'), '').replaceAll(RegExp(r'\.$'), '') : s;
+    return s.contains('.')
+        ? s.replaceAll(RegExp(r'0+$'), '').replaceAll(RegExp(r'\.$'), '')
+        : s;
   }
 
   @override
@@ -200,7 +207,7 @@ class _UnitConverterPageState extends State<UnitConverterPage> {
     final units = _cat.units;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Unit Converter')),
+      appBar: AppBar(title: Text(S.of(context).Unit_Converter)),
       body: Column(
         children: [
           // Category chips
@@ -236,7 +243,7 @@ class _UnitConverterPageState extends State<UnitConverterPage> {
                 children: [
                   const SizedBox(height: 12),
                   _UnitField(
-                    label: 'From',
+                    label: S.of(context).From,
                     controller: _fromCtrl,
                     unitLabels: units.map((u) => u.label).toList(),
                     selectedUnit: _fromIndex,
@@ -249,8 +256,9 @@ class _UnitConverterPageState extends State<UnitConverterPage> {
                   const SizedBox(height: 20),
                   Center(
                     child: IconButton(
-                      icon: Icon(Icons.swap_vert_rounded, color: primary, size: 32),
-                      tooltip: 'Swap',
+                      icon: Icon(Icons.swap_vert_rounded,
+                          color: primary, size: 32),
+                      tooltip: S.of(context).Swap,
                       onPressed: () {
                         setState(() {
                           final tmp = _fromIndex;
@@ -278,14 +286,15 @@ class _UnitConverterPageState extends State<UnitConverterPage> {
                   const SizedBox(height: 32),
                   OutlinedButton.icon(
                     icon: const Icon(Icons.copy_rounded, size: 18),
-                    label: const Text('Copy result'),
+                    label: Text(S.of(context).Copy_Result),
                     onPressed: _toCtrl.text.isNotEmpty
                         ? () {
                             Clipboard.setData(ClipboardData(
-                                text: '${_toCtrl.text} ${units[_toIndex].label}'));
+                                text:
+                                    '${_toCtrl.text} ${units[_toIndex].label}'));
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Result copied'),
+                              SnackBar(
+                                content: Text(S.of(context).Result_Copied),
                                 duration: Duration(seconds: 1),
                               ),
                             );
@@ -335,8 +344,8 @@ class _UnitField extends StatelessWidget {
             Expanded(
               child: TextField(
                 controller: controller,
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true, signed: true),
+                keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true, signed: true),
                 decoration: const InputDecoration(hintText: '0'),
                 onChanged: onChanged,
               ),
@@ -351,7 +360,8 @@ class _UnitField extends StatelessWidget {
                   .map((e) => DropdownMenuItem(
                         value: e.key,
                         child: Text(e.value,
-                            style: const TextStyle(fontWeight: FontWeight.w500)),
+                            style:
+                                const TextStyle(fontWeight: FontWeight.w500)),
                       ))
                   .toList(),
               onChanged: (v) {

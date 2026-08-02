@@ -4,15 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
-import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
-import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -222,11 +220,6 @@ class _FailureCriteriaResultPage extends StatelessWidget {
   final double avg;
   final double r;
   final double? yieldStrength;
-  final _exportKey = GlobalKey();
-
-  String _fv(double valueSI, UnitCategory category, UnitSystem system,
-          NumberPrecisionHelper precs) =>
-      '${precs.formatValue(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
 
   @override
   Widget build(BuildContext context) {
@@ -236,122 +229,83 @@ class _FailureCriteriaResultPage extends StatelessWidget {
     final fsVm = hasSy ? yieldStrength! / vonMises : null;
     final fsTresca = hasSy ? yieldStrength! / tresca : null;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Result'),
-        actions: [
-          IconButton(
-            tooltip: 'Share results',
-            icon: const Icon(Icons.share_rounded),
-            onPressed: () => _share(system, precs, hasSy, fsVm, fsTresca),
-          ),
-          IconButton(
-            tooltip: 'Share as image',
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () => shareResultImage(_exportKey, 'Failure Criteria'),
-          ),
-          IconButton(
-            tooltip: 'Settings',
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ToolSettingPage()),
-            ),
+    return ResultScaffold(
+      toolName: 'Failure Criteria',
+      shareLines: () => _shareLines(system, precs, hasSy, fsVm, fsTresca),
+      children: [
+        AppSectionCard(
+          title: 'Stress Results',
+          child: Column(children: [
+            AppCopyableValue(
+                label: 'σ₁', valueSI: s1, category: UnitCategory.stress),
+            AppCopyableValue(
+                label: 'σ₂', valueSI: s2, category: UnitCategory.stress),
+            AppCopyableValue(
+                label: 'σ_VM (von Mises)',
+                valueSI: vonMises,
+                category: UnitCategory.stress),
+            AppCopyableValue(
+                label: 'τ_max', valueSI: tauMax, category: UnitCategory.stress),
+            AppCopyableValue(
+                label: 'σ_Tresca',
+                valueSI: tresca,
+                category: UnitCategory.stress),
+          ]),
+        ),
+        if (hasSy) ...[
+          AppSectionCard(
+            title: 'Factor of Safety',
+            child: Column(children: [
+              AppCopyableValue(
+                  label: 'FS (von Mises)', value: precs.formatValue(fsVm)),
+              AppCopyableValue(
+                  label: 'FS (Tresca)', value: precs.formatValue(fsTresca)),
+            ]),
           ),
         ],
-      ),
-      bottomNavigationBar: const AppBannerAd(),
-      body: RepaintBoundary(
-        key: _exportKey,
-        child: AppContent(
-          padding: EdgeInsets.zero,
-          child: ListView(
-            padding: EdgeInsets.all(context.tokens.space4),
-            children: [
-              AppSectionCard(
-                title: 'Stress Results',
-                child: Column(children: [
-                  AppCopyableValue(
-                      label: 'σ₁', valueSI: s1, category: UnitCategory.stress),
-                  AppCopyableValue(
-                      label: 'σ₂', valueSI: s2, category: UnitCategory.stress),
-                  AppCopyableValue(
-                      label: 'σ_VM (von Mises)',
-                      valueSI: vonMises,
-                      category: UnitCategory.stress),
-                  AppCopyableValue(
-                      label: 'τ_max',
-                      valueSI: tauMax,
-                      category: UnitCategory.stress),
-                  AppCopyableValue(
-                      label: 'σ_Tresca',
-                      valueSI: tresca,
-                      category: UnitCategory.stress),
-                ]),
-              ),
-              if (hasSy) ...[
-                SizedBox(height: context.tokens.space4),
-                AppSectionCard(
-                  title: 'Factor of Safety',
-                  child: Column(children: [
-                    AppCopyableValue(
-                        label: 'FS (von Mises)',
-                        value: precs.formatValue(fsVm)),
-                    AppCopyableValue(
-                        label: 'FS (Tresca)',
-                        value: precs.formatValue(fsTresca)),
-                  ]),
-                ),
-              ],
-              SizedBox(height: context.tokens.space4),
-              AppSectionCard(
-                title: 'Calculation',
-                child: Text(
-                  'R = √(((σx−σy)/2)² + τ²) = ${_fv(r, UnitCategory.stress, system, precs)}\n'
-                  'σ1 = (σx+σy)/2 + R = ${_fv(avg, UnitCategory.stress, system, precs)} + ${_fv(r, UnitCategory.stress, system, precs)} = ${_fv(s1, UnitCategory.stress, system, precs)}\n'
-                  'σ2 = (σx+σy)/2 − R = ${_fv(avg, UnitCategory.stress, system, precs)} − ${_fv(r, UnitCategory.stress, system, precs)} = ${_fv(s2, UnitCategory.stress, system, precs)}\n'
-                  'σ_VM = √(σ1²−σ1σ2+σ2²) = ${_fv(vonMises, UnitCategory.stress, system, precs)}\n'
-                  'σ_Tresca = |σ1−σ2| = ${_fv(tresca, UnitCategory.stress, system, precs)}, τ_max = ${_fv(tauMax, UnitCategory.stress, system, precs)}'
-                  '${hasSy ? '\nFS_VM = Sy/σ_VM = ${precs.formatValue(fsVm)}\nFS_Tresca = Sy/σ_Tresca = ${precs.formatValue(fsTresca)}' : ''}',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-              SizedBox(height: context.tokens.space4),
-              ParameterSweepCard(
-                variableLabel: 'τxy',
-                variableCategory: UnitCategory.stress,
-                baseValueSI: txy,
-                outputLabel: 'σ_VM',
-                outputCategory: UnitCategory.stress,
-                compute: (variedTxy) {
-                  final rr =
-                      sqrt(pow((sx - sy) / 2, 2) + variedTxy * variedTxy);
-                  final ss1 = avg + rr;
-                  final ss2 = avg - rr;
-                  return sqrt(ss1 * ss1 - ss1 * ss2 + ss2 * ss2);
-                },
-              ),
-            ],
+        AppSectionCard(
+          title: 'Calculation',
+          child: Text(
+            'R = √(((σx−σy)/2)² + τ²) = ${precs.formatSI(r, UnitCategory.stress, system)}\n'
+            'σ1 = (σx+σy)/2 + R = ${precs.formatSI(avg, UnitCategory.stress, system)} + ${precs.formatSI(r, UnitCategory.stress, system)} = ${precs.formatSI(s1, UnitCategory.stress, system)}\n'
+            'σ2 = (σx+σy)/2 − R = ${precs.formatSI(avg, UnitCategory.stress, system)} − ${precs.formatSI(r, UnitCategory.stress, system)} = ${precs.formatSI(s2, UnitCategory.stress, system)}\n'
+            'σ_VM = √(σ1²−σ1σ2+σ2²) = ${precs.formatSI(vonMises, UnitCategory.stress, system)}\n'
+            'σ_Tresca = |σ1−σ2| = ${precs.formatSI(tresca, UnitCategory.stress, system)}, τ_max = ${precs.formatSI(tauMax, UnitCategory.stress, system)}'
+            '${hasSy ? '\nFS_VM = Sy/σ_VM = ${precs.formatValue(fsVm)}\nFS_Tresca = Sy/σ_Tresca = ${precs.formatValue(fsTresca)}' : ''}',
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
-      ),
+        ParameterSweepCard(
+          variableLabel: 'τxy',
+          variableCategory: UnitCategory.stress,
+          baseValueSI: txy,
+          outputLabel: 'σ_VM',
+          outputCategory: UnitCategory.stress,
+          compute: (variedTxy) {
+            final rr = sqrt(pow((sx - sy) / 2, 2) + variedTxy * variedTxy);
+            final ss1 = avg + rr;
+            final ss2 = avg - rr;
+            return sqrt(ss1 * ss1 - ss1 * ss2 + ss2 * ss2);
+          },
+        ),
+      ],
     );
   }
 
-  void _share(UnitSystem system, NumberPrecisionHelper precs, bool hasSy,
-      double? fsVm, double? fsTresca) {
-    shareResult('Failure Criteria', [
-      'σ₁ = ${_fv(s1, UnitCategory.stress, system, precs)}, σ₂ = ${_fv(s2, UnitCategory.stress, system, precs)}',
-      'σ_VM = ${_fv(vonMises, UnitCategory.stress, system, precs)}',
-      'σ_Tresca = ${_fv(tresca, UnitCategory.stress, system, precs)}, τ_max = ${_fv(tauMax, UnitCategory.stress, system, precs)}',
+  List<String> _shareLines(UnitSystem system, NumberPrecisionHelper precs,
+      bool hasSy, double? fsVm, double? fsTresca) {
+    return [
+      'σ₁ = ${precs.formatSI(s1, UnitCategory.stress, system)}, σ₂ = ${precs.formatSI(s2, UnitCategory.stress, system)}',
+      'σ_VM = ${precs.formatSI(vonMises, UnitCategory.stress, system)}',
+      'σ_Tresca = ${precs.formatSI(tresca, UnitCategory.stress, system)}, τ_max = ${precs.formatSI(tauMax, UnitCategory.stress, system)}',
       if (hasSy) 'FS_VM = ${precs.formatValue(fsVm)}',
       if (hasSy) 'FS_Tresca = ${precs.formatValue(fsTresca)}',
       '',
       'Calculation:',
-      'R = √(((σx−σy)/2)² + τ²) = ${_fv(r, UnitCategory.stress, system, precs)}',
-      'σ1 = ${_fv(avg, UnitCategory.stress, system, precs)} + ${_fv(r, UnitCategory.stress, system, precs)} = ${_fv(s1, UnitCategory.stress, system, precs)}',
-      'σ2 = ${_fv(avg, UnitCategory.stress, system, precs)} − ${_fv(r, UnitCategory.stress, system, precs)} = ${_fv(s2, UnitCategory.stress, system, precs)}',
-      'σ_VM = √(σ1²−σ1σ2+σ2²) = ${_fv(vonMises, UnitCategory.stress, system, precs)}',
-    ]);
+      'R = √(((σx−σy)/2)² + τ²) = ${precs.formatSI(r, UnitCategory.stress, system)}',
+      'σ1 = ${precs.formatSI(avg, UnitCategory.stress, system)} + ${precs.formatSI(r, UnitCategory.stress, system)} = ${precs.formatSI(s1, UnitCategory.stress, system)}',
+      'σ2 = ${precs.formatSI(avg, UnitCategory.stress, system)} − ${precs.formatSI(r, UnitCategory.stress, system)} = ${precs.formatSI(s2, UnitCategory.stress, system)}',
+      'σ_VM = √(σ1²−σ1σ2+σ2²) = ${precs.formatSI(vonMises, UnitCategory.stress, system)}',
+    ];
   }
 }

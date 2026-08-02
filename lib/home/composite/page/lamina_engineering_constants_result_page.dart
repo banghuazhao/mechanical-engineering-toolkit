@@ -4,19 +4,15 @@ import 'package:composite_calculator/composite_calculator.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/thermal_constants_row.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
-import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
-
-import '../../tool_setting_page.dart';
 
 class LaminaEngineeringConstantsResultPage extends StatefulWidget {
   final int toolId;
@@ -41,7 +37,6 @@ class _LaminaEngineeringConstantsResultPageState
     extends State<LaminaEngineeringConstantsResultPage> {
   double layupAngle = 0.0;
   LaminaEngineeringConstantsOutput? _current;
-  final _exportKey = GlobalKey();
 
   // per-property chart data
   final Map<String, List<FlSpot>> _chartData = {};
@@ -132,46 +127,22 @@ class _LaminaEngineeringConstantsResultPageState
             ))
         .toList();
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_outlined, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () =>
-                shareResultImage(_exportKey, 'Lamina Engineering Constants'),
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const ToolSettingPage())),
-          ),
-        ],
-        title: Text(S.of(context).Result),
-      ),
-      bottomNavigationBar: const AppBannerAd(),
-      body: RepaintBoundary(
-        key: _exportKey,
-        child: SafeArea(
-            child: StaggeredGridView.countBuilder(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
-              crossAxisCount: 8,
-              itemCount: 2 + chartItems.length,
-              staggeredTileBuilder: (i) => StaggeredTile.fit(
-                  i == 0
-                      ? 8
-                      : (MediaQuery.of(context).size.width > 600 ? 4 : 8)),
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              itemBuilder: (_, i) {
-                if (i == 0) return ToolResultHeader(tool: tool);
-                if (i == 1) return _angleSlider();
-                return chartItems[i - 2];
-              },
-            ),
+    return ResultScaffold(
+      toolName: 'Lamina Engineering Constants',
+      body: SafeArea(
+        child: StaggeredGridView.countBuilder(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
+          crossAxisCount: 8,
+          itemCount: 2 + chartItems.length,
+          staggeredTileBuilder: (i) => StaggeredTile.fit(
+              i == 0 ? 8 : (MediaQuery.of(context).size.width > 600 ? 4 : 8)),
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          itemBuilder: (_, i) {
+            if (i == 0) return ToolResultHeader(tool: tool);
+            if (i == 1) return _angleSlider();
+            return chartItems[i - 2];
+          },
         ),
       ),
     );
