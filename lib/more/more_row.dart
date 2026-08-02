@@ -4,6 +4,10 @@ class MoreRow extends StatelessWidget {
   final IconData leadingIcon;
   final IconData trailingIcon;
   final String title;
+
+  /// Optional value shown before the trailing chevron, e.g. the current
+  /// language on the language row.
+  final String? trailingText;
   final void Function() onTap;
 
   const MoreRow({
@@ -11,6 +15,7 @@ class MoreRow extends StatelessWidget {
     this.trailingIcon = Icons.chevron_right_rounded,
     required this.leadingIcon,
     required this.title,
+    this.trailingText,
     required this.onTap,
   });
 
@@ -34,7 +39,22 @@ class MoreRow extends StatelessWidget {
             ),
             const SizedBox(width: 14),
             Expanded(
-              child: Text(title, style: Theme.of(context).textTheme.bodyLarge),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: Theme.of(context).textTheme.bodyLarge),
+                  if (trailingText != null)
+                    Text(
+                      trailingText!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                    ),
+                ],
+              ),
             ),
             Icon(
               trailingIcon,

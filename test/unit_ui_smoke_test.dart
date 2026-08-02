@@ -11,6 +11,7 @@ import 'package:mechanical_engineering_toolkit/home/tool_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/util/language.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/others.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
@@ -26,6 +27,7 @@ Widget _wrap(Widget child) => MultiProvider(
         ChangeNotifierProvider(create: (_) => RemoveAdsService()),
         ChangeNotifierProvider(create: (_) => Favorites()),
         ChangeNotifierProvider(create: (_) => ToolHistory()),
+        ChangeNotifierProvider(create: (_) => LanguagePreference()),
       ],
       child: MaterialApp(
         // The real app theme carries the AppTokens extension that
@@ -162,5 +164,33 @@ void main() {
 
     expect(find.text('No tools found'), findsNothing);
     expect(find.byType(ToolGridTile), findsWidgets);
+  });
+
+  testWidgets('Side menu language row picks and remembers a language',
+      (tester) async {
+    await tester.pumpWidget(_wrap(const ToolPage()));
+    await tester.pumpAndSettle();
+
+    tester.state<ScaffoldState>(find.byType(Scaffold)).openDrawer();
+    await tester.pumpAndSettle();
+
+    // Defaults to following the device locale.
+    expect(find.text('System default'), findsOneWidget);
+
+    await tester.tap(find.text('Language'));
+    await tester.pumpAndSettle();
+
+    // Every option is listed under its own endonym.
+    expect(find.text('English'), findsOneWidget);
+    expect(find.text('简体中文'), findsOneWidget);
+    expect(find.text('繁體中文'), findsOneWidget);
+
+    await tester.tap(find.text('简体中文'));
+    await tester.pumpAndSettle();
+
+    expect(LanguagePreference().language, AppLanguage.simplifiedChinese);
+    // The drawer row now reflects the pick.
+    expect(find.text('简体中文'), findsOneWidget);
+    expect(find.text('System default'), findsNothing);
   });
 }

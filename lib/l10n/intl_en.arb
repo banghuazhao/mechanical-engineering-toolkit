@@ -368,5 +368,7 @@
   "Drag_Along_Line": "Drag along the line to explore other values of {label}.",
   "Copied_Value": "Copied {label}",
   "Ball_Bearing": "Ball bearing (p = 3)",
-  "Roller_Bearing": "Roller bearing (p = 10/3)"
+  "Roller_Bearing": "Roller bearing (p = 10/3)",
+  "Language": "Language",
+  "System_Default": "System default"
 }

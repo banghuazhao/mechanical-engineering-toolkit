@@ -327,6 +327,7 @@ class MessageLookup extends MessageLookupByLibrary {
         ),
         "Laminate_stressstrain":
             MessageLookupByLibrary.simpleMessage("層合板應力/應變"),
+        "Language": MessageLookupByLibrary.simpleMessage("語言"),
         "Large_Pulley_Diameter_D2": MessageLookupByLibrary.simpleMessage(
           "大帶輪直徑 d2",
         ),
@@ -547,6 +548,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Swap": MessageLookupByLibrary.simpleMessage("互換"),
         "SwiftComp":
             MessageLookupByLibrary.simpleMessage("SwiftComp:複合材料仿真建模分析"),
+        "System_Default": MessageLookupByLibrary.simpleMessage("跟隨系統"),
         "Tangential_Load_Wt": MessageLookupByLibrary.simpleMessage("圓周力 Wt"),
         "Target_Factor_of_Safety_N": MessageLookupByLibrary.simpleMessage(
           "目標安全係數 n",

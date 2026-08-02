@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
+import 'package:mechanical_engineering_toolkit/home/language_picker.dart';
 import 'package:mechanical_engineering_toolkit/home/major_list_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_favorites.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
@@ -17,6 +18,7 @@ import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart'
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
+import 'package:mechanical_engineering_toolkit/util/language.dart';
 import 'package:mechanical_engineering_toolkit/util/others.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
@@ -228,6 +230,14 @@ class _ToolPageState extends State<ToolPage> {
                       MaterialPageRoute(
                           builder: (context) => const ToolSettingPage()));
                 }),
+            Consumer<LanguagePreference>(
+              builder: (context, languagePref, _) => MoreRow(
+                title: S.of(context).Language,
+                leadingIcon: Icons.translate_rounded,
+                trailingText: languageLabel(context, languagePref.language),
+                onTap: () => showLanguagePicker(context),
+              ),
+            ),
             Consumer<RemoveAdsService>(
               builder: (context, purchases, _) {
                 if (!purchases.isSupported) return const SizedBox.shrink();

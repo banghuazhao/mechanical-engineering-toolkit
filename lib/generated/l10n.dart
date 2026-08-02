@@ -3258,6 +3258,21 @@ class S {
       args: [],
     );
   }
+
+  /// `Language`
+  String get Language {
+    return Intl.message('Language', name: 'Language', desc: '', args: []);
+  }
+
+  /// `System default`
+  String get System_Default {
+    return Intl.message(
+      'System default',
+      name: 'System_Default',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

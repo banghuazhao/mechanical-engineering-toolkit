@@ -5,6 +5,7 @@ import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart'
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/in_app_reviewer_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/language.dart';
 import 'package:mechanical_engineering_toolkit/util/material_library.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/others.dart';
@@ -49,44 +50,51 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UnitSystemPreference()),
         ChangeNotifierProvider(create: (context) => ToolHistory()),
         ChangeNotifierProvider(create: (context) => MaterialLibrary()),
+        ChangeNotifierProvider(create: (context) => LanguagePreference()),
       ],
-      child: MaterialApp(
-        builder: (context, child) => NotificationListener<ScrollNotification>(
-          onNotification: (notification) {
-            if (notification is ScrollStartNotification &&
-                notification.dragDetails != null) {
-              FocusManager.instance.primaryFocus?.unfocus();
+      child: Consumer<LanguagePreference>(
+        builder: (context, languagePref, _) => MaterialApp(
+          builder: (context, child) => NotificationListener<ScrollNotification>(
+            onNotification: (notification) {
+              if (notification is ScrollStartNotification &&
+                  notification.dragDetails != null) {
+                FocusManager.instance.primaryFocus?.unfocus();
+              }
+              return false;
+            },
+            child: child ?? const SizedBox.shrink(),
+          ),
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          // 讲en设置为第一项,没有适配语言时,英语为首选项
+          supportedLocales: S.delegate.supportedLocales,
+          // null 时跟随系统语言,否则使用用户在侧边栏选择的语言
+          locale: languagePref.locale,
+          // 插件目前不完善手动处理简繁体
+          localeResolutionCallback: (locale, supportLocales) {
+            // 中文 简繁体处理
+            if (locale?.languageCode == 'zh') {
+              const traditionalRegions = {'HK', 'TW', 'MO'};
+              if (locale?.scriptCode == 'Hant' ||
+                  traditionalRegions.contains(locale?.countryCode)) {
+                return const Locale('zh', 'HK'); //繁体
+              } else {
+                return const Locale('zh', ''); //简体
+              }
             }
-            return false;
+            return const Locale('en', '');
           },
-          child: child ?? const SizedBox.shrink(),
+          title: 'ME Toolkit',
+          theme: AppTheme.light(),
+          darkTheme: AppTheme.dark(),
+          themeMode: ThemeMode.system,
+          home: const ToolPage(),
         ),
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        // 讲en设置为第一项,没有适配语言时,英语为首选项
-        supportedLocales: S.delegate.supportedLocales,
-        // 插件目前不完善手动处理简繁体
-        localeResolutionCallback: (locale, supportLocales) {
-          // 中文 简繁体处理
-          if (locale?.languageCode == 'zh') {
-            if (locale?.scriptCode == 'Hant') {
-              return const Locale('zh', 'HK'); //繁体
-            } else {
-              return const Locale('zh', ''); //简体
-            }
-          }
-          return const Locale('en', '');
-        },
-        title: 'ME Toolkit',
-        theme: AppTheme.light(),
-        darkTheme: AppTheme.dark(),
-        themeMode: ThemeMode.system,
-        home: const ToolPage(),
       ),
     );
   }

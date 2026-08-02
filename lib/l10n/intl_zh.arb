@@ -367,5 +367,7 @@
   "Drag_Along_Line": "沿曲线拖动可查看 {label} 的其他取值。",
   "Copied_Value": "已复制 {label}",
   "Ball_Bearing": "球轴承（p = 3）",
-  "Roller_Bearing": "滚子轴承（p = 10/3）"
+  "Roller_Bearing": "滚子轴承（p = 10/3）",
+  "Language": "语言",
+  "System_Default": "跟随系统"
 }

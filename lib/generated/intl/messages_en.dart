@@ -443,6 +443,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Laminate_stressstrain": MessageLookupByLibrary.simpleMessage(
           "Laminate stress/strain",
         ),
+        "Language": MessageLookupByLibrary.simpleMessage("Language"),
         "Large_Pulley_Diameter_D2": MessageLookupByLibrary.simpleMessage(
           "Large pulley diameter, d2",
         ),
@@ -777,6 +778,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "SwiftComp": MessageLookupByLibrary.simpleMessage(
           "SwiftComp:Composites Material",
         ),
+        "System_Default":
+            MessageLookupByLibrary.simpleMessage("System default"),
         "Tangential_Load_Wt": MessageLookupByLibrary.simpleMessage(
           "Tangential load, Wt",
         ),
