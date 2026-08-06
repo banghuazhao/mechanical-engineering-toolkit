@@ -420,5 +420,13 @@
   "Load_Case": "載荷工況",
   "End_Condition": "端部約束",
   "Stress_Results": "應力結果",
-  "Thermal_Results": "熱分析結果"
+  "Thermal_Results": "熱分析結果",
+
+  "Appearance": "外觀",
+  "Theme_System": "跟隨系統",
+  "Theme_Light": "淺色",
+  "Theme_Dark": "深色",
+  "Theme_System_Description": "跟隨裝置的外觀設定",
+  "Theme_Light_Description": "永遠使用淺色主題",
+  "Theme_Dark_Description": "永遠使用深色主題"
 }

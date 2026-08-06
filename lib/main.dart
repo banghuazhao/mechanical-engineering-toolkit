@@ -9,6 +9,7 @@ import 'package:mechanical_engineering_toolkit/util/language.dart';
 import 'package:mechanical_engineering_toolkit/util/material_library.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/others.dart';
+import 'package:mechanical_engineering_toolkit/util/theme_preference.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:provider/provider.dart';
 
@@ -51,9 +52,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ToolHistory()),
         ChangeNotifierProvider(create: (context) => MaterialLibrary()),
         ChangeNotifierProvider(create: (context) => LanguagePreference()),
+        ChangeNotifierProvider(create: (context) => ThemePreference()),
       ],
-      child: Consumer<LanguagePreference>(
-        builder: (context, languagePref, _) => MaterialApp(
+      child: Consumer2<LanguagePreference, ThemePreference>(
+        builder: (context, languagePref, themePref, _) => MaterialApp(
           builder: (context, child) => NotificationListener<ScrollNotification>(
             onNotification: (notification) {
               if (notification is ScrollStartNotification &&
@@ -101,7 +103,7 @@ class MyApp extends StatelessWidget {
           title: 'ME Toolkit',
           theme: AppTheme.light(),
           darkTheme: AppTheme.dark(),
-          themeMode: ThemeMode.system,
+          themeMode: themePref.themeMode,
           home: const ToolPage(),
         ),
       ),

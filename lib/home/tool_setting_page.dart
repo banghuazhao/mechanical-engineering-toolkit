@@ -4,6 +4,7 @@ import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/theme_preference.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,139 @@ String _unitSystemPreview(UnitSystem system) {
       '${_fmtPreview(stress)} ${unitLabel(UnitCategory.stress, system)}';
 }
 
+/// One row of a [_SelectionCard]: a title, a monospaced example or hint
+/// underneath, and a check mark when it is the active choice.
+class _Choice {
+  const _Choice({
+    required this.label,
+    required this.detail,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String label;
+  final String detail;
+  final bool isSelected;
+  final VoidCallback onTap;
+}
+
+/// A titled card of mutually exclusive choices — the shape every picker in
+/// Settings uses (unit system, display format, appearance).
+class _SelectionCard extends StatelessWidget {
+  const _SelectionCard({required this.title, required this.choices});
+
+  final String title;
+  final List<_Choice> choices;
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = Theme.of(context).colorScheme.primary;
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: primary,
+                    letterSpacing: 0.8,
+                  ),
+            ),
+          ),
+          const Divider(height: 14),
+          ...choices.asMap().entries.map((entry) {
+            final choice = entry.value;
+            final isLast = entry.key == choices.length - 1;
+            return Column(
+              children: [
+                InkWell(
+                  onTap: choice.onTap,
+                  borderRadius: isLast
+                      ? const BorderRadius.vertical(bottom: Radius.circular(14))
+                      : BorderRadius.zero,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                choice.label,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                      color:
+                                          choice.isSelected ? primary : null,
+                                      fontWeight: choice.isSelected
+                                          ? FontWeight.w600
+                                          : null,
+                                    ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                choice.detail,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                      fontFamily: 'monospace',
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (choice.isSelected)
+                          Icon(Icons.check_circle_rounded,
+                              color: primary, size: 20),
+                      ],
+                    ),
+                  ),
+                ),
+                if (!isLast)
+                  const Divider(height: 1, indent: 16, endIndent: 16),
+              ],
+            );
+          }),
+          const SizedBox(height: 4),
+        ],
+      ),
+    );
+  }
+}
+
+String _themeLabel(BuildContext context, AppThemeMode mode) {
+  switch (mode) {
+    case AppThemeMode.system:
+      return S.of(context).Theme_System;
+    case AppThemeMode.light:
+      return S.of(context).Theme_Light;
+    case AppThemeMode.dark:
+      return S.of(context).Theme_Dark;
+  }
+}
+
+String _themeDescription(BuildContext context, AppThemeMode mode) {
+  switch (mode) {
+    case AppThemeMode.system:
+      return S.of(context).Theme_System_Description;
+    case AppThemeMode.light:
+      return S.of(context).Theme_Light_Description;
+    case AppThemeMode.dark:
+      return S.of(context).Theme_Dark_Description;
+  }
+}
+
 class ToolSettingPage extends StatelessWidget {
   const ToolSettingPage({super.key});
 
@@ -35,121 +169,45 @@ class ToolSettingPage extends StatelessWidget {
         title: Text(S.of(context).Settings),
       ),
       bottomNavigationBar: const AppBannerAd(),
-      body: Consumer2<NumberPrecisionHelper, UnitSystemPreference>(
-          builder: (context, precs, unitPref, child) => SafeArea(
+      body: Consumer3<NumberPrecisionHelper, UnitSystemPreference,
+              ThemePreference>(
+          builder: (context, precs, unitPref, themePref, child) => SafeArea(
                 child: Stack(
                     alignment: AlignmentDirectional.bottomCenter,
                     children: [
                       ListView(
                         padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
                         children: [
-                          // --- Unit System ---
-                          Card(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(16, 14, 16, 0),
-                                  child: Text(
-                                    S.of(context).Unit_System,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w600,
-                                          color: primary,
-                                          letterSpacing: 0.8,
-                                        ),
-                                  ),
+                          // --- Appearance ---
+                          _SelectionCard(
+                            title: S.of(context).Appearance,
+                            choices: [
+                              for (final mode in AppThemeMode.values)
+                                _Choice(
+                                  label: _themeLabel(context, mode),
+                                  detail: _themeDescription(context, mode),
+                                  isSelected: themePref.appThemeMode == mode,
+                                  onTap: () => themePref.set(mode),
                                 ),
-                                const Divider(height: 14),
-                                ...UnitSystem.values
-                                    .asMap()
-                                    .entries
-                                    .map((entry) {
-                                  final system = entry.value;
-                                  final isLast =
-                                      entry.key == UnitSystem.values.length - 1;
-                                  final isSelected = unitPref.system == system;
-                                  return Column(
-                                    children: [
-                                      InkWell(
-                                        onTap: () => unitPref.set(system),
-                                        borderRadius: isLast
-                                            ? const BorderRadius.vertical(
-                                                bottom: Radius.circular(14))
-                                            : BorderRadius.zero,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 16),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      system == UnitSystem.si
-                                                          ? S
-                                                              .of(context)
-                                                              .Metric_SI
-                                                          : S
-                                                              .of(context)
-                                                              .Imperial_US,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .titleMedium
-                                                          ?.copyWith(
-                                                            color: isSelected
-                                                                ? primary
-                                                                : null,
-                                                            fontWeight:
-                                                                isSelected
-                                                                    ? FontWeight
-                                                                        .w600
-                                                                    : null,
-                                                          ),
-                                                    ),
-                                                    const SizedBox(height: 2),
-                                                    Text(
-                                                      _unitSystemPreview(
-                                                          system),
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodySmall
-                                                          ?.copyWith(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .colorScheme
-                                                                .onSurfaceVariant,
-                                                            fontFamily:
-                                                                'monospace',
-                                                          ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              if (isSelected)
-                                                Icon(Icons.check_circle_rounded,
-                                                    color: primary, size: 20),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      if (!isLast)
-                                        const Divider(
-                                            height: 1,
-                                            indent: 16,
-                                            endIndent: 16),
-                                    ],
-                                  );
-                                }),
-                                const SizedBox(height: 4),
-                              ],
-                            ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 12),
+
+                          // --- Unit System ---
+                          _SelectionCard(
+                            title: S.of(context).Unit_System,
+                            choices: [
+                              for (final system in UnitSystem.values)
+                                _Choice(
+                                  label: system == UnitSystem.si
+                                      ? S.of(context).Metric_SI
+                                      : S.of(context).Imperial_US,
+                                  detail: _unitSystemPreview(system),
+                                  isSelected: unitPref.system == system,
+                                  onTap: () => unitPref.set(system),
+                                ),
+                            ],
                           ),
 
                           const SizedBox(height: 12),
@@ -248,106 +306,17 @@ class ToolSettingPage extends StatelessWidget {
                           const SizedBox(height: 12),
 
                           // --- Display Format ---
-                          Card(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(16, 14, 16, 0),
-                                  child: Text(
-                                    S.of(context).Display_Format,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w600,
-                                          color: primary,
-                                          letterSpacing: 0.8,
-                                        ),
-                                  ),
+                          _SelectionCard(
+                            title: S.of(context).Display_Format,
+                            choices: [
+                              for (final fmt in NumberDisplayFormat.values)
+                                _Choice(
+                                  label: fmt.label(context),
+                                  detail: fmt.example(precs.precision),
+                                  isSelected: precs.displayFormat == fmt,
+                                  onTap: () => precs.setFormat(fmt),
                                 ),
-                                const Divider(height: 14),
-                                ...NumberDisplayFormat.values
-                                    .asMap()
-                                    .entries
-                                    .map((entry) {
-                                  final fmt = entry.value;
-                                  final isLast = entry.key ==
-                                      NumberDisplayFormat.values.length - 1;
-                                  final isSelected = precs.displayFormat == fmt;
-                                  return Column(
-                                    children: [
-                                      InkWell(
-                                        onTap: () => precs.setFormat(fmt),
-                                        borderRadius: isLast
-                                            ? const BorderRadius.vertical(
-                                                bottom: Radius.circular(14))
-                                            : BorderRadius.zero,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 16),
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      fmt.label(context),
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .titleMedium
-                                                          ?.copyWith(
-                                                            color: isSelected
-                                                                ? primary
-                                                                : null,
-                                                            fontWeight:
-                                                                isSelected
-                                                                    ? FontWeight
-                                                                        .w600
-                                                                    : null,
-                                                          ),
-                                                    ),
-                                                    const SizedBox(height: 2),
-                                                    Text(
-                                                      fmt.example(
-                                                          precs.precision),
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodySmall
-                                                          ?.copyWith(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .colorScheme
-                                                                .onSurfaceVariant,
-                                                            fontFamily:
-                                                                'monospace',
-                                                          ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              if (isSelected)
-                                                Icon(Icons.check_circle_rounded,
-                                                    color: primary, size: 20),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      if (!isLast)
-                                        const Divider(
-                                            height: 1,
-                                            indent: 16,
-                                            endIndent: 16),
-                                    ],
-                                  );
-                                }),
-                                const SizedBox(height: 4),
-                              ],
-                            ),
+                            ],
                           ),
                           const SizedBox(height: 12),
                           AppSectionCard(

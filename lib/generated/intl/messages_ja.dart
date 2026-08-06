@@ -58,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Angle_of_Rotation": MessageLookupByLibrary.simpleMessage("回転角"),
     "Angle_of_twist": MessageLookupByLibrary.simpleMessage("ねじれ角"),
     "Anisotropic_material": MessageLookupByLibrary.simpleMessage("異方性材料"),
+    "Appearance": MessageLookupByLibrary.simpleMessage("外観"),
     "Applied_Force_F": MessageLookupByLibrary.simpleMessage("作用力、F"),
     "Area": MessageLookupByLibrary.simpleMessage("断面積"),
     "Area_A": MessageLookupByLibrary.simpleMessage("断面積、A"),
@@ -629,6 +630,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "Target_Preload_F": MessageLookupByLibrary.simpleMessage("目標初期張力、F"),
     "Target_Safety_Factor_N": MessageLookupByLibrary.simpleMessage("目標安全率、n"),
     "The_Maximum_Shear_Stress": MessageLookupByLibrary.simpleMessage("最大せん断応力"),
+    "Theme_Dark": MessageLookupByLibrary.simpleMessage("ダーク"),
+    "Theme_Dark_Description": MessageLookupByLibrary.simpleMessage(
+      "常にダークテーマを使用します",
+    ),
+    "Theme_Light": MessageLookupByLibrary.simpleMessage("ライト"),
+    "Theme_Light_Description": MessageLookupByLibrary.simpleMessage(
+      "常にライトテーマを使用します",
+    ),
+    "Theme_System": MessageLookupByLibrary.simpleMessage("システム設定に従う"),
+    "Theme_System_Description": MessageLookupByLibrary.simpleMessage(
+      "デバイスの外観設定に従います",
+    ),
     "Theory_of_Elasticity": MessageLookupByLibrary.simpleMessage("弾性理論"),
     "Thermal": MessageLookupByLibrary.simpleMessage("熱"),
     "Thermal_Results": MessageLookupByLibrary.simpleMessage("熱解析の結果"),

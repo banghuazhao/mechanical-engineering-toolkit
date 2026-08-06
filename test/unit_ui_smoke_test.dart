@@ -14,6 +14,7 @@ import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/language.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/others.dart';
+import 'package:mechanical_engineering_toolkit/util/theme_preference.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -28,6 +29,7 @@ Widget _wrap(Widget child) => MultiProvider(
         ChangeNotifierProvider(create: (_) => Favorites()),
         ChangeNotifierProvider(create: (_) => ToolHistory()),
         ChangeNotifierProvider(create: (_) => LanguagePreference()),
+        ChangeNotifierProvider(create: (_) => ThemePreference()),
       ],
       child: MaterialApp(
         // The real app theme carries the AppTokens extension that

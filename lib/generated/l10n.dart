@@ -3673,6 +3673,61 @@ class S {
       args: [],
     );
   }
+
+  /// `APPEARANCE`
+  String get Appearance {
+    return Intl.message('APPEARANCE', name: 'Appearance', desc: '', args: []);
+  }
+
+  /// `System default`
+  String get Theme_System {
+    return Intl.message(
+      'System default',
+      name: 'Theme_System',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Light`
+  String get Theme_Light {
+    return Intl.message('Light', name: 'Theme_Light', desc: '', args: []);
+  }
+
+  /// `Dark`
+  String get Theme_Dark {
+    return Intl.message('Dark', name: 'Theme_Dark', desc: '', args: []);
+  }
+
+  /// `Follows your device appearance setting`
+  String get Theme_System_Description {
+    return Intl.message(
+      'Follows your device appearance setting',
+      name: 'Theme_System_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Always use the light theme`
+  String get Theme_Light_Description {
+    return Intl.message(
+      'Always use the light theme',
+      name: 'Theme_Light_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Always use the dark theme`
+  String get Theme_Dark_Description {
+    return Intl.message(
+      'Always use the dark theme',
+      name: 'Theme_Dark_Description',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

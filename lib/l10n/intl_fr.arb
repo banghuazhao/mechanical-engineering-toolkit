@@ -421,5 +421,13 @@
   "Load_Case": "Cas de charge",
   "End_Condition": "Condition d'appui",
   "Stress_Results": "Résultats de contrainte",
-  "Thermal_Results": "Résultats thermiques"
+  "Thermal_Results": "Résultats thermiques",
+
+  "Appearance": "APPARENCE",
+  "Theme_System": "Par défaut du système",
+  "Theme_Light": "Clair",
+  "Theme_Dark": "Sombre",
+  "Theme_System_Description": "Suit le réglage d'apparence de votre appareil",
+  "Theme_Light_Description": "Toujours utiliser le thème clair",
+  "Theme_Dark_Description": "Toujours utiliser le thème sombre"
 }

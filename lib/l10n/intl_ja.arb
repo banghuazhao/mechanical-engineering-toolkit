@@ -421,5 +421,13 @@
   "Load_Case": "荷重ケース",
   "End_Condition": "端部条件",
   "Stress_Results": "応力の結果",
-  "Thermal_Results": "熱解析の結果"
+  "Thermal_Results": "熱解析の結果",
+
+  "Appearance": "外観",
+  "Theme_System": "システム設定に従う",
+  "Theme_Light": "ライト",
+  "Theme_Dark": "ダーク",
+  "Theme_System_Description": "デバイスの外観設定に従います",
+  "Theme_Light_Description": "常にライトテーマを使用します",
+  "Theme_Dark_Description": "常にダークテーマを使用します"
 }

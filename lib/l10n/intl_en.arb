@@ -421,5 +421,13 @@
   "Load_Case": "Load case",
   "End_Condition": "End condition",
   "Stress_Results": "Stress Results",
-  "Thermal_Results": "Thermal Results"
+  "Thermal_Results": "Thermal Results",
+
+  "Appearance": "APPEARANCE",
+  "Theme_System": "System default",
+  "Theme_Light": "Light",
+  "Theme_Dark": "Dark",
+  "Theme_System_Description": "Follows your device appearance setting",
+  "Theme_Light_Description": "Always use the light theme",
+  "Theme_Dark_Description": "Always use the dark theme"
 }

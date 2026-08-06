@@ -421,5 +421,13 @@
   "Load_Case": "Lastfall",
   "End_Condition": "Randbedingung",
   "Stress_Results": "Spannungsergebnisse",
-  "Thermal_Results": "Thermische Ergebnisse"
+  "Thermal_Results": "Thermische Ergebnisse",
+
+  "Appearance": "DARSTELLUNG",
+  "Theme_System": "Systemstandard",
+  "Theme_Light": "Hell",
+  "Theme_Dark": "Dunkel",
+  "Theme_System_Description": "Folgt der Darstellungseinstellung des Geräts",
+  "Theme_Light_Description": "Immer das helle Design verwenden",
+  "Theme_Dark_Description": "Immer das dunkle Design verwenden"
 }

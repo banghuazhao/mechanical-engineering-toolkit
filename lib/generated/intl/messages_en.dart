@@ -73,6 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Anisotropic_material": MessageLookupByLibrary.simpleMessage(
       "Anisotropic material",
     ),
+    "Appearance": MessageLookupByLibrary.simpleMessage("APPEARANCE"),
     "Applied_Force_F": MessageLookupByLibrary.simpleMessage("Applied force, F"),
     "Area": MessageLookupByLibrary.simpleMessage("Area"),
     "Area_A": MessageLookupByLibrary.simpleMessage("Area, A"),
@@ -833,6 +834,18 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "The_Maximum_Shear_Stress": MessageLookupByLibrary.simpleMessage(
       "The Maximum Shear Stress",
+    ),
+    "Theme_Dark": MessageLookupByLibrary.simpleMessage("Dark"),
+    "Theme_Dark_Description": MessageLookupByLibrary.simpleMessage(
+      "Always use the dark theme",
+    ),
+    "Theme_Light": MessageLookupByLibrary.simpleMessage("Light"),
+    "Theme_Light_Description": MessageLookupByLibrary.simpleMessage(
+      "Always use the light theme",
+    ),
+    "Theme_System": MessageLookupByLibrary.simpleMessage("System default"),
+    "Theme_System_Description": MessageLookupByLibrary.simpleMessage(
+      "Follows your device appearance setting",
     ),
     "Theory_of_Elasticity": MessageLookupByLibrary.simpleMessage(
       "Theory of Elasticity",

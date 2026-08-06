@@ -77,6 +77,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Anisotropic_material": MessageLookupByLibrary.simpleMessage(
       "Matériau anisotrope",
     ),
+    "Appearance": MessageLookupByLibrary.simpleMessage("APPARENCE"),
     "Applied_Force_F": MessageLookupByLibrary.simpleMessage(
       "Force appliquée, F",
     ),
@@ -913,6 +914,20 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "The_Maximum_Shear_Stress": MessageLookupByLibrary.simpleMessage(
       "Contrainte de cisaillement maximale",
+    ),
+    "Theme_Dark": MessageLookupByLibrary.simpleMessage("Sombre"),
+    "Theme_Dark_Description": MessageLookupByLibrary.simpleMessage(
+      "Toujours utiliser le thème sombre",
+    ),
+    "Theme_Light": MessageLookupByLibrary.simpleMessage("Clair"),
+    "Theme_Light_Description": MessageLookupByLibrary.simpleMessage(
+      "Toujours utiliser le thème clair",
+    ),
+    "Theme_System": MessageLookupByLibrary.simpleMessage(
+      "Par défaut du système",
+    ),
+    "Theme_System_Description": MessageLookupByLibrary.simpleMessage(
+      "Suit le réglage d\'apparence de votre appareil",
     ),
     "Theory_of_Elasticity": MessageLookupByLibrary.simpleMessage(
       "Théorie de l\'élasticité",

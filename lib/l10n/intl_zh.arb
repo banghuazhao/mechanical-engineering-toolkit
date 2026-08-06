@@ -420,5 +420,13 @@
   "Load_Case": "载荷工况",
   "End_Condition": "端部约束",
   "Stress_Results": "应力结果",
-  "Thermal_Results": "热分析结果"
+  "Thermal_Results": "热分析结果",
+
+  "Appearance": "外观",
+  "Theme_System": "跟随系统",
+  "Theme_Light": "浅色",
+  "Theme_Dark": "深色",
+  "Theme_System_Description": "跟随设备的外观设置",
+  "Theme_Light_Description": "始终使用浅色主题",
+  "Theme_Dark_Description": "始终使用深色主题"
 }
