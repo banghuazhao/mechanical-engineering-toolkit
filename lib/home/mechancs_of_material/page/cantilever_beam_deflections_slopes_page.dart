@@ -103,7 +103,8 @@ class _CantileverBeamDeflectionsSlopesPageState
                 children: [
                   DropdownButtonFormField<String>(
                     initialValue: _loadCase,
-                    decoration: const InputDecoration(labelText: 'Load case'),
+                    decoration:
+                        InputDecoration(labelText: S.of(context).Load_Case),
                     items: _kLoadCases
                         .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                         .toList(),

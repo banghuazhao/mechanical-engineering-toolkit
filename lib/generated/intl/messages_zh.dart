@@ -24,7 +24,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(label) => "沿曲线拖动可查看 ${label} 的其他取值。";
 
-  static String m2(label) => "假设分析：${label}";
+  static String m2(value) => "预览：${value}";
+
+  static String m3(tool) => "将${tool}从收藏中移除";
+
+  static String m4(label) => "假设分析：${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -35,6 +39,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_Joint": MessageLookupByLibrary.simpleMessage("添加节点"),
     "Add_Member": MessageLookupByLibrary.simpleMessage("添加杆件"),
     "Add_Shape": MessageLookupByLibrary.simpleMessage("添加形状"),
+    "Add_to_Favorites": MessageLookupByLibrary.simpleMessage("添加到收藏"),
+    "Added_to_Favorites": MessageLookupByLibrary.simpleMessage("已添加到收藏"),
     "Ads_Removed": MessageLookupByLibrary.simpleMessage("广告已移除"),
     "Ads_Removed_Description": MessageLookupByLibrary.simpleMessage(
       "感谢您支持工程工具箱。",
@@ -46,6 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Alternating_Moment_Ma": MessageLookupByLibrary.simpleMessage("交变弯矩 Ma"),
     "Alternating_Torque_Ta": MessageLookupByLibrary.simpleMessage("交变扭矩 Ta"),
+    "Analysis_Type": MessageLookupByLibrary.simpleMessage("分析类型"),
     "Angle_of_Rotation": MessageLookupByLibrary.simpleMessage("旋转角度"),
     "Angle_of_twist": MessageLookupByLibrary.simpleMessage("扭转角"),
     "Anisotropic_material": MessageLookupByLibrary.simpleMessage("各向异性材料"),
@@ -73,6 +80,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Buckling_Load": MessageLookupByLibrary.simpleMessage("屈曲载荷"),
     "Buckling_load_of_column": MessageLookupByLibrary.simpleMessage("杆的屈曲载荷计算"),
     "Calculate": MessageLookupByLibrary.simpleMessage("计算"),
+    "Calculation": MessageLookupByLibrary.simpleMessage("计算过程"),
+    "Calculation_Copied": MessageLookupByLibrary.simpleMessage("已复制计算过程"),
     "Cancel": MessageLookupByLibrary.simpleMessage("取消"),
     "Center_Distance": MessageLookupByLibrary.simpleMessage("中心距"),
     "Center_Distance_C": MessageLookupByLibrary.simpleMessage("中心距 C"),
@@ -158,6 +167,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Diametral_Interference": MessageLookupByLibrary.simpleMessage("直径过盈量 δ"),
     "Displacement": MessageLookupByLibrary.simpleMessage("位移"),
     "Display_Format": MessageLookupByLibrary.simpleMessage("显示格式"),
+    "Double_Shear": MessageLookupByLibrary.simpleMessage("双剪"),
     "Drag_Along_Line": m1,
     "Drill_Tap_Chart": MessageLookupByLibrary.simpleMessage("钻孔与攻丝对照表"),
     "Drill_Tap_Footnote": MessageLookupByLibrary.simpleMessage(
@@ -167,11 +177,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "Dynamic_Load_Rating_C": MessageLookupByLibrary.simpleMessage("额定动载荷 C"),
     "E_Modulus": MessageLookupByLibrary.simpleMessage("E（弹性模量）"),
     "Effective_Length_L": MessageLookupByLibrary.simpleMessage("有效长度 L"),
+    "Elastic": MessageLookupByLibrary.simpleMessage("弹性"),
     "Elastic_Coefficient_Cp": MessageLookupByLibrary.simpleMessage(
       "弹性系数 Cp（√MPa）",
     ),
     "Elastic_Deflection": MessageLookupByLibrary.simpleMessage("弹性挠曲线"),
     "Elastic_Modulus_E": MessageLookupByLibrary.simpleMessage("弹性模量 E"),
+    "End_Condition": MessageLookupByLibrary.simpleMessage("端部约束"),
     "Endurance_Limit_Se": MessageLookupByLibrary.simpleMessage("疲劳极限 Se"),
     "Engineering_Constants": MessageLookupByLibrary.simpleMessage("工程常数"),
     "Enter_Fx_Fy_Components": MessageLookupByLibrary.simpleMessage(
@@ -262,6 +274,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Feedback": MessageLookupByLibrary.simpleMessage("反馈"),
     "Fillet_Weld_Strength": MessageLookupByLibrary.simpleMessage("角焊缝强度"),
     "FinanceGo": MessageLookupByLibrary.simpleMessage("美股财报通"),
+    "Find_Power": MessageLookupByLibrary.simpleMessage("求功率"),
+    "Find_Torque": MessageLookupByLibrary.simpleMessage("求扭矩"),
     "Fit": MessageLookupByLibrary.simpleMessage("配合"),
     "Fits_Footnote": MessageLookupByLibrary.simpleMessage(
       "基孔制配合，适用 1–500 mm。每格上为上偏差、下为下偏差，单位为相对公称尺寸的 µm；间隙为负表示过盈。尺寸段为大于下限、小于等于上限。c、s、u 轴的偏差按更细的尺寸段划分，故未列入。",
@@ -274,7 +288,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "杆的力-位移关系",
     ),
     "Forces": MessageLookupByLibrary.simpleMessage("力"),
+    "Format_Auto": MessageLookupByLibrary.simpleMessage("自动"),
+    "Format_Decimal": MessageLookupByLibrary.simpleMessage("小数"),
+    "Format_Engineering": MessageLookupByLibrary.simpleMessage("工程计数法"),
+    "Format_Scientific": MessageLookupByLibrary.simpleMessage("科学计数法"),
     "Formula": MessageLookupByLibrary.simpleMessage("公式"),
+    "Formulas": MessageLookupByLibrary.simpleMessage("计算式"),
     "From": MessageLookupByLibrary.simpleMessage("起点"),
     "Full_Span_UDL_W": MessageLookupByLibrary.simpleMessage("满跨均布载荷 w"),
     "G_Shear_Modulus": MessageLookupByLibrary.simpleMessage("G（剪切模量）"),
@@ -294,6 +313,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Hub_Hoop_Stress": MessageLookupByLibrary.simpleMessage("轮毂内孔周向应力 σt"),
     "Hub_Outer_Radius_Ro": MessageLookupByLibrary.simpleMessage("轮毂外半径 ro"),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("咕噜滤镜"),
+    "Imperial_US": MessageLookupByLibrary.simpleMessage("英制 (US)"),
     "Input_Speed_N1": MessageLookupByLibrary.simpleMessage("输入转速 n1"),
     "Inputs": MessageLookupByLibrary.simpleMessage("输入"),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("Instant Face"),
@@ -327,6 +347,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Lewis 齿形系数 Y（小齿轮）",
     ),
     "List_View": MessageLookupByLibrary.simpleMessage("列表视图"),
+    "Load_Case": MessageLookupByLibrary.simpleMessage("载荷工况"),
     "Load_Fx": MessageLookupByLibrary.simpleMessage("载荷 Fx"),
     "Load_Fy": MessageLookupByLibrary.simpleMessage("载荷 Fy"),
     "Load_Type": MessageLookupByLibrary.simpleMessage("载荷类型"),
@@ -352,6 +373,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Members": MessageLookupByLibrary.simpleMessage("杆件"),
     "Metric_Coarse": MessageLookupByLibrary.simpleMessage("公制粗牙"),
     "Metric_Fine": MessageLookupByLibrary.simpleMessage("公制细牙"),
+    "Metric_SI": MessageLookupByLibrary.simpleMessage("公制 (SI)"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("打拍节拍器"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("薄荷翻译"),
     "Module_M": MessageLookupByLibrary.simpleMessage("模数 m"),
@@ -426,6 +448,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "压装 / 热装过盈配合",
     ),
+    "Preview_Value": m2,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "主应力和平面",
     ),
@@ -454,6 +477,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "永久移除此应用中的广告。",
     ),
+    "Remove_Tool_from_Favorites": m3,
+    "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage("从收藏中移除"),
     "Removed_from_Favorites": MessageLookupByLibrary.simpleMessage("已从收藏中移除"),
     "Required_Diameter_D": MessageLookupByLibrary.simpleMessage("所需直径 d"),
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage("未找到以前的移除广告购买。"),
@@ -504,6 +529,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Simply_Supported_Beam_Note": MessageLookupByLibrary.simpleMessage(
       "简支梁 — A 端（左）为铰支座，B 端（右）为滚轴支座",
     ),
+    "Single_Shear": MessageLookupByLibrary.simpleMessage("单剪"),
     "Slope": MessageLookupByLibrary.simpleMessage("斜率"),
     "Small_Pulley_Diameter_D1": MessageLookupByLibrary.simpleMessage(
       "小带轮直径 d1",
@@ -523,6 +549,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stress_Concentration_Defaults": MessageLookupByLibrary.simpleMessage(
       "应力集中系数（默认值：轮廓键槽）与目标安全系数",
     ),
+    "Stress_Results": MessageLookupByLibrary.simpleMessage("应力结果"),
     "Stresses_in_a_thin_walled_cylindrical_pressure_vessel":
         MessageLookupByLibrary.simpleMessage("薄壁圆柱形压力容器中的应力"),
     "Stresses_in_the_wall_of_a_spherical_shell":
@@ -545,6 +572,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Target_Safety_Factor_N": MessageLookupByLibrary.simpleMessage("目标安全系数 n"),
     "The_Maximum_Shear_Stress": MessageLookupByLibrary.simpleMessage("最大切应力"),
     "Theory_of_Elasticity": MessageLookupByLibrary.simpleMessage("弹性力学"),
+    "Thermal": MessageLookupByLibrary.simpleMessage("热"),
+    "Thermal_Results": MessageLookupByLibrary.simpleMessage("热分析结果"),
     "Thermal_deformation_and_stress": MessageLookupByLibrary.simpleMessage(
       "热变形与热应力",
     ),
@@ -578,7 +607,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Wall_Thickness": MessageLookupByLibrary.simpleMessage("壁厚"),
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("喝水吧"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("腹板厚度"),
-    "What_If": m2,
+    "What_If": m4,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("簧丝直径 d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage("极简天气"),
     "Wrap_Angle_Large_Pulley": MessageLookupByLibrary.simpleMessage("大带轮包角"),

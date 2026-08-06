@@ -93,8 +93,12 @@ class ToolSettingPage extends StatelessWidget {
                                                   children: [
                                                     Text(
                                                       system == UnitSystem.si
-                                                          ? 'Metric (SI)'
-                                                          : 'Imperial (US)',
+                                                          ? S
+                                                              .of(context)
+                                                              .Metric_SI
+                                                          : S
+                                                              .of(context)
+                                                              .Imperial_US,
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .titleMedium
@@ -191,7 +195,8 @@ class ToolSettingPage extends StatelessWidget {
                                           ),
                                           const SizedBox(height: 4),
                                           Text(
-                                            'Preview: ${precs.formatValue(123456.789)}',
+                                            S.of(context).Preview_Value(
+                                                precs.formatValue(123456.789)),
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodySmall
@@ -291,7 +296,7 @@ class ToolSettingPage extends StatelessWidget {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      fmt.label,
+                                                      fmt.label(context),
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .titleMedium

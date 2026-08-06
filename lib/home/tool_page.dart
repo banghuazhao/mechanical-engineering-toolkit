@@ -50,6 +50,40 @@ class ToolSection {
   ToolSection(this.title, this.tools);
 }
 
+/// Latin diacritics folded to their bare letter, so a French or German user
+/// gets hits without reaching for the accented key: "elasticite" finds
+/// "Élasticité", "trager" finds "Träger".
+const Map<String, String> _searchFoldings = {
+  'á': 'a', 'à': 'a', 'â': 'a', 'ä': 'a', 'ã': 'a', 'å': 'a',
+  'ç': 'c',
+  'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e',
+  'í': 'i', 'ì': 'i', 'î': 'i', 'ï': 'i',
+  'ñ': 'n',
+  'ó': 'o', 'ò': 'o', 'ô': 'o', 'ö': 'o', 'õ': 'o',
+  'ú': 'u', 'ù': 'u', 'û': 'u', 'ü': 'u',
+  'ý': 'y', 'ÿ': 'y',
+  'æ': 'ae', 'œ': 'oe', 'ß': 'ss',
+};
+
+/// Normalizes [value] for search comparison: case-folded and stripped of the
+/// Latin diacritics the app's locales use. CJK text passes through unchanged,
+/// which is fine — matching there is substring-based and needs no folding.
+String foldForSearch(String value) {
+  var folded = value.toLowerCase();
+  _searchFoldings.forEach((accented, plain) {
+    if (folded.contains(accented)) folded = folded.replaceAll(accented, plain);
+  });
+  return folded;
+}
+
+/// Splits a raw query into the terms a tool must match. Whitespace-separated so
+/// "beam deflection" works in either order; a CJK query has no spaces and comes
+/// back as a single term, which substring matching handles.
+List<String> searchTerms(String query) => foldForSearch(query)
+    .split(RegExp(r'\s+'))
+    .where((term) => term.isNotEmpty)
+    .toList();
+
 class ToolPage extends StatefulWidget {
   const ToolPage({super.key});
 
@@ -62,6 +96,7 @@ class _ToolPageState extends State<ToolPage> {
   late ToolViewMode _viewMode;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+  List<String> _searchTerms = const [];
   AppOpenAdManager? _appOpenAdManager;
   AppLifecycleReactor? _appLifecycleReactor;
 
@@ -82,7 +117,10 @@ class _ToolPageState extends State<ToolPage> {
   }
 
   void _updateSearch(String value) {
-    setState(() => _searchQuery = value.trim().toLowerCase());
+    setState(() {
+      _searchQuery = value.trim();
+      _searchTerms = searchTerms(_searchQuery);
+    });
   }
 
   void _clearSearch() {
@@ -90,9 +128,20 @@ class _ToolPageState extends State<ToolPage> {
     _updateSearch('');
   }
 
-  bool _matchesSearch(Tool tool) {
-    if (tool.title.toLowerCase().contains(_searchQuery)) return true;
-    return tool.keywords.any((k) => k.toLowerCase().contains(_searchQuery));
+  /// A tool matches when every term in the query appears somewhere in its
+  /// localized title, its section's localized title, or its keywords.
+  ///
+  /// Searching the section title is what lets a non-English user pull up a
+  /// whole category ("Verbund", "複合材料") without knowing any single tool's
+  /// name. The keywords themselves stay English on purpose: they are synonyms
+  /// for engineers who reach for the English term ("torque", "von mises"),
+  /// which is common in the field, and they cost nothing to leave in place.
+  bool _matchesSearch(Tool tool, String sectionTitle) {
+    if (_searchTerms.isEmpty) return true;
+    final haystack = foldForSearch(
+      [tool.title, sectionTitle, ...tool.keywords].join(' '),
+    );
+    return _searchTerms.every(haystack.contains);
   }
 
   @override
@@ -351,13 +400,15 @@ class _ToolPageState extends State<ToolPage> {
   }
 
   Widget buildContents(BuildContext context) {
-    final visibleSections = _searchQuery.isEmpty
+    final visibleSections = _searchTerms.isEmpty
         ? sections
         : sections
             .map(
               (section) => ToolSection(
                 section.title,
-                section.tools.where((tool) => _matchesSearch(tool)).toList(),
+                section.tools
+                    .where((tool) => _matchesSearch(tool, section.title))
+                    .toList(),
               ),
             )
             .where((section) => section.tools.isNotEmpty)
@@ -542,8 +593,9 @@ class ToolRowWidget extends StatelessWidget {
               ),
             ),
             IconButton(
-              tooltip:
-                  isFavorite ? 'Remove from favorites' : 'Add to favorites',
+              tooltip: isFavorite
+                  ? S.of(context).Remove_from_Favorites
+                  : S.of(context).Add_to_Favorites,
               onPressed: () async {
                 await HapticFeedback.selectionClick();
                 !isFavorite
@@ -552,8 +604,8 @@ class ToolRowWidget extends StatelessWidget {
                 if (!context.mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(!isFavorite
-                      ? 'Added to favorites'
-                      : 'Removed from favorites'),
+                      ? S.of(context).Added_to_Favorites
+                      : S.of(context).Removed_from_Favorites),
                 ));
               },
               color: isFavorite
@@ -637,8 +689,8 @@ class ToolGridTile extends StatelessWidget {
                       ),
                       padding: EdgeInsets.zero,
                       tooltip: isFavorite
-                          ? 'Remove from favorites'
-                          : 'Add to favorites',
+                          ? S.of(context).Remove_from_Favorites
+                          : S.of(context).Add_to_Favorites,
                       onPressed: () async {
                         await HapticFeedback.selectionClick();
                         !isFavorite

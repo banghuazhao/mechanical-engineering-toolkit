@@ -25,7 +25,11 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(label) =>
       "Drag along the line to explore other values of ${label}.";
 
-  static String m2(label) => "What if: ${label}";
+  static String m2(value) => "Preview: ${value}";
+
+  static String m3(tool) => "Remove ${tool} from favorites";
+
+  static String m4(label) => "What if: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -38,6 +42,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_Joint": MessageLookupByLibrary.simpleMessage("Add Joint"),
     "Add_Member": MessageLookupByLibrary.simpleMessage("Add Member"),
     "Add_Shape": MessageLookupByLibrary.simpleMessage("Add Shape"),
+    "Add_to_Favorites": MessageLookupByLibrary.simpleMessage(
+      "Add to favorites",
+    ),
+    "Added_to_Favorites": MessageLookupByLibrary.simpleMessage(
+      "Added to favorites",
+    ),
     "Ads_Removed": MessageLookupByLibrary.simpleMessage("Ads removed"),
     "Ads_Removed_Description": MessageLookupByLibrary.simpleMessage(
       "Thank you for supporting ME Toolkit.",
@@ -55,6 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Alternating_Torque_Ta": MessageLookupByLibrary.simpleMessage(
       "Alternating torque, Ta",
     ),
+    "Analysis_Type": MessageLookupByLibrary.simpleMessage("Analysis Type"),
     "Angle_of_Rotation": MessageLookupByLibrary.simpleMessage(
       "Angle of Rotation",
     ),
@@ -106,6 +117,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Buckling load of column",
     ),
     "Calculate": MessageLookupByLibrary.simpleMessage("Calculate"),
+    "Calculation": MessageLookupByLibrary.simpleMessage("Calculation"),
+    "Calculation_Copied": MessageLookupByLibrary.simpleMessage(
+      "Calculation copied",
+    ),
     "Cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "Center_Distance": MessageLookupByLibrary.simpleMessage("Center distance"),
     "Center_Distance_C": MessageLookupByLibrary.simpleMessage(
@@ -213,6 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Displacement": MessageLookupByLibrary.simpleMessage("Displacement"),
     "Display_Format": MessageLookupByLibrary.simpleMessage("DISPLAY FORMAT"),
+    "Double_Shear": MessageLookupByLibrary.simpleMessage("Double shear"),
     "Drag_Along_Line": m1,
     "Drill_Tap_Chart": MessageLookupByLibrary.simpleMessage(
       "Drill & Tap Chart",
@@ -230,6 +246,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Effective_Length_L": MessageLookupByLibrary.simpleMessage(
       "Effective length, L",
     ),
+    "Elastic": MessageLookupByLibrary.simpleMessage("Elastic"),
     "Elastic_Coefficient_Cp": MessageLookupByLibrary.simpleMessage(
       "Elastic coeff., Cp (√MPa)",
     ),
@@ -239,6 +256,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Elastic_Modulus_E": MessageLookupByLibrary.simpleMessage(
       "Elastic modulus, E",
     ),
+    "End_Condition": MessageLookupByLibrary.simpleMessage("End condition"),
     "Endurance_Limit_Se": MessageLookupByLibrary.simpleMessage(
       "Endurance limit, Se",
     ),
@@ -371,6 +389,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Fillet Weld Strength",
     ),
     "FinanceGo": MessageLookupByLibrary.simpleMessage("Finance Go"),
+    "Find_Power": MessageLookupByLibrary.simpleMessage("Find Power"),
+    "Find_Torque": MessageLookupByLibrary.simpleMessage("Find Torque"),
     "Fit": MessageLookupByLibrary.simpleMessage("Fit"),
     "Fits_Footnote": MessageLookupByLibrary.simpleMessage(
       "Hole-basis fits for 1–500 mm. Each cell is the upper limit over the lower, in µm from the nominal size; a negative clearance is interference. Bands run over the lower bound up to the upper. The c, s and u shaft fits are not listed because their deviations split into finer size bands.",
@@ -389,7 +409,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Force-displacement relation of bar",
     ),
     "Forces": MessageLookupByLibrary.simpleMessage("Forces"),
+    "Format_Auto": MessageLookupByLibrary.simpleMessage("Auto"),
+    "Format_Decimal": MessageLookupByLibrary.simpleMessage("Decimal"),
+    "Format_Engineering": MessageLookupByLibrary.simpleMessage("Engineering"),
+    "Format_Scientific": MessageLookupByLibrary.simpleMessage("Scientific"),
     "Formula": MessageLookupByLibrary.simpleMessage("Formula"),
+    "Formulas": MessageLookupByLibrary.simpleMessage("Formulas"),
     "From": MessageLookupByLibrary.simpleMessage("From"),
     "Full_Span_UDL_W": MessageLookupByLibrary.simpleMessage("Full-span UDL, w"),
     "G_Shear_Modulus": MessageLookupByLibrary.simpleMessage(
@@ -417,6 +442,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Hub outer radius, ro",
     ),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
+    "Imperial_US": MessageLookupByLibrary.simpleMessage("Imperial (US)"),
     "Input_Speed_N1": MessageLookupByLibrary.simpleMessage("Input speed, n1"),
     "Inputs": MessageLookupByLibrary.simpleMessage("Inputs"),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("Instant Face"),
@@ -466,6 +492,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Lewis form factor, Y (pinion)",
     ),
     "List_View": MessageLookupByLibrary.simpleMessage("List view"),
+    "Load_Case": MessageLookupByLibrary.simpleMessage("Load case"),
     "Load_Fx": MessageLookupByLibrary.simpleMessage("Load Fx"),
     "Load_Fy": MessageLookupByLibrary.simpleMessage("Load Fy"),
     "Load_Type": MessageLookupByLibrary.simpleMessage("Load Type"),
@@ -503,6 +530,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Members": MessageLookupByLibrary.simpleMessage("Members"),
     "Metric_Coarse": MessageLookupByLibrary.simpleMessage("Metric coarse"),
     "Metric_Fine": MessageLookupByLibrary.simpleMessage("Metric fine"),
+    "Metric_SI": MessageLookupByLibrary.simpleMessage("Metric (SI)"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("Metronome Go"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
     "Module_M": MessageLookupByLibrary.simpleMessage("Module, m"),
@@ -595,6 +623,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Press / Shrink-Fit Interference",
     ),
+    "Preview_Value": m2,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Principal stresses and plane",
     ),
@@ -634,6 +663,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("Remove Ads"),
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "Remove ads permanently from this app.",
+    ),
+    "Remove_Tool_from_Favorites": m3,
+    "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
+      "Remove from favorites",
     ),
     "Removed_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Removed from favorites",
@@ -735,6 +768,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Simply_Supported_Beam_Note": MessageLookupByLibrary.simpleMessage(
       "Simply supported beam — pin at A (left), roller at B (right)",
     ),
+    "Single_Shear": MessageLookupByLibrary.simpleMessage("Single shear"),
     "Slope": MessageLookupByLibrary.simpleMessage("Slope"),
     "Small_Pulley_Diameter_D1": MessageLookupByLibrary.simpleMessage(
       "Small pulley diameter, d1",
@@ -760,6 +794,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stress_Concentration_Defaults": MessageLookupByLibrary.simpleMessage(
       "Stress-concentration factors (defaults: profiled keyway) and target safety factor",
     ),
+    "Stress_Results": MessageLookupByLibrary.simpleMessage("Stress Results"),
     "Stresses_in_a_thin_walled_cylindrical_pressure_vessel":
         MessageLookupByLibrary.simpleMessage(
           "Stresses in a thin-walled cylindrical pressure vessel",
@@ -802,6 +837,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Theory_of_Elasticity": MessageLookupByLibrary.simpleMessage(
       "Theory of Elasticity",
     ),
+    "Thermal": MessageLookupByLibrary.simpleMessage("Thermal"),
+    "Thermal_Results": MessageLookupByLibrary.simpleMessage("Thermal Results"),
     "Thermal_deformation_and_stress": MessageLookupByLibrary.simpleMessage(
       "Thermal deformation and stress",
     ),
@@ -845,7 +882,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Wall_Thickness": MessageLookupByLibrary.simpleMessage("Wall thickness"),
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Web thickness"),
-    "What_If": m2,
+    "What_If": m4,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("Wire diameter, d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

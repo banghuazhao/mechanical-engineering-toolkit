@@ -24,7 +24,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(label) => "線に沿ってドラッグすると${label}の他の値を確認できます。";
 
-  static String m2(label) => "もし〜なら: ${label}";
+  static String m2(value) => "プレビュー：${value}";
+
+  static String m3(tool) => "${tool}をお気に入りから削除";
+
+  static String m4(label) => "もし〜なら: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -35,6 +39,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_Joint": MessageLookupByLibrary.simpleMessage("節点を追加"),
     "Add_Member": MessageLookupByLibrary.simpleMessage("部材を追加"),
     "Add_Shape": MessageLookupByLibrary.simpleMessage("形状を追加"),
+    "Add_to_Favorites": MessageLookupByLibrary.simpleMessage("お気に入りに追加"),
+    "Added_to_Favorites": MessageLookupByLibrary.simpleMessage("お気に入りに追加しました"),
     "Ads_Removed": MessageLookupByLibrary.simpleMessage("広告を削除しました"),
     "Ads_Removed_Description": MessageLookupByLibrary.simpleMessage(
       "ME Toolkitをご支援いただきありがとうございます。",
@@ -48,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "変動曲げモーメント、Ma",
     ),
     "Alternating_Torque_Ta": MessageLookupByLibrary.simpleMessage("変動トルク、Ta"),
+    "Analysis_Type": MessageLookupByLibrary.simpleMessage("解析タイプ"),
     "Angle_of_Rotation": MessageLookupByLibrary.simpleMessage("回転角"),
     "Angle_of_twist": MessageLookupByLibrary.simpleMessage("ねじれ角"),
     "Anisotropic_material": MessageLookupByLibrary.simpleMessage("異方性材料"),
@@ -75,6 +82,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Buckling_Load": MessageLookupByLibrary.simpleMessage("座屈荷重"),
     "Buckling_load_of_column": MessageLookupByLibrary.simpleMessage("柱の座屈荷重"),
     "Calculate": MessageLookupByLibrary.simpleMessage("計算"),
+    "Calculation": MessageLookupByLibrary.simpleMessage("計算"),
+    "Calculation_Copied": MessageLookupByLibrary.simpleMessage("計算をコピーしました"),
     "Cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
     "Center_Distance": MessageLookupByLibrary.simpleMessage("軸間距離"),
     "Center_Distance_C": MessageLookupByLibrary.simpleMessage("軸間距離、C"),
@@ -164,6 +173,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Diametral_Interference": MessageLookupByLibrary.simpleMessage("直径しめしろ、δ"),
     "Displacement": MessageLookupByLibrary.simpleMessage("変位"),
     "Display_Format": MessageLookupByLibrary.simpleMessage("表示形式"),
+    "Double_Shear": MessageLookupByLibrary.simpleMessage("二面せん断"),
     "Drag_Along_Line": m1,
     "Drill_Tap_Chart": MessageLookupByLibrary.simpleMessage("ドリル・タップ表"),
     "Drill_Tap_Footnote": MessageLookupByLibrary.simpleMessage(
@@ -173,11 +183,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "Dynamic_Load_Rating_C": MessageLookupByLibrary.simpleMessage("動基本定格荷重、C"),
     "E_Modulus": MessageLookupByLibrary.simpleMessage("E（弾性係数）"),
     "Effective_Length_L": MessageLookupByLibrary.simpleMessage("有効長さ、L"),
+    "Elastic": MessageLookupByLibrary.simpleMessage("弾性"),
     "Elastic_Coefficient_Cp": MessageLookupByLibrary.simpleMessage(
       "弾性係数、Cp（√MPa）",
     ),
     "Elastic_Deflection": MessageLookupByLibrary.simpleMessage("弾性たわみ"),
     "Elastic_Modulus_E": MessageLookupByLibrary.simpleMessage("弾性係数、E"),
+    "End_Condition": MessageLookupByLibrary.simpleMessage("端部条件"),
     "Endurance_Limit_Se": MessageLookupByLibrary.simpleMessage("疲労限度、Se"),
     "Engineering_Constants": MessageLookupByLibrary.simpleMessage("工学定数"),
     "Enter_Fx_Fy_Components": MessageLookupByLibrary.simpleMessage(
@@ -296,6 +308,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Feedback": MessageLookupByLibrary.simpleMessage("フィードバック"),
     "Fillet_Weld_Strength": MessageLookupByLibrary.simpleMessage("隅肉溶接の強度"),
     "FinanceGo": MessageLookupByLibrary.simpleMessage("Finance Go"),
+    "Find_Power": MessageLookupByLibrary.simpleMessage("動力を求める"),
+    "Find_Torque": MessageLookupByLibrary.simpleMessage("トルクを求める"),
     "Fit": MessageLookupByLibrary.simpleMessage("はめあい"),
     "Fits_Footnote": MessageLookupByLibrary.simpleMessage(
       "1〜500mmの穴基準はめあいです。各セルは基準寸法からのマイクロメートル単位で、上の許容差を下の許容差の上に表示しています。負のすきまはしめしろを意味します。帯は下限から上限まで続きます。軸のはめあいc、s、uは許容差がより細かいサイズ帯に分かれるため掲載していません。",
@@ -308,7 +322,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "棒の力-変位関係",
     ),
     "Forces": MessageLookupByLibrary.simpleMessage("力"),
+    "Format_Auto": MessageLookupByLibrary.simpleMessage("自動"),
+    "Format_Decimal": MessageLookupByLibrary.simpleMessage("小数"),
+    "Format_Engineering": MessageLookupByLibrary.simpleMessage("工学表記"),
+    "Format_Scientific": MessageLookupByLibrary.simpleMessage("指数表記"),
     "Formula": MessageLookupByLibrary.simpleMessage("計算式"),
+    "Formulas": MessageLookupByLibrary.simpleMessage("計算式"),
     "From": MessageLookupByLibrary.simpleMessage("起点"),
     "Full_Span_UDL_W": MessageLookupByLibrary.simpleMessage("全スパン等分布荷重、w"),
     "G_Shear_Modulus": MessageLookupByLibrary.simpleMessage("G（横弾性係数）"),
@@ -330,6 +349,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Hub_Hoop_Stress": MessageLookupByLibrary.simpleMessage("ハブ穴の周方向応力、σt"),
     "Hub_Outer_Radius_Ro": MessageLookupByLibrary.simpleMessage("ハブ外半径、ro"),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
+    "Imperial_US": MessageLookupByLibrary.simpleMessage("ヤード・ポンド法 (US)"),
     "Input_Speed_N1": MessageLookupByLibrary.simpleMessage("入力回転速度、n1"),
     "Inputs": MessageLookupByLibrary.simpleMessage("入力"),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("Instant Face"),
@@ -365,6 +385,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "ルイス歯形係数、Y（ピニオン）",
     ),
     "List_View": MessageLookupByLibrary.simpleMessage("リスト表示"),
+    "Load_Case": MessageLookupByLibrary.simpleMessage("荷重ケース"),
     "Load_Fx": MessageLookupByLibrary.simpleMessage("荷重 Fx"),
     "Load_Fy": MessageLookupByLibrary.simpleMessage("荷重 Fy"),
     "Load_Type": MessageLookupByLibrary.simpleMessage("荷重タイプ"),
@@ -392,6 +413,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Members": MessageLookupByLibrary.simpleMessage("部材"),
     "Metric_Coarse": MessageLookupByLibrary.simpleMessage("メートル並目"),
     "Metric_Fine": MessageLookupByLibrary.simpleMessage("メートル細目"),
+    "Metric_SI": MessageLookupByLibrary.simpleMessage("メートル法 (SI)"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("Metronome Go"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
     "Module_M": MessageLookupByLibrary.simpleMessage("モジュール、m"),
@@ -466,6 +488,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "圧入・焼きばめのしめしろ",
     ),
+    "Preview_Value": m2,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "主応力と主応力面",
     ),
@@ -500,6 +523,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "このアプリから広告を完全に削除します。",
     ),
+    "Remove_Tool_from_Favorites": m3,
+    "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage("お気に入りから削除"),
     "Removed_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "お気に入りから削除しました",
     ),
@@ -560,6 +585,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Simply_Supported_Beam_Note": MessageLookupByLibrary.simpleMessage(
       "単純支持梁 — A点（左）はピン支点、B点（右）はローラー支点",
     ),
+    "Single_Shear": MessageLookupByLibrary.simpleMessage("一面せん断"),
     "Slope": MessageLookupByLibrary.simpleMessage("たわみ角"),
     "Small_Pulley_Diameter_D1": MessageLookupByLibrary.simpleMessage(
       "小プーリー径、d1",
@@ -579,6 +605,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stress_Concentration_Defaults": MessageLookupByLibrary.simpleMessage(
       "応力集中係数（既定値：成形キー溝）と目標安全率",
     ),
+    "Stress_Results": MessageLookupByLibrary.simpleMessage("応力の結果"),
     "Stresses_in_a_thin_walled_cylindrical_pressure_vessel":
         MessageLookupByLibrary.simpleMessage("薄肉円筒圧力容器の応力"),
     "Stresses_in_the_wall_of_a_spherical_shell":
@@ -603,6 +630,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Target_Safety_Factor_N": MessageLookupByLibrary.simpleMessage("目標安全率、n"),
     "The_Maximum_Shear_Stress": MessageLookupByLibrary.simpleMessage("最大せん断応力"),
     "Theory_of_Elasticity": MessageLookupByLibrary.simpleMessage("弾性理論"),
+    "Thermal": MessageLookupByLibrary.simpleMessage("熱"),
+    "Thermal_Results": MessageLookupByLibrary.simpleMessage("熱解析の結果"),
     "Thermal_deformation_and_stress": MessageLookupByLibrary.simpleMessage(
       "熱変形と熱応力",
     ),
@@ -636,7 +665,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Wall_Thickness": MessageLookupByLibrary.simpleMessage("肉厚"),
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("ウェブ厚"),
-    "What_If": m2,
+    "What_If": m4,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("線径、d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

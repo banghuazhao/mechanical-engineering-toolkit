@@ -25,7 +25,11 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(label) =>
       "Entlang der Linie ziehen, um andere Werte von ${label} zu erkunden.";
 
-  static String m2(label) => "Was wäre wenn: ${label}";
+  static String m2(value) => "Vorschau: ${value}";
+
+  static String m3(tool) => "${tool} aus Favoriten entfernen";
+
+  static String m4(label) => "Was wäre wenn: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -40,6 +44,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_Joint": MessageLookupByLibrary.simpleMessage("Knoten hinzufügen"),
     "Add_Member": MessageLookupByLibrary.simpleMessage("Stab hinzufügen"),
     "Add_Shape": MessageLookupByLibrary.simpleMessage("Form hinzufügen"),
+    "Add_to_Favorites": MessageLookupByLibrary.simpleMessage(
+      "Zu Favoriten hinzufügen",
+    ),
+    "Added_to_Favorites": MessageLookupByLibrary.simpleMessage(
+      "Zu Favoriten hinzugefügt",
+    ),
     "Ads_Removed": MessageLookupByLibrary.simpleMessage("Werbung entfernt"),
     "Ads_Removed_Description": MessageLookupByLibrary.simpleMessage(
       "Danke, dass du ME Toolkit unterstützt.",
@@ -57,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Alternating_Torque_Ta": MessageLookupByLibrary.simpleMessage(
       "Wechseldrehmoment, Ta",
     ),
+    "Analysis_Type": MessageLookupByLibrary.simpleMessage("Analyseart"),
     "Angle_of_Rotation": MessageLookupByLibrary.simpleMessage("Drehwinkel"),
     "Angle_of_twist": MessageLookupByLibrary.simpleMessage("Verdrehwinkel"),
     "Anisotropic_material": MessageLookupByLibrary.simpleMessage(
@@ -106,6 +117,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Knicklast einer Stütze",
     ),
     "Calculate": MessageLookupByLibrary.simpleMessage("Berechnen"),
+    "Calculation": MessageLookupByLibrary.simpleMessage("Berechnung"),
+    "Calculation_Copied": MessageLookupByLibrary.simpleMessage(
+      "Berechnung kopiert",
+    ),
     "Cancel": MessageLookupByLibrary.simpleMessage("Abbrechen"),
     "Center_Distance": MessageLookupByLibrary.simpleMessage("Achsabstand"),
     "Center_Distance_C": MessageLookupByLibrary.simpleMessage("Achsabstand, C"),
@@ -215,6 +230,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Displacement": MessageLookupByLibrary.simpleMessage("Verschiebung"),
     "Display_Format": MessageLookupByLibrary.simpleMessage("ANZEIGEFORMAT"),
+    "Double_Shear": MessageLookupByLibrary.simpleMessage("Zweischnittig"),
     "Drag_Along_Line": m1,
     "Drill_Tap_Chart": MessageLookupByLibrary.simpleMessage(
       "Bohrer- & Gewindetabelle",
@@ -232,6 +248,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Effective_Length_L": MessageLookupByLibrary.simpleMessage(
       "Wirksame Länge, L",
     ),
+    "Elastic": MessageLookupByLibrary.simpleMessage("Elastisch"),
     "Elastic_Coefficient_Cp": MessageLookupByLibrary.simpleMessage(
       "Elastizitätskoeffizient, Cp (√MPa)",
     ),
@@ -241,6 +258,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Elastic_Modulus_E": MessageLookupByLibrary.simpleMessage(
       "Elastizitätsmodul, E",
     ),
+    "End_Condition": MessageLookupByLibrary.simpleMessage("Randbedingung"),
     "Endurance_Limit_Se": MessageLookupByLibrary.simpleMessage(
       "Dauerfestigkeit, Se",
     ),
@@ -375,6 +393,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Festigkeit einer Kehlnaht",
     ),
     "FinanceGo": MessageLookupByLibrary.simpleMessage("Finance Go"),
+    "Find_Power": MessageLookupByLibrary.simpleMessage("Leistung berechnen"),
+    "Find_Torque": MessageLookupByLibrary.simpleMessage("Drehmoment berechnen"),
     "Fit": MessageLookupByLibrary.simpleMessage("Passung"),
     "Fits_Footnote": MessageLookupByLibrary.simpleMessage(
       "Einheitsbohrung-Passungen für 1–500 mm. Jede Zelle zeigt das obere über dem unteren Grenzmaß, in µm ab dem Nennmaß; ein negatives Spiel ist eine Überdeckung. Bänder verlaufen vom unteren bis zum oberen Grenzwert. Die Wellenpassungen c, s und u sind nicht aufgeführt, da ihre Abmaße sich in feinere Größenbänder aufteilen.",
@@ -391,7 +411,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Kraft-Verschiebungs-Beziehung eines Stabs",
     ),
     "Forces": MessageLookupByLibrary.simpleMessage("Kräfte"),
+    "Format_Auto": MessageLookupByLibrary.simpleMessage("Automatisch"),
+    "Format_Decimal": MessageLookupByLibrary.simpleMessage("Dezimal"),
+    "Format_Engineering": MessageLookupByLibrary.simpleMessage("Technisch"),
+    "Format_Scientific": MessageLookupByLibrary.simpleMessage(
+      "Wissenschaftlich",
+    ),
     "Formula": MessageLookupByLibrary.simpleMessage("Formel"),
+    "Formulas": MessageLookupByLibrary.simpleMessage("Formeln"),
     "From": MessageLookupByLibrary.simpleMessage("Von"),
     "Full_Span_UDL_W": MessageLookupByLibrary.simpleMessage(
       "Gleichmäßige Streckenlast über die volle Spannweite, w",
@@ -421,6 +448,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Außenradius der Nabe, ro",
     ),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
+    "Imperial_US": MessageLookupByLibrary.simpleMessage(
+      "Angloamerikanisch (US)",
+    ),
     "Input_Speed_N1": MessageLookupByLibrary.simpleMessage(
       "Antriebsdrehzahl, n1",
     ),
@@ -472,6 +502,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Lewis-Formfaktor, Y (Ritzel)",
     ),
     "List_View": MessageLookupByLibrary.simpleMessage("Listenansicht"),
+    "Load_Case": MessageLookupByLibrary.simpleMessage("Lastfall"),
     "Load_Fx": MessageLookupByLibrary.simpleMessage("Last Fx"),
     "Load_Fy": MessageLookupByLibrary.simpleMessage("Last Fy"),
     "Load_Type": MessageLookupByLibrary.simpleMessage("Lasttyp"),
@@ -515,6 +546,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Members": MessageLookupByLibrary.simpleMessage("Stäbe"),
     "Metric_Coarse": MessageLookupByLibrary.simpleMessage("Metrisch grob"),
     "Metric_Fine": MessageLookupByLibrary.simpleMessage("Metrisch fein"),
+    "Metric_SI": MessageLookupByLibrary.simpleMessage("Metrisch (SI)"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("Metronome Go"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
     "Module_M": MessageLookupByLibrary.simpleMessage("Modul, m"),
@@ -613,6 +645,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Übermaß bei Press-/Schrumpfsitz",
     ),
+    "Preview_Value": m2,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Hauptspannungen und Hauptebene",
     ),
@@ -656,6 +689,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("Werbung entfernen"),
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "Entfernt dauerhaft alle Werbung aus dieser App.",
+    ),
+    "Remove_Tool_from_Favorites": m3,
+    "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
+      "Aus Favoriten entfernen",
     ),
     "Removed_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Aus Favoriten entfernt",
@@ -763,6 +800,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Simply_Supported_Beam_Note": MessageLookupByLibrary.simpleMessage(
       "Einfach gelagerter Balken — Festlager bei A (links), Loslager bei B (rechts)",
     ),
+    "Single_Shear": MessageLookupByLibrary.simpleMessage("Einschnittig"),
     "Slope": MessageLookupByLibrary.simpleMessage("Neigung"),
     "Small_Pulley_Diameter_D1": MessageLookupByLibrary.simpleMessage(
       "Kleiner Riemenscheibendurchmesser, d1",
@@ -789,6 +827,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stress": MessageLookupByLibrary.simpleMessage("Spannung"),
     "Stress_Concentration_Defaults": MessageLookupByLibrary.simpleMessage(
       "Kerbwirkungszahlen (Standard: profilierte Passfedernut) und geforderter Sicherheitsfaktor",
+    ),
+    "Stress_Results": MessageLookupByLibrary.simpleMessage(
+      "Spannungsergebnisse",
     ),
     "Stresses_in_a_thin_walled_cylindrical_pressure_vessel":
         MessageLookupByLibrary.simpleMessage(
@@ -831,6 +872,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Theory_of_Elasticity": MessageLookupByLibrary.simpleMessage(
       "Elastizitätstheorie",
+    ),
+    "Thermal": MessageLookupByLibrary.simpleMessage("Thermisch"),
+    "Thermal_Results": MessageLookupByLibrary.simpleMessage(
+      "Thermische Ergebnisse",
     ),
     "Thermal_deformation_and_stress": MessageLookupByLibrary.simpleMessage(
       "Thermische Verformung und Spannung",
@@ -875,7 +920,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Wall_Thickness": MessageLookupByLibrary.simpleMessage("Wandstärke"),
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Stegdicke"),
-    "What_If": m2,
+    "What_If": m4,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Drahtdurchmesser, d",
     ),

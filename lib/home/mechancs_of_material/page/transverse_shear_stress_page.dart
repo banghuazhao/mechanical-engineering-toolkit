@@ -210,7 +210,7 @@ class _TransverseShearStressResultPage extends StatelessWidget {
           ]),
         ),
         AppSectionCard(
-          title: 'Formula',
+          title: S.of(context).Formula,
           child: Text(
             'τ = V·Q / (I·t)\n'
             '= ${_fv(v, UnitCategory.force, system)} × ${_fv(q, UnitCategory.sectionModulus, system)} / (${_fv(i, UnitCategory.momentOfInertia, system)} × ${_fv(t, UnitCategory.length, system)})\n'

@@ -7,6 +7,7 @@ import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/result_list_matrix.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 class RulesOfMixtureResultPage extends StatelessWidget {
   final int toolId;
@@ -47,7 +48,7 @@ class RulesOfMixtureResultPage extends StatelessWidget {
             title: 'Effective Compliance Matrix', matrix: m.compliance));
       if (m.engineeringConstants.isNotEmpty)
         items.add(EngineeringConstantsWidget(
-            title: 'Engineering Constants',
+            title: S.of(context).Engineering_Constants,
             constants: m.engineeringConstants,
             categoryForKey: _categoryForKey));
     }

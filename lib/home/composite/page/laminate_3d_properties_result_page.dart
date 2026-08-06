@@ -7,6 +7,7 @@ import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/result_list_matrix.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 class Laminate3DPropertiesResultPage extends StatelessWidget {
   final int toolId;
@@ -36,7 +37,7 @@ class Laminate3DPropertiesResultPage extends StatelessWidget {
       ResultListMatrix(
           title: 'Effective 3D Compliance Matrix', matrix: output.compliance),
       EngineeringConstantsWidget(
-          title: 'Engineering Constants',
+          title: S.of(context).Engineering_Constants,
           constants: ec,
           categoryForKey: _categoryForKey),
     ];

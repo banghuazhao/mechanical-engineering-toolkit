@@ -3473,6 +3473,206 @@ class S {
       args: [],
     );
   }
+
+  /// `Add to favorites`
+  String get Add_to_Favorites {
+    return Intl.message(
+      'Add to favorites',
+      name: 'Add_to_Favorites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove from favorites`
+  String get Remove_from_Favorites {
+    return Intl.message(
+      'Remove from favorites',
+      name: 'Remove_from_Favorites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Added to favorites`
+  String get Added_to_Favorites {
+    return Intl.message(
+      'Added to favorites',
+      name: 'Added_to_Favorites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove {tool} from favorites`
+  String Remove_Tool_from_Favorites(Object tool) {
+    return Intl.message(
+      'Remove $tool from favorites',
+      name: 'Remove_Tool_from_Favorites',
+      desc: '',
+      args: [tool],
+    );
+  }
+
+  /// `Metric (SI)`
+  String get Metric_SI {
+    return Intl.message('Metric (SI)', name: 'Metric_SI', desc: '', args: []);
+  }
+
+  /// `Imperial (US)`
+  String get Imperial_US {
+    return Intl.message(
+      'Imperial (US)',
+      name: 'Imperial_US',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preview: {value}`
+  String Preview_Value(Object value) {
+    return Intl.message(
+      'Preview: $value',
+      name: 'Preview_Value',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `Auto`
+  String get Format_Auto {
+    return Intl.message('Auto', name: 'Format_Auto', desc: '', args: []);
+  }
+
+  /// `Scientific`
+  String get Format_Scientific {
+    return Intl.message(
+      'Scientific',
+      name: 'Format_Scientific',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Decimal`
+  String get Format_Decimal {
+    return Intl.message('Decimal', name: 'Format_Decimal', desc: '', args: []);
+  }
+
+  /// `Engineering`
+  String get Format_Engineering {
+    return Intl.message(
+      'Engineering',
+      name: 'Format_Engineering',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calculation`
+  String get Calculation {
+    return Intl.message('Calculation', name: 'Calculation', desc: '', args: []);
+  }
+
+  /// `Calculation copied`
+  String get Calculation_Copied {
+    return Intl.message(
+      'Calculation copied',
+      name: 'Calculation_Copied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Formulas`
+  String get Formulas {
+    return Intl.message('Formulas', name: 'Formulas', desc: '', args: []);
+  }
+
+  /// `Single shear`
+  String get Single_Shear {
+    return Intl.message(
+      'Single shear',
+      name: 'Single_Shear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Double shear`
+  String get Double_Shear {
+    return Intl.message(
+      'Double shear',
+      name: 'Double_Shear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find Torque`
+  String get Find_Torque {
+    return Intl.message('Find Torque', name: 'Find_Torque', desc: '', args: []);
+  }
+
+  /// `Find Power`
+  String get Find_Power {
+    return Intl.message('Find Power', name: 'Find_Power', desc: '', args: []);
+  }
+
+  /// `Analysis Type`
+  String get Analysis_Type {
+    return Intl.message(
+      'Analysis Type',
+      name: 'Analysis_Type',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Elastic`
+  String get Elastic {
+    return Intl.message('Elastic', name: 'Elastic', desc: '', args: []);
+  }
+
+  /// `Thermal`
+  String get Thermal {
+    return Intl.message('Thermal', name: 'Thermal', desc: '', args: []);
+  }
+
+  /// `Load case`
+  String get Load_Case {
+    return Intl.message('Load case', name: 'Load_Case', desc: '', args: []);
+  }
+
+  /// `End condition`
+  String get End_Condition {
+    return Intl.message(
+      'End condition',
+      name: 'End_Condition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stress Results`
+  String get Stress_Results {
+    return Intl.message(
+      'Stress Results',
+      name: 'Stress_Results',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thermal Results`
+  String get Thermal_Results {
+    return Intl.message(
+      'Thermal Results',
+      name: 'Thermal_Results',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

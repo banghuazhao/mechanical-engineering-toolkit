@@ -76,15 +76,15 @@ class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SegmentedButton<_SolveFor>(
-                    segments: const [
+                    segments: [
                       ButtonSegment(
                           value: _SolveFor.torque,
-                          label: Text('Find Torque'),
-                          icon: Icon(Icons.rotate_right)),
+                          label: Text(S.of(context).Find_Torque),
+                          icon: const Icon(Icons.rotate_right)),
                       ButtonSegment(
                           value: _SolveFor.power,
-                          label: Text('Find Power'),
-                          icon: Icon(Icons.bolt)),
+                          label: Text(S.of(context).Find_Power),
+                          icon: const Icon(Icons.bolt)),
                     ],
                     selected: {_mode},
                     onSelectionChanged: (s) => setState(() => _mode = s.first),
@@ -240,7 +240,7 @@ class _ShaftPowerTorqueResultPage extends StatelessWidget {
           ]),
         ),
         AppSectionCard(
-          title: 'Formula',
+          title: S.of(context).Formula,
           child: Text(steps.join('\n'),
               style: Theme.of(context).textTheme.bodyMedium),
         ),

@@ -234,7 +234,7 @@ class _FailureCriteriaResultPage extends StatelessWidget {
       shareLines: () => _shareLines(system, precs, hasSy, fsVm, fsTresca),
       children: [
         AppSectionCard(
-          title: 'Stress Results',
+          title: S.of(context).Stress_Results,
           child: Column(children: [
             AppCopyableValue(
                 label: 'σ₁', valueSI: s1, category: UnitCategory.stress),
@@ -254,7 +254,7 @@ class _FailureCriteriaResultPage extends StatelessWidget {
         ),
         if (hasSy) ...[
           AppSectionCard(
-            title: 'Factor of Safety',
+            title: S.of(context).Factor_of_Safety,
             child: Column(children: [
               AppCopyableValue(
                   label: 'FS (von Mises)', value: precs.formatValue(fsVm)),
@@ -264,7 +264,7 @@ class _FailureCriteriaResultPage extends StatelessWidget {
           ),
         ],
         AppSectionCard(
-          title: 'Calculation',
+          title: S.of(context).Calculation,
           child: Text(
             'R = √(((σx−σy)/2)² + τ²) = ${precs.formatSI(r, UnitCategory.stress, system)}\n'
             'σ1 = (σx+σy)/2 + R = ${precs.formatSI(avg, UnitCategory.stress, system)} + ${precs.formatSI(r, UnitCategory.stress, system)} = ${precs.formatSI(s1, UnitCategory.stress, system)}\n'

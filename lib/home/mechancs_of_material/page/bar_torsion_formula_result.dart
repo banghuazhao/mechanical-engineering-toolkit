@@ -6,6 +6,7 @@ import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 class BarTorsionFormulaResultPage extends StatelessWidget {
   BarTorsionFormulaResultPage({
@@ -49,7 +50,7 @@ class BarTorsionFormulaResultPage extends StatelessWidget {
           ]),
         ),
         AppSectionCard(
-          title: 'Formula',
+          title: S.of(context).Formula,
           child: Text(
             'τ = T·r / Ip\n'
             '= ${_fv(t, UnitCategory.momentSection, system)} × ${_fv(r, UnitCategory.length, system)} / ${_fv(ip, UnitCategory.momentOfInertia, system)}\n'

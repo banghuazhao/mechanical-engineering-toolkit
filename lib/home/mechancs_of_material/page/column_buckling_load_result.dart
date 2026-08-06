@@ -9,6 +9,7 @@ import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 class ColumnBucklingLoadResultPage extends StatelessWidget {
   ColumnBucklingLoadResultPage({
@@ -59,7 +60,7 @@ class ColumnBucklingLoadResultPage extends StatelessWidget {
           ]),
         ),
         AppSectionCard(
-          title: 'Formula',
+          title: S.of(context).Formula,
           child: Text(
             'Pcr = C·π²·E·I / L²  ($endCondition)\n'
             '= $cStr × ${_fv(e, UnitCategory.modulus, system)} × ${_fv(i, UnitCategory.momentOfInertia, system)} / ${_fv(l, UnitCategory.length, system)}²\n'

@@ -7,6 +7,7 @@ import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 /// Result of the flexure formula σ = -M·y/I. [y] is optional — when omitted
 /// the result is shown as a coefficient times y rather than a single value.
@@ -63,7 +64,7 @@ class BeamFlexureFormulaResultPage extends StatelessWidget {
           ]),
         ),
         AppSectionCard(
-          title: 'Formula',
+          title: S.of(context).Formula,
           child: Text(
             sigmaAtY != null
                 ? 'σ = M·y / I\n'

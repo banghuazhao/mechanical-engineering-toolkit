@@ -234,7 +234,7 @@ class _AngleOfTwistResultPage extends StatelessWidget {
           ]),
         ),
         AppSectionCard(
-          title: 'Formula',
+          title: S.of(context).Formula,
           child: Text(
             'φ = T·L / (G·J)\n'
             '= ${precs.formatSI(t, UnitCategory.momentSection, system)} × ${precs.formatSI(l, UnitCategory.length, system)} / (${precs.formatSI(g, UnitCategory.modulus, system)} × ${precs.formatSI(j, UnitCategory.momentOfInertia, system)})\n'

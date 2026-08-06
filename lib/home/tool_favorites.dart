@@ -78,7 +78,7 @@ class _FavoriteToolCard extends StatelessWidget {
         ),
         title: Text(tool.title),
         trailing: IconButton(
-          tooltip: 'Remove ${tool.title} from favorites',
+          tooltip: S.of(context).Remove_Tool_from_Favorites(tool.title),
           icon: const Icon(Icons.close_rounded),
           onPressed: () async {
             await HapticFeedback.selectionClick();

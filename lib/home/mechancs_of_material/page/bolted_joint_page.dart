@@ -95,9 +95,13 @@ class _BoltedJointPageState extends State<BoltedJointPage> {
                   ),
                   SizedBox(height: context.tokens.space4),
                   SegmentedButton<bool>(
-                    segments: const [
-                      ButtonSegment(value: false, label: Text('Single shear')),
-                      ButtonSegment(value: true, label: Text('Double shear')),
+                    segments: [
+                      ButtonSegment(
+                          value: false,
+                          label: Text(S.of(context).Single_Shear)),
+                      ButtonSegment(
+                          value: true,
+                          label: Text(S.of(context).Double_Shear)),
                     ],
                     selected: {_doubleShear},
                     onSelectionChanged: (s) =>

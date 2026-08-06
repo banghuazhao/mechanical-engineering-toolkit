@@ -122,8 +122,8 @@ class _ColumnBucklingLoadPageState extends State<ColumnBucklingLoadPage> {
                   SizedBox(height: context.tokens.space3),
                   DropdownButtonFormField<_EndCondition>(
                     initialValue: _endCondition,
-                    decoration:
-                        const InputDecoration(labelText: 'End condition'),
+                    decoration: InputDecoration(
+                        labelText: S.of(context).End_Condition),
                     items: _EndCondition.values
                         .map((c) =>
                             DropdownMenuItem(value: c, child: Text(c.label)))

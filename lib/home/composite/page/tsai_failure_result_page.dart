@@ -7,6 +7,7 @@ import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 class TsaiFailureResultPage extends StatelessWidget {
   TsaiFailureResultPage({
@@ -76,7 +77,7 @@ class TsaiFailureResultPage extends StatelessWidget {
           ),
         ],
         AppSectionCard(
-          title: 'Formula',
+          title: S.of(context).Formula,
           child: Text(
             'Tsai-Hill: FI = σ1²/X² − σ1σ2/X² + σ2²/Y² + τ12²/S²\n'
             '(X=Xt/Y=Yt or Xc/Yc by sign of σ1/σ2)\n\n'

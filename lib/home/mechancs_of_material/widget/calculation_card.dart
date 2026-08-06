@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 
 class CalculationCard extends StatelessWidget {
@@ -12,7 +13,7 @@ class CalculationCard extends StatelessWidget {
     Clipboard.setData(ClipboardData(text: text));
     HapticFeedback.lightImpact();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Calculation copied')),
+      SnackBar(content: Text(S.of(context).Calculation_Copied)),
     );
   }
 
@@ -20,7 +21,7 @@ class CalculationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return AppSectionCard(
-      title: 'Calculation',
+      title: S.of(context).Calculation,
       contentPadding: EdgeInsets.zero,
       child: InkWell(
         onTap: () => _copyToClipboard(context),

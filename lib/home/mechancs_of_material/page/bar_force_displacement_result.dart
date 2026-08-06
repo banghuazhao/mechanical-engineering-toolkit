@@ -6,6 +6,7 @@ import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 class BarForceDisplacementResultPage extends StatelessWidget {
   BarForceDisplacementResultPage({
@@ -51,7 +52,7 @@ class BarForceDisplacementResultPage extends StatelessWidget {
           ]),
         ),
         AppSectionCard(
-          title: 'Formula',
+          title: S.of(context).Formula,
           child: Text(
             'δ = F·L / (E·A)\n'
             '= ${_fv(f, UnitCategory.force, system)} × ${_fv(l, UnitCategory.length, system)} / (${_fv(e, UnitCategory.modulus, system)} × ${_fv(a, UnitCategory.area, system)})\n'

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 import 'others.dart';
 
@@ -11,16 +12,16 @@ String doubleToString(double n, {int keepDecimal = 2}) {
 enum NumberDisplayFormat { auto, scientific, decimal, engineering }
 
 extension NumberDisplayFormatLabel on NumberDisplayFormat {
-  String get label {
+  String label(BuildContext context) {
     switch (this) {
       case NumberDisplayFormat.auto:
-        return 'Auto';
+        return S.of(context).Format_Auto;
       case NumberDisplayFormat.scientific:
-        return 'Scientific';
+        return S.of(context).Format_Scientific;
       case NumberDisplayFormat.decimal:
-        return 'Decimal';
+        return S.of(context).Format_Decimal;
       case NumberDisplayFormat.engineering:
-        return 'Engineering';
+        return S.of(context).Format_Engineering;
     }
   }
 

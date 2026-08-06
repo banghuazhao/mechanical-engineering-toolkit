@@ -249,7 +249,7 @@ class _ThermalResultPage extends StatelessWidget {
             final items = [
               ToolResultHeader(tool: tool),
               MultipleRowResult(
-                title: 'Thermal Results',
+                title: S.of(context).Thermal_Results,
                 resultTitles: const [
                   'δ_T  (thermal deformation)',
                   'σ_T  (thermal stress, constrained)'

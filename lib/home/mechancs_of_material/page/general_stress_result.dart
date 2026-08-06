@@ -6,6 +6,7 @@ import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 class GeneralStressResultPage extends StatelessWidget {
   GeneralStressResultPage({
@@ -40,7 +41,7 @@ class GeneralStressResultPage extends StatelessWidget {
           ]),
         ),
         AppSectionCard(
-          title: 'Formula',
+          title: S.of(context).Formula,
           child: Text(
             'σ = F / A\n'
             '= ${formatFixedSI(f, UnitCategory.force, system)} / ${formatFixedSI(a, UnitCategory.area, system)}\n'

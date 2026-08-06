@@ -1,5 +1,6 @@
 import 'package:composite_calculator/composite_calculator.dart';
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 class AnalysisTypeRow extends StatelessWidget {
   final AnalysisType value;
@@ -18,14 +19,16 @@ class AnalysisTypeRow extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Analysis Type',
+            Text(S.of(context).Analysis_Type,
                 style: Theme.of(context).textTheme.titleMedium),
             SegmentedButton<AnalysisType>(
-              segments: const [
+              segments: [
                 ButtonSegment(
-                    value: AnalysisType.elastic, label: Text('Elastic')),
+                    value: AnalysisType.elastic,
+                    label: Text(S.of(context).Elastic)),
                 ButtonSegment(
-                    value: AnalysisType.thermalElastic, label: Text('Thermal')),
+                    value: AnalysisType.thermalElastic,
+                    label: Text(S.of(context).Thermal)),
               ],
               selected: {value},
               onSelectionChanged: (s) => onChanged(s.first),

@@ -5,6 +5,7 @@ import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
+import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 class BoltedJointResultPage extends StatelessWidget {
   BoltedJointResultPage({
@@ -64,7 +65,7 @@ class BoltedJointResultPage extends StatelessWidget {
         ),
         if (allowShear != null || allowBearing != null) ...[
           AppSectionCard(
-            title: 'Factor of Safety',
+            title: S.of(context).Factor_of_Safety,
             child: Column(children: [
               if (allowShear != null)
                 AppCopyableValue(
@@ -80,7 +81,7 @@ class BoltedJointResultPage extends StatelessWidget {
           ),
         ],
         AppSectionCard(
-          title: 'Formulas',
+          title: S.of(context).Formulas,
           child: Text(
             'τ = P / (n·planes·π/4·d²)\n'
             'σb = P / (n·d·t)\n'
