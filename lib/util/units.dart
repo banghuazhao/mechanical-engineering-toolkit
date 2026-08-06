@@ -376,8 +376,13 @@ double fromSI(double siValue, UnitCategory category, UnitSystem to) {
 ///
 /// Used by result pages whose derivation steps read better at a fixed width
 /// than at the user's chosen display precision.
-String formatFixed(double value, {int decimals = 3}) =>
-    value.toStringAsFixed(decimals).replaceFirst(RegExp(r'\.?0+$'), '');
+String formatFixed(double value, {int decimals = 3}) {
+  final fixed = value.toStringAsFixed(decimals);
+  // Only zeros *after* a decimal point are insignificant — at decimals: 0
+  // there is no point, and stripping would turn "10" into "1".
+  if (!fixed.contains('.')) return fixed;
+  return fixed.replaceFirst(RegExp(r'\.?0+$'), '');
+}
 
 /// [formatFixed] at four decimal places.
 String formatFixed4(double value) => formatFixed(value, decimals: 4);
