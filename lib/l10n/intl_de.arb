@@ -444,5 +444,8 @@
   "No_Saved_Projects_Message": "Speichern Sie eine Berechnung aus dem Verlauf, um ihre Eingaben hier aufzubewahren.",
   "Project_Updated": "In „{name}“ umbenannt",
 
-  "Export_CSV": "CSV exportieren"
+  "Export_CSV": "CSV exportieren",
+
+  "Export": "Exportieren",
+  "Export_PDF": "PDF exportieren"
 }

@@ -306,7 +306,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "線径とコイル径は正の値である必要があります。",
     ),
+    "Export": MessageLookupByLibrary.simpleMessage("書き出す"),
     "Export_CSV": MessageLookupByLibrary.simpleMessage("CSVで書き出す"),
+    "Export_PDF": MessageLookupByLibrary.simpleMessage("PDFで書き出す"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("Express Scan"),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage("歯幅、F"),
     "Factor_of_Safety": MessageLookupByLibrary.simpleMessage("安全率"),

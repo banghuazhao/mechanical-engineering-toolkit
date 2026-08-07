@@ -3853,6 +3853,16 @@ class S {
   String get Export_CSV {
     return Intl.message('Export CSV', name: 'Export_CSV', desc: '', args: []);
   }
+
+  /// `Export`
+  String get Export {
+    return Intl.message('Export', name: 'Export', desc: '', args: []);
+  }
+
+  /// `Export PDF`
+  String get Export_PDF {
+    return Intl.message('Export PDF', name: 'Export_PDF', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

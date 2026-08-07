@@ -270,7 +270,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "簧丝直径与中径必须为正值。",
     ),
+    "Export": MessageLookupByLibrary.simpleMessage("导出"),
     "Export_CSV": MessageLookupByLibrary.simpleMessage("导出 CSV"),
+    "Export_PDF": MessageLookupByLibrary.simpleMessage("导出 PDF"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("飞速扫描"),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage("齿宽 F"),
     "Factor_of_Safety": MessageLookupByLibrary.simpleMessage("安全系数"),

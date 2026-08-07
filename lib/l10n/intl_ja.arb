@@ -444,5 +444,8 @@
   "No_Saved_Projects_Message": "履歴から計算を保存すると、その入力値をここに残せます。",
   "Project_Updated": "「{name}」に名前を変更しました",
 
-  "Export_CSV": "CSVで書き出す"
+  "Export_CSV": "CSVで書き出す",
+
+  "Export": "書き出す",
+  "Export_PDF": "PDFで書き出す"
 }

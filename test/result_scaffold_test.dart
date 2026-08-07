@@ -99,7 +99,7 @@ void main() {
       expect(find.textContaining('25.400 mm'), findsOneWidget);
     });
 
-    testWidgets('offers CSV export, and the share action comes for free',
+    testWidgets('offers CSV and PDF export, and share comes for free',
         (tester) async {
       await tester.pumpWidget(_wrap(const ResultScaffold(
         toolName: 'Widget Test Tool',
@@ -107,12 +107,17 @@ void main() {
       )));
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.table_view_outlined), findsOneWidget);
+      expect(find.byIcon(Icons.file_download_outlined), findsOneWidget);
       // No shareLines was supplied; declaring results supplies it.
       expect(find.byIcon(Icons.share_rounded), findsOneWidget);
+
+      await tester.tap(find.byIcon(Icons.file_download_outlined));
+      await tester.pumpAndSettle();
+      expect(find.text('Export CSV'), findsOneWidget);
+      expect(find.text('Export PDF'), findsOneWidget);
     });
 
-    testWidgets('withholds CSV export from an unmigrated page',
+    testWidgets('withholds export from an unmigrated page',
         (tester) async {
       // Hand-written share lines have already fused label, value, and unit
       // into one string, so there is nothing to put in columns.
@@ -123,7 +128,7 @@ void main() {
       )));
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.table_view_outlined), findsNothing);
+      expect(find.byIcon(Icons.file_download_outlined), findsNothing);
       expect(find.byIcon(Icons.share_rounded), findsOneWidget);
     });
 

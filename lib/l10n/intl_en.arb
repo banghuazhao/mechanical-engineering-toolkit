@@ -444,5 +444,8 @@
   "No_Saved_Projects_Message": "Save a calculation from your history to keep its inputs here for later.",
   "Project_Updated": "Renamed to “{name}”",
 
-  "Export_CSV": "Export CSV"
+  "Export_CSV": "Export CSV",
+
+  "Export": "Export",
+  "Export_PDF": "Export PDF"
 }

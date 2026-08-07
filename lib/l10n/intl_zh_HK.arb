@@ -443,5 +443,8 @@
   "No_Saved_Projects_Message": "從歷史記錄中儲存一次計算，即可在此長期保留其輸入值。",
   "Project_Updated": "已重新命名為「{name}」",
 
-  "Export_CSV": "匯出 CSV"
+  "Export_CSV": "匯出 CSV",
+
+  "Export": "匯出",
+  "Export_PDF": "匯出 PDF"
 }

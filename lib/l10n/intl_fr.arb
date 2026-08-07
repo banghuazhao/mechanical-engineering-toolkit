@@ -444,5 +444,8 @@
   "No_Saved_Projects_Message": "Enregistrez un calcul depuis l'historique pour conserver ses valeurs ici.",
   "Project_Updated": "Renommé en « {name} »",
 
-  "Export_CSV": "Exporter en CSV"
+  "Export_CSV": "Exporter en CSV",
+
+  "Export": "Exporter",
+  "Export_PDF": "Exporter en PDF"
 }

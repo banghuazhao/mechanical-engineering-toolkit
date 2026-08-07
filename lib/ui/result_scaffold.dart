@@ -7,6 +7,7 @@ import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/util/csv_export.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/pdf_export.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:provider/provider.dart';
@@ -48,6 +49,7 @@ class ResultScaffold extends StatefulWidget {
     this.title,
     this.shareLines,
     this.extraActions = const [],
+    this.formulaSteps = const [],
   }) : assert(children != null || body != null || results != null,
             'Provide results, children, or a custom body');
 
@@ -85,12 +87,49 @@ class ResultScaffold extends StatefulWidget {
   /// Actions inserted before the standard share/settings actions.
   final List<Widget> extraActions;
 
+  /// The worked derivation, reproduced in the PDF report beneath the tables.
+  ///
+  /// Pass the same steps given to the page's [FormulaCard]; a report without
+  /// the derivation is much less use for coursework.
+  final List<String> formulaSteps;
+
   @override
   State<ResultScaffold> createState() => _ResultScaffoldState();
 }
 
+enum _ExportFormat { csv, pdf }
+
 class _ResultScaffoldState extends State<ResultScaffold> {
   final _exportKey = GlobalKey();
+
+  Future<void> _export(
+    _ExportFormat format,
+    List<ResultSection> results,
+    NumberPrecisionHelper precs,
+    UnitSystem system,
+  ) async {
+    switch (format) {
+      case _ExportFormat.csv:
+        await shareResultCsv(
+          widget.toolName,
+          buildResultCsv(
+            toolName: widget.toolName,
+            sections: results,
+            precs: precs,
+            system: system,
+          ),
+        );
+      case _ExportFormat.pdf:
+        final bytes = await buildResultPdf(
+          toolName: widget.toolName,
+          sections: results,
+          precs: precs,
+          system: system,
+          formulaSteps: widget.formulaSteps,
+        );
+        await shareResultPdf(widget.toolName, bytes);
+    }
+  }
 
   /// Declared results render first, as one card per section, followed by any
   /// hand-built [ResultScaffold.children] the page still needs (diagrams,
@@ -152,21 +191,24 @@ class _ResultScaffoldState extends State<ResultScaffold> {
               icon: const Icon(Icons.share_rounded),
               onPressed: () => shareResult(widget.toolName, shareLines()),
             ),
-          // Only offered where the structure a spreadsheet needs actually
-          // exists. Pre-formatted share lines cannot be split into columns.
+          // Only offered where the structure a spreadsheet or report needs
+          // actually exists. Pre-formatted share lines cannot be split into
+          // columns.
           if (results != null)
-            IconButton(
-              tooltip: l10n.Export_CSV,
-              icon: const Icon(Icons.table_view_outlined),
-              onPressed: () => shareResultCsv(
-                widget.toolName,
-                buildResultCsv(
-                  toolName: widget.toolName,
-                  sections: results,
-                  precs: precs,
-                  system: system,
+            PopupMenuButton<_ExportFormat>(
+              tooltip: l10n.Export,
+              icon: const Icon(Icons.file_download_outlined),
+              onSelected: (format) => _export(format, results, precs, system),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: _ExportFormat.csv,
+                  child: Text(l10n.Export_CSV),
                 ),
-              ),
+                PopupMenuItem(
+                  value: _ExportFormat.pdf,
+                  child: Text(l10n.Export_PDF),
+                ),
+              ],
             ),
           IconButton(
             tooltip: l10n.Share_as_Image,

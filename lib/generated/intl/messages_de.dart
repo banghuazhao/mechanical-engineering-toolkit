@@ -387,7 +387,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "Draht- und Wicklungsdurchmesser müssen positiv sein.",
     ),
+    "Export": MessageLookupByLibrary.simpleMessage("Exportieren"),
     "Export_CSV": MessageLookupByLibrary.simpleMessage("CSV exportieren"),
+    "Export_PDF": MessageLookupByLibrary.simpleMessage("PDF exportieren"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("Express Scan"),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage("Zahnbreite, F"),
     "Factor_of_Safety": MessageLookupByLibrary.simpleMessage(

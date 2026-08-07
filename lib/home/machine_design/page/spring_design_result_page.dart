@@ -27,8 +27,19 @@ class SpringDesignResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final precs = context.watch<NumberPrecisionHelper>();
+    // Shared by the on-screen FormulaCard and the PDF report, so the two
+    // cannot drift.
+    final formulaSteps = [
+      'C = D/d = ${precs.formatValue(result.springIndex)}',
+      'Kw = (4C−1)/(4C−4) + 0.615/C = ${precs.formatValue(result.wahlFactor)}',
+      'k = G·d⁴/(8·D³·Na)',
+      'Solid height = (Na+2)·d',
+      'f ≈ (d/2πD²Na)·√(G/2ρ)  — both-ends-fixed estimate',
+      if (result.shearStressMPa != null) 'τ = Kw·8F·D/(π·d³)',
+    ];
 
     return ResultScaffold(
+      formulaSteps: formulaSteps,
       toolName: S.of(context).Helical_Compression_Spring,
       results: [
         ResultSection(
@@ -73,14 +84,7 @@ class SpringDesignResultPage extends StatelessWidget {
         ),
       ],
       children: [
-        FormulaCard(steps: [
-          'C = D/d = ${precs.formatValue(result.springIndex)}',
-          'Kw = (4C−1)/(4C−4) + 0.615/C = ${precs.formatValue(result.wahlFactor)}',
-          'k = G·d⁴/(8·D³·Na)',
-          'Solid height = (Na+2)·d',
-          'f ≈ (d/2πD²Na)·√(G/2ρ)  — both-ends-fixed estimate',
-          if (result.shearStressMPa != null) 'τ = Kw·8F·D/(π·d³)',
-        ]),
+        FormulaCard(steps: formulaSteps),
         ParameterSweepCard(
           variableLabel: S.of(context).Wire_Diameter_D,
           variableCategory: UnitCategory.length,
