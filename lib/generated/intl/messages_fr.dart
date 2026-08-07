@@ -401,6 +401,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "Le diamètre du fil et de la spire doivent être positifs.",
     ),
+    "Export_CSV": MessageLookupByLibrary.simpleMessage("Exporter en CSV"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("Express Scan"),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage(
       "Largeur de denture, F",

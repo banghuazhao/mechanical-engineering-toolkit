@@ -4,7 +4,12 @@ import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
+import 'package:mechanical_engineering_toolkit/util/csv_export.dart';
+import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
+import 'package:provider/provider.dart';
 
 /// A "Formula" card showing the worked calculation, one step per line.
 class FormulaCard extends StatelessWidget {
@@ -39,11 +44,12 @@ class ResultScaffold extends StatefulWidget {
     required this.toolName,
     this.children,
     this.body,
+    this.results,
     this.title,
     this.shareLines,
     this.extraActions = const [],
-  }) : assert(children != null || body != null,
-            'Provide either children or a custom body');
+  }) : assert(children != null || body != null || results != null,
+            'Provide results, children, or a custom body');
 
   /// Display name of the tool. Heads the shared text and names the shared
   /// image file.
@@ -51,6 +57,19 @@ class ResultScaffold extends StatefulWidget {
 
   /// Result cards, laid out top to bottom. Ignored when [body] is given.
   final List<Widget>? children;
+
+  /// The page's results declared as data.
+  ///
+  /// Supplying these is the preferred form: the cards on screen, the plain
+  /// text share, and the CSV export are then all derived from one description,
+  /// instead of the page rendering widgets and separately hand-writing a
+  /// [shareLines] that says the same thing again. It is also what makes CSV
+  /// export possible at all — a `List<String>` has already fused label, value,
+  /// and unit into one string.
+  ///
+  /// When given, these render above [children] and supply [shareLines] if the
+  /// page did not provide its own.
+  final List<ResultSection>? results;
 
   /// Replaces the default list layout for pages that need something else —
   /// a responsive grid, for instance. It is still captured for image export.
@@ -73,11 +92,54 @@ class ResultScaffold extends StatefulWidget {
 class _ResultScaffoldState extends State<ResultScaffold> {
   final _exportKey = GlobalKey();
 
+  /// Declared results render first, as one card per section, followed by any
+  /// hand-built [ResultScaffold.children] the page still needs (diagrams,
+  /// sweeps, formula cards).
+  Widget _buildList(BuildContext context, AppTokens tokens) {
+    final cards = <Widget>[
+      for (final section in widget.results ?? const <ResultSection>[])
+        AppSectionCard(
+          title: section.title,
+          child: Column(
+            children: [
+              for (final value in section.values)
+                AppCopyableValue(
+                  label: value.label,
+                  value: value.value,
+                  valueSI: value.valueSI,
+                  category: value.category,
+                ),
+            ],
+          ),
+        ),
+      ...?widget.children,
+    ];
+
+    return AppContent(
+      padding: EdgeInsets.zero,
+      child: ListView.separated(
+        padding: EdgeInsets.all(tokens.space4),
+        itemCount: cards.length,
+        separatorBuilder: (_, __) => SizedBox(height: tokens.space4),
+        itemBuilder: (_, index) => cards[index],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = S.of(context);
     final tokens = context.tokens;
-    final shareLines = widget.shareLines;
+    final results = widget.results;
+    final precs = context.watch<NumberPrecisionHelper>();
+    final system = context.watch<UnitSystemPreference>().system;
+
+    // A page that declares its results as data gets its share text for free;
+    // one that has not migrated yet keeps supplying its own.
+    final shareLines = widget.shareLines ??
+        (results == null
+            ? null
+            : () => resultShareLines(results, precs, system));
 
     return Scaffold(
       appBar: AppBar(
@@ -89,6 +151,22 @@ class _ResultScaffoldState extends State<ResultScaffold> {
               tooltip: l10n.Share_Results,
               icon: const Icon(Icons.share_rounded),
               onPressed: () => shareResult(widget.toolName, shareLines()),
+            ),
+          // Only offered where the structure a spreadsheet needs actually
+          // exists. Pre-formatted share lines cannot be split into columns.
+          if (results != null)
+            IconButton(
+              tooltip: l10n.Export_CSV,
+              icon: const Icon(Icons.table_view_outlined),
+              onPressed: () => shareResultCsv(
+                widget.toolName,
+                buildResultCsv(
+                  toolName: widget.toolName,
+                  sections: results,
+                  precs: precs,
+                  system: system,
+                ),
+              ),
             ),
           IconButton(
             tooltip: l10n.Share_as_Image,
@@ -108,16 +186,7 @@ class _ResultScaffoldState extends State<ResultScaffold> {
       bottomNavigationBar: const AppBannerAd(),
       body: RepaintBoundary(
         key: _exportKey,
-        child: widget.body ??
-            AppContent(
-              padding: EdgeInsets.zero,
-              child: ListView.separated(
-                padding: EdgeInsets.all(tokens.space4),
-                itemCount: widget.children!.length,
-                separatorBuilder: (_, __) => SizedBox(height: tokens.space4),
-                itemBuilder: (_, index) => widget.children![index],
-              ),
-            ),
+        child: widget.body ?? _buildList(context, tokens),
       ),
     );
   }

@@ -383,6 +383,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "Wire and coil diameter must be positive.",
     ),
+    "Export_CSV": MessageLookupByLibrary.simpleMessage("Export CSV"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("Express Scan"),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage("Face width, F"),
     "Factor_of_Safety": MessageLookupByLibrary.simpleMessage(

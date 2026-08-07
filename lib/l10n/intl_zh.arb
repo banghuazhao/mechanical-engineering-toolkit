@@ -441,5 +441,7 @@
   "Delete_Project_Description": "这将从此设备中删除该项目及其保存的输入。",
   "No_Saved_Projects_Yet": "还没有已保存的项目",
   "No_Saved_Projects_Message": "从历史记录中保存一次计算，即可在此长期保留其输入值。",
-  "Project_Updated": "已重命名为“{name}”"
+  "Project_Updated": "已重命名为“{name}”",
+
+  "Export_CSV": "导出 CSV"
 }

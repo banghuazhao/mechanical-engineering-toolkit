@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/model/spring_design_calculator.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
-import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
 
@@ -27,53 +26,53 @@ class SpringDesignResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final system = context.watch<UnitSystemPreference>().system;
     final precs = context.watch<NumberPrecisionHelper>();
 
     return ResultScaffold(
       toolName: S.of(context).Helical_Compression_Spring,
-      shareLines: () => _shareLines(precs),
-      children: [
-        AppSectionCard(
+      results: [
+        ResultSection(
           title: S.of(context).Helical_Compression_Spring,
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: S.of(context).Spring_Index_C,
-              value: precs.formatValue(result.springIndex),
+              valueSI: result.springIndex,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: S.of(context).Wahl_Factor_Kw,
-              value: precs.formatValue(result.wahlFactor),
+              valueSI: result.wahlFactor,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: S.of(context).Spring_Rate_K,
-              value: precs.formatSI(
-                  result.rateNPerMm, UnitCategory.distributedLoadSmall, system),
+              valueSI: result.rateNPerMm,
+              category: UnitCategory.distributedLoadSmall,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: S.of(context).Solid_Height,
               valueSI: result.solidHeightMm,
               category: UnitCategory.length,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: S.of(context).Natural_Frequency_Estimate,
               valueSI: result.naturalFrequencyHz,
               category: UnitCategory.frequency,
             ),
             if (result.deflectionMm != null)
-              AppCopyableValue(
+              ResultValue(
                 label: S.of(context).Deflection_Delta,
                 valueSI: result.deflectionMm,
                 category: UnitCategory.length,
               ),
             if (result.shearStressMPa != null)
-              AppCopyableValue(
+              ResultValue(
                 label: S.of(context).Shear_Stress_Tau,
                 valueSI: result.shearStressMPa,
                 category: UnitCategory.stress,
               ),
-          ]),
+          ],
         ),
+      ],
+      children: [
         FormulaCard(steps: [
           'C = D/d = ${precs.formatValue(result.springIndex)}',
           'Kw = (4C−1)/(4C−4) + 0.615/C = ${precs.formatValue(result.wahlFactor)}',
@@ -102,15 +101,4 @@ class SpringDesignResultPage extends StatelessWidget {
     );
   }
 
-  List<String> _shareLines(NumberPrecisionHelper precs) => [
-        'C = ${precs.formatValue(result.springIndex)}',
-        'Kw = ${precs.formatValue(result.wahlFactor)}',
-        'k = ${precs.formatValue(result.rateNPerMm)} N/mm',
-        'Solid height = ${precs.formatValue(result.solidHeightMm)} mm',
-        'f ≈ ${precs.formatValue(result.naturalFrequencyHz)} Hz',
-        if (result.deflectionMm != null)
-          'δ = ${precs.formatValue(result.deflectionMm)} mm',
-        if (result.shearStressMPa != null)
-          'τ = ${precs.formatValue(result.shearStressMPa)} MPa',
-      ];
 }

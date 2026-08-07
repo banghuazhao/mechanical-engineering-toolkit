@@ -3848,6 +3848,11 @@ class S {
       args: [name],
     );
   }
+
+  /// `Export CSV`
+  String get Export_CSV {
+    return Intl.message('Export CSV', name: 'Export_CSV', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

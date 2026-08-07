@@ -441,5 +441,7 @@
   "Delete_Project_Description": "這將從此裝置中刪除該項目及其儲存的輸入。",
   "No_Saved_Projects_Yet": "尚未有已儲存的項目",
   "No_Saved_Projects_Message": "從歷史記錄中儲存一次計算，即可在此長期保留其輸入值。",
-  "Project_Updated": "已重新命名為「{name}」"
+  "Project_Updated": "已重新命名為「{name}」",
+
+  "Export_CSV": "匯出 CSV"
 }

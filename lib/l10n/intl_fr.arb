@@ -442,5 +442,7 @@
   "Delete_Project_Description": "Le projet et ses valeurs enregistrées seront supprimés de cet appareil.",
   "No_Saved_Projects_Yet": "Aucun projet enregistré",
   "No_Saved_Projects_Message": "Enregistrez un calcul depuis l'historique pour conserver ses valeurs ici.",
-  "Project_Updated": "Renommé en « {name} »"
+  "Project_Updated": "Renommé en « {name} »",
+
+  "Export_CSV": "Exporter en CSV"
 }

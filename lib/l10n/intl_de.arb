@@ -442,5 +442,7 @@
   "Delete_Project_Description": "Damit werden das Projekt und seine gespeicherten Eingaben von diesem Gerät entfernt.",
   "No_Saved_Projects_Yet": "Noch keine gespeicherten Projekte",
   "No_Saved_Projects_Message": "Speichern Sie eine Berechnung aus dem Verlauf, um ihre Eingaben hier aufzubewahren.",
-  "Project_Updated": "In „{name}“ umbenannt"
+  "Project_Updated": "In „{name}“ umbenannt",
+
+  "Export_CSV": "CSV exportieren"
 }

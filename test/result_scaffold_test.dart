@@ -5,6 +5,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -67,6 +68,81 @@ void main() {
 
     expect(find.byIcon(Icons.share_rounded), findsNothing);
     expect(find.byIcon(Icons.image_outlined), findsOneWidget);
+  });
+
+  group('declared results', () {
+    const sections = [
+      ResultSection(
+        title: 'Spring',
+        values: [
+          ResultValue(label: 'Spring index, C', valueSI: 10),
+          ResultValue(
+            label: 'Solid height',
+            valueSI: 25.4,
+            category: UnitCategory.length,
+          ),
+        ],
+      ),
+    ];
+
+    testWidgets('renders one card per section with its values',
+        (tester) async {
+      await tester.pumpWidget(_wrap(const ResultScaffold(
+        toolName: 'Widget Test Tool',
+        results: sections,
+      )));
+      await tester.pumpAndSettle();
+
+      expect(find.text('SPRING'), findsOneWidget);
+      expect(find.text('Spring index, C'), findsOneWidget);
+      expect(find.text('Solid height'), findsOneWidget);
+      expect(find.textContaining('25.400 mm'), findsOneWidget);
+    });
+
+    testWidgets('offers CSV export, and the share action comes for free',
+        (tester) async {
+      await tester.pumpWidget(_wrap(const ResultScaffold(
+        toolName: 'Widget Test Tool',
+        results: sections,
+      )));
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.table_view_outlined), findsOneWidget);
+      // No shareLines was supplied; declaring results supplies it.
+      expect(find.byIcon(Icons.share_rounded), findsOneWidget);
+    });
+
+    testWidgets('withholds CSV export from an unmigrated page',
+        (tester) async {
+      // Hand-written share lines have already fused label, value, and unit
+      // into one string, so there is nothing to put in columns.
+      await tester.pumpWidget(_wrap(ResultScaffold(
+        toolName: 'Widget Test Tool',
+        shareLines: () => const ['a = 1'],
+        children: const [AppSectionCard(title: 'Only', child: Text('body'))],
+      )));
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.table_view_outlined), findsNothing);
+      expect(find.byIcon(Icons.share_rounded), findsOneWidget);
+    });
+
+    testWidgets('renders declared results above hand-built children',
+        (tester) async {
+      await tester.pumpWidget(_wrap(const ResultScaffold(
+        toolName: 'Widget Test Tool',
+        results: sections,
+        children: [FormulaCard(steps: ['k = G·d⁴/(8·D³·Na)'])],
+      )));
+      await tester.pumpAndSettle();
+
+      expect(find.text('SPRING'), findsOneWidget);
+      expect(find.text('FORMULA'), findsOneWidget);
+      expect(
+        tester.getTopLeft(find.text('SPRING')).dy,
+        lessThan(tester.getTopLeft(find.text('FORMULA')).dy),
+      );
+    });
   });
 
   testWidgets('an explicit title overrides the default "Result"',
