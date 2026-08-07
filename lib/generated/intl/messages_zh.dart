@@ -26,9 +26,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(value) => "预览：${value}";
 
-  static String m3(tool) => "将${tool}从收藏中移除";
+  static String m3(name) => "已保存“${name}”";
 
-  static String m4(label) => "假设分析：${label}";
+  static String m4(name) => "已重命名为“${name}”";
+
+  static String m5(tool) => "将${tool}从收藏中移除";
+
+  static String m6(label) => "假设分析：${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -125,6 +129,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Deflections_and_slopes_of_simple_beams":
         MessageLookupByLibrary.simpleMessage("简单梁的挠度和斜率"),
     "Delete": MessageLookupByLibrary.simpleMessage("删除"),
+    "Delete_Project_Description": MessageLookupByLibrary.simpleMessage(
+      "这将从此设备中删除该项目及其保存的输入。",
+    ),
+    "Delete_Project_Question": MessageLookupByLibrary.simpleMessage("删除此项目？"),
     "Density": MessageLookupByLibrary.simpleMessage("密度"),
     "Desc_Beam_Analysis": MessageLookupByLibrary.simpleMessage(
       "基于静力平衡与 Euler–Bernoulli 梁理论分析简支梁。向下的集中载荷与满跨均布载荷可单独或同时使用。",
@@ -404,6 +412,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "请换一个规格或清除筛选条件。",
     ),
     "No_Materials_Found": MessageLookupByLibrary.simpleMessage("未找到材料"),
+    "No_Saved_Projects_Message": MessageLookupByLibrary.simpleMessage(
+      "从历史记录中保存一次计算，即可在此长期保留其输入值。",
+    ),
+    "No_Saved_Projects_Yet": MessageLookupByLibrary.simpleMessage("还没有已保存的项目"),
     "No_Tools_Found": MessageLookupByLibrary.simpleMessage("未找到工具"),
     "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage("公称直径 d"),
     "Nominal_Size_mm": MessageLookupByLibrary.simpleMessage("尺寸（mm）"),
@@ -465,6 +477,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "App Store 暂未提供移除广告项目。",
     ),
+    "Project_Name": MessageLookupByLibrary.simpleMessage("项目名称"),
+    "Project_Name_Hint": MessageLookupByLibrary.simpleMessage("例如：气门弹簧 — C 版"),
+    "Project_Name_Required": MessageLookupByLibrary.simpleMessage("请输入名称"),
+    "Project_Saved": m3,
+    "Project_Updated": m4,
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage("购买已取消，未作任何更改。"),
     "Purchase_Failed": MessageLookupByLibrary.simpleMessage("购买未能完成，请重试。"),
     "Purchase_Pending": MessageLookupByLibrary.simpleMessage("购买正在等待批准。"),
@@ -478,9 +495,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "永久移除此应用中的广告。",
     ),
-    "Remove_Tool_from_Favorites": m3,
+    "Remove_Tool_from_Favorites": m5,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage("从收藏中移除"),
     "Removed_from_Favorites": MessageLookupByLibrary.simpleMessage("已从收藏中移除"),
+    "Rename_Project": MessageLookupByLibrary.simpleMessage("重命名项目"),
     "Required_Diameter_D": MessageLookupByLibrary.simpleMessage("所需直径 d"),
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage("未找到以前的移除广告购买。"),
     "Restore_Purchases": MessageLookupByLibrary.simpleMessage("恢复购买"),
@@ -498,6 +516,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Roller_Vertical": MessageLookupByLibrary.simpleMessage("滚轴支座（竖向反力）"),
     "Rule_of_mixtures": MessageLookupByLibrary.simpleMessage("复合材料混合定律"),
     "Save": MessageLookupByLibrary.simpleMessage("保存"),
+    "Save_as_Project": MessageLookupByLibrary.simpleMessage("保存为项目"),
+    "Saved_Projects": MessageLookupByLibrary.simpleMessage("已保存的项目"),
     "Search": MessageLookupByLibrary.simpleMessage("搜索"),
     "Search_Materials": MessageLookupByLibrary.simpleMessage("搜索材料"),
     "Search_Size_Or_Fit": MessageLookupByLibrary.simpleMessage("搜索直径或配合"),
@@ -616,7 +636,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Wall_Thickness": MessageLookupByLibrary.simpleMessage("壁厚"),
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("喝水吧"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("腹板厚度"),
-    "What_If": m4,
+    "What_If": m6,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("簧丝直径 d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage("极简天气"),
     "Wrap_Angle_Large_Pulley": MessageLookupByLibrary.simpleMessage("大带轮包角"),

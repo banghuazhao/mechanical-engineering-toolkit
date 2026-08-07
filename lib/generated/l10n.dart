@@ -3728,6 +3728,126 @@ class S {
       args: [],
     );
   }
+
+  /// `Saved Projects`
+  String get Saved_Projects {
+    return Intl.message(
+      'Saved Projects',
+      name: 'Saved_Projects',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save as project`
+  String get Save_as_Project {
+    return Intl.message(
+      'Save as project',
+      name: 'Save_as_Project',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Project name`
+  String get Project_Name {
+    return Intl.message(
+      'Project name',
+      name: 'Project_Name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `e.g. Valve spring — rev C`
+  String get Project_Name_Hint {
+    return Intl.message(
+      'e.g. Valve spring — rev C',
+      name: 'Project_Name_Hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a name`
+  String get Project_Name_Required {
+    return Intl.message(
+      'Enter a name',
+      name: 'Project_Name_Required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saved “{name}”`
+  String Project_Saved(Object name) {
+    return Intl.message(
+      'Saved “$name”',
+      name: 'Project_Saved',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `Rename project`
+  String get Rename_Project {
+    return Intl.message(
+      'Rename project',
+      name: 'Rename_Project',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete this project?`
+  String get Delete_Project_Question {
+    return Intl.message(
+      'Delete this project?',
+      name: 'Delete_Project_Question',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This removes the project and its saved inputs from this device.`
+  String get Delete_Project_Description {
+    return Intl.message(
+      'This removes the project and its saved inputs from this device.',
+      name: 'Delete_Project_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No saved projects yet`
+  String get No_Saved_Projects_Yet {
+    return Intl.message(
+      'No saved projects yet',
+      name: 'No_Saved_Projects_Yet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save a calculation from your history to keep its inputs here for later.`
+  String get No_Saved_Projects_Message {
+    return Intl.message(
+      'Save a calculation from your history to keep its inputs here for later.',
+      name: 'No_Saved_Projects_Message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Renamed to “{name}”`
+  String Project_Updated(Object name) {
+    return Intl.message(
+      'Renamed to “$name”',
+      name: 'Project_Updated',
+      desc: '',
+      args: [name],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

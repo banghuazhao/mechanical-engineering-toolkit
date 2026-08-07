@@ -429,5 +429,18 @@
   "Theme_Dark": "Sombre",
   "Theme_System_Description": "Suit le réglage d'apparence de votre appareil",
   "Theme_Light_Description": "Toujours utiliser le thème clair",
-  "Theme_Dark_Description": "Toujours utiliser le thème sombre"
+  "Theme_Dark_Description": "Toujours utiliser le thème sombre",
+
+  "Saved_Projects": "Projets enregistrés",
+  "Save_as_Project": "Enregistrer comme projet",
+  "Project_Name": "Nom du projet",
+  "Project_Name_Hint": "ex. Ressort de soupape — rév. C",
+  "Project_Name_Required": "Saisissez un nom",
+  "Project_Saved": "« {name} » enregistré",
+  "Rename_Project": "Renommer le projet",
+  "Delete_Project_Question": "Supprimer ce projet ?",
+  "Delete_Project_Description": "Le projet et ses valeurs enregistrées seront supprimés de cet appareil.",
+  "No_Saved_Projects_Yet": "Aucun projet enregistré",
+  "No_Saved_Projects_Message": "Enregistrez un calcul depuis l'historique pour conserver ses valeurs ici.",
+  "Project_Updated": "Renommé en « {name} »"
 }

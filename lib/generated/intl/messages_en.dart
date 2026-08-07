@@ -27,9 +27,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(value) => "Preview: ${value}";
 
-  static String m3(tool) => "Remove ${tool} from favorites";
+  static String m3(name) => "Saved “${name}”";
 
-  static String m4(label) => "What if: ${label}";
+  static String m4(name) => "Renamed to “${name}”";
+
+  static String m5(tool) => "Remove ${tool} from favorites";
+
+  static String m6(label) => "What if: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -182,6 +186,12 @@ class MessageLookup extends MessageLookupByLibrary {
           "Deflections and slopes of simple beams",
         ),
     "Delete": MessageLookupByLibrary.simpleMessage("Delete"),
+    "Delete_Project_Description": MessageLookupByLibrary.simpleMessage(
+      "This removes the project and its saved inputs from this device.",
+    ),
+    "Delete_Project_Question": MessageLookupByLibrary.simpleMessage(
+      "Delete this project?",
+    ),
     "Density": MessageLookupByLibrary.simpleMessage("Density"),
     "Desc_Beam_Analysis": MessageLookupByLibrary.simpleMessage(
       "Uses static equilibrium and Euler–Bernoulli beam theory for a simply supported beam. A downward point load and a full-span uniformly distributed load may be used separately or together.",
@@ -569,6 +579,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "No_Materials_Found": MessageLookupByLibrary.simpleMessage(
       "No materials found",
     ),
+    "No_Saved_Projects_Message": MessageLookupByLibrary.simpleMessage(
+      "Save a calculation from your history to keep its inputs here for later.",
+    ),
+    "No_Saved_Projects_Yet": MessageLookupByLibrary.simpleMessage(
+      "No saved projects yet",
+    ),
     "No_Tools_Found": MessageLookupByLibrary.simpleMessage("No tools found"),
     "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Nominal diameter, d",
@@ -640,6 +656,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Remove Ads is not available from the App Store yet.",
     ),
+    "Project_Name": MessageLookupByLibrary.simpleMessage("Project name"),
+    "Project_Name_Hint": MessageLookupByLibrary.simpleMessage(
+      "e.g. Valve spring — rev C",
+    ),
+    "Project_Name_Required": MessageLookupByLibrary.simpleMessage(
+      "Enter a name",
+    ),
+    "Project_Saved": m3,
+    "Project_Updated": m4,
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
       "Purchase cancelled. No changes were made.",
     ),
@@ -665,13 +690,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "Remove ads permanently from this app.",
     ),
-    "Remove_Tool_from_Favorites": m3,
+    "Remove_Tool_from_Favorites": m5,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Remove from favorites",
     ),
     "Removed_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Removed from favorites",
     ),
+    "Rename_Project": MessageLookupByLibrary.simpleMessage("Rename project"),
     "Required_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Required diameter, d",
     ),
@@ -711,6 +737,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Rule of mixtures",
     ),
     "Save": MessageLookupByLibrary.simpleMessage("Save"),
+    "Save_as_Project": MessageLookupByLibrary.simpleMessage("Save as project"),
+    "Saved_Projects": MessageLookupByLibrary.simpleMessage("Saved Projects"),
     "Search": MessageLookupByLibrary.simpleMessage("Search"),
     "Search_Materials": MessageLookupByLibrary.simpleMessage(
       "Search materials",
@@ -895,7 +923,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Wall_Thickness": MessageLookupByLibrary.simpleMessage("Wall thickness"),
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Web thickness"),
-    "What_If": m4,
+    "What_If": m6,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("Wire diameter, d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

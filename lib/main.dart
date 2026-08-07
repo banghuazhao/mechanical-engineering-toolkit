@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'generated/l10n.dart';
 import 'home/favorites.dart';
 import 'home/history.dart';
+import 'home/saved_projects.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => NumberPrecisionHelper()),
         ChangeNotifierProvider(create: (context) => UnitSystemPreference()),
         ChangeNotifierProvider(create: (context) => ToolHistory()),
+        ChangeNotifierProvider(create: (context) => SavedProjects()),
         ChangeNotifierProvider(create: (context) => MaterialLibrary()),
         ChangeNotifierProvider(create: (context) => LanguagePreference()),
         ChangeNotifierProvider(create: (context) => ThemePreference()),

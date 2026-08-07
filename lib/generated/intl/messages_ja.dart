@@ -26,9 +26,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(value) => "プレビュー：${value}";
 
-  static String m3(tool) => "${tool}をお気に入りから削除";
+  static String m3(name) => "「${name}」を保存しました";
 
-  static String m4(label) => "もし〜なら: ${label}";
+  static String m4(name) => "「${name}」に名前を変更しました";
+
+  static String m5(tool) => "${tool}をお気に入りから削除";
+
+  static String m6(label) => "もし〜なら: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -131,6 +135,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Deflections_and_slopes_of_simple_beams":
         MessageLookupByLibrary.simpleMessage("単純梁のたわみとたわみ角"),
     "Delete": MessageLookupByLibrary.simpleMessage("削除"),
+    "Delete_Project_Description": MessageLookupByLibrary.simpleMessage(
+      "この端末からプロジェクトと保存された入力値を削除します。",
+    ),
+    "Delete_Project_Question": MessageLookupByLibrary.simpleMessage(
+      "このプロジェクトを削除しますか？",
+    ),
     "Density": MessageLookupByLibrary.simpleMessage("密度"),
     "Desc_Beam_Analysis": MessageLookupByLibrary.simpleMessage(
       "単純支持梁に対して静力学的つり合いとオイラー・ベルヌーイ梁理論を用います。下向きの集中荷重と全スパン等分布荷重は、単独でも組み合わせても使用できます。",
@@ -444,6 +454,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "別のサイズを試すか、フィルターをクリアしてください。",
     ),
     "No_Materials_Found": MessageLookupByLibrary.simpleMessage("材料が見つかりません"),
+    "No_Saved_Projects_Message": MessageLookupByLibrary.simpleMessage(
+      "履歴から計算を保存すると、その入力値をここに残せます。",
+    ),
+    "No_Saved_Projects_Yet": MessageLookupByLibrary.simpleMessage(
+      "保存したプロジェクトはまだありません",
+    ),
     "No_Tools_Found": MessageLookupByLibrary.simpleMessage("ツールが見つかりません"),
     "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage("呼び径、d"),
     "Nominal_Size_mm": MessageLookupByLibrary.simpleMessage("サイズ (mm)"),
@@ -505,6 +521,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "「広告を削除」はまだApp Storeでご利用いただけません。",
     ),
+    "Project_Name": MessageLookupByLibrary.simpleMessage("プロジェクト名"),
+    "Project_Name_Hint": MessageLookupByLibrary.simpleMessage(
+      "例：バルブスプリング — rev C",
+    ),
+    "Project_Name_Required": MessageLookupByLibrary.simpleMessage(
+      "名前を入力してください",
+    ),
+    "Project_Saved": m3,
+    "Project_Updated": m4,
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
       "購入がキャンセルされました。変更はありません。",
     ),
@@ -524,11 +549,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "このアプリから広告を完全に削除します。",
     ),
-    "Remove_Tool_from_Favorites": m3,
+    "Remove_Tool_from_Favorites": m5,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage("お気に入りから削除"),
     "Removed_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "お気に入りから削除しました",
     ),
+    "Rename_Project": MessageLookupByLibrary.simpleMessage("プロジェクト名を変更"),
     "Required_Diameter_D": MessageLookupByLibrary.simpleMessage("必要直径、d"),
     "Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
       "以前の「広告を削除」の購入が見つかりませんでした。",
@@ -550,6 +576,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Roller_Vertical": MessageLookupByLibrary.simpleMessage("ローラー支点（垂直反力）"),
     "Rule_of_mixtures": MessageLookupByLibrary.simpleMessage("混合則"),
     "Save": MessageLookupByLibrary.simpleMessage("保存"),
+    "Save_as_Project": MessageLookupByLibrary.simpleMessage("プロジェクトとして保存"),
+    "Saved_Projects": MessageLookupByLibrary.simpleMessage("保存したプロジェクト"),
     "Search": MessageLookupByLibrary.simpleMessage("検索"),
     "Search_Materials": MessageLookupByLibrary.simpleMessage("材料を検索"),
     "Search_Size_Or_Fit": MessageLookupByLibrary.simpleMessage("直径またははめあいを検索"),
@@ -678,7 +706,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Wall_Thickness": MessageLookupByLibrary.simpleMessage("肉厚"),
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("ウェブ厚"),
-    "What_If": m4,
+    "What_If": m6,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("線径、d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

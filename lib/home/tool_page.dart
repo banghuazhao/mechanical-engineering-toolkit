@@ -7,6 +7,7 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/language_picker.dart';
 import 'package:mechanical_engineering_toolkit/home/major_list_page.dart';
+import 'package:mechanical_engineering_toolkit/home/saved_projects_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_favorites.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
@@ -265,6 +266,19 @@ class _ToolPageState extends State<ToolPage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => const MajorListPage(),
+                  ),
+                );
+              },
+            ),
+            MoreRow(
+              title: S.of(context).Saved_Projects,
+              leadingIcon: Icons.bookmark_rounded,
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SavedProjectsPage(),
                   ),
                 );
               },

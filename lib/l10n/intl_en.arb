@@ -429,5 +429,18 @@
   "Theme_Dark": "Dark",
   "Theme_System_Description": "Follows your device appearance setting",
   "Theme_Light_Description": "Always use the light theme",
-  "Theme_Dark_Description": "Always use the dark theme"
+  "Theme_Dark_Description": "Always use the dark theme",
+
+  "Saved_Projects": "Saved Projects",
+  "Save_as_Project": "Save as project",
+  "Project_Name": "Project name",
+  "Project_Name_Hint": "e.g. Valve spring — rev C",
+  "Project_Name_Required": "Enter a name",
+  "Project_Saved": "Saved “{name}”",
+  "Rename_Project": "Rename project",
+  "Delete_Project_Question": "Delete this project?",
+  "Delete_Project_Description": "This removes the project and its saved inputs from this device.",
+  "No_Saved_Projects_Yet": "No saved projects yet",
+  "No_Saved_Projects_Message": "Save a calculation from your history to keep its inputs here for later.",
+  "Project_Updated": "Renamed to “{name}”"
 }

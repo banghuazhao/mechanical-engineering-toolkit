@@ -429,5 +429,18 @@
   "Theme_Dark": "ダーク",
   "Theme_System_Description": "デバイスの外観設定に従います",
   "Theme_Light_Description": "常にライトテーマを使用します",
-  "Theme_Dark_Description": "常にダークテーマを使用します"
+  "Theme_Dark_Description": "常にダークテーマを使用します",
+
+  "Saved_Projects": "保存したプロジェクト",
+  "Save_as_Project": "プロジェクトとして保存",
+  "Project_Name": "プロジェクト名",
+  "Project_Name_Hint": "例：バルブスプリング — rev C",
+  "Project_Name_Required": "名前を入力してください",
+  "Project_Saved": "「{name}」を保存しました",
+  "Rename_Project": "プロジェクト名を変更",
+  "Delete_Project_Question": "このプロジェクトを削除しますか？",
+  "Delete_Project_Description": "この端末からプロジェクトと保存された入力値を削除します。",
+  "No_Saved_Projects_Yet": "保存したプロジェクトはまだありません",
+  "No_Saved_Projects_Message": "履歴から計算を保存すると、その入力値をここに残せます。",
+  "Project_Updated": "「{name}」に名前を変更しました"
 }

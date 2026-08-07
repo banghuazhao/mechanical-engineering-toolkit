@@ -3,10 +3,37 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/home/saved_projects.dart';
+import 'package:mechanical_engineering_toolkit/home/saved_projects_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:provider/provider.dart';
+
+/// Promotes a history entry into a permanent, user-named project.
+///
+/// The name defaults to the tool's own title, so the common case is one tap
+/// and Save; anyone tracking several variants of the same part renames it to
+/// tell them apart.
+Future<void> _saveAsProject(
+  BuildContext context, {
+  required HistoryEntry entry,
+  required String toolTitle,
+}) async {
+  final store = context.read<SavedProjects>();
+  final name = await promptForProjectName(context, initialName: toolTitle);
+  if (name == null || !context.mounted) return;
+  store.save(
+    name: name,
+    toolId: entry.toolId,
+    inputs: entry.inputs ?? const {},
+  );
+  await HapticFeedback.lightImpact();
+  if (!context.mounted) return;
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text(S.of(context).Project_Saved(name))),
+  );
+}
 
 class ToolHistoryPage extends StatelessWidget {
   const ToolHistoryPage({super.key});
@@ -36,8 +63,10 @@ class ToolHistoryPage extends StatelessWidget {
       ),
     );
     if (shouldClear == true) {
-      await HapticFeedback.mediumImpact();
+      // Clear first, then buzz — awaiting the haptic would make the state
+      // change wait on a platform reply.
       history.clear();
+      await HapticFeedback.mediumImpact();
     }
   }
 
@@ -148,7 +177,23 @@ class ToolHistoryPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      trailing: const Icon(Icons.chevron_right_rounded),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // History entries are evicted after 50; this is how
+                          // a calculation graduates into something permanent.
+                          IconButton(
+                            icon: const Icon(Icons.bookmark_add_outlined),
+                            tooltip: S.of(context).Save_as_Project,
+                            onPressed: () => _saveAsProject(
+                              context,
+                              entry: entry,
+                              toolTitle: resolvedTool.title,
+                            ),
+                          ),
+                          const Icon(Icons.chevron_right_rounded),
+                        ],
+                      ),
                       onTap: () => resolvedTool.action(
                         context,
                         resolvedTool.title,

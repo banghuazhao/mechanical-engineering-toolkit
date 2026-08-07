@@ -429,5 +429,18 @@
   "Theme_Dark": "Dunkel",
   "Theme_System_Description": "Folgt der Darstellungseinstellung des Geräts",
   "Theme_Light_Description": "Immer das helle Design verwenden",
-  "Theme_Dark_Description": "Immer das dunkle Design verwenden"
+  "Theme_Dark_Description": "Immer das dunkle Design verwenden",
+
+  "Saved_Projects": "Gespeicherte Projekte",
+  "Save_as_Project": "Als Projekt speichern",
+  "Project_Name": "Projektname",
+  "Project_Name_Hint": "z. B. Ventilfeder — Rev. C",
+  "Project_Name_Required": "Bitte einen Namen eingeben",
+  "Project_Saved": "„{name}“ gespeichert",
+  "Rename_Project": "Projekt umbenennen",
+  "Delete_Project_Question": "Dieses Projekt löschen?",
+  "Delete_Project_Description": "Damit werden das Projekt und seine gespeicherten Eingaben von diesem Gerät entfernt.",
+  "No_Saved_Projects_Yet": "Noch keine gespeicherten Projekte",
+  "No_Saved_Projects_Message": "Speichern Sie eine Berechnung aus dem Verlauf, um ihre Eingaben hier aufzubewahren.",
+  "Project_Updated": "In „{name}“ umbenannt"
 }
