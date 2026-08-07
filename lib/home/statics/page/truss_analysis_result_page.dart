@@ -3,11 +3,10 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/model/truss_solver.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
-import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
-import 'package:provider/provider.dart';
 
 class TrussAnalysisResultPage extends StatelessWidget {
   const TrussAnalysisResultPage({
@@ -27,13 +26,49 @@ class TrussAnalysisResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final system = context.watch<UnitSystemPreference>().system;
     final tool = ToolLibrary.shared.item(toolId, context);
     final scheme = Theme.of(context).colorScheme;
     return ResultScaffold(
       toolName: title,
-      shareLines: () => _shareLines(system),
-      children: [
+      results: [
+        ResultSection(
+          title: S.of(context).Member_Forces,
+          values: [
+            for (var i = 0; i < members.length; i++)
+              ResultValue(
+                label:
+                    'M${i + 1}: J${members[i].jointA + 1}–J${members[i].jointB + 1}'
+                    ' (${solution.memberForces[i] >= 0 ? 'tension' : 'compression'})',
+                valueSI: solution.memberForces[i],
+                category: UnitCategory.force,
+              ),
+          ],
+        ),
+        ResultSection(
+          title: S.of(context).Support_Reactions,
+          values: [
+            for (final r in solution.reactions) ...[
+              if (joints[r.jointIndex].support == TrussSupport.pin ||
+                  joints[r.jointIndex].support == TrussSupport.rollerX)
+                ResultValue(
+                  label: 'J${r.jointIndex + 1} Rx',
+                  valueSI: r.fx,
+                  category: UnitCategory.force,
+                ),
+              if (joints[r.jointIndex].support == TrussSupport.pin ||
+                  joints[r.jointIndex].support == TrussSupport.rollerY)
+                ResultValue(
+                  label: 'J${r.jointIndex + 1} Ry',
+                  valueSI: r.fy,
+                  category: UnitCategory.force,
+                ),
+            ],
+          ],
+        ),
+      ],
+      // The diagram is the anchor for the tables that follow it, so it leads
+      // rather than trailing them as a child would.
+      leading: [
         ToolResultHeader(tool: tool),
         AppSectionCard(
           title: S.of(context).Truss_Geometry,
@@ -68,48 +103,6 @@ class TrussAnalysisResultPage extends StatelessWidget {
             ],
           ),
         ),
-        AppSectionCard(
-          title: S.of(context).Member_Forces,
-          child: Column(
-            children: List.generate(members.length, (i) {
-              final force = solution.memberForces[i];
-              final member = members[i];
-              final tag = force >= 0 ? 'tension' : 'compression';
-              return AppCopyableValue(
-                label:
-                    'M${i + 1}: J${member.jointA + 1}\u2013J${member.jointB + 1} ($tag)',
-                valueSI: force,
-                category: UnitCategory.force,
-              );
-            }),
-          ),
-        ),
-        AppSectionCard(
-          title: S.of(context).Support_Reactions,
-          child: Column(
-            children: solution.reactions.expand((r) {
-              final joint = joints[r.jointIndex];
-              final widgets = <Widget>[];
-              if (joint.support == TrussSupport.pin ||
-                  joint.support == TrussSupport.rollerX) {
-                widgets.add(AppCopyableValue(
-                  label: 'J${r.jointIndex + 1} Rx',
-                  valueSI: r.fx,
-                  category: UnitCategory.force,
-                ));
-              }
-              if (joint.support == TrussSupport.pin ||
-                  joint.support == TrussSupport.rollerY) {
-                widgets.add(AppCopyableValue(
-                  label: 'J${r.jointIndex + 1} Ry',
-                  valueSI: r.fy,
-                  category: UnitCategory.force,
-                ));
-              }
-              return widgets;
-            }).toList(),
-          ),
-        ),
       ],
     );
   }
@@ -122,14 +115,6 @@ class TrussAnalysisResultPage extends StatelessWidget {
           Text(label, style: Theme.of(context).textTheme.bodySmall),
         ],
       );
-
-  List<String> _shareLines(UnitSystem system) => [
-        for (var i = 0; i < members.length; i++)
-          'M${i + 1}: J${members[i].jointA + 1}–J${members[i].jointB + 1} = ${formatFixedSI(solution.memberForces[i], UnitCategory.force, system)}',
-        '',
-        for (final r in solution.reactions)
-          'J${r.jointIndex + 1} reaction: Rx = ${formatFixedSI(r.fx, UnitCategory.force, system)}, Ry = ${formatFixedSI(r.fy, UnitCategory.force, system)}',
-      ];
 }
 
 class _TrussDiagramPainter extends CustomPainter {

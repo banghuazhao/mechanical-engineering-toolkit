@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/tsai_failure_calculator.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
-import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
-import 'package:provider/provider.dart';
-import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 class TsaiFailureResultPage extends StatelessWidget {
   TsaiFailureResultPage({
@@ -26,35 +23,45 @@ class TsaiFailureResultPage extends StatelessWidget {
   final TsaiFailureResult result;
   final double s1, s2, t12, xt, xc, yt, yc, s;
 
+  /// Shown on screen and reproduced in the PDF report.
+  static const _formulaSteps = [
+    'Tsai-Hill: FI = σ1²/X² − σ1σ2/X² + σ2²/Y² + τ12²/S²',
+    '(X=Xt/Y=Yt or Xc/Yc by sign of σ1/σ2)',
+    '',
+    'Tsai-Wu: FI = F1σ1+F2σ2+F11σ1²+F22σ2²+F66τ12²+2F12σ1σ2',
+    'F1=1/Xt−1/Xc, F2=1/Yt−1/Yc, F11=1/(XtXc), F22=1/(YtYc), F66=1/S², F12=−0.5√(F11F22)',
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final precs = context.watch<NumberPrecisionHelper>();
     final hillSafe = result.tsaiHillIndex < 1;
     final wuSafe = result.tsaiWuIndex < 1;
     final scheme = Theme.of(context).colorScheme;
 
     return ResultScaffold(
       toolName: 'Composite Failure Criteria',
-      shareLines: () => _shareLines(precs),
-      children: [
-        AppSectionCard(
+      formulaSteps: _formulaSteps,
+      results: [
+        ResultSection(
           title: 'Failure Indices',
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: 'Tsai-Hill index (${hillSafe ? 'safe' : 'FAIL'})',
-              value: precs.formatValue(result.tsaiHillIndex),
+              valueSI: result.tsaiHillIndex,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'Tsai-Wu index (${wuSafe ? 'safe' : 'FAIL'})',
-              value: precs.formatValue(result.tsaiWuIndex),
+              valueSI: result.tsaiWuIndex,
             ),
             if (result.tsaiWuStrengthRatio != null)
-              AppCopyableValue(
+              ResultValue(
                 label: 'Tsai-Wu strength ratio, R',
-                value: precs.formatValue(result.tsaiWuStrengthRatio),
+                valueSI: result.tsaiWuStrengthRatio,
               ),
-          ]),
+          ],
         ),
+      ],
+      children: [
         if (!hillSafe || !wuSafe) ...[
           Card(
             color: scheme.errorContainer,
@@ -76,16 +83,7 @@ class TsaiFailureResultPage extends StatelessWidget {
             ),
           ),
         ],
-        AppSectionCard(
-          title: S.of(context).Formula,
-          child: Text(
-            'Tsai-Hill: FI = σ1²/X² − σ1σ2/X² + σ2²/Y² + τ12²/S²\n'
-            '(X=Xt/Y=Yt or Xc/Yc by sign of σ1/σ2)\n\n'
-            'Tsai-Wu: FI = F1σ1+F2σ2+F11σ1²+F22σ2²+F66τ12²+2F12σ1σ2\n'
-            'F1=1/Xt−1/Xc, F2=1/Yt−1/Yc, F11=1/(XtXc), F22=1/(YtYc), F66=1/S², F12=−0.5√(F11F22)',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
+        const FormulaCard(steps: _formulaSteps),
         ParameterSweepCard(
           variableLabel: 'τ12',
           variableCategory: UnitCategory.stress,
@@ -109,11 +107,4 @@ class TsaiFailureResultPage extends StatelessWidget {
       ],
     );
   }
-
-  List<String> _shareLines(NumberPrecisionHelper precs) => [
-        'Tsai-Hill index = ${precs.formatValue(result.tsaiHillIndex)} (${result.tsaiHillIndex < 1 ? 'safe' : 'FAIL'})',
-        'Tsai-Wu index = ${precs.formatValue(result.tsaiWuIndex)} (${result.tsaiWuIndex < 1 ? 'safe' : 'FAIL'})',
-        if (result.tsaiWuStrengthRatio != null)
-          'Tsai-Wu strength ratio R = ${precs.formatValue(result.tsaiWuStrengthRatio)}',
-      ];
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -38,65 +39,59 @@ class BoltedJointResultPage extends StatelessWidget {
     final tool = ToolLibrary.shared.item(toolId, context);
     final governingStress =
         [tauShear, sigmaBearing, sigmaTearOut].reduce((a, b) => a > b ? a : b);
+    final formulaSteps = [
+      'τ = P / (n·planes·π/4·d²)',
+      'σb = P / (n·d·t)',
+      'σt = P / (n·2·(e−d/2)·t)',
+      '',
+      'Governing stress: ${_fv(governingStress, system)}',
+    ];
+
     return ResultScaffold(
       toolName: title,
-      shareLines: () => _shareLines(system),
-      children: [
-        ToolResultHeader(tool: tool),
-        AppSectionCard(
+      formulaSteps: formulaSteps,
+      leading: [ToolResultHeader(tool: tool)],
+      results: [
+        ResultSection(
           title: title,
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: 'Shear stress, τ',
               valueSI: tauShear,
               category: UnitCategory.stress,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'Bearing stress, σb',
               valueSI: sigmaBearing,
               category: UnitCategory.stress,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'Tear-out stress, σt',
               valueSI: sigmaTearOut,
               category: UnitCategory.stress,
             ),
-          ]),
+          ],
         ),
-        if (allowShear != null || allowBearing != null) ...[
-          AppSectionCard(
+        if (allowShear != null || allowBearing != null)
+          ResultSection(
             title: S.of(context).Factor_of_Safety,
-            child: Column(children: [
+            values: [
               if (allowShear != null)
-                AppCopyableValue(
+                ResultValue(
                   label: 'Shear FoS',
-                  value: _f(allowShear! / tauShear),
+                  valueSI: allowShear! / tauShear,
                 ),
               if (allowBearing != null)
-                AppCopyableValue(
+                ResultValue(
                   label: 'Bearing FoS',
-                  value: _f(allowBearing! / sigmaBearing),
+                  valueSI: allowBearing! / sigmaBearing,
                 ),
-            ]),
+            ],
           ),
-        ],
-        AppSectionCard(
-          title: S.of(context).Formulas,
-          child: Text(
-            'τ = P / (n·planes·π/4·d²)\n'
-            'σb = P / (n·d·t)\n'
-            'σt = P / (n·2·(e−d/2)·t)\n\n'
-            'Governing stress: ${_fv(governingStress, system)}',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
+      ],
+      children: [
+        FormulaCard(steps: formulaSteps),
       ],
     );
   }
-
-  List<String> _shareLines(UnitSystem system) => [
-        'τ = ${_fv(tauShear, system)}',
-        'σb = ${_fv(sigmaBearing, system)}',
-        'σt = ${_fv(sigmaTearOut, system)}',
-      ];
 }

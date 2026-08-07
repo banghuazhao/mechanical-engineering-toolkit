@@ -3,8 +3,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/model/bearing_life_calculator.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -32,25 +32,28 @@ class BearingLifeResultPage extends StatelessWidget {
     final system = context.watch<UnitSystemPreference>().system;
     final precs = context.watch<NumberPrecisionHelper>();
     final exponent = type.exponent;
+    final formulaSteps = _steps(context, system, precs);
 
     return ResultScaffold(
       toolName: S.of(context).Bearing_L10_Life,
-      shareLines: () => _shareLines(context, system, precs),
-      children: [
-        AppSectionCard(
+      formulaSteps: formulaSteps,
+      results: [
+        ResultSection(
           title: S.of(context).Bearing_L10_Life,
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: S.of(context).L10_Million_Revolutions,
-              value: precs.formatValue(result.l10Million),
+              valueSI: result.l10Million,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: S.of(context).L10_Hours,
-              value: precs.formatValue(result.l10Hours),
+              valueSI: result.l10Hours,
             ),
-          ]),
+          ],
         ),
-        FormulaCard(steps: _steps(context, system, precs)),
+      ],
+      children: [
+        FormulaCard(steps: formulaSteps),
         ParameterSweepCard(
           variableLabel: S.of(context).Equivalent_Load_P,
           variableCategory: UnitCategory.forceStructural,
@@ -73,15 +76,5 @@ class BearingLifeResultPage extends StatelessWidget {
         '= (${precs.formatSI(c, UnitCategory.forceStructural, system)} / ${precs.formatSI(p, UnitCategory.forceStructural, system)})^${precs.formatValue(type.exponent)}',
         '= ${precs.formatValue(result.l10Million)} million rev',
         'L10h = L10 × 1e6 / (60 × n) = ${precs.formatValue(result.l10Hours)} h',
-      ];
-
-  List<String> _shareLines(BuildContext context, UnitSystem system,
-          NumberPrecisionHelper precs) =>
-      [
-        'L10 = ${precs.formatValue(result.l10Million)} million rev',
-        'L10h = ${precs.formatValue(result.l10Hours)} h',
-        '',
-        'Calculation:',
-        ..._steps(context, system, precs).take(3),
       ];
 }

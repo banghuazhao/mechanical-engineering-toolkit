@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/model/belt_drive_calculator.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -30,57 +30,63 @@ class BeltDriveResultPage extends StatelessWidget {
     final system = context.watch<UnitSystemPreference>().system;
     final precs = context.watch<NumberPrecisionHelper>();
 
+    final formulaSteps = [
+      'ratio = d2/d1 = ${precs.formatSI(d2, UnitCategory.length, system)} / ${precs.formatSI(d1, UnitCategory.length, system)} = ${precs.formatValue(result.ratio)}',
+      'L = 2C + (π/2)(d1+d2) + (d2−d1)²/(4C)',
+      '= ${precs.formatSI(result.beltLength, UnitCategory.length, system)}',
+      'Wrap: θ = π ∓ 2·asin((d2−d1)/(2C))',
+      if (result.drivingTorqueNm != null)
+        'T1 = P/ω1, Ft = T1/(d1/2) — required driving force, not a belt-capacity rating.',
+    ];
+
     return ResultScaffold(
       toolName: S.of(context).Belt_Chain_Drive,
-      shareLines: () => _shareLines(system, precs),
-      children: [
-        AppSectionCard(
+      formulaSteps: formulaSteps,
+      results: [
+        ResultSection(
           title: S.of(context).Belt_Chain_Drive,
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: S.of(context).Speed_Ratio,
-              value: precs.formatValue(result.ratio),
+              valueSI: result.ratio,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: S.of(context).Output_Speed_N2,
               valueSI: result.outputSpeedRpm,
               category: UnitCategory.angularVelocity,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: S.of(context).Belt_Length_L,
               valueSI: result.beltLength,
               category: UnitCategory.length,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: S.of(context).Wrap_Angle_Small_Pulley,
-              value: '${precs.formatValue(result.smallWrapAngleDeg)}°',
+              valueSI: result.smallWrapAngleDeg,
+              category: UnitCategory.angle,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: S.of(context).Wrap_Angle_Large_Pulley,
-              value: '${precs.formatValue(result.largeWrapAngleDeg)}°',
+              valueSI: result.largeWrapAngleDeg,
+              category: UnitCategory.angle,
             ),
             if (result.drivingTorqueNm != null)
-              AppCopyableValue(
+              ResultValue(
                 label: S.of(context).Driving_Torque_T1,
                 valueSI: result.drivingTorqueNm,
                 category: UnitCategory.torque,
               ),
             if (result.beltPullN != null)
-              AppCopyableValue(
+              ResultValue(
                 label: S.of(context).Belt_Pull_Ft,
                 valueSI: result.beltPullN,
                 category: UnitCategory.force,
               ),
-          ]),
+          ],
         ),
-        FormulaCard(steps: [
-          'ratio = d2/d1 = ${precs.formatSI(d2, UnitCategory.length, system)} / ${precs.formatSI(d1, UnitCategory.length, system)} = ${precs.formatValue(result.ratio)}',
-          'L = 2C + (π/2)(d1+d2) + (d2−d1)²/(4C)',
-          '= ${precs.formatSI(result.beltLength, UnitCategory.length, system)}',
-          'Wrap: θ = π ∓ 2·asin((d2−d1)/(2C))',
-          if (result.drivingTorqueNm != null)
-            'T1 = P/ω1, Ft = T1/(d1/2) — required driving force, not a belt-capacity rating.',
-        ]),
+      ],
+      children: [
+        FormulaCard(steps: formulaSteps),
         ParameterSweepCard(
           variableLabel: S.of(context).Center_Distance_C,
           variableCategory: UnitCategory.length,
@@ -100,15 +106,4 @@ class BeltDriveResultPage extends StatelessWidget {
       ],
     );
   }
-
-  List<String> _shareLines(UnitSystem system, NumberPrecisionHelper precs) => [
-        'ratio = ${precs.formatValue(result.ratio)}',
-        'n2 = ${precs.formatSI(result.outputSpeedRpm, UnitCategory.angularVelocity, system)}',
-        'L = ${precs.formatSI(result.beltLength, UnitCategory.length, system)}',
-        'θ_small = ${precs.formatValue(result.smallWrapAngleDeg)}°, θ_large = ${precs.formatValue(result.largeWrapAngleDeg)}°',
-        if (result.drivingTorqueNm != null)
-          'T1 = ${precs.formatSI(result.drivingTorqueNm!, UnitCategory.torque, system)}',
-        if (result.beltPullN != null)
-          'Ft = ${precs.formatSI(result.beltPullN!, UnitCategory.force, system)}',
-      ];
 }

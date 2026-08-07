@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
-import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 class BarTorsionFormulaResultPage extends StatelessWidget {
   BarTorsionFormulaResultPage({
@@ -34,30 +34,30 @@ class BarTorsionFormulaResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final tool = ToolLibrary.shared.item(toolId, context);
+    final formulaSteps = [
+      'τ = T·r / Ip',
+      '= ${_fv(t, UnitCategory.momentSection, system)} × ${_fv(r, UnitCategory.length, system)} / ${_fv(ip, UnitCategory.momentOfInertia, system)}',
+      '= ${_fv(tauMax, UnitCategory.stress, system)}',
+    ];
+
     return ResultScaffold(
       toolName: 'Torsion Formula',
-      shareLines: () => _shareLines(system),
-      children: [
-        ToolResultHeader(tool: tool),
-        AppSectionCard(
+      formulaSteps: formulaSteps,
+      leading: [ToolResultHeader(tool: tool)],
+      results: [
+        ResultSection(
           title: 'Torsion Formula of Bar',
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: 'Maximum shear stress, τ_max',
               valueSI: tauMax,
               category: UnitCategory.stress,
             ),
-          ]),
+          ],
         ),
-        AppSectionCard(
-          title: S.of(context).Formula,
-          child: Text(
-            'τ = T·r / Ip\n'
-            '= ${_fv(t, UnitCategory.momentSection, system)} × ${_fv(r, UnitCategory.length, system)} / ${_fv(ip, UnitCategory.momentOfInertia, system)}\n'
-            '= ${_fv(tauMax, UnitCategory.stress, system)}',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
+      ],
+      children: [
+        FormulaCard(steps: formulaSteps),
         ParameterSweepCard(
           variableLabel: 'Radius, r',
           variableCategory: UnitCategory.length,
@@ -70,12 +70,4 @@ class BarTorsionFormulaResultPage extends StatelessWidget {
     );
   }
 
-  List<String> _shareLines(UnitSystem system) => [
-        'τ_max = ${_fv(tauMax, UnitCategory.stress, system)}',
-        '',
-        'Calculation:',
-        'τ = T·r / Ip',
-        '= ${_fv(t, UnitCategory.momentSection, system)} × ${_fv(r, UnitCategory.length, system)} / ${_fv(ip, UnitCategory.momentOfInertia, system)}',
-        '= ${_fv(tauMax, UnitCategory.stress, system)}',
-      ];
 }

@@ -1,9 +1,11 @@
 import 'package:composite_calculator/composite_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/composite_results.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/engineering_constants_widget.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/result_list_matrix.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -53,8 +55,29 @@ class RulesOfMixtureResultPage extends StatelessWidget {
             categoryForKey: _categoryForKey));
     }
 
+    // The grid layout stays hand-built; declaring the same numbers as data is
+    // what lets the share sheet offer CSV and PDF.
+    final sections = <ResultSection>[];
+    for (final (label, m) in models) {
+      if (m.stiffness.isNotEmpty) {
+        sections.add(matrixSection('$label — Effective Stiffness', m.stiffness));
+      }
+      if (m.compliance.isNotEmpty) {
+        sections
+            .add(matrixSection('$label — Effective Compliance', m.compliance));
+      }
+      if (m.engineeringConstants.isNotEmpty) {
+        sections.add(constantsSection(
+          '$label — ${S.of(context).Engineering_Constants}',
+          m.engineeringConstants,
+          categoryForKey: _categoryForKey,
+        ));
+      }
+    }
+
     return ResultScaffold(
       toolName: 'Rule of Mixtures',
+      results: sections,
       body: SafeArea(
         child: StaggeredGridView.countBuilder(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),

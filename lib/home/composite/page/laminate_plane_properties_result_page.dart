@@ -2,6 +2,7 @@ import 'package:composite_calculator/composite_calculator.dart';
 import 'package:composite_calculator/models/in-plane-properties.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/composite_results.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/engineering_constants_widget.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -63,6 +64,21 @@ class LaminatePlanePropertiesResultPage extends StatelessWidget {
 
     return ResultScaffold(
       toolName: 'Laminate Plane Properties',
+      results: [
+        matrixSection('A Matrix (In-plane)', output.A),
+        matrixSection('B Matrix (Coupling)', output.B),
+        matrixSection('D Matrix (Flexural)', output.D),
+        constantsSection(
+          'In-Plane Properties',
+          _propsMap(output.inPlaneProperties),
+          categoryForKey: _categoryForKey,
+        ),
+        constantsSection(
+          'Flexural Properties',
+          _propsMap(output.flexuralProperties),
+          categoryForKey: _categoryForKey,
+        ),
+      ],
       body: SafeArea(
         child: StaggeredGridView.countBuilder(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),

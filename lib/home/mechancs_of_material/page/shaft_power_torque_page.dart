@@ -6,6 +6,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
@@ -217,33 +218,31 @@ class _ShaftPowerTorqueResultPage extends StatelessWidget {
 
     return ResultScaffold(
       toolName: 'Shaft Power & Torque',
-      shareLines: () => _shareLines(system, precs),
-      children: [
-        ToolResultHeader(tool: tool),
-        AppSectionCard(
+      formulaSteps: steps,
+      leading: [ToolResultHeader(tool: tool)],
+      results: [
+        ResultSection(
           title: 'Shaft Power & Torque',
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: 'Torque, T',
               valueSI: torque,
               category: UnitCategory.torque,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'Power, P',
               valueSI: power / 1000,
               category: UnitCategory.power,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'Angular velocity, ω',
               value: '${precs.formatValue(omega)} rad/s',
             ),
-          ]),
+          ],
         ),
-        AppSectionCard(
-          title: S.of(context).Formula,
-          child: Text(steps.join('\n'),
-              style: Theme.of(context).textTheme.bodyMedium),
-        ),
+      ],
+      children: [
+        FormulaCard(steps: steps),
         ParameterSweepCard(
           variableLabel: 'Speed, n',
           variableCategory: UnitCategory.angularVelocity,
@@ -259,17 +258,4 @@ class _ShaftPowerTorqueResultPage extends StatelessWidget {
     );
   }
 
-  List<String> _shareLines(UnitSystem system, NumberPrecisionHelper precs) {
-    return mode == _SolveFor.torque
-        ? [
-            'T = ${precs.formatSI(torque, UnitCategory.torque, system)}',
-            'P = ${precs.formatValue(power)} W (${precs.formatSI(power / 1000, UnitCategory.power, system)})',
-            'ω = ${precs.formatValue(omega)} rad/s',
-          ]
-        : [
-            'P = ${precs.formatValue(power)} W (${precs.formatSI(power / 1000, UnitCategory.power, system)})',
-            'T = ${precs.formatSI(torque, UnitCategory.torque, system)}',
-            'ω = ${precs.formatValue(omega)} rad/s',
-          ];
-  }
 }

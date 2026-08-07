@@ -6,6 +6,7 @@ import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
@@ -186,21 +187,25 @@ class _BoltPreloadResultPage extends StatelessWidget {
     final system = context.watch<UnitSystemPreference>().system;
     final precs = context.watch<NumberPrecisionHelper>();
 
+    final formulaSteps = _steps(system, precs);
+
     return ResultScaffold(
       toolName: S.of(context).Bolt_Preload_Torque_Tension,
-      shareLines: () => _shareLines(system, precs),
-      children: [
-        AppSectionCard(
+      formulaSteps: formulaSteps,
+      results: [
+        ResultSection(
           title: S.of(context).Bolt_Preload_Torque_Tension,
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: S.of(context).Tightening_Torque_T,
               valueSI: torque,
               category: UnitCategory.torque,
             ),
-          ]),
+          ],
         ),
-        FormulaCard(steps: _steps(system, precs)),
+      ],
+      children: [
+        FormulaCard(steps: formulaSteps),
         ParameterSweepCard(
           variableLabel: S.of(context).Diameter_D,
           variableCategory: UnitCategory.length,
@@ -217,12 +222,5 @@ class _BoltPreloadResultPage extends StatelessWidget {
         'T = K\u00b7F\u00b7d',
         '= ${precs.formatValue(k)} \u00d7 ${precs.formatSI(f, UnitCategory.force, system)} \u00d7 ${precs.formatSI(d, UnitCategory.length, system)}',
         '= ${precs.formatSI(torque, UnitCategory.torque, system)}',
-      ];
-
-  List<String> _shareLines(UnitSystem system, NumberPrecisionHelper precs) => [
-        'T = ${precs.formatSI(torque, UnitCategory.torque, system)}',
-        '',
-        'Calculation:',
-        ..._steps(system, precs),
       ];
 }

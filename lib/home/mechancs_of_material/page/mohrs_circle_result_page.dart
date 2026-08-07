@@ -5,6 +5,7 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/p
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -32,43 +33,47 @@ class MohrsCircleResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final tool = ToolLibrary.shared.item(toolId, context);
+    final steps = _steps(system);
+
     return ResultScaffold(
       toolName: title,
-      shareLines: () => _shareLines(system),
-      children: [
-        ToolResultHeader(tool: tool),
-        AppSectionCard(
+      formulaSteps: steps,
+      leading: [ToolResultHeader(tool: tool)],
+      results: [
+        ResultSection(
           title: title,
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: 'Maximum principal stress, σ1',
               valueSI: result.sigma1,
               category: UnitCategory.stress,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'Minimum principal stress, σ2',
               valueSI: result.sigma2,
               category: UnitCategory.stress,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'Maximum in-plane shear, τmax',
               valueSI: result.tauMax,
               category: UnitCategory.stress,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'Principal-plane angle, θp',
               valueSI: result.thetaP,
               category: UnitCategory.angle,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'Max-shear-plane angle, θs',
               valueSI: result.thetaS,
               category: UnitCategory.angle,
             ),
-          ]),
+          ],
         ),
+      ],
+      children: [
         _circleCard(context, system),
-        CalculationCard(steps: _steps(system)),
+        CalculationCard(steps: steps),
       ],
     );
   }
@@ -109,15 +114,6 @@ class MohrsCircleResultPage extends StatelessWidget {
         'θs = θp − 45° = ${formatFixedSI(result.thetaS, UnitCategory.angle, system)}',
       ];
 
-  List<String> _shareLines(UnitSystem system) => [
-        'σ1 = ${formatFixedSI(result.sigma1, UnitCategory.stress, system)}',
-        'σ2 = ${formatFixedSI(result.sigma2, UnitCategory.stress, system)}',
-        'τmax = ${formatFixedSI(result.tauMax, UnitCategory.stress, system)}',
-        'θp = ${formatFixedSI(result.thetaP, UnitCategory.angle, system)}',
-        'θs = ${formatFixedSI(result.thetaS, UnitCategory.angle, system)}',
-        '',
-        ..._steps(system),
-      ];
 }
 
 class _MohrsCirclePainter extends CustomPainter {

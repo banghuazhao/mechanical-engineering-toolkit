@@ -3,6 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:linalg/matrix.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/mechanical_tensor_model.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/composite_results.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/result_6by6_matrix.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -36,8 +37,36 @@ class _StressStrainLinearElasticResultPageState
   @override
   Widget build(BuildContext context) {
     final tool = ToolLibrary.shared.item(widget.toolId, context);
+    final tensor = widget.mechanicalTensor;
+    final isStress = tensor is LinearStress;
+
     return ResultScaffold(
       toolName: 'Stress-Strain of Linear Elastic Material',
+      results: [
+        constantsSection(
+          isStress ? S.of(context).Result_Stress : S.of(context).Result_Strain,
+          isStress
+              ? {
+                  'σ11': tensor.s11,
+                  'σ22': tensor.s22,
+                  'σ33': tensor.s33,
+                  'σ23': tensor.s23,
+                  'σ13': tensor.s13,
+                  'σ12': tensor.s12,
+                }
+              : {
+                  'ε11': (tensor as LinearStrain).epsilon11,
+                  'ε22': tensor.epsilon22,
+                  'ε33': tensor.epsilon33,
+                  'ε23': tensor.epsilon23,
+                  'ε13': tensor.epsilon13,
+                  'ε12': tensor.epsilon12,
+                },
+          categoryForKey: isStress ? (_) => UnitCategory.stress : null,
+        ),
+        matrixSection(S.of(context).Stiffness_Matrix_C, matrixRows(widget.C)),
+        matrixSection(S.of(context).Compliance_Matrix_S, matrixRows(widget.S)),
+      ],
       body: SafeArea(
         child: StaggeredGridView.countBuilder(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
-import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 
 class BarForceDisplacementResultPage extends StatelessWidget {
   BarForceDisplacementResultPage({
@@ -36,30 +36,30 @@ class BarForceDisplacementResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final tool = ToolLibrary.shared.item(toolId, context);
+    final formulaSteps = [
+      'δ = F·L / (E·A)',
+      '= ${_fv(f, UnitCategory.force, system)} × ${_fv(l, UnitCategory.length, system)} / (${_fv(e, UnitCategory.modulus, system)} × ${_fv(a, UnitCategory.area, system)})',
+      '= ${_fv(delta, UnitCategory.length, system)}',
+    ];
+
     return ResultScaffold(
       toolName: 'Bar Force & Displacement',
-      shareLines: () => _shareLines(system),
-      children: [
-        ToolResultHeader(tool: tool),
-        AppSectionCard(
+      formulaSteps: formulaSteps,
+      leading: [ToolResultHeader(tool: tool)],
+      results: [
+        ResultSection(
           title: 'Bar Force & Displacement',
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: 'Displacement, δ',
               valueSI: delta,
               category: UnitCategory.length,
             ),
-          ]),
+          ],
         ),
-        AppSectionCard(
-          title: S.of(context).Formula,
-          child: Text(
-            'δ = F·L / (E·A)\n'
-            '= ${_fv(f, UnitCategory.force, system)} × ${_fv(l, UnitCategory.length, system)} / (${_fv(e, UnitCategory.modulus, system)} × ${_fv(a, UnitCategory.area, system)})\n'
-            '= ${_fv(delta, UnitCategory.length, system)}',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
+      ],
+      children: [
+        FormulaCard(steps: formulaSteps),
         ParameterSweepCard(
           variableLabel: 'Length, L',
           variableCategory: UnitCategory.length,
@@ -72,12 +72,4 @@ class BarForceDisplacementResultPage extends StatelessWidget {
     );
   }
 
-  List<String> _shareLines(UnitSystem system) => [
-        'δ = ${_fv(delta, UnitCategory.length, system)}',
-        '',
-        'Calculation:',
-        'δ = F·L / (E·A)',
-        '= ${_fv(f, UnitCategory.force, system)} × ${_fv(l, UnitCategory.length, system)} / (${_fv(e, UnitCategory.modulus, system)} × ${_fv(a, UnitCategory.area, system)})',
-        '= ${_fv(delta, UnitCategory.length, system)}',
-      ];
 }

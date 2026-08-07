@@ -1,6 +1,7 @@
 import 'package:composite_calculator/composite_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/composite_results.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/engineering_constants_widget.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -50,6 +51,15 @@ class LaminaStressStrainResultPage extends StatelessWidget {
 
     return ResultScaffold(
       toolName: 'Lamina Stress-Strain',
+      results: [
+        constantsSection(
+          isStress ? 'Stress Result' : 'Strain Result',
+          resultConstants,
+          categoryForKey: isStress ? (_) => UnitCategory.stress : null,
+        ),
+        matrixSection('Stiffness Matrix Q̄', output.Q),
+        matrixSection('Compliance Matrix S̄', output.S),
+      ],
       body: SafeArea(
         child: StaggeredGridView.countBuilder(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),

@@ -4,6 +4,7 @@ import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -313,13 +314,31 @@ class _ResultPage extends StatelessWidget {
     return ResultScaffold(
       title: title,
       toolName: title,
-      shareLines: () => [
-        'Ra = ${_fv(solved.Ra, UnitCategory.force, system)}',
-        'Rb = ${_fv(solved.Rb, UnitCategory.force, system)}',
-        'M_max = ${_fv(solved.maxM, UnitCategory.torque, system)}',
+      formulaSteps: solved.steps,
+      leading: [ToolResultHeader(tool: tool)],
+      results: [
+        ResultSection(
+          title: title,
+          values: [
+            ResultValue(
+              label: 'Ra',
+              valueSI: solved.Ra,
+              category: UnitCategory.force,
+            ),
+            ResultValue(
+              label: 'Rb',
+              valueSI: solved.Rb,
+              category: UnitCategory.force,
+            ),
+            ResultValue(
+              label: 'M_max',
+              valueSI: solved.maxM,
+              category: UnitCategory.torque,
+            ),
+          ],
+        ),
       ],
       children: [
-        ToolResultHeader(tool: tool),
         CalculationCard(steps: solved.steps),
       ],
     );

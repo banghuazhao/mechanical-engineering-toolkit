@@ -5,7 +5,6 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
-import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -39,17 +38,6 @@ class SphericalShellStressResultPage extends StatefulWidget {
 
 class _SphericalShellStressResultPageState
     extends State<SphericalShellStressResultPage> {
-  String _fv(BuildContext context, double? valueSI, UnitCategory? category) {
-    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
-    if (category == null) {
-      return precs.formatValue(valueSI);
-    }
-    final system =
-        Provider.of<UnitSystemPreference>(context, listen: false).system;
-    final display = valueSI == null ? null : fromSI(valueSI, category, system);
-    return '${precs.formatValue(display)} ${unitLabel(category, system)}';
-  }
-
   @override
   Widget build(BuildContext context) {
     context.watch<UnitSystemPreference>();
@@ -59,12 +47,14 @@ class _SphericalShellStressResultPageState
 
     return ResultScaffold(
       toolName: widget.rowTitle,
-      shareLines: () => [
-        for (var i = 0; i < widget.titles.length; i++)
-          '${widget.titles[i]} = ${_fv(context, widget.values[i], widget.valueUnits?[i])}',
-        if (hasCalc) '',
-        if (hasCalc) 'Calculation:',
-        if (hasCalc) ...widget.calculationSteps!,
+      formulaSteps: hasCalc ? widget.calculationSteps! : const [],
+      results: [
+        multipleRowSection(
+          title: widget.rowTitle,
+          resultTitles: widget.titles,
+          resultValues: widget.values,
+          resultUnits: widget.valueUnits,
+        ),
       ],
       body: SafeArea(
         child: StaggeredGridView.countBuilder(

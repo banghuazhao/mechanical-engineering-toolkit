@@ -49,6 +49,7 @@ class ResultScaffold extends StatefulWidget {
     this.children,
     this.body,
     this.results,
+    this.leading = const [],
     this.title,
     this.shareLines,
     this.extraActions = const [],
@@ -63,6 +64,13 @@ class ResultScaffold extends StatefulWidget {
   /// Result cards, laid out top to bottom. Ignored when [body] is given.
   final List<Widget>? children;
 
+  /// Cards rendered above the declared [results] — the tool header, and
+  /// anything else that belongs before the numbers, such as a diagram.
+  ///
+  /// [children] land *below* the result cards, so whatever has to stay at the
+  /// top goes here instead. Ignored when [body] is given.
+  final List<Widget> leading;
+
   /// The page's results declared as data.
   ///
   /// Supplying these is the preferred form: the cards on screen, the plain
@@ -72,8 +80,9 @@ class ResultScaffold extends StatefulWidget {
   /// export possible at all — a `List<String>` has already fused label, value,
   /// and unit into one string.
   ///
-  /// When given, these render above [children] and supply [shareLines] if the
-  /// page did not provide its own.
+  /// When given, these render between [header] and [children], and supply
+  /// [shareLines] if the page did not provide its own. A page with a custom
+  /// [body] renders its own way and declares these purely to be exported.
   final List<ResultSection>? results;
 
   /// Replaces the default list layout for pages that need something else —
@@ -184,11 +193,12 @@ class _ResultScaffoldState extends State<ResultScaffold> {
     }
   }
 
-  /// Declared results render first, as one card per section, followed by any
-  /// hand-built [ResultScaffold.children] the page still needs (diagrams,
-  /// sweeps, formula cards).
+  /// [ResultScaffold.leading] leads, then the declared results as one card per
+  /// section, then any hand-built [ResultScaffold.children] the page still
+  /// needs (diagrams, sweeps, formula cards).
   Widget _buildList(BuildContext context, AppTokens tokens) {
     final cards = <Widget>[
+      ...widget.leading,
       for (final section in widget.results ?? const <ResultSection>[])
         AppSectionCard(
           title: section.title,

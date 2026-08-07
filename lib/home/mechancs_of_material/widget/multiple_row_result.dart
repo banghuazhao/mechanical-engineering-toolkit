@@ -4,7 +4,35 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:provider/provider.dart';
+
+/// Declares the same rows a [MultipleRowResult] renders, so a page laying its
+/// results out by hand can still hand them to the CSV and PDF exports.
+///
+/// Rows with no value are left out rather than exported as a zero.
+ResultSection multipleRowSection({
+  required String title,
+  required List<String> resultTitles,
+  required List<double?> resultValues,
+  List<UnitCategory?>? resultUnits,
+}) {
+  return ResultSection(
+    title: title,
+    values: [
+      for (var i = 0; i < resultTitles.length; i++)
+        if (i < resultValues.length && resultValues[i] != null)
+          ResultValue(
+            label: resultTitles[i],
+            valueSI: resultValues[i],
+            category:
+                resultUnits != null && i < resultUnits.length
+                    ? resultUnits[i]
+                    : null,
+          ),
+    ],
+  );
+}
 
 class MultipleRowResult extends StatelessWidget {
   final String title;

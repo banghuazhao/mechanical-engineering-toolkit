@@ -6,6 +6,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
@@ -214,34 +215,34 @@ class _AngleOfTwistResultPage extends StatelessWidget {
     final precs = context.watch<NumberPrecisionHelper>();
     final tool = ToolLibrary.shared.item(toolId, context);
 
+    final formulaSteps = [
+      'φ = T·L / (G·J)',
+      '= ${precs.formatSI(t, UnitCategory.momentSection, system)} × ${precs.formatSI(l, UnitCategory.length, system)} / (${precs.formatSI(g, UnitCategory.modulus, system)} × ${precs.formatSI(j, UnitCategory.momentOfInertia, system)})',
+      '= ${precs.formatValue(phiRad)} rad = ${precs.formatValue(phiDeg)}°',
+    ];
+
     return ResultScaffold(
       toolName: 'Angle of Twist',
-      shareLines: () => _shareLines(system, precs),
-      children: [
-        ToolResultHeader(tool: tool),
-        AppSectionCard(
+      formulaSteps: formulaSteps,
+      leading: [ToolResultHeader(tool: tool)],
+      results: [
+        ResultSection(
           title: 'Angle of Twist',
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: 'Angle, φ (radians)',
-              value: precs.formatValue(phiRad),
+              valueSI: phiRad,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'Angle, φ (degrees)',
               valueSI: phiDeg,
               category: UnitCategory.angle,
             ),
-          ]),
+          ],
         ),
-        AppSectionCard(
-          title: S.of(context).Formula,
-          child: Text(
-            'φ = T·L / (G·J)\n'
-            '= ${precs.formatSI(t, UnitCategory.momentSection, system)} × ${precs.formatSI(l, UnitCategory.length, system)} / (${precs.formatSI(g, UnitCategory.modulus, system)} × ${precs.formatSI(j, UnitCategory.momentOfInertia, system)})\n'
-            '= ${precs.formatValue(phiRad)} rad = ${precs.formatValue(phiDeg)}°',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
+      ],
+      children: [
+        FormulaCard(steps: formulaSteps),
         ParameterSweepCard(
           variableLabel: 'Length, L',
           variableCategory: UnitCategory.length,
@@ -254,12 +255,4 @@ class _AngleOfTwistResultPage extends StatelessWidget {
     );
   }
 
-  List<String> _shareLines(UnitSystem system, NumberPrecisionHelper precs) => [
-        'φ = ${precs.formatValue(phiRad)} rad (${precs.formatValue(phiDeg)}°)',
-        '',
-        'Calculation:',
-        'φ = T·L / (G·J)',
-        '= ${precs.formatSI(t, UnitCategory.momentSection, system)} × ${precs.formatSI(l, UnitCategory.length, system)} / (${precs.formatSI(g, UnitCategory.modulus, system)} × ${precs.formatSI(j, UnitCategory.momentOfInertia, system)})',
-        '= ${precs.formatValue(phiRad)} rad = ${precs.formatValue(phiDeg)}°',
-      ];
 }

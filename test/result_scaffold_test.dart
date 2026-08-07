@@ -206,6 +206,41 @@ void main() {
       expect(find.byKey(const Key('shareFormatText')), findsOneWidget);
     });
 
+    testWidgets('renders leading cards above the declared results',
+        (tester) async {
+      await tester.pumpWidget(_wrap(const ResultScaffold(
+        toolName: 'Widget Test Tool',
+        leading: [AppSectionCard(title: 'Diagram', child: Text('picture'))],
+        results: sections,
+      )));
+      await tester.pumpAndSettle();
+
+      expect(
+        tester.getTopLeft(find.text('DIAGRAM')).dy,
+        lessThan(tester.getTopLeft(find.text('SPRING')).dy),
+      );
+    });
+
+    testWidgets('exports declared results even when a custom body renders them',
+        (tester) async {
+      await tester.pumpWidget(_wrap(const ResultScaffold(
+        toolName: 'Widget Test Tool',
+        results: sections,
+        body: Center(child: Text('custom body')),
+      )));
+      await tester.pumpAndSettle();
+
+      // The page draws itself; the declaration exists purely to be exported.
+      expect(find.text('custom body'), findsOneWidget);
+      expect(find.text('SPRING'), findsNothing);
+
+      await tester.tap(find.byKey(const Key('shareResults')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('shareFormatCsv')), findsOneWidget);
+      expect(find.byKey(const Key('shareFormatPdf')), findsOneWidget);
+    });
+
     testWidgets('renders declared results above hand-built children',
         (tester) async {
       await tester.pumpWidget(_wrap(const ResultScaffold(

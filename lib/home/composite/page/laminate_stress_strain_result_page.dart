@@ -5,6 +5,7 @@ import 'package:composite_calculator/utils/layup_parser.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/composite_results.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -144,6 +145,12 @@ class _LaminateStressStrainResultPageState
 
     return ResultScaffold(
       toolName: 'Laminate Stress-Strain',
+      results: [
+        constantsSection(
+          isStress ? 'Stress Resultants' : 'Mid-plane Strains & Curvatures',
+          resultMap,
+        ),
+      ],
       body: SafeArea(
         child: StaggeredGridView.countBuilder(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),

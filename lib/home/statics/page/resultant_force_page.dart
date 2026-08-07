@@ -4,6 +4,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
@@ -247,14 +248,36 @@ class _ResultPage extends StatelessWidget {
     return ResultScaffold(
       title: title,
       toolName: title,
-      shareLines: () => [
-        '\u03a3Fx = ${_fv(sumFx, system)}',
-        '\u03a3Fy = ${_fv(sumFy, system)}',
-        'R = ${_fv(R, system)}',
-        '\u03b8 = ${formatFixed4(theta)}\u00b0',
+      formulaSteps: steps,
+      leading: [ToolResultHeader(tool: tool)],
+      results: [
+        ResultSection(
+          title: title,
+          values: [
+            ResultValue(
+              label: '\u03a3Fx',
+              valueSI: sumFx,
+              category: UnitCategory.force,
+            ),
+            ResultValue(
+              label: '\u03a3Fy',
+              valueSI: sumFy,
+              category: UnitCategory.force,
+            ),
+            ResultValue(
+              label: 'R',
+              valueSI: R,
+              category: UnitCategory.force,
+            ),
+            ResultValue(
+              label: '\u03b8',
+              valueSI: theta,
+              category: UnitCategory.angle,
+            ),
+          ],
+        ),
       ],
       children: [
-        ToolResultHeader(tool: tool),
         CalculationCard(steps: steps),
       ],
     );

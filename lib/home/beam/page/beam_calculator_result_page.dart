@@ -4,6 +4,7 @@ import 'package:mechanical_engineering_toolkit/home/beam/model/simply_supported_
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/xy_diagram_card.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -28,36 +29,55 @@ class BeamCalculatorResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final tool = ToolLibrary.shared.item(toolId, context);
+    final reactionSteps = _reactionSteps(system);
+    final responseSteps = _responseSteps(system);
+
     return ResultScaffold(
       toolName: title,
-      shareLines: () => _shareLines(system),
-      children: [
-        ToolResultHeader(tool: tool),
-        AppSectionCard(
+      formulaSteps: [...reactionSteps, '', ...responseSteps],
+      leading: [ToolResultHeader(tool: tool)],
+      results: [
+        ResultSection(
           title: title,
-          child: Column(children: [
-            AppCopyableValue(
-                label: S.of(context).Left_Reaction_RA,
-                value: _fv(
-                    result.leftReaction, UnitCategory.forceStructural, system)),
-            AppCopyableValue(
-                label: S.of(context).Right_Reaction_RB,
-                value: _fv(result.rightReaction, UnitCategory.forceStructural,
-                    system)),
-            AppCopyableValue(
+          values: [
+            ResultValue(
+              label: S.of(context).Left_Reaction_RA,
+              valueSI: result.leftReaction,
+              category: UnitCategory.forceStructural,
+            ),
+            ResultValue(
+              label: S.of(context).Right_Reaction_RB,
+              valueSI: result.rightReaction,
+              category: UnitCategory.forceStructural,
+            ),
+            // Magnitude and its location are separate rows: a spreadsheet
+            // cannot split "12 kN·m at x = 2 m" back into two numbers.
+            ResultValue(
               label: S.of(context).Maximum_Bending_Moment,
-              value:
-                  '${_fv(result.maximumMoment, UnitCategory.momentStructural, system)} at x = ${_fv(result.maximumMomentPosition, UnitCategory.span, system)}',
+              valueSI: result.maximumMoment,
+              category: UnitCategory.momentStructural,
             ),
-            AppCopyableValue(
+            ResultValue(
+              label: '${S.of(context).Maximum_Bending_Moment} @ x',
+              valueSI: result.maximumMomentPosition,
+              category: UnitCategory.span,
+            ),
+            ResultValue(
               label: S.of(context).Maximum_Downward_Deflection,
-              value:
-                  '${_fv(result.maximumDeflection, UnitCategory.length, system)} at x = ${_fv(result.maximumDeflectionPosition, UnitCategory.span, system)}',
+              valueSI: result.maximumDeflection,
+              category: UnitCategory.length,
             ),
-          ]),
+            ResultValue(
+              label: '${S.of(context).Maximum_Downward_Deflection} @ x',
+              valueSI: result.maximumDeflectionPosition,
+              category: UnitCategory.span,
+            ),
+          ],
         ),
-        CalculationCard(steps: _reactionSteps(system)),
-        CalculationCard(steps: _responseSteps(system)),
+      ],
+      children: [
+        CalculationCard(steps: reactionSteps),
+        CalculationCard(steps: responseSteps),
         XYDiagramCard(
           title: S.of(context).Shear_Force_Diagram,
           xUnitLabel: unitLabel(UnitCategory.span, system),
@@ -108,17 +128,6 @@ class BeamCalculatorResultPage extends StatelessWidget {
         'Point load, x≤a: v(x) = Pb·x(L²−b²−x²)/(6LEI)',
         'Point load, x≥a: v(x) = Pa(L−x)[L²−a²−(L−x)²]/(6LEI)',
         'vmax = ${_fv(result.maximumDeflection, UnitCategory.length, system)} downward at x = ${_fv(result.maximumDeflectionPosition, UnitCategory.span, system)}',
-      ];
-
-  List<String> _shareLines(UnitSystem system) => [
-        'RA = ${_fv(result.leftReaction, UnitCategory.forceStructural, system)}',
-        'RB = ${_fv(result.rightReaction, UnitCategory.forceStructural, system)}',
-        'Mmax = ${_fv(result.maximumMoment, UnitCategory.momentStructural, system)} at ${_fv(result.maximumMomentPosition, UnitCategory.span, system)}',
-        'Deflection max = ${_fv(result.maximumDeflection, UnitCategory.length, system)} at ${_fv(result.maximumDeflectionPosition, UnitCategory.span, system)}',
-        '',
-        ..._reactionSteps(system),
-        '',
-        ..._responseSteps(system),
       ];
 
   String _f(double value) =>

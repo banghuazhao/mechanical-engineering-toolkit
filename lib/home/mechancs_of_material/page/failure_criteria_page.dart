@@ -6,6 +6,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
@@ -229,49 +230,51 @@ class _FailureCriteriaResultPage extends StatelessWidget {
     final fsVm = hasSy ? yieldStrength! / vonMises : null;
     final fsTresca = hasSy ? yieldStrength! / tresca : null;
 
+    final formulaSteps = [
+      'R = √(((σx−σy)/2)² + τ²) = ${precs.formatSI(r, UnitCategory.stress, system)}',
+      'σ1 = (σx+σy)/2 + R = ${precs.formatSI(avg, UnitCategory.stress, system)} + ${precs.formatSI(r, UnitCategory.stress, system)} = ${precs.formatSI(s1, UnitCategory.stress, system)}',
+      'σ2 = (σx+σy)/2 − R = ${precs.formatSI(avg, UnitCategory.stress, system)} − ${precs.formatSI(r, UnitCategory.stress, system)} = ${precs.formatSI(s2, UnitCategory.stress, system)}',
+      'σ_VM = √(σ1²−σ1σ2+σ2²) = ${precs.formatSI(vonMises, UnitCategory.stress, system)}',
+      'σ_Tresca = |σ1−σ2| = ${precs.formatSI(tresca, UnitCategory.stress, system)}, τ_max = ${precs.formatSI(tauMax, UnitCategory.stress, system)}',
+      if (hasSy) 'FS_VM = Sy/σ_VM = ${precs.formatValue(fsVm)}',
+      if (hasSy) 'FS_Tresca = Sy/σ_Tresca = ${precs.formatValue(fsTresca)}',
+    ];
+
     return ResultScaffold(
       toolName: 'Failure Criteria',
-      shareLines: () => _shareLines(system, precs, hasSy, fsVm, fsTresca),
-      children: [
-        AppSectionCard(
+      formulaSteps: formulaSteps,
+      results: [
+        ResultSection(
           title: S.of(context).Stress_Results,
-          child: Column(children: [
-            AppCopyableValue(
-                label: 'σ₁', valueSI: s1, category: UnitCategory.stress),
-            AppCopyableValue(
-                label: 'σ₂', valueSI: s2, category: UnitCategory.stress),
-            AppCopyableValue(
+          values: [
+            ResultValue(label: 'σ₁', valueSI: s1, category: UnitCategory.stress),
+            ResultValue(label: 'σ₂', valueSI: s2, category: UnitCategory.stress),
+            ResultValue(
                 label: 'σ_VM (von Mises)',
                 valueSI: vonMises,
                 category: UnitCategory.stress),
-            AppCopyableValue(
+            ResultValue(
                 label: 'τ_max', valueSI: tauMax, category: UnitCategory.stress),
-            AppCopyableValue(
+            ResultValue(
                 label: 'σ_Tresca',
                 valueSI: tresca,
                 category: UnitCategory.stress),
-          ]),
+          ],
         ),
-        if (hasSy) ...[
-          AppSectionCard(
+        if (hasSy)
+          ResultSection(
             title: S.of(context).Factor_of_Safety,
-            child: Column(children: [
-              AppCopyableValue(
-                  label: 'FS (von Mises)', value: precs.formatValue(fsVm)),
-              AppCopyableValue(
-                  label: 'FS (Tresca)', value: precs.formatValue(fsTresca)),
-            ]),
+            values: [
+              ResultValue(label: 'FS (von Mises)', valueSI: fsVm),
+              ResultValue(label: 'FS (Tresca)', valueSI: fsTresca),
+            ],
           ),
-        ],
+      ],
+      children: [
         AppSectionCard(
           title: S.of(context).Calculation,
           child: Text(
-            'R = √(((σx−σy)/2)² + τ²) = ${precs.formatSI(r, UnitCategory.stress, system)}\n'
-            'σ1 = (σx+σy)/2 + R = ${precs.formatSI(avg, UnitCategory.stress, system)} + ${precs.formatSI(r, UnitCategory.stress, system)} = ${precs.formatSI(s1, UnitCategory.stress, system)}\n'
-            'σ2 = (σx+σy)/2 − R = ${precs.formatSI(avg, UnitCategory.stress, system)} − ${precs.formatSI(r, UnitCategory.stress, system)} = ${precs.formatSI(s2, UnitCategory.stress, system)}\n'
-            'σ_VM = √(σ1²−σ1σ2+σ2²) = ${precs.formatSI(vonMises, UnitCategory.stress, system)}\n'
-            'σ_Tresca = |σ1−σ2| = ${precs.formatSI(tresca, UnitCategory.stress, system)}, τ_max = ${precs.formatSI(tauMax, UnitCategory.stress, system)}'
-            '${hasSy ? '\nFS_VM = Sy/σ_VM = ${precs.formatValue(fsVm)}\nFS_Tresca = Sy/σ_Tresca = ${precs.formatValue(fsTresca)}' : ''}',
+            formulaSteps.join('\n'),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
@@ -292,20 +295,4 @@ class _FailureCriteriaResultPage extends StatelessWidget {
     );
   }
 
-  List<String> _shareLines(UnitSystem system, NumberPrecisionHelper precs,
-      bool hasSy, double? fsVm, double? fsTresca) {
-    return [
-      'σ₁ = ${precs.formatSI(s1, UnitCategory.stress, system)}, σ₂ = ${precs.formatSI(s2, UnitCategory.stress, system)}',
-      'σ_VM = ${precs.formatSI(vonMises, UnitCategory.stress, system)}',
-      'σ_Tresca = ${precs.formatSI(tresca, UnitCategory.stress, system)}, τ_max = ${precs.formatSI(tauMax, UnitCategory.stress, system)}',
-      if (hasSy) 'FS_VM = ${precs.formatValue(fsVm)}',
-      if (hasSy) 'FS_Tresca = ${precs.formatValue(fsTresca)}',
-      '',
-      'Calculation:',
-      'R = √(((σx−σy)/2)² + τ²) = ${precs.formatSI(r, UnitCategory.stress, system)}',
-      'σ1 = ${precs.formatSI(avg, UnitCategory.stress, system)} + ${precs.formatSI(r, UnitCategory.stress, system)} = ${precs.formatSI(s1, UnitCategory.stress, system)}',
-      'σ2 = ${precs.formatSI(avg, UnitCategory.stress, system)} − ${precs.formatSI(r, UnitCategory.stress, system)} = ${precs.formatSI(s2, UnitCategory.stress, system)}',
-      'σ_VM = √(σ1²−σ1σ2+σ2²) = ${precs.formatSI(vonMises, UnitCategory.stress, system)}',
-    ];
-  }
 }

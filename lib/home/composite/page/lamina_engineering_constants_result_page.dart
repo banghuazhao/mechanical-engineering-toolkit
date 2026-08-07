@@ -7,6 +7,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/thermal_constants_row.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
@@ -129,6 +130,21 @@ class _LaminaEngineeringConstantsResultPageState
 
     return ResultScaffold(
       toolName: 'Lamina Engineering Constants',
+      // The constants vary with the slider, so the export describes the angle
+      // currently shown rather than the whole sweep behind the charts.
+      results: [
+        ResultSection(
+          title: 'Layup angle ${doubleToString(layupAngle, keepDecimal: 0)}°',
+          values: [
+            for (final (label, value, category) in allRows)
+              ResultValue(
+                label: label,
+                valueSI: value ?? 0,
+                category: category,
+              ),
+          ],
+        ),
+      ],
       body: SafeArea(
         child: StaggeredGridView.countBuilder(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),

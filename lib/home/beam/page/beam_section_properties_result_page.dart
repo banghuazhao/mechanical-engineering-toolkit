@@ -4,6 +4,7 @@ import 'package:mechanical_engineering_toolkit/home/beam/model/beam_section_calc
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -27,36 +28,51 @@ class BeamSectionPropertiesResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final tool = ToolLibrary.shared.item(toolId, context);
+    final steps = _calculationSteps(system);
+
     return ResultScaffold(
       toolName: title,
-      shareLines: () => _shareLines(system),
-      children: [
-        ToolResultHeader(tool: tool),
-        AppSectionCard(
+      formulaSteps: steps,
+      leading: [ToolResultHeader(tool: tool)],
+      results: [
+        ResultSection(
           title: title,
-          child: Column(children: [
-            AppCopyableValue(
-                label: S.of(context).Area_A,
-                value: _fv(result.area, UnitCategory.area, system)),
-            AppCopyableValue(
-                label: S.of(context).Second_Moment_Ix,
-                value: _fv(result.ix, UnitCategory.momentOfInertia, system)),
-            AppCopyableValue(
-                label: S.of(context).Second_Moment_Iy,
-                value: _fv(result.iy, UnitCategory.momentOfInertia, system)),
-            AppCopyableValue(
-                label: S.of(context).Section_Modulus_Zx,
-                value: _fv(result.zx, UnitCategory.sectionModulus, system)),
-            AppCopyableValue(
-                label: S.of(context).Section_Modulus_Zy,
-                value: _fv(result.zy, UnitCategory.sectionModulus, system)),
-            AppCopyableValue(
-                label: S.of(context).Polar_Area_Moment_J,
-                value: _fv(
-                    result.polarMoment, UnitCategory.momentOfInertia, system)),
-          ]),
+          values: [
+            ResultValue(
+              label: S.of(context).Area_A,
+              valueSI: result.area,
+              category: UnitCategory.area,
+            ),
+            ResultValue(
+              label: S.of(context).Second_Moment_Ix,
+              valueSI: result.ix,
+              category: UnitCategory.momentOfInertia,
+            ),
+            ResultValue(
+              label: S.of(context).Second_Moment_Iy,
+              valueSI: result.iy,
+              category: UnitCategory.momentOfInertia,
+            ),
+            ResultValue(
+              label: S.of(context).Section_Modulus_Zx,
+              valueSI: result.zx,
+              category: UnitCategory.sectionModulus,
+            ),
+            ResultValue(
+              label: S.of(context).Section_Modulus_Zy,
+              valueSI: result.zy,
+              category: UnitCategory.sectionModulus,
+            ),
+            ResultValue(
+              label: S.of(context).Polar_Area_Moment_J,
+              valueSI: result.polarMoment,
+              category: UnitCategory.momentOfInertia,
+            ),
+          ],
         ),
-        CalculationCard(steps: _calculationSteps(system)),
+      ],
+      children: [
+        CalculationCard(steps: steps),
         Text(
           S.of(context).Note_Polar_Moment,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -129,16 +145,6 @@ class BeamSectionPropertiesResultPage extends StatelessWidget {
         ],
     };
   }
-
-  List<String> _shareLines(UnitSystem system) => [
-        'A = ${_fv(result.area, UnitCategory.area, system)}',
-        'Ix = ${_fv(result.ix, UnitCategory.momentOfInertia, system)}',
-        'Iy = ${_fv(result.iy, UnitCategory.momentOfInertia, system)}',
-        'Zx = ${_fv(result.zx, UnitCategory.sectionModulus, system)}',
-        'Zy = ${_fv(result.zy, UnitCategory.sectionModulus, system)}',
-        '',
-        ..._calculationSteps(system),
-      ];
 
   String _f(double value) => value.abs() >= 1e6
       ? value.toStringAsExponential(4)

@@ -6,6 +6,7 @@ import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
@@ -193,26 +194,30 @@ class _FilletWeldResultPage extends StatelessWidget {
     final hasAllow = allow != null && allow! > 0;
     final fos = hasAllow ? allow! / tau : null;
 
+    final formulaSteps = _steps(system, precs);
+
     return ResultScaffold(
       toolName: S.of(context).Fillet_Weld_Strength,
-      shareLines: () => _shareLines(system, precs, fos),
-      children: [
-        AppSectionCard(
+      formulaSteps: formulaSteps,
+      results: [
+        ResultSection(
           title: S.of(context).Fillet_Weld_Strength,
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: 'Shear stress, \u03c4',
               valueSI: tau,
               category: UnitCategory.stress,
             ),
             if (fos != null)
-              AppCopyableValue(
+              ResultValue(
                 label: S.of(context).Factor_of_Safety,
-                value: precs.formatValue(fos),
+                valueSI: fos,
               ),
-          ]),
+          ],
         ),
-        FormulaCard(steps: _steps(system, precs)),
+      ],
+      children: [
+        FormulaCard(steps: formulaSteps),
         ParameterSweepCard(
           variableLabel: S.of(context).Leg_Size_W,
           variableCategory: UnitCategory.length,
@@ -229,15 +234,5 @@ class _FilletWeldResultPage extends StatelessWidget {
         '\u03c4 = F / (0.707\u00b7w\u00b7L)',
         '= ${precs.formatSI(f, UnitCategory.force, system)} / (0.707 \u00d7 ${precs.formatSI(w, UnitCategory.length, system)} \u00d7 ${precs.formatSI(l, UnitCategory.length, system)})',
         '= ${precs.formatSI(tau, UnitCategory.stress, system)}',
-      ];
-
-  List<String> _shareLines(
-          UnitSystem system, NumberPrecisionHelper precs, double? fos) =>
-      [
-        '\u03c4 = ${precs.formatSI(tau, UnitCategory.stress, system)}',
-        if (fos != null) 'FoS = ${precs.formatValue(fos)}',
-        '',
-        'Calculation:',
-        ..._steps(system, precs),
       ];
 }

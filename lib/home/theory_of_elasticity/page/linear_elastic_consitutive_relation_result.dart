@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:linalg/matrix.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/composite_results.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/result_6by6_matrix.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -28,6 +29,10 @@ class _LinearElasticConstitutiveResultPageState
     final tool = ToolLibrary.shared.item(widget.toolId, context);
     return ResultScaffold(
       toolName: 'Constitutive Relation',
+      results: [
+        matrixSection(S.of(context).Stiffness_Matrix_C, matrixRows(widget.C)),
+        matrixSection(S.of(context).Compliance_Matrix_S, matrixRows(widget.S)),
+      ],
       body: SafeArea(
         child: StaggeredGridView.countBuilder(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),

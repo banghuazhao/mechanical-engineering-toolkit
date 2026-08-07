@@ -4,6 +4,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
@@ -194,30 +195,30 @@ class _TransverseShearStressResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final system = context.watch<UnitSystemPreference>().system;
     final tool = ToolLibrary.shared.item(toolId, context);
+    final formulaSteps = [
+      'τ = V·Q / (I·t)',
+      '= ${_fv(v, UnitCategory.force, system)} × ${_fv(q, UnitCategory.sectionModulus, system)} / (${_fv(i, UnitCategory.momentOfInertia, system)} × ${_fv(t, UnitCategory.length, system)})',
+      '= ${_fv(tau, UnitCategory.stress, system)}',
+    ];
+
     return ResultScaffold(
       toolName: 'Transverse Shear Stress',
-      shareLines: () => _shareLines(system),
-      children: [
-        ToolResultHeader(tool: tool),
-        AppSectionCard(
+      formulaSteps: formulaSteps,
+      leading: [ToolResultHeader(tool: tool)],
+      results: [
+        ResultSection(
           title: 'Transverse Shear Stress',
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: 'Shear stress, τ',
               valueSI: tau,
               category: UnitCategory.stress,
             ),
-          ]),
+          ],
         ),
-        AppSectionCard(
-          title: S.of(context).Formula,
-          child: Text(
-            'τ = V·Q / (I·t)\n'
-            '= ${_fv(v, UnitCategory.force, system)} × ${_fv(q, UnitCategory.sectionModulus, system)} / (${_fv(i, UnitCategory.momentOfInertia, system)} × ${_fv(t, UnitCategory.length, system)})\n'
-            '= ${_fv(tau, UnitCategory.stress, system)}',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
+      ],
+      children: [
+        FormulaCard(steps: formulaSteps),
         ParameterSweepCard(
           variableLabel: 'Width, t',
           variableCategory: UnitCategory.length,
@@ -230,12 +231,4 @@ class _TransverseShearStressResultPage extends StatelessWidget {
     );
   }
 
-  List<String> _shareLines(UnitSystem system) => [
-        'τ = ${_fv(tau, UnitCategory.stress, system)}',
-        '',
-        'Calculation:',
-        'τ = V·Q / (I·t)',
-        '= ${_fv(v, UnitCategory.force, system)} × ${_fv(q, UnitCategory.sectionModulus, system)} / (${_fv(i, UnitCategory.momentOfInertia, system)} × ${_fv(t, UnitCategory.length, system)})',
-        '= ${_fv(tau, UnitCategory.stress, system)}',
-      ];
 }

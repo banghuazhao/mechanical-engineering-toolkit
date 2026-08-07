@@ -241,7 +241,18 @@ class _ThermalResultPage extends StatelessWidget {
     context.watch<UnitSystemPreference>();
     return ResultScaffold(
       toolName: 'Thermal Deformation & Stress',
-      shareLines: () => _shareLines(context),
+      formulaSteps: _calculationSteps(context),
+      results: [
+        multipleRowSection(
+          title: S.of(context).Thermal_Results,
+          resultTitles: const [
+            'δ_T  (thermal deformation)',
+            'σ_T  (thermal stress, constrained)',
+          ],
+          resultValues: [delta, sigma],
+          resultUnits: const [UnitCategory.length, UnitCategory.stress],
+        ),
+      ],
       body: SafeArea(
         child: Consumer<NumberPrecisionHelper>(
           builder: (context, precs, _) {
@@ -257,15 +268,7 @@ class _ThermalResultPage extends StatelessWidget {
                 resultValues: [delta, sigma],
                 resultUnits: const [UnitCategory.length, UnitCategory.stress],
               ),
-              CalculationCard(steps: [
-                'δ_T = α × ΔT × L',
-                '= ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} × ${_fv(context, length, UnitCategory.length)}',
-                '= ${_fv(context, delta, UnitCategory.length)}',
-                '',
-                'σ_T = −E × α × ΔT',
-                '= −${_fv(context, E, UnitCategory.stress)} × ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)}',
-                '= ${_fv(context, sigma, UnitCategory.stress)}',
-              ]),
+              CalculationCard(steps: _calculationSteps(context)),
             ];
             return StaggeredGridView.countBuilder(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
@@ -284,15 +287,16 @@ class _ThermalResultPage extends StatelessWidget {
     );
   }
 
-  List<String> _shareLines(BuildContext context) {
+  List<String> _calculationSteps(BuildContext context) {
     final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
     return [
-      'δ_T = ${_fv(context, delta, UnitCategory.length)}',
-      'σ_T = ${_fv(context, sigma, UnitCategory.stress)}',
+      'δ_T = α × ΔT × L',
+      '= ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} × ${_fv(context, length, UnitCategory.length)}',
+      '= ${_fv(context, delta, UnitCategory.length)}',
       '',
-      'Calculation:',
-      'δ_T = α × ΔT × L = ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} × ${_fv(context, length, UnitCategory.length)} = ${_fv(context, delta, UnitCategory.length)}',
-      'σ_T = −E × α × ΔT = −${_fv(context, E, UnitCategory.stress)} × ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)} = ${_fv(context, sigma, UnitCategory.stress)}',
+      'σ_T = −E × α × ΔT',
+      '= −${_fv(context, E, UnitCategory.stress)} × ${precs.formatValue(alpha)} × ${_fv(context, deltaT, UnitCategory.temperatureDelta)}',
+      '= ${_fv(context, sigma, UnitCategory.stress)}',
     ];
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -32,26 +33,54 @@ class FatigueSafetyFactorResultPage extends StatelessWidget {
     final system = context.watch<UnitSystemPreference>().system;
     final tool = ToolLibrary.shared.item(toolId, context);
     final scheme = Theme.of(context).colorScheme;
+    final formulaSteps = [
+      '1/n = σa/Se + σm/Su',
+      '= ${formatFixedSI(sigmaA, UnitCategory.stress, system)} / ${formatFixedSI(se, UnitCategory.stress, system)} + ${formatFixedSI(sigmaM, UnitCategory.stress, system)} / ${formatFixedSI(su, UnitCategory.stress, system)}',
+      'n = ${formatFixed(safetyFactor)}',
+    ];
+
     return ResultScaffold(
       toolName: title,
-      shareLines: () => _shareLines(system),
-      children: [
-        ToolResultHeader(tool: tool),
-        AppSectionCard(
+      formulaSteps: formulaSteps,
+      leading: [ToolResultHeader(tool: tool)],
+      results: [
+        ResultSection(
           title: title,
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: 'Factor of safety, n',
-              value: formatFixed(safetyFactor),
+              valueSI: safetyFactor,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'Assessment',
               value: safetyFactor >= 1
                   ? 'Safe against fatigue failure (n ≥ 1)'
                   : 'Unsafe — predicted fatigue failure (n < 1)',
             ),
-          ]),
+            ResultValue(
+              label: 'Alternating stress, σa',
+              valueSI: sigmaA,
+              category: UnitCategory.stress,
+            ),
+            ResultValue(
+              label: 'Mean stress, σm',
+              valueSI: sigmaM,
+              category: UnitCategory.stress,
+            ),
+            ResultValue(
+              label: 'Ultimate strength, Su',
+              valueSI: su,
+              category: UnitCategory.stress,
+            ),
+            ResultValue(
+              label: 'Endurance limit, Se',
+              valueSI: se,
+              category: UnitCategory.stress,
+            ),
+          ],
         ),
+      ],
+      children: [
         if (safetyFactor < 1)
           Card(
             color: scheme.errorContainer,
@@ -72,20 +101,8 @@ class FatigueSafetyFactorResultPage extends StatelessWidget {
               ),
             ),
           ),
-        CalculationCard(steps: [
-          '1/n = σa/Se + σm/Su',
-          '= ${formatFixedSI(sigmaA, UnitCategory.stress, system)} / ${formatFixedSI(se, UnitCategory.stress, system)} + ${formatFixedSI(sigmaM, UnitCategory.stress, system)} / ${formatFixedSI(su, UnitCategory.stress, system)}',
-          'n = ${formatFixed(safetyFactor)}',
-        ]),
+        CalculationCard(steps: formulaSteps),
       ],
     );
   }
-
-  List<String> _shareLines(UnitSystem system) => [
-        'n = ${formatFixed(safetyFactor)}',
-        'σa = ${formatFixedSI(sigmaA, UnitCategory.stress, system)}',
-        'σm = ${formatFixedSI(sigmaM, UnitCategory.stress, system)}',
-        'Su = ${formatFixedSI(su, UnitCategory.stress, system)}',
-        'Se = ${formatFixedSI(se, UnitCategory.stress, system)}',
-      ];
 }

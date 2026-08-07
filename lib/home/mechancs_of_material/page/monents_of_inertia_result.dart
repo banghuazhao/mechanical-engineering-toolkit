@@ -5,7 +5,6 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
-import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -33,27 +32,24 @@ class MomentsOfInertiaResultPage extends StatefulWidget {
 
 class _MomentsOfInertiaResultPageState
     extends State<MomentsOfInertiaResultPage> {
-  String _fv(BuildContext context, double? valueSI) {
-    final precs = Provider.of<NumberPrecisionHelper>(context, listen: false);
-    final system =
-        Provider.of<UnitSystemPreference>(context, listen: false).system;
-    final display = valueSI == null
-        ? null
-        : fromSI(valueSI, UnitCategory.momentOfInertia, system);
-    return '${precs.formatValue(display)} ${unitLabel(UnitCategory.momentOfInertia, system)}';
-  }
-
   @override
   Widget build(BuildContext context) {
     context.watch<UnitSystemPreference>();
     final tool = ToolLibrary.shared.item(widget.toolId, context);
     return ResultScaffold(
       toolName: 'Moments of Inertia',
-      shareLines: () => [
-        'Ix = ${_fv(context, widget.Ix)}',
-        'Iy = ${_fv(context, widget.Iy)}',
-        'Ixy = ${_fv(context, widget.Ixy)}',
-        'Ip = ${_fv(context, widget.Ip)}',
+      results: [
+        multipleRowSection(
+          title: S.of(context).Moments_of_Inertia,
+          resultTitles: const ['Ix', 'Iy', 'Ixy', 'Ip'],
+          resultValues: [widget.Ix, widget.Iy, widget.Ixy, widget.Ip],
+          resultUnits: const [
+            UnitCategory.momentOfInertia,
+            UnitCategory.momentOfInertia,
+            UnitCategory.momentOfInertia,
+            UnitCategory.momentOfInertia,
+          ],
+        ),
       ],
       body: SafeArea(
         child: StaggeredGridView.countBuilder(

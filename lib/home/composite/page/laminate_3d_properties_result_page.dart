@@ -1,6 +1,7 @@
 import 'package:composite_calculator/composite_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mechanical_engineering_toolkit/home/composite/composite_results.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/engineering_constants_widget.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -44,6 +45,15 @@ class Laminate3DPropertiesResultPage extends StatelessWidget {
 
     return ResultScaffold(
       toolName: 'Laminate 3D Properties',
+      results: [
+        matrixSection('Effective 3D Stiffness Matrix', output.stiffness),
+        matrixSection('Effective 3D Compliance Matrix', output.compliance),
+        constantsSection(
+          S.of(context).Engineering_Constants,
+          ec,
+          categoryForKey: _categoryForKey,
+        ),
+      ],
       body: SafeArea(
         child: StaggeredGridView.countBuilder(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),

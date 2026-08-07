@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
-import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/xy_diagram_card.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -40,43 +40,32 @@ class CantileverBeamDeflectionsSlopesResultPage extends StatelessWidget {
     final tool = ToolLibrary.shared.item(toolId, context);
     return ResultScaffold(
       toolName: toolTitle,
-      shareLines: _shareLines,
-      children: [
-        ToolResultHeader(tool: tool),
-        AppSectionCard(
+      leading: [ToolResultHeader(tool: tool)],
+      // The load-case formulas arrive already evaluated as display strings, so
+      // these are declared pre-formatted: no unit column, but still exportable.
+      results: [
+        ResultSection(
           title: S.of(context).Deflection,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (var i = 0; i < deflectionTitles.length; i++)
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: context.tokens.space1),
-                  child: Text(
-                    '${deflectionTitles[i]} = ${deflectionValues[i]}',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
-            ],
-          ),
+          values: [
+            for (var i = 0; i < deflectionTitles.length; i++)
+              ResultValue(
+                label: deflectionTitles[i],
+                value: deflectionValues[i],
+              ),
+          ],
         ),
-        AppSectionCard(
+        ResultSection(
           title: S.of(context).Slope,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (var i = 0; i < slopesTitles.length; i++)
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: context.tokens.space1),
-                  child: Text(
-                    '${slopesTitles[i]} = ${slopesValues[i]}',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
-            ],
-          ),
+          values: [
+            for (var i = 0; i < slopesTitles.length; i++)
+              ResultValue(
+                label: slopesTitles[i],
+                value: slopesValues[i],
+              ),
+          ],
         ),
+      ],
+      children: [
         if (deflectionCurve != null) ...[
           XYDiagramCard(
             title: 'Deflection curve',
@@ -90,15 +79,4 @@ class CantileverBeamDeflectionsSlopesResultPage extends StatelessWidget {
     );
   }
 
-  List<String> _shareLines() {
-    return [
-      'Deflections:',
-      for (var i = 0; i < deflectionTitles.length; i++)
-        '  ${deflectionTitles[i]} = ${deflectionValues[i]}',
-      '',
-      'Slopes:',
-      for (var i = 0; i < slopesTitles.length; i++)
-        '  ${slopesTitles[i]} = ${slopesValues[i]}',
-    ];
-  }
 }

@@ -5,6 +5,7 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/p
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -37,80 +38,72 @@ class CombinedLoadingResultPage extends StatelessWidget {
     final vonMises = sqrt(sigma * sigma + 3 * tau * tau);
     final fos = yieldStrength == null ? null : yieldStrength! / vonMises;
 
+    final formulaSteps = [
+      'σ = P/A + M·c/I = ${formatFixedSI(sigma, UnitCategory.stress, system)}',
+      'τ = T·r/J = ${formatFixedSI(tau, UnitCategory.stress, system)}',
+      "σ' = √(σ² + 3τ²) = ${formatFixedSI(vonMises, UnitCategory.stress, system)}",
+      if (fos != null) 'n = Sy/σ\' = ${formatFixed(fos)}',
+    ];
+
     return ResultScaffold(
       toolName: title,
-      shareLines: () => _shareLines(system, principal, vonMises, fos),
-      children: [
-        ToolResultHeader(tool: tool),
-        AppSectionCard(
+      formulaSteps: formulaSteps,
+      leading: [ToolResultHeader(tool: tool)],
+      results: [
+        ResultSection(
           title: title,
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: 'Normal stress, σ',
               valueSI: sigma,
               category: UnitCategory.stress,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'Shear stress, τ',
               valueSI: tau,
               category: UnitCategory.stress,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'von Mises stress, σ′',
               valueSI: vonMises,
               category: UnitCategory.stress,
             ),
             if (fos != null)
-              AppCopyableValue(
+              ResultValue(
                 label: 'Factor of safety, n',
-                value: formatFixed(fos),
+                valueSI: fos,
               ),
-          ]),
+          ],
         ),
-        AppSectionCard(
+        ResultSection(
           title: 'Principal Stresses at this Point',
-          child: Column(children: [
-            AppCopyableValue(
+          values: [
+            ResultValue(
               label: 'σ1',
               valueSI: principal.sigma1,
               category: UnitCategory.stress,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'σ2',
               valueSI: principal.sigma2,
               category: UnitCategory.stress,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'τmax',
               valueSI: principal.tauMax,
               category: UnitCategory.stress,
             ),
-            AppCopyableValue(
+            ResultValue(
               label: 'θp',
               valueSI: principal.thetaP,
               category: UnitCategory.angle,
             ),
-          ]),
+          ],
         ),
-        CalculationCard(steps: [
-          'σ = P/A + M·c/I = ${formatFixedSI(sigma, UnitCategory.stress, system)}',
-          'τ = T·r/J = ${formatFixedSI(tau, UnitCategory.stress, system)}',
-          "σ' = √(σ² + 3τ²) = ${formatFixedSI(vonMises, UnitCategory.stress, system)}",
-          if (fos != null) 'n = Sy/σ\' = ${formatFixed(fos)}',
-        ]),
+      ],
+      children: [
+        CalculationCard(steps: formulaSteps),
       ],
     );
   }
-
-  List<String> _shareLines(UnitSystem system, PrincipalStressResult principal,
-          double vonMises, double? fos) =>
-      [
-        'σ = ${formatFixedSI(sigma, UnitCategory.stress, system)}',
-        'τ = ${formatFixedSI(tau, UnitCategory.stress, system)}',
-        "σ' = ${formatFixedSI(vonMises, UnitCategory.stress, system)}",
-        if (fos != null) 'n = ${formatFixed(fos)}',
-        'σ1 = ${formatFixedSI(principal.sigma1, UnitCategory.stress, system)}',
-        'σ2 = ${formatFixedSI(principal.sigma2, UnitCategory.stress, system)}',
-        'τmax = ${formatFixedSI(principal.tauMax, UnitCategory.stress, system)}',
-      ];
 }
