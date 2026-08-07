@@ -53,21 +53,111 @@ void main() {
     expect(find.text('Result'), findsOneWidget);
     expect(find.text('one'), findsOneWidget);
     expect(find.text('two'), findsOneWidget);
-    expect(find.byIcon(Icons.share_rounded), findsOneWidget);
-    expect(find.byIcon(Icons.image_outlined), findsOneWidget);
+    expect(find.byKey(const Key('shareResults')), findsOneWidget);
     expect(find.byIcon(Icons.settings_rounded), findsOneWidget);
   });
 
-  testWidgets('hides the text-share action when no lines are supplied',
-      (tester) async {
-    await tester.pumpWidget(_wrap(const ResultScaffold(
-      toolName: 'Widget Test Tool',
-      children: [AppSectionCard(title: 'Only', child: Text('body'))],
-    )));
-    await tester.pumpAndSettle();
+  group('share picker', () {
+    testWidgets('one share action replaces the per-format icons',
+        (tester) async {
+      await tester.pumpWidget(_wrap(ResultScaffold(
+        toolName: 'Widget Test Tool',
+        shareLines: () => const ['a = 1'],
+        children: const [AppSectionCard(title: 'Only', child: Text('body'))],
+      )));
+      await tester.pumpAndSettle();
 
-    expect(find.byIcon(Icons.share_rounded), findsNothing);
-    expect(find.byIcon(Icons.image_outlined), findsOneWidget);
+      expect(find.byKey(const Key('shareResults')), findsOneWidget);
+      // The formats used to be three separate app-bar actions.
+      expect(find.byIcon(Icons.image_outlined), findsNothing);
+      expect(find.byIcon(Icons.file_download_outlined), findsNothing);
+    });
+
+    testWidgets('offers text and image for a page with only share lines',
+        (tester) async {
+      await tester.pumpWidget(_wrap(ResultScaffold(
+        toolName: 'Widget Test Tool',
+        shareLines: () => const ['a = 1'],
+        children: const [AppSectionCard(title: 'Only', child: Text('body'))],
+      )));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('shareResults')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('shareFormatText')), findsOneWidget);
+      expect(find.byKey(const Key('shareFormatImage')), findsOneWidget);
+      // Pre-formatted lines cannot be split into spreadsheet columns.
+      expect(find.byKey(const Key('shareFormatCsv')), findsNothing);
+      expect(find.byKey(const Key('shareFormatPdf')), findsNothing);
+    });
+
+    testWidgets('offers only image when the page declares nothing',
+        (tester) async {
+      await tester.pumpWidget(_wrap(const ResultScaffold(
+        toolName: 'Widget Test Tool',
+        children: [AppSectionCard(title: 'Only', child: Text('body'))],
+      )));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('shareResults')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('shareFormatImage')), findsOneWidget);
+      expect(find.byKey(const Key('shareFormatText')), findsNothing);
+      expect(find.byKey(const Key('shareFormatCsv')), findsNothing);
+      expect(find.byKey(const Key('shareFormatPdf')), findsNothing);
+    });
+
+    testWidgets('each format is labelled and explained', (tester) async {
+      await tester.pumpWidget(_wrap(const ResultScaffold(
+        toolName: 'Widget Test Tool',
+        results: [
+          ResultSection(
+            title: 'Spring',
+            values: [ResultValue(label: 'C', valueSI: 10)],
+          ),
+        ],
+      )));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('shareResults')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Share results'), findsOneWidget);
+      expect(find.text('Text'), findsOneWidget);
+      expect(find.text('CSV'), findsOneWidget);
+      expect(find.text('PDF'), findsOneWidget);
+      expect(find.text('Image'), findsOneWidget);
+      // The reason a sheet was chosen over a row of icons.
+      expect(find.text('A spreadsheet of the values and units'), findsOneWidget);
+      expect(
+          find.text('A report with the tables and the formula'), findsOneWidget);
+    });
+
+    testWidgets('dismissing the picker shares nothing', (tester) async {
+      await tester.pumpWidget(_wrap(const ResultScaffold(
+        toolName: 'Widget Test Tool',
+        results: [
+          ResultSection(
+            title: 'Spring',
+            values: [ResultValue(label: 'C', valueSI: 10)],
+          ),
+        ],
+      )));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('shareResults')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('shareFormatCsv')), findsOneWidget);
+
+      Navigator.of(tester.element(find.byKey(const Key('shareFormatCsv'))))
+          .pop();
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('shareFormatCsv')), findsNothing);
+      expect(tester.takeException(), isNull);
+    });
   });
 
   group('declared results', () {
@@ -99,37 +189,21 @@ void main() {
       expect(find.textContaining('25.400 mm'), findsOneWidget);
     });
 
-    testWidgets('offers CSV and PDF export, and share comes for free',
-        (tester) async {
+    testWidgets('unlocks every share format, text included', (tester) async {
       await tester.pumpWidget(_wrap(const ResultScaffold(
         toolName: 'Widget Test Tool',
         results: sections,
       )));
       await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.file_download_outlined), findsOneWidget);
+      await tester.tap(find.byKey(const Key('shareResults')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('shareFormatCsv')), findsOneWidget);
+      expect(find.byKey(const Key('shareFormatPdf')), findsOneWidget);
+      expect(find.byKey(const Key('shareFormatImage')), findsOneWidget);
       // No shareLines was supplied; declaring results supplies it.
-      expect(find.byIcon(Icons.share_rounded), findsOneWidget);
-
-      await tester.tap(find.byIcon(Icons.file_download_outlined));
-      await tester.pumpAndSettle();
-      expect(find.text('Export CSV'), findsOneWidget);
-      expect(find.text('Export PDF'), findsOneWidget);
-    });
-
-    testWidgets('withholds export from an unmigrated page',
-        (tester) async {
-      // Hand-written share lines have already fused label, value, and unit
-      // into one string, so there is nothing to put in columns.
-      await tester.pumpWidget(_wrap(ResultScaffold(
-        toolName: 'Widget Test Tool',
-        shareLines: () => const ['a = 1'],
-        children: const [AppSectionCard(title: 'Only', child: Text('body'))],
-      )));
-      await tester.pumpAndSettle();
-
-      expect(find.byIcon(Icons.file_download_outlined), findsNothing);
-      expect(find.byIcon(Icons.share_rounded), findsOneWidget);
+      expect(find.byKey(const Key('shareFormatText')), findsOneWidget);
     });
 
     testWidgets('renders declared results above hand-built children',

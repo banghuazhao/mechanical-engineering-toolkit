@@ -306,9 +306,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "線径とコイル径は正の値である必要があります。",
     ),
-    "Export": MessageLookupByLibrary.simpleMessage("書き出す"),
-    "Export_CSV": MessageLookupByLibrary.simpleMessage("CSVで書き出す"),
-    "Export_PDF": MessageLookupByLibrary.simpleMessage("PDFで書き出す"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("Express Scan"),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage("歯幅、F"),
     "Factor_of_Safety": MessageLookupByLibrary.simpleMessage("安全率"),
@@ -603,8 +600,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "Shaft_um": MessageLookupByLibrary.simpleMessage("軸 (µm)"),
     "Shape": MessageLookupByLibrary.simpleMessage("形状"),
     "Shape_Type": MessageLookupByLibrary.simpleMessage("形状タイプ"),
+    "Share_Format_CSV": MessageLookupByLibrary.simpleMessage("CSV"),
+    "Share_Format_CSV_Description": MessageLookupByLibrary.simpleMessage(
+      "数値と単位の表計算ファイル",
+    ),
+    "Share_Format_Image": MessageLookupByLibrary.simpleMessage("画像"),
+    "Share_Format_Image_Description": MessageLookupByLibrary.simpleMessage(
+      "この結果画面の画像",
+    ),
+    "Share_Format_PDF": MessageLookupByLibrary.simpleMessage("PDF"),
+    "Share_Format_PDF_Description": MessageLookupByLibrary.simpleMessage(
+      "表と計算式を含むレポート",
+    ),
+    "Share_Format_Text": MessageLookupByLibrary.simpleMessage("テキスト"),
+    "Share_Format_Text_Description": MessageLookupByLibrary.simpleMessage(
+      "どこにでも貼り付けられるプレーンテキスト",
+    ),
     "Share_Results": MessageLookupByLibrary.simpleMessage("結果を共有"),
-    "Share_as_Image": MessageLookupByLibrary.simpleMessage("画像として共有"),
     "SharethisApp": MessageLookupByLibrary.simpleMessage("このアプリを共有"),
     "Shear_Force_Diagram": MessageLookupByLibrary.simpleMessage("せん断力図"),
     "Shear_Modulus_G": MessageLookupByLibrary.simpleMessage("横弾性係数、G"),

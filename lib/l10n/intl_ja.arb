@@ -112,7 +112,6 @@
   "Restoring": "復元中…",
 
   "Share_Results": "結果を共有",
-  "Share_as_Image": "画像として共有",
   "Formula": "計算式",
 
   "Machine_Design": "機械設計",
@@ -444,10 +443,16 @@
   "No_Saved_Projects_Message": "履歴から計算を保存すると、その入力値をここに残せます。",
   "Project_Updated": "「{name}」に名前を変更しました",
 
-  "Export_CSV": "CSVで書き出す",
 
-  "Export": "書き出す",
-  "Export_PDF": "PDFで書き出す",
 
-  "PDF_Missing_Characters": "PDFで一部の文字が表示されない場合があります"
+  "PDF_Missing_Characters": "PDFで一部の文字が表示されない場合があります",
+
+  "Share_Format_Text": "テキスト",
+  "Share_Format_Text_Description": "どこにでも貼り付けられるプレーンテキスト",
+  "Share_Format_CSV": "CSV",
+  "Share_Format_CSV_Description": "数値と単位の表計算ファイル",
+  "Share_Format_PDF": "PDF",
+  "Share_Format_PDF_Description": "表と計算式を含むレポート",
+  "Share_Format_Image": "画像",
+  "Share_Format_Image_Description": "この結果画面の画像"
 }

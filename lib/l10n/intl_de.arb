@@ -112,7 +112,6 @@
   "Restoring": "Wird wiederhergestellt…",
 
   "Share_Results": "Ergebnisse teilen",
-  "Share_as_Image": "Als Bild teilen",
   "Formula": "Formel",
 
   "Machine_Design": "Maschinenkonstruktion",
@@ -444,10 +443,16 @@
   "No_Saved_Projects_Message": "Speichern Sie eine Berechnung aus dem Verlauf, um ihre Eingaben hier aufzubewahren.",
   "Project_Updated": "In „{name}“ umbenannt",
 
-  "Export_CSV": "CSV exportieren",
 
-  "Export": "Exportieren",
-  "Export_PDF": "PDF exportieren",
 
-  "PDF_Missing_Characters": "Im PDF fehlen möglicherweise einige Zeichen"
+  "PDF_Missing_Characters": "Im PDF fehlen möglicherweise einige Zeichen",
+
+  "Share_Format_Text": "Text",
+  "Share_Format_Text_Description": "Reiner Text zum Einfügen an beliebiger Stelle",
+  "Share_Format_CSV": "CSV",
+  "Share_Format_CSV_Description": "Eine Tabelle der Werte und Einheiten",
+  "Share_Format_PDF": "PDF",
+  "Share_Format_PDF_Description": "Ein Bericht mit Tabellen und Formel",
+  "Share_Format_Image": "Bild",
+  "Share_Format_Image_Description": "Ein Bild dieser Ergebnisseite"
 }

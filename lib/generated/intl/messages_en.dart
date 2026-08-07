@@ -383,9 +383,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "Wire and coil diameter must be positive.",
     ),
-    "Export": MessageLookupByLibrary.simpleMessage("Export"),
-    "Export_CSV": MessageLookupByLibrary.simpleMessage("Export CSV"),
-    "Export_PDF": MessageLookupByLibrary.simpleMessage("Export PDF"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("Express Scan"),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage("Face width, F"),
     "Factor_of_Safety": MessageLookupByLibrary.simpleMessage(
@@ -782,8 +779,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "Shaft_um": MessageLookupByLibrary.simpleMessage("Shaft (µm)"),
     "Shape": MessageLookupByLibrary.simpleMessage("Shape"),
     "Shape_Type": MessageLookupByLibrary.simpleMessage("Shape type"),
+    "Share_Format_CSV": MessageLookupByLibrary.simpleMessage("CSV"),
+    "Share_Format_CSV_Description": MessageLookupByLibrary.simpleMessage(
+      "A spreadsheet of the values and units",
+    ),
+    "Share_Format_Image": MessageLookupByLibrary.simpleMessage("Image"),
+    "Share_Format_Image_Description": MessageLookupByLibrary.simpleMessage(
+      "A picture of this result screen",
+    ),
+    "Share_Format_PDF": MessageLookupByLibrary.simpleMessage("PDF"),
+    "Share_Format_PDF_Description": MessageLookupByLibrary.simpleMessage(
+      "A report with the tables and the formula",
+    ),
+    "Share_Format_Text": MessageLookupByLibrary.simpleMessage("Text"),
+    "Share_Format_Text_Description": MessageLookupByLibrary.simpleMessage(
+      "Plain text you can paste anywhere",
+    ),
     "Share_Results": MessageLookupByLibrary.simpleMessage("Share results"),
-    "Share_as_Image": MessageLookupByLibrary.simpleMessage("Share as image"),
     "SharethisApp": MessageLookupByLibrary.simpleMessage("Share this App"),
     "Shear_Force_Diagram": MessageLookupByLibrary.simpleMessage(
       "Shear-force diagram",

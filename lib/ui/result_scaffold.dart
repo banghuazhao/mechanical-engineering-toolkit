@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
@@ -32,9 +33,11 @@ class FormulaCard extends StatelessWidget {
 }
 
 /// The common chrome every calculator result page wears: a "Result" app bar
-/// with share / share-as-image / settings actions, the banner ad, and a
-/// scrolling body captured inside a [RepaintBoundary] so it can be exported
-/// as an image.
+/// with share and settings actions, the banner ad, and a scrolling body
+/// captured inside a [RepaintBoundary] so it can be exported as an image.
+///
+/// Share opens a format picker rather than one action per format; which
+/// formats appear depends on what the page declared. See [ShareFormat].
 ///
 /// Pass the result cards as [children]; they are laid out in a [ListView]
 /// inside an [AppContent] and separated by the standard spacing, so pages no
@@ -80,8 +83,8 @@ class ResultScaffold extends StatefulWidget {
   /// App bar title. Defaults to the localized "Result".
   final String? title;
 
-  /// Builds the plain-text share body, one entry per line. When null the
-  /// text-share action is hidden and only image sharing is offered.
+  /// Builds the plain-text share body, one entry per line. When null — and
+  /// [results] is too — the picker drops its Text option.
   final List<String> Function()? shareLines;
 
   /// Actions inserted before the standard share/settings actions.
@@ -97,35 +100,72 @@ class ResultScaffold extends StatefulWidget {
   State<ResultScaffold> createState() => _ResultScaffoldState();
 }
 
-enum _ExportFormat { csv, pdf }
+/// The ways a result can leave the app. Which of these are offered depends on
+/// what the page declared — see [_ResultScaffoldState._showSharePicker].
+enum ShareFormat { text, csv, pdf, image }
 
 class _ResultScaffoldState extends State<ResultScaffold> {
   final _exportKey = GlobalKey();
 
-  Future<void> _export(
-    _ExportFormat format,
-    List<ResultSection> results,
+  /// Opens the format picker, then shares in whichever format was chosen.
+  ///
+  /// One button rather than four app-bar icons: the formats are alternatives,
+  /// and a labelled sheet has room to say what each one is for, which a row of
+  /// bare icons does not.
+  Future<void> _showSharePicker(
+    List<String> Function()? shareLines,
+    List<ResultSection>? results,
+    NumberPrecisionHelper precs,
+    UnitSystem system,
+  ) async {
+    final format = await showModalBottomSheet<ShareFormat>(
+      context: context,
+      showDragHandle: true,
+      builder: (sheetContext) => _SharePicker(
+        // CSV and PDF need the structured results; text needs share lines.
+        // An unmigrated page therefore offers only text and image.
+        formats: [
+          if (shareLines != null) ShareFormat.text,
+          if (results != null) ShareFormat.csv,
+          if (results != null) ShareFormat.pdf,
+          ShareFormat.image,
+        ],
+      ),
+    );
+    if (format == null || !mounted) return;
+    await _share(format, shareLines, results, precs, system);
+  }
+
+  Future<void> _share(
+    ShareFormat format,
+    List<String> Function()? shareLines,
+    List<ResultSection>? results,
     NumberPrecisionHelper precs,
     UnitSystem system,
   ) async {
     switch (format) {
-      case _ExportFormat.csv:
+      case ShareFormat.text:
+        await shareResult(widget.toolName, shareLines!());
+      case ShareFormat.image:
+        await shareResultImage(_exportKey, widget.toolName);
+      case ShareFormat.csv:
         await shareResultCsv(
           widget.toolName,
           buildResultCsv(
             toolName: widget.toolName,
-            sections: results,
+            sections: results!,
             precs: precs,
             system: system,
           ),
         );
-      case _ExportFormat.pdf:
+      case ShareFormat.pdf:
         // The embedded report font covers Latin, Greek and Cyrillic but not
         // CJK, and the pdf package drops a missing glyph silently. Say so
         // rather than handing over a document with text quietly absent.
+        final sections = results!;
         final complete = canRenderReport(
           toolName: widget.toolName,
-          sections: results,
+          sections: sections,
           formulaSteps: widget.formulaSteps,
         );
         if (!complete && mounted) {
@@ -135,7 +175,7 @@ class _ResultScaffoldState extends State<ResultScaffold> {
         }
         final bytes = await buildResultPdf(
           toolName: widget.toolName,
-          sections: results,
+          sections: sections,
           precs: precs,
           system: system,
           formulaSteps: widget.formulaSteps,
@@ -198,35 +238,14 @@ class _ResultScaffoldState extends State<ResultScaffold> {
         title: Text(widget.title ?? l10n.Result),
         actions: [
           ...widget.extraActions,
-          if (shareLines != null)
-            IconButton(
-              tooltip: l10n.Share_Results,
-              icon: const Icon(Icons.share_rounded),
-              onPressed: () => shareResult(widget.toolName, shareLines()),
-            ),
-          // Only offered where the structure a spreadsheet or report needs
-          // actually exists. Pre-formatted share lines cannot be split into
-          // columns.
-          if (results != null)
-            PopupMenuButton<_ExportFormat>(
-              tooltip: l10n.Export,
-              icon: const Icon(Icons.file_download_outlined),
-              onSelected: (format) => _export(format, results, precs, system),
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: _ExportFormat.csv,
-                  child: Text(l10n.Export_CSV),
-                ),
-                PopupMenuItem(
-                  value: _ExportFormat.pdf,
-                  child: Text(l10n.Export_PDF),
-                ),
-              ],
-            ),
+          // One share action for every format. Image is always available —
+          // it is a capture of the screen and needs nothing declared.
           IconButton(
-            tooltip: l10n.Share_as_Image,
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () => shareResultImage(_exportKey, widget.toolName),
+            key: const Key('shareResults'),
+            tooltip: l10n.Share_Results,
+            icon: const Icon(Icons.share_rounded),
+            onPressed: () =>
+                _showSharePicker(shareLines, results, precs, system),
           ),
           IconButton(
             tooltip: l10n.Settings,
@@ -242,6 +261,94 @@ class _ResultScaffoldState extends State<ResultScaffold> {
       body: RepaintBoundary(
         key: _exportKey,
         child: widget.body ?? _buildList(context, tokens),
+      ),
+    );
+  }
+}
+
+/// Bottom sheet listing the share formats a result page can offer.
+///
+/// Follows the same shape as the language picker: a title, a divider, then one
+/// tappable row per choice.
+class _SharePicker extends StatelessWidget {
+  const _SharePicker({required this.formats});
+
+  final List<ShareFormat> formats;
+
+  static const _icons = {
+    ShareFormat.text: Icons.notes_rounded,
+    ShareFormat.csv: Icons.table_view_rounded,
+    ShareFormat.pdf: Icons.picture_as_pdf_rounded,
+    ShareFormat.image: Icons.image_rounded,
+  };
+
+  static const _keys = {
+    ShareFormat.text: Key('shareFormatText'),
+    ShareFormat.csv: Key('shareFormatCsv'),
+    ShareFormat.pdf: Key('shareFormatPdf'),
+    ShareFormat.image: Key('shareFormatImage'),
+  };
+
+  String _label(BuildContext context, ShareFormat format) {
+    switch (format) {
+      case ShareFormat.text:
+        return S.of(context).Share_Format_Text;
+      case ShareFormat.csv:
+        return S.of(context).Share_Format_CSV;
+      case ShareFormat.pdf:
+        return S.of(context).Share_Format_PDF;
+      case ShareFormat.image:
+        return S.of(context).Share_Format_Image;
+    }
+  }
+
+  String _description(BuildContext context, ShareFormat format) {
+    switch (format) {
+      case ShareFormat.text:
+        return S.of(context).Share_Format_Text_Description;
+      case ShareFormat.csv:
+        return S.of(context).Share_Format_CSV_Description;
+      case ShareFormat.pdf:
+        return S.of(context).Share_Format_PDF_Description;
+      case ShareFormat.image:
+        return S.of(context).Share_Format_Image_Description;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 0, 24, 8),
+              child: Text(
+                S.of(context).Share_Results,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+            const Divider(height: 1),
+            ...formats.map(
+              (format) => ListTile(
+                key: _keys[format],
+                leading: Icon(
+                  _icons[format],
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                title: Text(_label(context, format)),
+                subtitle: Text(_description(context, format)),
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  Navigator.pop(context, format);
+                },
+              ),
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
       ),
     );
   }

@@ -270,9 +270,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "簧丝直径与中径必须为正值。",
     ),
-    "Export": MessageLookupByLibrary.simpleMessage("导出"),
-    "Export_CSV": MessageLookupByLibrary.simpleMessage("导出 CSV"),
-    "Export_PDF": MessageLookupByLibrary.simpleMessage("导出 PDF"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("飞速扫描"),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage("齿宽 F"),
     "Factor_of_Safety": MessageLookupByLibrary.simpleMessage("安全系数"),
@@ -543,8 +540,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "Shaft_um": MessageLookupByLibrary.simpleMessage("轴（µm）"),
     "Shape": MessageLookupByLibrary.simpleMessage("形状"),
     "Shape_Type": MessageLookupByLibrary.simpleMessage("形状类型"),
+    "Share_Format_CSV": MessageLookupByLibrary.simpleMessage("CSV"),
+    "Share_Format_CSV_Description": MessageLookupByLibrary.simpleMessage(
+      "包含数值与单位的表格",
+    ),
+    "Share_Format_Image": MessageLookupByLibrary.simpleMessage("图片"),
+    "Share_Format_Image_Description": MessageLookupByLibrary.simpleMessage(
+      "当前结果页面的截图",
+    ),
+    "Share_Format_PDF": MessageLookupByLibrary.simpleMessage("PDF"),
+    "Share_Format_PDF_Description": MessageLookupByLibrary.simpleMessage(
+      "包含表格与计算式的报告",
+    ),
+    "Share_Format_Text": MessageLookupByLibrary.simpleMessage("文本"),
+    "Share_Format_Text_Description": MessageLookupByLibrary.simpleMessage(
+      "可粘贴到任意位置的纯文本",
+    ),
     "Share_Results": MessageLookupByLibrary.simpleMessage("分享结果"),
-    "Share_as_Image": MessageLookupByLibrary.simpleMessage("分享为图片"),
     "SharethisApp": MessageLookupByLibrary.simpleMessage("分享应用"),
     "Shear_Force_Diagram": MessageLookupByLibrary.simpleMessage("剪力图"),
     "Shear_Modulus_G": MessageLookupByLibrary.simpleMessage("剪切模量 G"),

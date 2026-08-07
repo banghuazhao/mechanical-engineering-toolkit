@@ -46,9 +46,18 @@ void main() {
 
   test('Chinese locales are actually translated', () {
     final en = load(locales['en']!);
-    // A handful of keys are proper nouns or symbols that stay identical
-    // across locales; everything else must differ from the English text.
-    const sharedVerbatim = {'Shows', 'Instant_Face', 'SwiftComp'};
+    // A handful of keys are proper nouns, file-format acronyms, or symbols
+    // that stay identical across locales; everything else must differ from
+    // the English text.
+    const sharedVerbatim = {
+      'Shows',
+      'Instant_Face',
+      'SwiftComp',
+      // Written as the Latin acronym in Chinese too; the descriptions
+      // beneath them in the share picker carry the translated explanation.
+      'Share_Format_CSV',
+      'Share_Format_PDF',
+    };
 
     for (final name in ['zh', 'zh_HK']) {
       final translated = load(locales[name]!);

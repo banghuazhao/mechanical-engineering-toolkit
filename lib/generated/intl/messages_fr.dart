@@ -401,9 +401,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "Le diamètre du fil et de la spire doivent être positifs.",
     ),
-    "Export": MessageLookupByLibrary.simpleMessage("Exporter"),
-    "Export_CSV": MessageLookupByLibrary.simpleMessage("Exporter en CSV"),
-    "Export_PDF": MessageLookupByLibrary.simpleMessage("Exporter en PDF"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("Express Scan"),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage(
       "Largeur de denture, F",
@@ -850,11 +847,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "Shaft_um": MessageLookupByLibrary.simpleMessage("Arbre (µm)"),
     "Shape": MessageLookupByLibrary.simpleMessage("Forme"),
     "Shape_Type": MessageLookupByLibrary.simpleMessage("Type de forme"),
+    "Share_Format_CSV": MessageLookupByLibrary.simpleMessage("CSV"),
+    "Share_Format_CSV_Description": MessageLookupByLibrary.simpleMessage(
+      "Un tableur des valeurs et unités",
+    ),
+    "Share_Format_Image": MessageLookupByLibrary.simpleMessage("Image"),
+    "Share_Format_Image_Description": MessageLookupByLibrary.simpleMessage(
+      "Une image de cet écran de résultats",
+    ),
+    "Share_Format_PDF": MessageLookupByLibrary.simpleMessage("PDF"),
+    "Share_Format_PDF_Description": MessageLookupByLibrary.simpleMessage(
+      "Un rapport avec les tableaux et la formule",
+    ),
+    "Share_Format_Text": MessageLookupByLibrary.simpleMessage("Texte"),
+    "Share_Format_Text_Description": MessageLookupByLibrary.simpleMessage(
+      "Texte brut à coller n\'importe où",
+    ),
     "Share_Results": MessageLookupByLibrary.simpleMessage(
       "Partager les résultats",
-    ),
-    "Share_as_Image": MessageLookupByLibrary.simpleMessage(
-      "Partager comme image",
     ),
     "SharethisApp": MessageLookupByLibrary.simpleMessage(
       "Partager cette application",

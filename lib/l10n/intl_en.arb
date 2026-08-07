@@ -112,7 +112,6 @@
   "Restoring": "Restoring…",
 
   "Share_Results": "Share results",
-  "Share_as_Image": "Share as image",
   "Formula": "Formula",
 
   "Machine_Design": "Machine Design",
@@ -444,10 +443,16 @@
   "No_Saved_Projects_Message": "Save a calculation from your history to keep its inputs here for later.",
   "Project_Updated": "Renamed to “{name}”",
 
-  "Export_CSV": "Export CSV",
 
-  "Export": "Export",
-  "Export_PDF": "Export PDF",
 
-  "PDF_Missing_Characters": "Some characters may be missing from the PDF"
+  "PDF_Missing_Characters": "Some characters may be missing from the PDF",
+
+  "Share_Format_Text": "Text",
+  "Share_Format_Text_Description": "Plain text you can paste anywhere",
+  "Share_Format_CSV": "CSV",
+  "Share_Format_CSV_Description": "A spreadsheet of the values and units",
+  "Share_Format_PDF": "PDF",
+  "Share_Format_PDF_Description": "A report with the tables and the formula",
+  "Share_Format_Image": "Image",
+  "Share_Format_Image_Description": "A picture of this result screen"
 }

@@ -111,7 +111,6 @@
   "Restoring": "正在恢復…",
 
   "Share_Results": "分享結果",
-  "Share_as_Image": "分享為圖片",
   "Formula": "公式",
 
   "Machine_Design": "機械設計",
@@ -443,10 +442,16 @@
   "No_Saved_Projects_Message": "從歷史記錄中儲存一次計算，即可在此長期保留其輸入值。",
   "Project_Updated": "已重新命名為「{name}」",
 
-  "Export_CSV": "匯出 CSV",
 
-  "Export": "匯出",
-  "Export_PDF": "匯出 PDF",
 
-  "PDF_Missing_Characters": "PDF 中可能缺少部分字元"
+  "PDF_Missing_Characters": "PDF 中可能缺少部分字元",
+
+  "Share_Format_Text": "文字",
+  "Share_Format_Text_Description": "可貼上至任何位置的純文字",
+  "Share_Format_CSV": "CSV",
+  "Share_Format_CSV_Description": "包含數值與單位的試算表",
+  "Share_Format_PDF": "PDF",
+  "Share_Format_PDF_Description": "包含表格與計算式的報告",
+  "Share_Format_Image": "圖片",
+  "Share_Format_Image_Description": "目前結果頁面的截圖"
 }

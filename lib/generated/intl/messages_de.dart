@@ -387,9 +387,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "Draht- und Wicklungsdurchmesser müssen positiv sein.",
     ),
-    "Export": MessageLookupByLibrary.simpleMessage("Exportieren"),
-    "Export_CSV": MessageLookupByLibrary.simpleMessage("CSV exportieren"),
-    "Export_PDF": MessageLookupByLibrary.simpleMessage("PDF exportieren"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("Express Scan"),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage("Zahnbreite, F"),
     "Factor_of_Safety": MessageLookupByLibrary.simpleMessage(
@@ -818,8 +815,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "Shaft_um": MessageLookupByLibrary.simpleMessage("Welle (µm)"),
     "Shape": MessageLookupByLibrary.simpleMessage("Form"),
     "Shape_Type": MessageLookupByLibrary.simpleMessage("Formtyp"),
+    "Share_Format_CSV": MessageLookupByLibrary.simpleMessage("CSV"),
+    "Share_Format_CSV_Description": MessageLookupByLibrary.simpleMessage(
+      "Eine Tabelle der Werte und Einheiten",
+    ),
+    "Share_Format_Image": MessageLookupByLibrary.simpleMessage("Bild"),
+    "Share_Format_Image_Description": MessageLookupByLibrary.simpleMessage(
+      "Ein Bild dieser Ergebnisseite",
+    ),
+    "Share_Format_PDF": MessageLookupByLibrary.simpleMessage("PDF"),
+    "Share_Format_PDF_Description": MessageLookupByLibrary.simpleMessage(
+      "Ein Bericht mit Tabellen und Formel",
+    ),
+    "Share_Format_Text": MessageLookupByLibrary.simpleMessage("Text"),
+    "Share_Format_Text_Description": MessageLookupByLibrary.simpleMessage(
+      "Reiner Text zum Einfügen an beliebiger Stelle",
+    ),
     "Share_Results": MessageLookupByLibrary.simpleMessage("Ergebnisse teilen"),
-    "Share_as_Image": MessageLookupByLibrary.simpleMessage("Als Bild teilen"),
     "SharethisApp": MessageLookupByLibrary.simpleMessage("App teilen"),
     "Shear_Force_Diagram": MessageLookupByLibrary.simpleMessage(
       "Querkraftverlauf",

@@ -112,7 +112,6 @@
   "Restoring": "Restauration en cours…",
 
   "Share_Results": "Partager les résultats",
-  "Share_as_Image": "Partager comme image",
   "Formula": "Formule",
 
   "Machine_Design": "Conception mécanique",
@@ -444,10 +443,16 @@
   "No_Saved_Projects_Message": "Enregistrez un calcul depuis l'historique pour conserver ses valeurs ici.",
   "Project_Updated": "Renommé en « {name} »",
 
-  "Export_CSV": "Exporter en CSV",
 
-  "Export": "Exporter",
-  "Export_PDF": "Exporter en PDF",
 
-  "PDF_Missing_Characters": "Certains caractères peuvent manquer dans le PDF"
+  "PDF_Missing_Characters": "Certains caractères peuvent manquer dans le PDF",
+
+  "Share_Format_Text": "Texte",
+  "Share_Format_Text_Description": "Texte brut à coller n'importe où",
+  "Share_Format_CSV": "CSV",
+  "Share_Format_CSV_Description": "Un tableur des valeurs et unités",
+  "Share_Format_PDF": "PDF",
+  "Share_Format_PDF_Description": "Un rapport avec les tableaux et la formule",
+  "Share_Format_Image": "Image",
+  "Share_Format_Image_Description": "Une image de cet écran de résultats"
 }

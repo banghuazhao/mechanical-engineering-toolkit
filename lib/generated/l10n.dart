@@ -999,16 +999,6 @@ class S {
     );
   }
 
-  /// `Share as image`
-  String get Share_as_Image {
-    return Intl.message(
-      'Share as image',
-      name: 'Share_as_Image',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Formula`
   String get Formula {
     return Intl.message('Formula', name: 'Formula', desc: '', args: []);
@@ -3849,26 +3839,76 @@ class S {
     );
   }
 
-  /// `Export CSV`
-  String get Export_CSV {
-    return Intl.message('Export CSV', name: 'Export_CSV', desc: '', args: []);
-  }
-
-  /// `Export`
-  String get Export {
-    return Intl.message('Export', name: 'Export', desc: '', args: []);
-  }
-
-  /// `Export PDF`
-  String get Export_PDF {
-    return Intl.message('Export PDF', name: 'Export_PDF', desc: '', args: []);
-  }
-
   /// `Some characters may be missing from the PDF`
   String get PDF_Missing_Characters {
     return Intl.message(
       'Some characters may be missing from the PDF',
       name: 'PDF_Missing_Characters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Text`
+  String get Share_Format_Text {
+    return Intl.message('Text', name: 'Share_Format_Text', desc: '', args: []);
+  }
+
+  /// `Plain text you can paste anywhere`
+  String get Share_Format_Text_Description {
+    return Intl.message(
+      'Plain text you can paste anywhere',
+      name: 'Share_Format_Text_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `CSV`
+  String get Share_Format_CSV {
+    return Intl.message('CSV', name: 'Share_Format_CSV', desc: '', args: []);
+  }
+
+  /// `A spreadsheet of the values and units`
+  String get Share_Format_CSV_Description {
+    return Intl.message(
+      'A spreadsheet of the values and units',
+      name: 'Share_Format_CSV_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PDF`
+  String get Share_Format_PDF {
+    return Intl.message('PDF', name: 'Share_Format_PDF', desc: '', args: []);
+  }
+
+  /// `A report with the tables and the formula`
+  String get Share_Format_PDF_Description {
+    return Intl.message(
+      'A report with the tables and the formula',
+      name: 'Share_Format_PDF_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Image`
+  String get Share_Format_Image {
+    return Intl.message(
+      'Image',
+      name: 'Share_Format_Image',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A picture of this result screen`
+  String get Share_Format_Image_Description {
+    return Intl.message(
+      'A picture of this result screen',
+      name: 'Share_Format_Image_Description',
       desc: '',
       args: [],
     );
