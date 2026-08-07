@@ -487,6 +487,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Orthotropic_material": MessageLookupByLibrary.simpleMessage("直交異方性材料"),
     "Output_Speed_N2": MessageLookupByLibrary.simpleMessage("出力回転速度、n2"),
     "Overall_Height": MessageLookupByLibrary.simpleMessage("全高"),
+    "PDF_Missing_Characters": MessageLookupByLibrary.simpleMessage(
+      "PDFで一部の文字が表示されない場合があります",
+    ),
     "P_Load": MessageLookupByLibrary.simpleMessage("P（荷重）"),
     "Pick_Material": MessageLookupByLibrary.simpleMessage("材料を選択"),
     "Pin": MessageLookupByLibrary.simpleMessage("ピン支点"),

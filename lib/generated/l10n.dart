@@ -3863,6 +3863,16 @@ class S {
   String get Export_PDF {
     return Intl.message('Export PDF', name: 'Export_PDF', desc: '', args: []);
   }
+
+  /// `Some characters may be missing from the PDF`
+  String get PDF_Missing_Characters {
+    return Intl.message(
+      'Some characters may be missing from the PDF',
+      name: 'PDF_Missing_Characters',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

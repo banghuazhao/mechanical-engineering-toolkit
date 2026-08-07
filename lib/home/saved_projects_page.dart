@@ -18,9 +18,13 @@ Future<String?> promptForProjectName(
   final controller = TextEditingController(text: initialName ?? '');
   final formKey = GlobalKey<FormState>();
 
-  return showAdaptiveDialog<String>(
+  // Deliberately NOT AlertDialog.adaptive: on iOS that builds a Cupertino
+  // dialog, which is not a Material ancestor, and Material's TextFormField
+  // asserts without one. The delete confirmation below has no field, so it can
+  // stay adaptive.
+  return showDialog<String>(
     context: context,
-    builder: (dialogContext) => AlertDialog.adaptive(
+    builder: (dialogContext) => AlertDialog(
       title: Text(title ?? S.of(context).Save_as_Project),
       content: Form(
         key: formKey,

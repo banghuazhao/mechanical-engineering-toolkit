@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -305,6 +306,45 @@ void main() {
 
       expect(store.projects, isEmpty);
     });
+
+    // Regression: the name dialog first used AlertDialog.adaptive, which on
+    // iOS builds a Cupertino dialog. That is not a Material ancestor, so the
+    // Material TextFormField inside it asserted "No Material widget found" —
+    // invisible on the Android default these tests otherwise run on.
+    for (final platform in [TargetPlatform.iOS, TargetPlatform.macOS]) {
+      testWidgets('the name dialog builds its text field on $platform',
+          (tester) async {
+        debugDefaultTargetPlatformOverride = platform;
+        try {
+          final store = SavedProjects();
+          final saved =
+              store.save(name: 'Before', toolId: 100, inputs: const {});
+
+          await tester
+              .pumpWidget(_wrap(const SavedProjectsPage(), projects: store));
+          await tester.pumpAndSettle();
+
+          await tester.tap(find.byType(PopupMenuButton<String>));
+          await tester.pumpAndSettle();
+          await tester.tap(find.text('Rename project').last);
+          await tester.pumpAndSettle();
+
+          expect(tester.takeException(), isNull);
+          expect(find.byKey(const Key('projectNameField')), findsOneWidget);
+
+          await tester.enterText(
+              find.byKey(const Key('projectNameField')), 'After');
+          await tester.tap(find.byKey(const Key('confirmProjectName')));
+          await tester.pumpAndSettle();
+
+          expect(store.byId(saved.id)!.name, 'After');
+        } finally {
+          // Must be reset inside the body: the framework's invariant check
+          // runs before addTearDown callbacks.
+          debugDefaultTargetPlatformOverride = null;
+        }
+      });
+    }
 
     testWidgets('an empty name is rejected', (tester) async {
       final store = SavedProjects();

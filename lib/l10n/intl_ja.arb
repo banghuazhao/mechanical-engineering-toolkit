@@ -447,5 +447,7 @@
   "Export_CSV": "CSVで書き出す",
 
   "Export": "書き出す",
-  "Export_PDF": "PDFで書き出す"
+  "Export_PDF": "PDFで書き出す",
+
+  "PDF_Missing_Characters": "PDFで一部の文字が表示されない場合があります"
 }

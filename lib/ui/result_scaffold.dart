@@ -120,6 +120,19 @@ class _ResultScaffoldState extends State<ResultScaffold> {
           ),
         );
       case _ExportFormat.pdf:
+        // The embedded report font covers Latin, Greek and Cyrillic but not
+        // CJK, and the pdf package drops a missing glyph silently. Say so
+        // rather than handing over a document with text quietly absent.
+        final complete = canRenderReport(
+          toolName: widget.toolName,
+          sections: results,
+          formulaSteps: widget.formulaSteps,
+        );
+        if (!complete && mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(S.of(context).PDF_Missing_Characters)),
+          );
+        }
         final bytes = await buildResultPdf(
           toolName: widget.toolName,
           sections: results,

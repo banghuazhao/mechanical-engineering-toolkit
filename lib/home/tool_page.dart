@@ -405,6 +405,16 @@ class _ToolPageState extends State<ToolPage> {
                 );
               },
             ),
+            // Also reachable from Settings; surfaced here because store review
+            // and several privacy regimes expect it to be easy to find.
+            MoreRow(
+              title: S.of(context).Privacy_Policy,
+              leadingIcon: Icons.policy_rounded,
+              onTap: () => launchUrl(
+                Uri.parse(privacyPolicyUrl),
+                mode: LaunchMode.externalApplication,
+              ),
+            ),
           ],
         ),
       ),

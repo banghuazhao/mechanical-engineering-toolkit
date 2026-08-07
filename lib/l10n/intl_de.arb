@@ -447,5 +447,7 @@
   "Export_CSV": "CSV exportieren",
 
   "Export": "Exportieren",
-  "Export_PDF": "PDF exportieren"
+  "Export_PDF": "PDF exportieren",
+
+  "PDF_Missing_Characters": "Im PDF fehlen möglicherweise einige Zeichen"
 }

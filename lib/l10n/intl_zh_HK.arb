@@ -446,5 +446,7 @@
   "Export_CSV": "匯出 CSV",
 
   "Export": "匯出",
-  "Export_PDF": "匯出 PDF"
+  "Export_PDF": "匯出 PDF",
+
+  "PDF_Missing_Characters": "PDF 中可能缺少部分字元"
 }

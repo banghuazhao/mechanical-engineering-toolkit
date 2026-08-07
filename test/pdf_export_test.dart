@@ -118,28 +118,181 @@ void main() {
     });
   });
 
+  group('embedded fonts', () {
+    setUp(PdfReportFonts.resetCache);
+
+    test('loads Noto Sans from the bundled assets', () async {
+      final fonts = await PdfReportFonts.load();
+      expect(fonts.regular, isNotNull,
+          reason: 'fonts/NotoSans-Regular.ttf must be declared in pubspec');
+      expect(fonts.bold, isNotNull,
+          reason: 'fonts/NotoSans-Bold.ttf must be declared in pubspec');
+    });
+
+    test('caches so every export does not re-parse the TTFs', () async {
+      final first = await PdfReportFonts.load();
+      final second = await PdfReportFonts.load();
+      expect(identical(first, second), isTrue);
+    });
+
+    test('renders Greek and superscripts without throwing', () async {
+      final bytes = await buildResultPdf(
+        toolName: 'Plane stress σ/τ',
+        sections: const [
+          ResultSection(
+            title: 'Stresses',
+            values: [
+              ResultValue(label: 'Shear stress, τ', valueSI: 1),
+              ResultValue(
+                label: 'Second moment, I',
+                valueSI: 1,
+                category: UnitCategory.momentOfInertia,
+              ),
+            ],
+          ),
+        ],
+        precs: NumberPrecisionHelper(),
+        system: UnitSystem.si,
+        formulaSteps: const ['σ = F/A', 'τ = T·r/J', 'I in mm⁴'],
+      );
+      expect(bytes, isNotEmpty);
+      expect(String.fromCharCodes(bytes.take(5)), '%PDF-');
+    });
+  });
+
+  group('sanitizeForPdf', () {
+    test('spells out the math operators Noto Sans lacks', () {
+      // Verified against the font's cmap: Noto Sans carries Greek and
+      // superscripts but not the Mathematical Operators block.
+      expect(sanitizeForPdf('f ≈ (d/2πD²Na)·√(G/2ρ)'),
+          'f ~= (d/2πD²Na)·sqrt(G/2ρ)');
+      expect(sanitizeForPdf('n ≥ 2'), 'n >= 2');
+      expect(sanitizeForPdf('n ≤ 2'), 'n <= 2');
+    });
+
+    test('leaves everything the font does carry alone', () {
+      expect(sanitizeForPdf('σ = F/A'), 'σ = F/A');
+      expect(sanitizeForPdf('mm⁴'), 'mm⁴');
+      expect(sanitizeForPdf('45 °C ± 2'), '45 °C ± 2');
+      expect(sanitizeForPdf('Träger — Größe'), 'Träger — Größe');
+    });
+  });
+
   group('hasGlyphsFor', () {
     test('accepts Latin text and the usual engineering symbols', () {
       expect(hasGlyphsFor('Helical Compression Spring'), isTrue);
-      expect(hasGlyphsFor('Solid height'), isTrue);
       expect(hasGlyphsFor('45°C'), isTrue);
       expect(hasGlyphsFor('Träger — Größe'), isTrue);
       expect(hasGlyphsFor("Théorie de l'élasticité"), isTrue);
     });
 
-    test('rejects CJK, which the standard PDF fonts cannot draw', () {
-      // The check that tells the caller an embedded font is required rather
-      // than silently emitting a page of empty boxes.
+    test('accepts Greek and superscripts, which the embedded font carries', () {
+      expect(hasGlyphsFor('σ = F/A'), isTrue);
+      expect(hasGlyphsFor('τ_max'), isTrue);
+      expect(hasGlyphsFor('mm⁴'), isTrue);
+      expect(hasGlyphsFor('Δθ'), isTrue);
+    });
+
+    test('accepts math operators, because they are substituted first', () {
+      expect(hasGlyphsFor('f ≈ √(G/2ρ)'), isTrue);
+    });
+
+    test('still rejects CJK', () {
+      // The remaining known gap: Noto Sans is Latin/Greek/Cyrillic, so the
+      // three CJK locales' tool names cannot be drawn.
       expect(hasGlyphsFor('莫尔圆'), isFalse);
       expect(hasGlyphsFor('機械設計'), isFalse);
       expect(hasGlyphsFor('Spring 弹簧'), isFalse);
     });
+  });
 
-    test('rejects the Greek letters used for stress symbols', () {
-      // σ, τ and friends are outside Latin Extended-B, so a report that
-      // includes them needs an embedded font too.
-      expect(hasGlyphsFor('σ = F/A'), isFalse);
-      expect(hasGlyphsFor('τ_max'), isFalse);
+  group('canRenderReport', () {
+    test('passes for a Latin report with Greek and math symbols', () {
+      expect(
+        canRenderReport(
+          toolName: 'Helical Compression Spring',
+          sections: const [
+            ResultSection(
+              title: 'Stresses',
+              values: [ResultValue(label: 'Shear stress, τ', valueSI: 1)],
+            ),
+          ],
+          formulaSteps: const ['f ≈ √(G/2ρ)', 'I in mm⁴'],
+        ),
+        isTrue,
+      );
+    });
+
+    test('fails when the tool name is CJK', () {
+      expect(
+        canRenderReport(
+          toolName: '莫尔圆',
+          sections: const [
+            ResultSection(
+              title: 'Stresses',
+              values: [ResultValue(label: 'Shear stress', valueSI: 1)],
+            ),
+          ],
+        ),
+        isFalse,
+      );
+    });
+
+    test('fails when only a nested label is CJK', () {
+      // The check has to reach section titles, labels and formula steps, not
+      // just the tool name.
+      expect(
+        canRenderReport(
+          toolName: 'Spring',
+          sections: const [
+            ResultSection(
+              title: 'Stresses',
+              values: [ResultValue(label: '剪应力', valueSI: 1)],
+            ),
+          ],
+        ),
+        isFalse,
+      );
+      expect(
+        canRenderReport(
+          toolName: 'Spring',
+          sections: const [
+            ResultSection(
+              title: '应力',
+              values: [ResultValue(label: 'Shear', valueSI: 1)],
+            ),
+          ],
+        ),
+        isFalse,
+      );
+      expect(
+        canRenderReport(
+          toolName: 'Spring',
+          sections: const [
+            ResultSection(
+              title: 'Stresses',
+              values: [ResultValue(label: 'Shear', valueSI: 1)],
+            ),
+          ],
+          formulaSteps: const ['剪应力 = T·r/J'],
+        ),
+        isFalse,
+      );
+    });
+
+    test('checks pre-formatted values too', () {
+      expect(
+        canRenderReport(
+          toolName: 'Spring',
+          sections: const [
+            ResultSection(
+              title: 'Notes',
+              values: [ResultValue(label: 'Note', value: '約 2.5 N/mm')],
+            ),
+          ],
+        ),
+        isFalse,
+      );
     });
   });
 

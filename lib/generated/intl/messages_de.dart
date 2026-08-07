@@ -638,6 +638,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Abtriebsdrehzahl, n2",
     ),
     "Overall_Height": MessageLookupByLibrary.simpleMessage("Gesamthöhe"),
+    "PDF_Missing_Characters": MessageLookupByLibrary.simpleMessage(
+      "Im PDF fehlen möglicherweise einige Zeichen",
+    ),
     "P_Load": MessageLookupByLibrary.simpleMessage("P (Last)"),
     "Pick_Material": MessageLookupByLibrary.simpleMessage("Material auswählen"),
     "Pin": MessageLookupByLibrary.simpleMessage("Festlager"),

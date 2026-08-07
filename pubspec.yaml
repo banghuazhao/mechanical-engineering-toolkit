@@ -93,6 +93,13 @@ flutter:
     - images/simple_beam/
     - images/app_icons/
     - images/icons/
+    # Embedded into exported PDFs, not used for on-screen text — hence assets
+    # rather than a `fonts:` entry. The built-in PDF typefaces are WinAnsi and
+    # cannot draw the Greek and superscripts these results are full of.
+    # Noto Sans is OFL-1.1; see fonts/OFL.txt.
+    - fonts/NotoSans-Regular.ttf
+    - fonts/NotoSans-Bold.ttf
+    - fonts/OFL.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

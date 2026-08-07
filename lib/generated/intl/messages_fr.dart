@@ -656,6 +656,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Vitesse de sortie, n2",
     ),
     "Overall_Height": MessageLookupByLibrary.simpleMessage("Hauteur totale"),
+    "PDF_Missing_Characters": MessageLookupByLibrary.simpleMessage(
+      "Certains caractères peuvent manquer dans le PDF",
+    ),
     "P_Load": MessageLookupByLibrary.simpleMessage("P (charge)"),
     "Pick_Material": MessageLookupByLibrary.simpleMessage(
       "Choisir un matériau",
