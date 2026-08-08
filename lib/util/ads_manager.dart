@@ -51,9 +51,29 @@ class AdsManager {
     return completer.future;
   }
 
+  /// Debug-only: pretends the device is in the EEA so the GDPR/UMP consent
+  /// form can be exercised on a simulator, which otherwise geolocates to
+  /// wherever the host machine is and never shows the form.
+  ///
+  /// Enable with `--dart-define=FORCE_EEA_CONSENT=true` on a debug run. The
+  /// key is a const literal with a safe `false` default, and the whole thing
+  /// is additionally gated on [kDebugMode], so a release build ignores it even
+  /// if the define is passed.
+  static const bool _forceEeaConsentGeography =
+      bool.fromEnvironment('FORCE_EEA_CONSENT');
+
+  static ConsentDebugSettings? get _debugConsentSettings {
+    if (!kDebugMode || !_forceEeaConsentGeography) return null;
+    return ConsentDebugSettings(
+      debugGeography: DebugGeography.debugGeographyEea,
+    );
+  }
+
   static Future<bool> _requestConsent() async {
     final completer = Completer<bool>();
-    final parameters = ConsentRequestParameters();
+    final parameters = ConsentRequestParameters(
+      consentDebugSettings: _debugConsentSettings,
+    );
 
     ConsentInformation.instance.requestConsentInfoUpdate(
       parameters,

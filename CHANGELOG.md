@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.8.0 - 2026-08-08
+
+- Added Projects: save any calculation's inputs under a name and reopen it later.
+- Added CSV and PDF export on every result page.
+- Added a single share action with a format picker (text, image, CSV, PDF).
+- Added a light / dark / system appearance setting.
+- Localized the high-traffic interface strings and fixed search in non-English languages.
+- Fixed a crash when naming a project on iOS.
+
 ## 1.7.0 - 2026-08-02
 
 - Added a searchable drill & tap chart covering standard tap and clearance drill sizes.

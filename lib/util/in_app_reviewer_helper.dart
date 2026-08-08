@@ -1,4 +1,5 @@
 // import 'package:in_app_review/in_app_review.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InAppReviewHelper {
@@ -22,7 +23,7 @@ class InAppReviewHelper {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? count = prefs.getInt(openCount);
 
-    print("App open count: $count");
+    if (kDebugMode) debugPrint("App open count: $count");
     if (count == 3 || count == 15 || count == 100) {
       // if (await inAppReview.isAvailable()) {
       //   inAppReview.requestReview();

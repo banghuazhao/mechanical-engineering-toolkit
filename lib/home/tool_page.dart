@@ -380,7 +380,7 @@ class _ToolPageState extends State<ToolPage> {
                 final Size size = MediaQuery.of(context).size;
                 if (Platform.isIOS) {
                   await SharePlus.instance.share(ShareParams(
-                    text: 'http://itunes.apple.com/app/id1601099443',
+                    text: 'https://apps.apple.com/app/id1601099443',
                     sharePositionOrigin:
                         Rect.fromLTWH(0, 0, size.width, size.height / 2),
                   ));
