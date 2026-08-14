@@ -1,3 +1,5 @@
+import 'dart:ui' show Rect;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
@@ -12,68 +14,102 @@ import 'package:printing/printing.dart';
 /// The built-in PDF typefaces are WinAnsi-encoded and cannot draw Greek or
 /// superscripts, which run through this app's labels and formulas (σ, τ, mm⁴).
 /// [load] embeds the bundled Noto Sans, which covers Latin, Latin Extended,
-/// Greek, Cyrillic and superscripts.
+/// Greek, Cyrillic and superscripts, plus the two CJK subsets that carry the
+/// `ja`/`zh`/`zh_HK` labels and the maths operators Noto Sans omits.
 class PdfReportFonts {
-  const PdfReportFonts({this.regular, this.bold});
+  PdfReportFonts({
+    this.regular,
+    this.bold,
+    this.fallback = const <pw.Font>[],
+  }) : _coverage = _coverageOf([regular, ...fallback]);
 
   /// Null means "use the PDF standard Helvetica" — no asset, Latin-1 only.
   /// Useful in tests; [load] is what production should use.
   final pw.Font? regular;
   final pw.Font? bold;
 
-  static const standard = PdfReportFonts();
+  /// Consulted rune by rune for anything [regular] cannot draw.
+  final List<pw.Font> fallback;
 
-  static PdfReportFonts? _cached;
+  /// Code points the faces above can actually draw, read from their cmaps.
+  ///
+  /// Empty for the standard-Helvetica case, which [_covers] reads as Latin-1.
+  final Set<int> _coverage;
 
-  /// Loads and caches the embedded report fonts.
+  static final standard = PdfReportFonts();
+
+  /// Keyed by [_fallbackAssets]' first entry — the two CJK faces overlap, so
+  /// which one leads decides whether a Han character gets its Chinese or its
+  /// Japanese glyph form.
+  static final Map<String, PdfReportFonts> _cached = {};
+
+  /// The CJK faces, most-preferred first for [languageCode].
+  static List<String> _fallbackAssets(String? languageCode) {
+    const sc = 'fonts/NotoSansCJKsc-Subset.ttf';
+    const jp = 'fonts/NotoSansCJKjp-Subset.ttf';
+    return languageCode == 'ja' ? const [jp, sc] : const [sc, jp];
+  }
+
+  /// Loads and caches the embedded report fonts for [languageCode].
   ///
   /// Falls back to [standard] if the assets cannot be read, so a font problem
   /// degrades the export rather than failing it outright.
-  static Future<PdfReportFonts> load() async {
-    final cached = _cached;
+  static Future<PdfReportFonts> load({String? languageCode}) async {
+    final assets = _fallbackAssets(languageCode);
+    final cached = _cached[assets.first];
     if (cached != null) return cached;
     try {
       final loaded = PdfReportFonts(
-        regular: pw.Font.ttf(
-            await rootBundle.load('fonts/NotoSans-Regular.ttf')),
-        bold:
-            pw.Font.ttf(await rootBundle.load('fonts/NotoSans-Bold.ttf')),
+        regular:
+            pw.Font.ttf(await rootBundle.load('fonts/NotoSans-Regular.ttf')),
+        bold: pw.Font.ttf(await rootBundle.load('fonts/NotoSans-Bold.ttf')),
+        fallback: [
+          for (final asset in assets) pw.Font.ttf(await rootBundle.load(asset)),
+        ],
       );
-      return _cached = loaded;
+      return _cached[assets.first] = loaded;
     } catch (_) {
       return standard;
     }
   }
 
   @visibleForTesting
-  static void resetCache() => _cached = null;
+  static void resetCache() => _cached.clear();
 
-  pw.ThemeData toTheme() => pw.ThemeData.withFont(base: regular, bold: bold);
-}
+  pw.ThemeData toTheme() => pw.ThemeData.withFont(
+        base: regular,
+        bold: bold,
+        fontFallback: fallback,
+      );
 
-/// Characters the app uses that the embedded Noto Sans does not carry, mapped
-/// to the ASCII spelling every engineer reads the same way.
-///
-/// Noto Sans covers Greek and superscripts but not the Mathematical Operators
-/// block, and √ alone appears in over twenty formula steps. Substituting a
-/// handful of characters is a far better trade than bundling a second font for
-/// four symbols.
-const Map<String, String> _pdfSubstitutions = {
-  '√': 'sqrt',
-  '≈': '~=',
-  '≤': '<=',
-  '≥': '>=',
-  '∑': 'sum',
-  '≠': '!=',
-};
+  /// True when every character of [text] can be drawn.
+  ///
+  /// Callers use this to warn rather than to block: the pdf package omits a
+  /// missing glyph silently, so without this check a reader gets a document
+  /// with text quietly absent and no indication anything went wrong.
+  bool hasGlyphsFor(String text) => !text.runes.any((rune) => !_covers(rune));
 
-/// Rewrites [text] so every character survives the embedded font.
-String sanitizeForPdf(String text) {
-  var out = text;
-  _pdfSubstitutions.forEach((from, to) {
-    if (out.contains(from)) out = out.replaceAll(from, to);
-  });
-  return out;
+  bool _covers(int rune) {
+    // Spaces, tabs and newlines are laid out rather than drawn, so a face need
+    // not carry them.
+    if (rune <= 0x20) return true;
+    // No embedded face: the standard Helvetica is WinAnsi, so Latin-1 only.
+    if (_coverage.isEmpty) return rune <= 0xFF;
+    return _coverage.contains(rune);
+  }
+
+  /// Reads coverage from each face's cmap rather than from hard-coded Unicode
+  /// ranges, so the warning cannot drift out of step with what the bundled
+  /// assets happen to contain — including after a subset rebuild.
+  static Set<int> _coverageOf(Iterable<pw.Font?> fonts) {
+    final covered = <int>{};
+    for (final font in fonts) {
+      if (font is pw.TtfFont) {
+        covered.addAll(TtfParser(font.data).charToGlyphIndexMap.keys);
+      }
+    }
+    return covered;
+  }
 }
 
 /// Every string a report draws, for checking coverage before exporting.
@@ -94,12 +130,9 @@ Iterable<String> reportStrings({
   yield* formulaSteps;
 }
 
-/// True when every string in the report can be drawn.
-///
-/// Callers use this to warn rather than to block: the pdf package omits a
-/// missing glyph silently, so without this check a reader gets a document with
-/// text quietly absent and no indication anything went wrong.
+/// True when every string in the report can be drawn by [fonts].
 bool canRenderReport({
+  required PdfReportFonts fonts,
   required String toolName,
   required List<ResultSection> sections,
   List<String> formulaSteps = const [],
@@ -108,36 +141,7 @@ bool canRenderReport({
       toolName: toolName,
       sections: sections,
       formulaSteps: formulaSteps,
-    ).every(hasGlyphsFor);
-
-/// True when [text] can be drawn by the embedded report font after
-/// [sanitizeForPdf].
-///
-/// The remaining gap is CJK: three of the app's six locales localize tool
-/// names into scripts Noto Sans (Latin/Greek/Cyrillic) does not carry.
-bool hasGlyphsFor(String text) {
-  final sanitized = sanitizeForPdf(text);
-  return !sanitized.runes.any((rune) {
-    if (rune <= 0x24F) return false; // Latin + Latin Extended-A/B
-    if (rune >= 0x370 && rune <= 0x3FF) return false; // Greek
-    if (rune >= 0x400 && rune <= 0x4FF) return false; // Cyrillic
-    return !_alwaysDrawable.contains(rune);
-  });
-}
-
-/// Characters above the ranges above that Noto Sans does carry.
-const _alwaysDrawable = <int>{
-  0x2013, 0x2014, // en/em dash
-  0x2018, 0x2019, 0x201C, 0x201D, // curly quotes
-  0x2022, // bullet
-  0x00B0, // degree
-  0x2070, 0x00B9, 0x00B2, 0x00B3, // superscripts 0-3
-  0x2074, 0x2075, 0x2076, 0x2077, 0x2078, 0x2079, // superscripts 4-9
-  0x00B7, // middle dot
-  0x00B1, 0x00D7, 0x00F7, // plus-minus, times, divide
-  0x00B5, // micro
-  0x2032, 0x2033, // prime, double prime
-};
+    ).every(fonts.hasGlyphsFor);
 
 /// Renders a one-page report of [sections] — the thing a student staples to a
 /// problem set and an engineer drops into a design file.
@@ -153,10 +157,12 @@ Future<Uint8List> buildResultPdf({
   required UnitSystem system,
   List<String> formulaSteps = const [],
   PdfReportFonts? fonts,
+  String? languageCode,
   DateTime? generatedAt,
 }) async {
   final timestamp = generatedAt ?? DateTime.now();
-  final reportFonts = fonts ?? await PdfReportFonts.load();
+  final reportFonts =
+      fonts ?? await PdfReportFonts.load(languageCode: languageCode);
   final document = pw.Document(theme: reportFonts.toTheme());
 
   document.addPage(
@@ -168,7 +174,7 @@ Future<Uint8List> buildResultPdf({
           : pw.Container(
               alignment: pw.Alignment.centerRight,
               margin: const pw.EdgeInsets.only(bottom: 12),
-              child: pw.Text(sanitizeForPdf(toolName),
+              child: pw.Text(toolName,
                   style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey700)),
             ),
       footer: (context) => pw.Container(
@@ -203,7 +209,7 @@ pw.Widget _title(String toolName, DateTime generatedAt, UnitSystem system) {
       pw.Text('Mechanical Engineering Toolkit',
           style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey700)),
       pw.SizedBox(height: 4),
-      pw.Text(sanitizeForPdf(toolName),
+      pw.Text(toolName,
           style: const pw.TextStyle(
               fontSize: 20, fontWeight: pw.FontWeight.bold)),
       pw.SizedBox(height: 6),
@@ -233,7 +239,7 @@ pw.Widget _sectionTable(
     crossAxisAlignment: pw.CrossAxisAlignment.start,
     children: [
       pw.Text(
-        sanitizeForPdf(section.title),
+        section.title,
         style: const pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold),
       ),
       pw.SizedBox(height: 6),
@@ -257,9 +263,9 @@ pw.Widget _sectionTable(
         data: [
           for (final value in section.values)
             [
-              sanitizeForPdf(value.label),
-              sanitizeForPdf(value.formattedValue(precs, system)),
-              sanitizeForPdf(value.unit(system)),
+              value.label,
+              value.formattedValue(precs, system),
+              value.unit(system),
             ],
         ],
       ),
@@ -283,7 +289,7 @@ pw.Widget _formulaBlock(List<String> steps) => pw.Column(
               for (final step in steps)
                 pw.Padding(
                   padding: const pw.EdgeInsets.only(bottom: 2),
-                  child: pw.Text(sanitizeForPdf(step),
+                  child: pw.Text(step,
                       style: const pw.TextStyle(fontSize: 10)),
                 ),
             ],
@@ -301,5 +307,20 @@ String pdfFileName(String toolName) {
 }
 
 /// Hands [bytes] to the platform share/print sheet.
-Future<void> shareResultPdf(String toolName, Uint8List bytes) =>
-    Printing.sharePdf(bytes: bytes, filename: pdfFileName(toolName));
+///
+/// [origin] anchors the popover iPadOS presents the sheet in, in global
+/// coordinates — pass the rect of the control the user tapped. It is not
+/// optional in practice: given no bounds, `Printing.sharePdf` substitutes
+/// `Rect.fromCircle(center: Offset.zero, radius: 10)`, a rect outside the root
+/// view, which mispositions the popover while its invisible dismiss layer still
+/// covers the screen and swallows every touch — the app reads as frozen.
+Future<void> shareResultPdf(
+  String toolName,
+  Uint8List bytes, {
+  required Rect origin,
+}) =>
+    Printing.sharePdf(
+      bytes: bytes,
+      filename: pdfFileName(toolName),
+      bounds: origin,
+    );

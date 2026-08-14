@@ -1,0 +1,31 @@
+Fonts bundled with this app
+===========================
+
+These faces are embedded into exported PDF reports only; they are not used for
+on-screen text. All four are licensed under the SIL Open Font License, Version
+1.1, whose full text is in OFL.txt alongside this file. Their copyright notices
+differ, so each is listed here.
+
+NotoSans-Regular.ttf
+NotoSans-Bold.ttf
+    Copyright 2022 The Noto Project Authors
+    https://github.com/notofonts/latin-greek-cyrillic
+    Unmodified.
+
+NotoSansCJKsc-Subset.ttf
+    Derived from Noto Sans SC Regular.
+    (c) 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name
+    'Source'.
+    Modified: subset to the characters this app can draw, using
+    tool/subset_pdf_fonts.py. No glyph outlines were altered.
+
+NotoSansCJKjp-Subset.ttf
+    Derived from Noto Sans JP Regular.
+    (c) 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name
+    'Source'.
+    Modified: subset to the characters this app can draw, using
+    tool/subset_pdf_fonts.py. No glyph outlines were altered.
+
+The OFL reserves the name "Source"; neither subset carries it, and both are
+named after their Noto originals rather than presented as new typefaces.
+Original faces are available from https://fonts.google.com/noto.

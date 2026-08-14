@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
@@ -121,18 +124,32 @@ void main() {
   group('embedded fonts', () {
     setUp(PdfReportFonts.resetCache);
 
-    test('loads Noto Sans from the bundled assets', () async {
+    test('loads Noto Sans and both CJK fallbacks from the bundled assets',
+        () async {
       final fonts = await PdfReportFonts.load();
       expect(fonts.regular, isNotNull,
           reason: 'fonts/NotoSans-Regular.ttf must be declared in pubspec');
       expect(fonts.bold, isNotNull,
           reason: 'fonts/NotoSans-Bold.ttf must be declared in pubspec');
+      expect(fonts.fallback, hasLength(2),
+          reason: 'both CJK subsets must be declared in pubspec');
     });
 
     test('caches so every export does not re-parse the TTFs', () async {
       final first = await PdfReportFonts.load();
       final second = await PdfReportFonts.load();
       expect(identical(first, second), isTrue);
+    });
+
+    test('puts the Japanese face first for ja, the Chinese one otherwise',
+        () async {
+      // The two subsets overlap on most Han characters, so whichever leads
+      // decides the glyph forms a reader sees.
+      final ja = await PdfReportFonts.load(languageCode: 'ja');
+      final zh = await PdfReportFonts.load(languageCode: 'zh');
+      expect(ja.fallback.first.fontName, contains('JP'));
+      expect(zh.fallback.first.fontName, contains('SC'));
+      expect(identical(ja, zh), isFalse);
     });
 
     test('renders Greek and superscripts without throwing', () async {
@@ -158,58 +175,103 @@ void main() {
       expect(bytes, isNotEmpty);
       expect(String.fromCharCodes(bytes.take(5)), '%PDF-');
     });
-  });
 
-  group('sanitizeForPdf', () {
-    test('spells out the math operators Noto Sans lacks', () {
-      // Verified against the font's cmap: Noto Sans carries Greek and
-      // superscripts but not the Mathematical Operators block.
-      expect(sanitizeForPdf('f ≈ (d/2πD²Na)·√(G/2ρ)'),
-          'f ~= (d/2πD²Na)·sqrt(G/2ρ)');
-      expect(sanitizeForPdf('n ≥ 2'), 'n >= 2');
-      expect(sanitizeForPdf('n ≤ 2'), 'n <= 2');
-    });
-
-    test('leaves everything the font does carry alone', () {
-      expect(sanitizeForPdf('σ = F/A'), 'σ = F/A');
-      expect(sanitizeForPdf('mm⁴'), 'mm⁴');
-      expect(sanitizeForPdf('45 °C ± 2'), '45 °C ± 2');
-      expect(sanitizeForPdf('Träger — Größe'), 'Träger — Größe');
+    test('renders a CJK report without throwing', () async {
+      final bytes = await buildResultPdf(
+        toolName: '莫尔圆',
+        sections: const [
+          ResultSection(
+            title: '应力',
+            values: [ResultValue(label: '剪应力', valueSI: 1)],
+          ),
+        ],
+        precs: NumberPrecisionHelper(),
+        system: UnitSystem.si,
+        languageCode: 'zh',
+        formulaSteps: const ['剪应力 = T·r/J'],
+      );
+      expect(bytes, isNotEmpty);
+      expect(String.fromCharCodes(bytes.take(5)), '%PDF-');
     });
   });
 
   group('hasGlyphsFor', () {
+    late PdfReportFonts fonts;
+
+    setUp(() async {
+      PdfReportFonts.resetCache();
+      fonts = await PdfReportFonts.load();
+    });
+
     test('accepts Latin text and the usual engineering symbols', () {
-      expect(hasGlyphsFor('Helical Compression Spring'), isTrue);
-      expect(hasGlyphsFor('45°C'), isTrue);
-      expect(hasGlyphsFor('Träger — Größe'), isTrue);
-      expect(hasGlyphsFor("Théorie de l'élasticité"), isTrue);
+      expect(fonts.hasGlyphsFor('Helical Compression Spring'), isTrue);
+      expect(fonts.hasGlyphsFor('45°C'), isTrue);
+      expect(fonts.hasGlyphsFor('Träger — Größe'), isTrue);
+      expect(fonts.hasGlyphsFor("Théorie de l'élasticité"), isTrue);
     });
 
-    test('accepts Greek and superscripts, which the embedded font carries', () {
-      expect(hasGlyphsFor('σ = F/A'), isTrue);
-      expect(hasGlyphsFor('τ_max'), isTrue);
-      expect(hasGlyphsFor('mm⁴'), isTrue);
-      expect(hasGlyphsFor('Δθ'), isTrue);
+    test('accepts Greek and superscripts, which the base face carries', () {
+      expect(fonts.hasGlyphsFor('σ = F/A'), isTrue);
+      expect(fonts.hasGlyphsFor('τ_max'), isTrue);
+      expect(fonts.hasGlyphsFor('mm⁴'), isTrue);
+      expect(fonts.hasGlyphsFor('Δθ'), isTrue);
     });
 
-    test('accepts math operators, because they are substituted first', () {
-      expect(hasGlyphsFor('f ≈ √(G/2ρ)'), isTrue);
+    test('accepts the math operators the CJK fallbacks supply', () {
+      // Noto Sans has no Mathematical Operators block; the subsets do, which
+      // is why these are drawn as written rather than spelled out in ASCII.
+      expect(fonts.hasGlyphsFor('f ≈ √(G/2ρ)'), isTrue);
+      expect(fonts.hasGlyphsFor('n ≥ 2'), isTrue);
+      expect(fonts.hasGlyphsFor('n ≤ 2'), isTrue);
+      expect(fonts.hasGlyphsFor('Σ ≠ ∑'), isTrue);
     });
 
-    test('still rejects CJK', () {
-      // The remaining known gap: Noto Sans is Latin/Greek/Cyrillic, so the
-      // three CJK locales' tool names cannot be drawn.
-      expect(hasGlyphsFor('莫尔圆'), isFalse);
-      expect(hasGlyphsFor('機械設計'), isFalse);
-      expect(hasGlyphsFor('Spring 弹簧'), isFalse);
+    test('accepts CJK, which the fallbacks cover', () {
+      expect(fonts.hasGlyphsFor('莫尔圆'), isTrue);
+      expect(fonts.hasGlyphsFor('機械設計'), isTrue);
+      expect(fonts.hasGlyphsFor('Spring 弹簧'), isTrue);
+      expect(fonts.hasGlyphsFor('約 2.5 N/mm'), isTrue);
+    });
+
+    test('covers every translated string in every locale', () async {
+      // The subsets are cut from the .arb files, so a string added without
+      // rerunning tool/subset_pdf_fonts.py would silently lose its glyphs.
+      for (final locale in const ['en', 'de', 'fr', 'ja', 'zh', 'zh_HK']) {
+        final arb = await File('lib/l10n/intl_$locale.arb').readAsString();
+        final strings = (jsonDecode(arb) as Map<String, dynamic>).entries.where(
+            (e) => e.value is String && !e.key.startsWith('@'));
+        final localeFonts =
+            await PdfReportFonts.load(languageCode: locale.split('_').first);
+        for (final entry in strings) {
+          expect(
+            localeFonts.hasGlyphsFor(entry.value as String),
+            isTrue,
+            reason: '$locale/${entry.key} has characters no bundled face '
+                'carries — rerun tool/subset_pdf_fonts.py',
+          );
+        }
+      }
+    });
+
+    test('still rejects a script no bundled face carries', () {
+      // Korean is not a locale here, so its glyphs are genuinely absent — the
+      // warning path stays live rather than becoming dead code.
+      expect(fonts.hasGlyphsFor('기계 설계'), isFalse);
     });
   });
 
   group('canRenderReport', () {
+    late PdfReportFonts fonts;
+
+    setUp(() async {
+      PdfReportFonts.resetCache();
+      fonts = await PdfReportFonts.load();
+    });
+
     test('passes for a Latin report with Greek and math symbols', () {
       expect(
         canRenderReport(
+          fonts: fonts,
           toolName: 'Helical Compression Spring',
           sections: const [
             ResultSection(
@@ -223,73 +285,76 @@ void main() {
       );
     });
 
-    test('fails when the tool name is CJK', () {
+    test('passes for a fully CJK report', () {
       expect(
         canRenderReport(
+          fonts: fonts,
           toolName: '莫尔圆',
           sections: const [
             ResultSection(
-              title: 'Stresses',
-              values: [ResultValue(label: 'Shear stress', valueSI: 1)],
-            ),
-          ],
-        ),
-        isFalse,
-      );
-    });
-
-    test('fails when only a nested label is CJK', () {
-      // The check has to reach section titles, labels and formula steps, not
-      // just the tool name.
-      expect(
-        canRenderReport(
-          toolName: 'Spring',
-          sections: const [
-            ResultSection(
-              title: 'Stresses',
-              values: [ResultValue(label: '剪应力', valueSI: 1)],
-            ),
-          ],
-        ),
-        isFalse,
-      );
-      expect(
-        canRenderReport(
-          toolName: 'Spring',
-          sections: const [
-            ResultSection(
               title: '应力',
-              values: [ResultValue(label: 'Shear', valueSI: 1)],
-            ),
-          ],
-        ),
-        isFalse,
-      );
-      expect(
-        canRenderReport(
-          toolName: 'Spring',
-          sections: const [
-            ResultSection(
-              title: 'Stresses',
-              values: [ResultValue(label: 'Shear', valueSI: 1)],
+              values: [ResultValue(label: '剪应力', value: '約 2.5 N/mm')],
             ),
           ],
           formulaSteps: const ['剪应力 = T·r/J'],
         ),
-        isFalse,
+        isTrue,
       );
     });
 
-    test('checks pre-formatted values too', () {
+    test('reaches section titles, labels, values and formula steps', () {
+      // The check has to walk the whole report, not just the tool name.
+      const undrawable = '기계';
       expect(
         canRenderReport(
+          fonts: fonts,
+          toolName: 'Spring',
+          sections: const [
+            ResultSection(
+              title: 'Stresses',
+              values: [ResultValue(label: undrawable, valueSI: 1)],
+            ),
+          ],
+        ),
+        isFalse,
+      );
+      expect(
+        canRenderReport(
+          fonts: fonts,
+          toolName: 'Spring',
+          sections: const [
+            ResultSection(
+              title: undrawable,
+              values: [ResultValue(label: 'Shear', valueSI: 1)],
+            ),
+          ],
+        ),
+        isFalse,
+      );
+      expect(
+        canRenderReport(
+          fonts: fonts,
           toolName: 'Spring',
           sections: const [
             ResultSection(
               title: 'Notes',
-              values: [ResultValue(label: 'Note', value: '約 2.5 N/mm')],
+              values: [ResultValue(label: 'Note', value: undrawable)],
             ),
           ],
+        ),
+        isFalse,
+      );
+      expect(
+        canRenderReport(
+          fonts: fonts,
+          toolName: 'Spring',
+          sections: const [
+            ResultSection(
+              title: 'Stresses',
+              values: [ResultValue(label: 'Shear', valueSI: 1)],
+            ),
+          ],
+          formulaSteps: const ['$undrawable = T·r/J'],
         ),
         isFalse,
       );

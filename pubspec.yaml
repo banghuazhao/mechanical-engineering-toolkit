@@ -99,7 +99,13 @@ flutter:
     # Noto Sans is OFL-1.1; see fonts/OFL.txt.
     - fonts/NotoSans-Regular.ttf
     - fonts/NotoSans-Bold.ttf
+    # Noto Sans carries no CJK, so the ja/zh/zh_HK locales fall back to these.
+    # Cut down to the characters the app can actually draw — the full faces are
+    # 6-11 MB. Rebuild with tool/subset_pdf_fonts.py after changing any string.
+    - fonts/NotoSansCJKsc-Subset.ttf
+    - fonts/NotoSansCJKjp-Subset.ttf
     - fonts/OFL.txt
+    - fonts/NOTICE.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

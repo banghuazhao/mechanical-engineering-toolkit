@@ -116,6 +116,34 @@ enum ShareFormat { text, csv, pdf, image }
 class _ResultScaffoldState extends State<ResultScaffold> {
   final _exportKey = GlobalKey();
 
+  /// The share button, used to anchor iPad's share popover — see [_shareOrigin].
+  final _shareButtonKey = GlobalKey();
+
+  /// Where the share sheet should point on iPad, in global coordinates.
+  ///
+  /// iPadOS presents a share sheet as a popover and needs a rect inside the
+  /// root view to hang it off. `Printing.sharePdf` does not default this
+  /// usefully: given no bounds it sends `Rect.fromCircle(center: Offset.zero,
+  /// radius: 10)` — a rect *outside* the view, above and left of its top-left
+  /// corner — which leaves the popover mispositioned while its invisible
+  /// dismiss layer still covers the screen and swallows every touch. The result
+  /// looks exactly like a frozen app.
+  ///
+  /// Always returns a rect within the view: if the button has somehow not been
+  /// laid out, the screen centre is a poor anchor but a harmless one.
+  Rect _shareOrigin() {
+    final box = _shareButtonKey.currentContext?.findRenderObject() as RenderBox?;
+    if (box != null && box.hasSize) {
+      return box.localToGlobal(Offset.zero) & box.size;
+    }
+    final size = MediaQuery.sizeOf(context);
+    return Rect.fromCenter(
+      center: Offset(size.width / 2, size.height / 2),
+      width: 1,
+      height: 1,
+    );
+  }
+
   /// Opens the format picker, then shares in whichever format was chosen.
   ///
   /// One button rather than four app-bar icons: the formats are alternatives,
@@ -168,11 +196,18 @@ class _ResultScaffoldState extends State<ResultScaffold> {
           ),
         );
       case ShareFormat.pdf:
-        // The embedded report font covers Latin, Greek and Cyrillic but not
-        // CJK, and the pdf package drops a missing glyph silently. Say so
-        // rather than handing over a document with text quietly absent.
+        // Loaded up front so the coverage check and the render agree on which
+        // faces are in play — the CJK fallbacks are picked by locale.
         final sections = results!;
+        // Both read context, so they are taken before the first await.
+        final origin = _shareOrigin();
+        final fonts = await PdfReportFonts.load(
+          languageCode: Localizations.localeOf(context).languageCode,
+        );
+        // The pdf package drops a glyph no embedded face carries, silently.
+        // Say so rather than handing over a document with text absent.
         final complete = canRenderReport(
+          fonts: fonts,
           toolName: widget.toolName,
           sections: sections,
           formulaSteps: widget.formulaSteps,
@@ -188,8 +223,9 @@ class _ResultScaffoldState extends State<ResultScaffold> {
           precs: precs,
           system: system,
           formulaSteps: widget.formulaSteps,
+          fonts: fonts,
         );
-        await shareResultPdf(widget.toolName, bytes);
+        await shareResultPdf(widget.toolName, bytes, origin: origin);
     }
   }
 
@@ -250,12 +286,17 @@ class _ResultScaffoldState extends State<ResultScaffold> {
           ...widget.extraActions,
           // One share action for every format. Image is always available —
           // it is a capture of the screen and needs nothing declared.
-          IconButton(
-            key: const Key('shareResults'),
-            tooltip: l10n.Share_Results,
-            icon: const Icon(Icons.share_rounded),
-            onPressed: () =>
-                _showSharePicker(shareLines, results, precs, system),
+          // KeyedSubtree adds no layout — it just gives _shareOrigin a handle
+          // on the button's box while leaving the test key on the button.
+          KeyedSubtree(
+            key: _shareButtonKey,
+            child: IconButton(
+              key: const Key('shareResults'),
+              tooltip: l10n.Share_Results,
+              icon: const Icon(Icons.share_rounded),
+              onPressed: () =>
+                  _showSharePicker(shareLines, results, precs, system),
+            ),
           ),
           IconButton(
             tooltip: l10n.Settings,
