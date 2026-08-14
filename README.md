@@ -121,10 +121,10 @@ flutter run
 ### Building for Production
 
 Release builds read their AdMob IDs, signing config, and version from the
-following files. The **untracked** ones are not in this repository — restore
-them from your secret backup before building:
+following files. The **untracked** ones are deliberately not in this
+repository — supply your own before building a release:
 
-Untracked (restore before building):
+Untracked (supply before building):
 
 - `lib/util/secrets.dart` — production AdMob **ad unit** IDs (banner + app-open,
   per platform). Consumed by `AdsManager`; Google **test** unit IDs are used
@@ -135,13 +135,12 @@ Untracked (restore before building):
   build falls back to a Google **test** app id, so keep this file present.
 - `android/key.properties` + the referenced keystore — release signing.
 
-Tracked (already in the repo, nothing to restore):
+Tracked (already in the repo, nothing to supply):
 
 - `ios/SecretsRelease.xcconfig` / `ios/SecretsDebug.xcconfig` — the AdMob
   **app** ID (`GADAPP_ID`), wired into `Info.plist`'s `GADApplicationIdentifier`
   as the project-level base xcconfig. These are committed: an AdMob app ID is
-  not a secret (it ships inside every build's `Info.plist`), so there is no
-  backup step for iOS.
+  not a secret (it ships inside every build's `Info.plist`).
 
 iOS plugins are managed by **Swift Package Manager**, not CocoaPods — there is
 no `Podfile` and no `ios/Pods` directory, and `flutter build ipa` resolves
