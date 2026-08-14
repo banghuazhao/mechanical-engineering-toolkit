@@ -1,346 +1,205 @@
-# 🛠️ Mechanical Engineering Toolkit
+# Mechanical Engineering Toolkit
 
-[![Download on the App Store](https://img.shields.io/badge/App%20Store-Download-blue.svg)](https://apps.apple.com/lb/app/mechanical-engineering-toolkit/id1601099443?platform=iphone)
+[![App Store](https://img.shields.io/badge/App_Store-Download-0D96F6?logo=apple&logoColor=white)](https://apps.apple.com/app/id1601099443)
+[![Google Play](https://img.shields.io/badge/Google_Play-Download-414141?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=com.appsbay.mechanical_engineering_toolkit)
+[![Flutter](https://img.shields.io/badge/Flutter-3.44-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-## 📖 Overview
-
-**Mechanical Engineering Toolkit** is a professional engineering calculator designed for students, researchers, and industrial engineers. This toolkit offers a wide range of engineering equations, formulas, calculation tools, instructions, and reference material. Users can easily calculate results by selecting a formula and entering the required variables.
-
-## 📱 Screenshots
+A cross-platform engineering calculator for students, researchers, and practising
+engineers. Over 50 tools spanning mechanics of materials, beam analysis, statics,
+machine design, fluids and heat transfer, elasticity, and composites — each one
+showing the governing formula, the substituted calculation steps, and a result you
+can export or share.
 
 <p align="center">
-  <img src="./doc_images/1.webp" alt="Main Interface" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"/>
-  <img src="./doc_images/2.webp" alt="Calculation Interface" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"/>
-  <img src="./doc_images/3.webp" alt="Results Display" width="200" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"/>
+  <img src="./doc_images/1.webp" alt="Tool library" width="220"/>
+  <img src="./doc_images/2.webp" alt="Calculator input" width="220"/>
+  <img src="./doc_images/3.webp" alt="Results with calculation steps" width="220"/>
 </p>
 
-## ✨ Features
+## Features
 
-- 🔢 **Comprehensive Formula Library** - Access a vast collection of engineering formulas and calculations
-- ⚡ **Quick Calculations** - Instantly compute results by entering variables into provided formulas
-- 📚 **Educational Resources** - Detailed instructions and reference material for various engineering disciplines
-- 🎯 **Professional Grade** - Suitable for university students, researchers, and industry professionals
-- 📱 **Cross-Platform** - Built with Flutter for consistent experience across devices
-- 🌍 **Internationalization** - Support for multiple languages (English, Chinese)
-- 💾 **Favorites System** - Save frequently used calculations for quick access
-- 🎨 **Modern UI** - Clean, intuitive interface designed for engineering workflows
+- **Transparent calculations.** Every result page shows the governing formula with
+  values substituted, not just a number.
+- **SI and Imperial throughout.** Switch unit systems at any time; every field
+  converts in place.
+- **Configurable precision.** Auto, scientific, decimal, or engineering notation,
+  with adjustable significant figures.
+- **Projects.** Save any calculation's inputs under a name and reopen it later.
+- **Export and share.** Any result as text, image, CSV, or PDF report.
+- **Material and section libraries.** Isotropic materials, fluid properties,
+  thermal materials, and standard steel sections.
+- **Discovery.** Full-text search, favourites, history, and recommendations by
+  engineering major.
+- **Six languages.** English, German, French, Japanese, Simplified Chinese, and
+  Traditional Chinese.
+- **Light, dark, or system appearance.**
 
-## 🧮 Available Categories
+## Tool catalogue
 
-### 1. ⚙️ Mechanics of Material
-- **Moments of inertia of plane areas**
-- **Force-displacement relation of bar**
-- **Torsion formula of bar**
-- **Flexure formula of beam**
-- **Deflections and slopes of cantilever beams**
-- **Deflections and slopes of simple beams**
-- **Plane stresses transformation**
-- **Principal stresses and planes**
-- **Stresses in the wall of a spherical shell**
-- **Stresses in a thin-walled cylindrical pressure vessel**
-- **Buckling load of column**
+| Category | Tools | Coverage |
+|---|---:|---|
+| Mechanics of Material | 15 | General stress, bar force–displacement, torsion and angle of twist, plane-stress transformation, principal stresses, Mohr's circle, spherical shell, column buckling, thermal deformation, shaft power and torque, Von Mises / Tresca, fatigue safety factor (Modified Goodman), bolted and riveted joints, combined loading |
+| Beam Engineering | 7 | Moments of inertia, flexure formula, cantilever and simple-beam deflections and slopes, transverse shear stress, beam section properties, beam load analysis |
+| Machine Design | 8 | Helical compression springs, spur gear geometry, shaft fatigue design (DE-Goodman), bearing L10 life, belt and chain drives, bolt preload / torque-tension, fillet weld strength, press / shrink-fit interference |
+| Fluids & Thermal | 6 | Reynolds number and flow regime, pipe pressure drop (Darcy–Weisbach with Colebrook), pump and fan power, composite wall conduction, fin efficiency, heat exchanger sizing by LMTD |
+| Composite Material | 7 | Lamina and laminate stress/strain, lamina engineering constants, laminate plane and 3D properties, rule of mixtures, Tsai-Hill and Tsai-Wu failure criteria |
+| Statics | 3 | Resultant of forces (2D), centroid of composite area, truss analysis by method of joints |
+| Theory of Elasticity | 2 | Constitutive relation and stress/strain of linear elastic material |
+| Reference & Utilities | 4 | Unit converter, drill and tap chart, ISO 286 fits and tolerances, standard sections (AISC W, IPE, HEB) |
 
-### 2. 🧱 Theory of Elasticity
-- **Constitutive relation of linear elastic material**
-- **Stress/strain of linear elastic material**
+[`lib/home/tool_model.dart`](lib/home/tool_model.dart) is the authoritative registry.
 
-### 3. 🌐 Composite Material
-- **Lamina stress/strain**
-- **Lamina engineering constants**
-- **Laminate stress/strain**
-- **Laminate plane properties**
-- **Laminate 3D properties**
-- **Rule of mixtures**
-- **Composite failure criteria (Tsai-Hill / Tsai-Wu)**
+## Requirements
 
-### 4. ⚙️ Machine Design
-- **Helical compression spring** (rate, Wahl factor, natural frequency)
-- **Spur gear geometry** (pitch diameters, Lewis bending stress, contact stress estimate)
-- **Shaft fatigue design** (DE-Goodman diameter sizing)
-- **Bearing L10 life**
-- **Belt / chain drive** (ratio, length, wrap angle)
-- **Bolt preload / torque-tension**
-- **Fillet weld strength**
-- **Press / shrink-fit interference**
+| | |
+|---|---|
+| Flutter | 3.44 or newer |
+| Dart | `>=3.0.0 <4.0.0` |
+| iOS | 15.0+ |
+| Android | 7.0+ (API 24) |
 
-### 5. 💧 Fluids & Thermal
-- **Reynolds number & flow regime** (laminar / transitional / turbulent)
-- **Pipe pressure drop** (Darcy–Weisbach, Colebrook friction factor, minor losses)
-- **Pump & fan power** (hydraulic and shaft power, head)
-- **Composite wall conduction** (layer resistances, U value, interface temperatures)
-- **Fin efficiency** (straight rectangular fin, corrected length)
-- **Heat exchanger (LMTD)** (counter / parallel flow, required area)
+iOS plugins are managed by **Swift Package Manager**, not CocoaPods — there is no
+`Podfile` and no `ios/Pods` directory.
 
-### 6. 📐 Reference Tables
-- **Drill & tap chart**
-- **ISO 286 fits & tolerances**
-- **Standard sections** — AISC W shapes plus European IPE and HEB, with dimensions, area, second moments, section moduli and radii of gyration
+## Getting started
 
-*(This list covers the major categories; the in-app search finds every tool by name or keyword — see [tool_model.dart](lib/home/tool_model.dart) for the full, current registry.)*
-
-## 🛠️ Technical Information
-
-This project is built using **Flutter** and **Dart**.
-
-- **Flutter SDK**: `3.44.2`
-- **Dart SDK**: `>=3.0.0 <4.0.0`
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-Before you begin, ensure you have the following installed:
-- [Flutter SDK](https://flutter.dev/docs/get-started/install) (version 3.44.2 or higher)
-- [Dart SDK](https://dart.dev/get-dart) (version 3.0.0 or higher)
-- [Android Studio](https://developer.android.com/studio) or [VS Code](https://code.visualstudio.com/)
-- [Git](https://git-scm.com/)
-
-### Installation
-
-1. **Clone the repository:**
 ```bash
 git clone https://github.com/banghuazhao/mechanical-engineering-toolkit.git
 cd mechanical-engineering-toolkit
-```
-
-2. **Check Flutter installation:**
-```bash
-flutter doctor
-```
-
-3. **Install dependencies:**
-```bash
 flutter pub get
-```
-
-4. **Run the app:**
-```bash
 flutter run
 ```
 
-### Building for Production
+Run the test suite with `flutter test`.
 
-Release builds read their AdMob IDs, signing config, and version from the
-following files. The **untracked** ones are deliberately not in this
-repository — supply your own before building a release:
+## Building a release
 
-Untracked (supply before building):
+Release builds read AdMob identifiers, signing configuration, and the version
+number from files that are deliberately **not** in this repository. Supply your
+own before building:
 
-- `lib/util/secrets.dart` — production AdMob **ad unit** IDs (banner + app-open,
-  per platform). Consumed by `AdsManager`; Google **test** unit IDs are used
-  automatically in debug builds only.
-- `android/local.properties` — `AdMobAppId` (Android AdMob **app** ID, injected
-  into the manifest as `com.google.android.gms.ads.APPLICATION_ID`) plus
-  `flutter.versionName` / `flutter.versionCode`. If `AdMobAppId` is missing the
-  build falls back to a Google **test** app id, so keep this file present.
-- `android/key.properties` + the referenced keystore — release signing.
+| File | Contents |
+|---|---|
+| `lib/util/secrets.dart` | AdMob **ad unit** IDs (banner and app-open, per platform). Google **test** unit IDs are substituted automatically in debug builds. |
+| `android/local.properties` | `AdMobAppId` (injected into the manifest as `com.google.android.gms.ads.APPLICATION_ID`), plus `flutter.versionName` and `flutter.versionCode`. Falls back to a Google test app ID when absent. |
+| `android/key.properties` + keystore | Release signing. |
 
-Tracked (already in the repo, nothing to supply):
-
-- `ios/SecretsRelease.xcconfig` / `ios/SecretsDebug.xcconfig` — the AdMob
-  **app** ID (`GADAPP_ID`), wired into `Info.plist`'s `GADApplicationIdentifier`
-  as the project-level base xcconfig. These are committed: an AdMob app ID is
-  not a secret (it ships inside every build's `Info.plist`).
-
-iOS plugins are managed by **Swift Package Manager**, not CocoaPods — there is
-no `Podfile` and no `ios/Pods` directory, and `flutter build ipa` resolves
-plugin packages through Xcode's SPM integration.
-
-Then build the store artifacts:
+`ios/SecretsRelease.xcconfig` and `ios/SecretsDebug.xcconfig` are committed: they
+carry only the AdMob **app** ID, which is not a secret — it ships inside every
+build's `Info.plist`.
 
 ```bash
-# Android App Bundle (signed release)
-flutter build appbundle --release
-
-# iOS App Store IPA (archive + export)
-flutter build ipa --release
+flutter build appbundle --release   # Android App Bundle
+flutter build ipa --release         # iOS App Store package
 ```
 
-## 🧩 Adding a New Calculator
+## Adding a new calculator
 
-New tools should follow the pattern used by recent additions (e.g.
+New tools follow the pattern of recent additions — for example
 [`bolted_joint_page.dart`](lib/home/mechancs_of_material/page/bolted_joint_page.dart)
-+ [`bolted_joint_result_page.dart`](lib/home/mechancs_of_material/page/bolted_joint_result_page.dart),
-or [`centroid_page.dart`](lib/home/statics/page/centroid_page.dart)) rather than the
-older per-tool `model/` + `widget/…Row.dart` split. All Mechanics of
-Material and Beam Engineering tools have been migrated to this pattern; the
-2 Theory of Elasticity tools and 6 Composite Material tools are still on the
-older split (their matrix-heavy UIs make that a bigger, separate migration) —
-follow the current pattern for anything new in those areas too, but don't be
-surprised to find the older style there today.
+with its result page, or [`centroid_page.dart`](lib/home/statics/page/centroid_page.dart)
+— rather than the older per-tool `model/` + `widget/…Row.dart` split. Mechanics of
+Material and Beam Engineering are fully migrated; the two Theory of Elasticity and
+seven Composite Material tools still use the older split, because their
+matrix-heavy UIs make that a separate piece of work. Follow the current pattern
+for anything new, including in those areas.
 
 ### File layout
 
-- One input page: `lib/home/<category>/page/<tool>_page.dart`
-- One result page: `lib/home/<category>/page/<tool>_result_page.dart`
-- Register the tool as a `Tool` entry in `lib/home/tool_model.dart`
-  (`ToolLibrary.getTools`), using the next free id in the category's block:
+- Input page: `lib/home/<category>/page/<tool>_page.dart`
+- Result page: `lib/home/<category>/page/<tool>_result_page.dart`
+- Register a `Tool` entry in [`tool_model.dart`](lib/home/tool_model.dart)
+  (`ToolLibrary.getTools`), taking the next free id in the category block:
   `100s` Mechanics of Material · `200s` Theory of Elasticity · `300s` Composite
   Material · `400s` Statics · `500s` Utilities.
 
-### Checklist — every new calculator must
+### Requirements for every new tool
 
-1. **Respect the unit system.** Every physical input/output must use
+1. **Respect the unit system.** Every physical input and output uses
    [`UnitField`](lib/util/unit_field.dart) with a `UnitCategory` from
-   [`units.dart`](lib/util/units.dart) (add a new category there if none fits).
-   Never hardcode a unit string — `UnitField` shows the right suffix and
-   converts in place based on `UnitSystemPreference`, and the user can switch
-   between SI and Imperial from Settings at any time.
-2. **Have an appropriate icon.** Give the `Tool` entry in `tool_model.dart`
-   either `icon: Icons.…` (a Material *rounded* icon, matching existing
-   entries) or `image: AssetImage('images/...')` pointing at a purpose-made
-   asset. Don't ship a tool with no visual identity.
-3. **Explain itself with a description and formula.** The input page should
-   state what the tool computes and show the governing formula — plain text,
-   or rendered math via `flutter_math_fork`'s `Math.tex` — near the inputs, so
-   the user understands what to enter without leaving the page.
-4. **Respect precision settings.** Route every displayed value through
-   `NumberPrecisionHelper.formatValue()` — directly, or via the shared
-   `AppCopyableValue` / `UnitField` widgets, which already do this — so
-   results honor the user's precision and display-format (auto / scientific /
-   decimal / engineering) settings. Never hardcode `toStringAsFixed(n)` on a
+   [`units.dart`](lib/util/units.dart); add a category if none fits. Never
+   hardcode a unit string — `UnitField` renders the correct suffix and converts
+   in place from `UnitSystemPreference`.
+2. **Respect precision settings.** Route displayed values through
+   `NumberPrecisionHelper.formatValue()`, directly or via the shared
+   `AppCopyableValue` / `UnitField` widgets. Never call `toStringAsFixed(n)` on a
    user-facing result.
-5. **Show the calculation and make it shareable — as text and as an image.**
-   The result page must display the calculation steps (formula with values
-   substituted — see `CalculationCard`) and offer two share actions in
-   `AppBar.actions`: `shareResult(toolName, lines)` (text) and
-   `shareResultImage(exportKey, toolName)` (PNG screenshot), both from
-   [`share_helper.dart`](lib/util/share_helper.dart). For the image share,
-   wrap the page's `AppContent` in a `RepaintBoundary(key: _exportKey, ...)`
-   and give the widget an (non-`const`) `final _exportKey = GlobalKey();`
-   field — see `bolted_joint_result_page.dart` for the exact pattern.
-6. **Include an illustration where it helps.** When a diagram clarifies the
-   setup (beam loading case, cross-section, free-body diagram, sign
-   convention, etc.), add an image under `images/` or a small custom-painted
-   diagram. Not required when the formula is fully self-explanatory, but
-   strongly preferred. For an x-vs-y curve (a beam moment/deflection diagram,
-   etc.), use the shared [`XYDiagramCard`](lib/ui/xy_diagram_card.dart) rather
-   than writing a new `CustomPainter`.
-7. **Wire up the icon Hero animation.** Add `ToolResultHeader(tool: tool)` —
-   with `final tool = ToolLibrary.shared.item(widget.toolId, context);` at the
-   top of `build()` — as the *first* child of both the input page's list and
-   the result page's list. Because `ToolResultHeader` already wraps its
-   icon/image in a `Hero(tag: 'tool_icon_${tool.id}')`, and the list/grid
-   tiles in `tool_page.dart` carry the matching tag, this alone makes the
-   tool's icon fly from the list into the input page, then into the result
-   page — no extra code needed. Skip only for tools with no natural
-   single-result moment (e.g. Unit Converter). List/grid entrance animation
-   (`StaggeredEntrance`) and result-value fade transitions
-   (`AppCopyableValue`) are automatic from the shared widgets — nothing to do
-   for those beyond using the widgets as normal.
+3. **Explain the calculation.** State what the tool computes and show the
+   governing formula near the inputs — plain text or `Math.tex` via
+   `flutter_math_fork`. The result page must show the substituted steps; see
+   `CalculationCard`.
+4. **Give the tool a visual identity.** Set either `icon:` (a Material *rounded*
+   icon) or `image: AssetImage('images/…')` on the `Tool` entry.
+5. **Make results shareable.** Offer both `shareResult(toolName, lines)` and
+   `shareResultImage(exportKey, toolName)` from
+   [`share_helper.dart`](lib/util/share_helper.dart) in `AppBar.actions`. For the
+   image export, wrap the page's `AppContent` in a `RepaintBoundary` keyed by a
+   non-`const` `final _exportKey = GlobalKey();`.
+6. **Wire up the Hero animation.** Make `ToolResultHeader(tool: tool)` the first
+   child of both the input and result lists. It already wraps the icon in a
+   `Hero(tag: 'tool_icon_${tool.id}')` matching the list tiles, so the icon flies
+   from list to input page to result page with no further code. Skip only for
+   tools without a single-result moment, such as the unit converter.
+7. **Illustrate where it helps.** Add a diagram under `images/` when one clarifies
+   the setup. For x-versus-y curves use the shared
+   [`XYDiagramCard`](lib/ui/xy_diagram_card.dart) rather than a new
+   `CustomPainter`.
+8. **Record history.** Call
+   `context.read<ToolHistory>().record(widget.toolId, inputs: {…})` on success and
+   parse the same keys back out of `widget.initialInputs` in `initState`, so
+   History and Favourites re-entry works.
+9. **Use the design system.** Build from `AppContent`, `AppSectionCard`,
+   `AdaptiveFieldGrid`, `AppCopyableValue`, and `context.tokens` rather than raw
+   `Card` / `Padding` with magic numbers. Add the settings action and
+   `bottomNavigationBar: const AppBannerAd()` to the result page — the banner
+   already no-ops once Remove Ads is purchased.
+10. **Validate inputs.** Throw `FormatException` in `_calculate()` and surface it
+    as a `SnackBar` rather than failing silently.
+11. **Offer presets and sweeps where they fit.** Add a
+    [`MaterialPresetButton`](lib/ui/material_preset_picker.dart) for isotropic
+    properties (E, G, yield/ultimate strength, density, ν), and a
+    [`ParameterSweepCard`](lib/ui/parameter_sweep_card.dart) when the output is a
+    single scalar function of the inputs.
+12. **Test and register.** Add a unit test under `test/` when the maths is
+    non-trivial, list the tool in this README, and add its id to the relevant
+    majors in [`major_recommendation.dart`](lib/home/major_recommendation.dart) —
+    nothing fails if you forget, but "Recommended by Major" silently misses it.
 
-### Also expected of every new tool
-
-- Record successful calculations with
-  `context.read<ToolHistory>().record(widget.toolId, inputs: {...})`, and
-  parse the same keys back out of `widget.initialInputs` in `initState`, so
-  History and Favorites re-entry works.
-- Build the UI from the shared design system —`AppContent`, `AppSectionCard`,
-  `AdaptiveFieldGrid`, `AppCopyableValue`, and `context.tokens` for
-  spacing/radius — rather than raw `Card`/`Padding` with magic numbers.
-- Add a settings icon (`Icons.settings_rounded` → `ToolSettingPage`) and the
-  `AppBannerAd` (`bottomNavigationBar: const AppBannerAd()`) to the result
-  page, matching other tools — `AppBannerAd` already no-ops once the user has
-  purchased Remove Ads, so no extra gating logic is needed.
-- Validate inputs and report problems via a `SnackBar` (throw a
-  `FormatException` in `_calculate()` and catch it) instead of failing
-  silently.
-- If the tool takes an isotropic material property (E, G, yield/ultimate
-  strength, density, ν), add a
-  [`MaterialPresetButton`](lib/ui/material_preset_picker.dart) below the
-  relevant fields so the user can pick a built-in or custom material instead
-  of typing constants by hand. Not for composite lamina properties
-  (E1/E2/G12/ν12) — those aren't covered by this picker.
-- If the tool's formula is a simple, single-valued function of its inputs,
-  add a [`ParameterSweepCard`](lib/ui/parameter_sweep_card.dart) to the result
-  page letting the user drag one input across a range and see the effect on
-  the output live. Skip it for tools that already show a full diagram (beam
-  load analysis) or whose output isn't a single scalar (truss analysis,
-  centroid, composite laminate matrices).
-- Add a unit test for the pure calculation logic under `test/` when the math
-  is non-trivial (see `truss_solver_test.dart`, `beam_calculators_test.dart`
-  for style).
-- Add the new tool to this README's [Available Categories](#-available-categories) list.
-- Add the new tool's id to any relevant major(s) in
-  [`major_recommendation.dart`](lib/home/major_recommendation.dart) — new
-  tools are easy to forget here since nothing fails if you skip it, but
-  "Recommended by Major" is a primary discovery path and silently misses
-  anything not listed.
-
-### A note on units: two internal conventions coexist
+### Unit conventions: two systems coexist
 
 Most tools work in true SI (E in Pa, L in m) and convert only at the
-`UnitField`/display boundary — see `simply_supported_beam_calculator.dart`.
+`UnitField` display boundary — see `simply_supported_beam_calculator.dart`.
 
-A number of "quick formula" tools (column buckling, bar force-displacement,
-angle of twist, beam flexure, etc.) instead keep everything in the
-**mm–N–MPa** system: length in mm, force in N, moment in N·mm, stress in MPa,
-second moment of area in mm⁴. In that system the raw numeric values from
-`UnitCategory.length`/`.force`/`.momentSection`/`.stress`/`.momentOfInertia`
-combine directly with no conversion factors (e.g. `σ = M·y/I` with M in
-N·mm, y in mm, I in mm⁴ gives σ directly in MPa). If such a tool also takes
-an elastic/shear modulus, keep the field as `UnitCategory.modulus` (GPa —
-correct display, and what `MaterialPresetButton` provides), but **multiply
-by 1000 at the point of use** to convert to the MPa-equivalent number the
-rest of the mm/N formula expects (1 GPa = 1000 MPa) — see the `e * 1000` /
-`g * 1000` calls in `column_buckling_load_page.dart` and
-`angle_of_twist_page.dart`. Getting this wrong silently produces results off
-by a factor of 1000, so when adding a new mm–N–MPa tool with a modulus
-input, follow one of those two files as a template rather than re-deriving
-the conversion from scratch.
+Several "quick formula" tools (column buckling, bar force–displacement, angle of
+twist, beam flexure) instead work entirely in **mm–N–MPa**: length in mm, force in
+N, moment in N·mm, stress in MPa, second moment of area in mm⁴. In that system the
+raw values from `UnitCategory.length` / `.force` / `.momentSection` / `.stress` /
+`.momentOfInertia` combine with no conversion factors — `σ = M·y/I` yields MPa
+directly.
 
-## 🤝 Contributing
+If such a tool takes an elastic or shear modulus, keep the field as
+`UnitCategory.modulus` (GPa, which is what `MaterialPresetButton` supplies) but
+**multiply by 1000 at the point of use**, since 1 GPa = 1000 MPa. See the
+`e * 1000` and `g * 1000` calls in `column_buckling_load_page.dart` and
+`angle_of_twist_page.dart`. Getting this wrong silently produces results off by a
+factor of 1000, so copy one of those files rather than re-deriving the conversion.
 
-We welcome contributions from the community! Here's how you can help:
+## Contributing
 
-### How to Contribute
+Issues and pull requests are welcome — particularly new calculators, translations,
+and corrections to engineering formulas or reference data.
 
-1. **Fork the repository**
-2. **Create a feature branch** (`git checkout -b feature/AmazingFeature`)
-3. **Commit your changes** (`git commit -m 'Add some AmazingFeature'`)
-4. **Push to the branch** (`git push origin feature/AmazingFeature`)
-5. **Open a Pull Request**
+1. Fork the repository and create a feature branch.
+2. Follow the conventions in [Adding a new calculator](#adding-a-new-calculator).
+3. Run `flutter test` and `flutter analyze` before opening a pull request.
+4. Keep commits focused and their messages descriptive.
 
-### What We're Looking For
+## Contact
 
-- 🐛 **Bug fixes** - Help us squash bugs and improve stability
-- ✨ **New features** - Add new engineering formulas or calculation tools
-- 📚 **Documentation** - Improve code comments, README, or add tutorials
-- 🌍 **Translations** - Help translate the app to more languages
-- 🎨 **UI/UX improvements** - Enhance the user interface and experience
-- ⚡ **Performance optimizations** - Make the app faster and more efficient
+- Issues and feature requests: [GitHub Issues](https://github.com/banghuazhao/mechanical-engineering-toolkit/issues)
+- Maintainer: [@banghuazhao](https://github.com/banghuazhao)
 
-### Code Style
+## License
 
-- Follow the existing code style and conventions
-- Add comments for complex calculations
-- Write meaningful commit messages
-- Test your changes thoroughly
-
-## 📲 Download
-
-The Mechanical Engineering Toolkit is available on the App Store:
-
-[![Download on the App Store](https://img.shields.io/badge/App%20Store-Download-blue.svg)](https://apps.apple.com/lb/app/mechanical-engineering-toolkit/id1601099443?platform=iphone)
-
-## 📞 Contact
-
-- **Developer**: [@banghuazhao](https://github.com/banghuazhao)
-- **GitHub Issues**: [Report bugs or request features](https://github.com/banghuazhao/mechanical-engineering-toolkit/issues)
-- **App Store**: [Rate and review the app](https://apps.apple.com/lb/app/mechanical-engineering-toolkit/id1601099443?platform=iphone)
-
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-<div align="center">
-  <p>Made with ❤️ for the engineering community</p>
-  <p>If this project helps you, please consider giving it a ⭐</p>
-</div>
-
-
-
-
-
+Released under the MIT License. See [LICENSE](LICENSE) for details.
