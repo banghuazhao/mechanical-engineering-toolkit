@@ -12,7 +12,7 @@ description: Mechanical Engineering Toolkit
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.8.0+2026080801
+version: 1.9.0+2026081401
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -52,7 +52,7 @@ dependencies:
   in_app_purchase: ^3.3.0
 #  in_app_review: ^2.0.9
   shared_preferences: ^2.2.2
-  google_mobile_ads: ^9.0.0
+  google_mobile_ads: ^9.1.0
   intl: ^0.20.2
   app_tracking_transparency: ^2.0.7
   composite_calculator: ^1.0.1
