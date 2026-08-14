@@ -60,6 +60,7 @@ class ReferenceTablePage<T> extends StatefulWidget {
     this.filters = const [],
     this.searchHint,
     this.footnote,
+    this.onRowTap,
   });
 
   final String title;
@@ -79,6 +80,11 @@ class ReferenceTablePage<T> extends StatefulWidget {
 
   /// Sourcing or usage caveat pinned under the table.
   final String? footnote;
+
+  /// Replaces the default tap-to-copy with an action of the page's own —
+  /// opening a detail view, for instance. Tables whose rows say everything
+  /// they have to say leave this null and keep the copy.
+  final void Function(T row)? onRowTap;
 
   @override
   State<ReferenceTablePage<T>> createState() => _ReferenceTablePageState<T>();
@@ -266,9 +272,14 @@ class _ReferenceTablePageState<T> extends State<ReferenceTablePage<T>> {
           secondary: column.secondary?.call(row),
         ),
     ];
+    final onRowTap = widget.onRowTap;
     return InkWell(
       onTap: () {
         HapticFeedback.selectionClick();
+        if (onRowTap != null) {
+          onRowTap(row);
+          return;
+        }
         final text = [
           for (final cell in cells)
             cell.secondary == null

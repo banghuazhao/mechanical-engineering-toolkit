@@ -25,15 +25,17 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(label) =>
       "Drag along the line to explore other values of ${label}.";
 
-  static String m2(value) => "Preview: ${value}";
+  static String m2(index) => "Layer ${index}";
 
-  static String m3(name) => "Saved “${name}”";
+  static String m3(value) => "Preview: ${value}";
 
-  static String m4(name) => "Renamed to “${name}”";
+  static String m4(name) => "Saved “${name}”";
 
-  static String m5(tool) => "Remove ${tool} from favorites";
+  static String m5(name) => "Renamed to “${name}”";
 
-  static String m6(label) => "What if: ${label}";
+  static String m6(tool) => "Remove ${tool} from favorites";
+
+  static String m7(label) => "What if: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -44,6 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Add_Force": MessageLookupByLibrary.simpleMessage("Add Force"),
     "Add_Joint": MessageLookupByLibrary.simpleMessage("Add Joint"),
+    "Add_Layer": MessageLookupByLibrary.simpleMessage("Add layer"),
     "Add_Member": MessageLookupByLibrary.simpleMessage("Add Member"),
     "Add_Shape": MessageLookupByLibrary.simpleMessage("Add Shape"),
     "Add_to_Favorites": MessageLookupByLibrary.simpleMessage(
@@ -69,6 +72,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Alternating_Torque_Ta": MessageLookupByLibrary.simpleMessage(
       "Alternating torque, Ta",
     ),
+    "Ambient_Temperature": MessageLookupByLibrary.simpleMessage(
+      "Ambient temperature",
+    ),
     "Analysis_Type": MessageLookupByLibrary.simpleMessage("Analysis Type"),
     "Angle_of_Rotation": MessageLookupByLibrary.simpleMessage(
       "Angle of Rotation",
@@ -83,6 +89,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Area_A": MessageLookupByLibrary.simpleMessage("Area, A"),
     "Ball_Bearing": MessageLookupByLibrary.simpleMessage(
       "Ball bearing (p = 3)",
+    ),
+    "Base_Temperature": MessageLookupByLibrary.simpleMessage(
+      "Base temperature",
     ),
     "Beam_Configuration": MessageLookupByLibrary.simpleMessage(
       "Beam Configuration",
@@ -149,6 +158,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "Clearance_Close": MessageLookupByLibrary.simpleMessage("Clearance close"),
     "Clearance_Free": MessageLookupByLibrary.simpleMessage("Clearance free"),
     "Clearance_um": MessageLookupByLibrary.simpleMessage("Clearance (µm)"),
+    "Cold_Inlet": MessageLookupByLibrary.simpleMessage("Cold inlet"),
+    "Cold_Outlet": MessageLookupByLibrary.simpleMessage("Cold outlet"),
+    "Cold_Stream_Range": MessageLookupByLibrary.simpleMessage(
+      "Cold stream range",
+    ),
     "Combined_Loading_at_a_Point": MessageLookupByLibrary.simpleMessage(
       "Combined Loading at a Point",
     ),
@@ -161,6 +175,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Composite_Material": MessageLookupByLibrary.simpleMessage(
       "Composite Material",
     ),
+    "Composite_Wall_Conduction": MessageLookupByLibrary.simpleMessage(
+      "Composite Wall Conduction",
+    ),
+    "Conductivity_k": MessageLookupByLibrary.simpleMessage("Conductivity, k"),
     "Constitutive_relation_of_linear_elastic_material":
         MessageLookupByLibrary.simpleMessage(
           "Constitutive relation of linear elastic material",
@@ -173,7 +191,11 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Copied_Value": m0,
     "Copy_Result": MessageLookupByLibrary.simpleMessage("Copy result"),
+    "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage(
+      "Corrected length, Lc",
+    ),
     "CountdownDays": MessageLookupByLibrary.simpleMessage("Countdown Days"),
+    "Counter_Flow": MessageLookupByLibrary.simpleMessage("Counter flow"),
     "Cross_Section": MessageLookupByLibrary.simpleMessage("Cross-section"),
     "Deflection": MessageLookupByLibrary.simpleMessage("Deflection"),
     "Deflection_Delta": MessageLookupByLibrary.simpleMessage("Deflection, δ"),
@@ -208,11 +230,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "Desc_Bolt_Preload": MessageLookupByLibrary.simpleMessage(
       "Estimates the tightening torque needed to reach a target bolt preload, using the short-form torque-tension equation.",
     ),
+    "Desc_Composite_Wall": MessageLookupByLibrary.simpleMessage(
+      "Steady one-dimensional conduction through a layered plane wall. Layer resistances t/k add in series with the optional convection films 1/h on each face, giving U, the heat flow, and the temperature at every interface.",
+    ),
     "Desc_Fillet_Weld": MessageLookupByLibrary.simpleMessage(
       "Shear stress on the weld throat for a fillet weld of leg size w and effective length L, treating the throat as the failure plane (the standard simplified approach).",
     ),
+    "Desc_Fin_Efficiency": MessageLookupByLibrary.simpleMessage(
+      "Straight rectangular fin of uniform section, solved with an adiabatic tip and the corrected length Lc = L + t/2: m = √(2h/kt) and η = tanh(mLc)/(mLc).",
+    ),
+    "Desc_Lmtd": MessageLookupByLibrary.simpleMessage(
+      "Log mean temperature difference from the four terminal temperatures, and the surface area a given duty needs: A = Q/(U·ΔT_lm). Counter flow pairs each inlet with the opposite outlet; parallel flow pairs the two inlets.",
+    ),
+    "Desc_Pipe_Pressure_Drop": MessageLookupByLibrary.simpleMessage(
+      "Darcy–Weisbach head loss and pressure drop for a full-running pipe: h = f·(L/D)·V²/2g, with the friction factor from the Colebrook equation and fitting losses added as ΣK velocity heads.",
+    ),
     "Desc_Press_Fit": MessageLookupByLibrary.simpleMessage(
       "Contact pressure and hoop stress for a solid shaft pressed into a hub, same material assumed for both parts (a standard simplified case — Poisson\\\'s ratio cancels out).",
+    ),
+    "Desc_Pump_Fan_Power": MessageLookupByLibrary.simpleMessage(
+      "Power a pump or fan needs: the fluid gets P = Δp·Q, and the driver must supply that divided by the efficiency. The pressure rise is also reported as a head of the pumped fluid.",
+    ),
+    "Desc_Reynolds_Number": MessageLookupByLibrary.simpleMessage(
+      "Reynolds number Re = ρVD/μ for flow in a round pipe, with the laminar / transitional / turbulent regime it falls in. Enter either a velocity or a volumetric flow rate; the other is reported back.",
     ),
     "Desc_Section_Properties": MessageLookupByLibrary.simpleMessage(
       "Calculates centroidal geometric properties used in beam bending and stress calculations. The x-axis is horizontal through the centroid and the y-axis is vertical through the centroid.",
@@ -225,6 +265,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Spur_Gear": MessageLookupByLibrary.simpleMessage(
       "20° full-depth involute spur gear pair: pitch diameters, center distance, and basic (Lewis) bending stress with a simplified contact-stress estimate. Not a full AGMA design check.",
+    ),
+    "Desc_Standard_Sections": MessageLookupByLibrary.simpleMessage(
+      "Published dimensions and section properties for standard structural shapes. Section modulus and radius of gyration are derived from the listed area and second moment, so they stay consistent with them.",
     ),
     "Desc_Truss_Determinacy": MessageLookupByLibrary.simpleMessage(
       "A statically determinate 2D truss needs members + reactions = 2 × joints. Give at least one pin and one roller support.",
@@ -253,10 +296,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Dynamic_Load_Rating_C": MessageLookupByLibrary.simpleMessage(
       "Dynamic load rating, C",
     ),
+    "Dynamic_Viscosity": MessageLookupByLibrary.simpleMessage(
+      "Dynamic viscosity, μ",
+    ),
     "E_Modulus": MessageLookupByLibrary.simpleMessage("E (modulus)"),
     "Effective_Length_L": MessageLookupByLibrary.simpleMessage(
       "Effective length, L",
     ),
+    "Efficiency_Eta": MessageLookupByLibrary.simpleMessage("Efficiency, η (%)"),
     "Elastic": MessageLookupByLibrary.simpleMessage("Elastic"),
     "Elastic_Coefficient_Cp": MessageLookupByLibrary.simpleMessage(
       "Elastic coeff., Cp (√MPa)",
@@ -267,6 +314,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Elastic_Modulus_E": MessageLookupByLibrary.simpleMessage(
       "Elastic modulus, E",
     ),
+    "End_Approach_1": MessageLookupByLibrary.simpleMessage("End approach, ΔT1"),
+    "End_Approach_2": MessageLookupByLibrary.simpleMessage("End approach, ΔT2"),
     "End_Condition": MessageLookupByLibrary.simpleMessage("End condition"),
     "Endurance_Limit_Se": MessageLookupByLibrary.simpleMessage(
       "Endurance limit, Se",
@@ -305,6 +354,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "Enter d, D, Na, and G.",
     ),
     "Err_Enter_F_D": MessageLookupByLibrary.simpleMessage("Enter F and d."),
+    "Err_Enter_Fin_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Enter the fin geometry, conductivity, film coefficient and temperatures.",
+    ),
+    "Err_Enter_Layer_Values": MessageLookupByLibrary.simpleMessage(
+      "Every layer needs a thickness and a conductivity.",
+    ),
+    "Err_Enter_Lmtd_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Enter all four temperatures, U and the heat duty.",
+    ),
     "Err_Enter_Module_N1_N2_Face": MessageLookupByLibrary.simpleMessage(
       "Enter module, N1, N2, and face width.",
     ),
@@ -314,14 +372,26 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Enter_One_Load": MessageLookupByLibrary.simpleMessage(
       "Enter at least one load.",
     ),
+    "Err_Enter_Pipe_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Enter the diameter, length, flow rate and fluid properties.",
+    ),
+    "Err_Enter_Pump_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Enter the flow rate, pressure rise, density and efficiency.",
+    ),
     "Err_Enter_R_Ro_Delta_E": MessageLookupByLibrary.simpleMessage(
       "Enter r, ro, δ, and E.",
+    ),
+    "Err_Enter_Reynolds_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Enter the diameter, fluid properties, and either a velocity or a flow rate.",
     ),
     "Err_Enter_Se_Sut": MessageLookupByLibrary.simpleMessage(
       "Enter Se and Sut.",
     ),
     "Err_Enter_W_L_F": MessageLookupByLibrary.simpleMessage(
       "Enter w, L, and F.",
+    ),
+    "Err_Enter_Wall_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Enter the wall area and both temperatures.",
     ),
     "Err_F_D_Positive": MessageLookupByLibrary.simpleMessage(
       "F and d must be positive.",
@@ -391,6 +461,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "Failure_criteria_von_Mises_Tresca": MessageLookupByLibrary.simpleMessage(
       "Failure criteria (Von Mises & Tresca)",
     ),
+    "Family_Angle": MessageLookupByLibrary.simpleMessage("Angles"),
+    "Family_Channel": MessageLookupByLibrary.simpleMessage("Channels"),
+    "Family_HEB": MessageLookupByLibrary.simpleMessage("HEB"),
+    "Family_HSS": MessageLookupByLibrary.simpleMessage("HSS tube"),
+    "Family_IPE": MessageLookupByLibrary.simpleMessage("IPE"),
+    "Family_Pipe": MessageLookupByLibrary.simpleMessage("Pipe"),
+    "Family_W": MessageLookupByLibrary.simpleMessage("W shapes"),
     "Fatigue_Safety_Factor": MessageLookupByLibrary.simpleMessage(
       "Fatigue Safety Factor (Modified Goodman)",
     ),
@@ -399,6 +476,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "Fillet_Weld_Strength": MessageLookupByLibrary.simpleMessage(
       "Fillet Weld Strength",
     ),
+    "Film_Coefficient_h": MessageLookupByLibrary.simpleMessage(
+      "Film coefficient, h",
+    ),
+    "Film_Optional_Note": MessageLookupByLibrary.simpleMessage(
+      "Leave a film coefficient blank to treat that temperature as the surface temperature itself.",
+    ),
+    "Fin_Effectiveness": MessageLookupByLibrary.simpleMessage(
+      "Fin effectiveness, εf",
+    ),
+    "Fin_Efficiency": MessageLookupByLibrary.simpleMessage("Fin Efficiency"),
+    "Fin_Efficiency_Eta": MessageLookupByLibrary.simpleMessage(
+      "Fin efficiency, ηf",
+    ),
+    "Fin_Heat_Flow": MessageLookupByLibrary.simpleMessage("Fin heat flow"),
+    "Fin_Length_L": MessageLookupByLibrary.simpleMessage("Fin length, L"),
+    "Fin_Parameter_m": MessageLookupByLibrary.simpleMessage("Fin parameter, m"),
+    "Fin_Surface_Area": MessageLookupByLibrary.simpleMessage(
+      "Fin surface area",
+    ),
+    "Fin_Thickness_t": MessageLookupByLibrary.simpleMessage("Fin thickness, t"),
+    "Fin_Width_w": MessageLookupByLibrary.simpleMessage("Fin width, w"),
     "FinanceGo": MessageLookupByLibrary.simpleMessage("Finance Go"),
     "Find_Power": MessageLookupByLibrary.simpleMessage("Find Power"),
     "Find_Torque": MessageLookupByLibrary.simpleMessage("Find Torque"),
@@ -415,6 +513,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "Flexure_formula_of_beam": MessageLookupByLibrary.simpleMessage(
       "Flexure formula of beam",
     ),
+    "Flow_Area": MessageLookupByLibrary.simpleMessage("Flow area"),
+    "Flow_Arrangement": MessageLookupByLibrary.simpleMessage(
+      "Flow arrangement",
+    ),
+    "Flow_Laminar": MessageLookupByLibrary.simpleMessage("Laminar"),
+    "Flow_Rate_Q": MessageLookupByLibrary.simpleMessage("Flow rate, Q"),
+    "Flow_Regime": MessageLookupByLibrary.simpleMessage("Flow regime"),
+    "Flow_Transitional": MessageLookupByLibrary.simpleMessage("Transitional"),
+    "Flow_Turbulent": MessageLookupByLibrary.simpleMessage("Turbulent"),
+    "Flow_Velocity_V": MessageLookupByLibrary.simpleMessage("Flow velocity, V"),
+    "Fluid_Presets": MessageLookupByLibrary.simpleMessage("Fluid presets"),
+    "Fluids_and_Thermal": MessageLookupByLibrary.simpleMessage(
+      "Fluids & Thermal",
+    ),
     "Force": MessageLookupByLibrary.simpleMessage("Force"),
     "Force_displacement_relation_of_bar": MessageLookupByLibrary.simpleMessage(
       "Force-displacement relation of bar",
@@ -426,6 +538,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Format_Scientific": MessageLookupByLibrary.simpleMessage("Scientific"),
     "Formula": MessageLookupByLibrary.simpleMessage("Formula"),
     "Formulas": MessageLookupByLibrary.simpleMessage("Formulas"),
+    "Friction_Factor_f": MessageLookupByLibrary.simpleMessage(
+      "Friction factor, f",
+    ),
+    "Friction_Head_Loss": MessageLookupByLibrary.simpleMessage(
+      "Friction head loss",
+    ),
     "From": MessageLookupByLibrary.simpleMessage("From"),
     "Full_Span_UDL_W": MessageLookupByLibrary.simpleMessage("Full-span UDL, w"),
     "G_Shear_Modulus": MessageLookupByLibrary.simpleMessage(
@@ -440,25 +558,55 @@ class MessageLookup extends MessageLookupByLibrary {
       "General stress calculation",
     ),
     "Grid_View": MessageLookupByLibrary.simpleMessage("Grid view"),
+    "Group_Building": MessageLookupByLibrary.simpleMessage(
+      "Building materials",
+    ),
+    "Group_Insulation": MessageLookupByLibrary.simpleMessage("Insulation"),
+    "Group_Metal": MessageLookupByLibrary.simpleMessage("Metals"),
+    "Heat_Duty_Q": MessageLookupByLibrary.simpleMessage("Heat duty, Q"),
+    "Heat_Exchanger_LMTD": MessageLookupByLibrary.simpleMessage(
+      "Heat Exchanger (LMTD)",
+    ),
+    "Heat_Flow_Q": MessageLookupByLibrary.simpleMessage("Heat flow, Q"),
+    "Heat_Flux": MessageLookupByLibrary.simpleMessage("Heat flux, q\""),
     "Height_H": MessageLookupByLibrary.simpleMessage("Height h"),
     "Helical_Compression_Spring": MessageLookupByLibrary.simpleMessage(
       "Helical Compression Spring",
     ),
     "History": MessageLookupByLibrary.simpleMessage("History"),
     "Hole_um": MessageLookupByLibrary.simpleMessage("Hole (µm)"),
+    "Hot_Inlet": MessageLookupByLibrary.simpleMessage("Hot inlet"),
+    "Hot_Outlet": MessageLookupByLibrary.simpleMessage("Hot outlet"),
+    "Hot_Stream_Range": MessageLookupByLibrary.simpleMessage(
+      "Hot stream range",
+    ),
     "Hub_Hoop_Stress": MessageLookupByLibrary.simpleMessage(
       "Hub bore hoop stress, σt",
     ),
     "Hub_Outer_Radius_Ro": MessageLookupByLibrary.simpleMessage(
       "Hub outer radius, ro",
     ),
+    "Hydraulic_Power": MessageLookupByLibrary.simpleMessage("Hydraulic power"),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
     "Imperial_US": MessageLookupByLibrary.simpleMessage("Imperial (US)"),
     "Input_Speed_N1": MessageLookupByLibrary.simpleMessage("Input speed, n1"),
     "Inputs": MessageLookupByLibrary.simpleMessage("Inputs"),
+    "Inside_Air": MessageLookupByLibrary.simpleMessage("Inside air"),
+    "Inside_Diameter_D": MessageLookupByLibrary.simpleMessage(
+      "Inside diameter, D",
+    ),
+    "Inside_Film_Coefficient": MessageLookupByLibrary.simpleMessage(
+      "Inside film coefficient, hi",
+    ),
+    "Inside_Temperature": MessageLookupByLibrary.simpleMessage(
+      "Inside temperature",
+    ),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("Instant Face"),
     "Interface_Radius_R": MessageLookupByLibrary.simpleMessage(
       "Interface radius, r",
+    ),
+    "Isothermal_Max_Heat_Flow": MessageLookupByLibrary.simpleMessage(
+      "Isothermal-fin maximum",
     ),
     "Isotropic_material": MessageLookupByLibrary.simpleMessage(
       "Isotropic material",
@@ -466,6 +614,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Joints": MessageLookupByLibrary.simpleMessage("Joints"),
     "Kf_Bending": MessageLookupByLibrary.simpleMessage("Kf (bending)"),
     "Kfs_Torsion": MessageLookupByLibrary.simpleMessage("Kfs (torsion)"),
+    "Kinematic_Viscosity": MessageLookupByLibrary.simpleMessage(
+      "Kinematic viscosity, ν",
+    ),
     "L10_Hours": MessageLookupByLibrary.simpleMessage("L10 (hours)"),
     "L10_Million_Revolutions": MessageLookupByLibrary.simpleMessage(
       "L10 (million revolutions)",
@@ -492,6 +643,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Large_Pulley_Diameter_D2": MessageLookupByLibrary.simpleMessage(
       "Large pulley diameter, d2",
     ),
+    "Layer_Number": m2,
+    "Layer_Resistances": MessageLookupByLibrary.simpleMessage(
+      "Layer resistances",
+    ),
     "Layer_Thickness": MessageLookupByLibrary.simpleMessage("Layer Thickness"),
     "Layup_Angle": MessageLookupByLibrary.simpleMessage("Layup Angle"),
     "Layup_Sequence": MessageLookupByLibrary.simpleMessage("Layup Sequence"),
@@ -507,6 +662,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Load_Fx": MessageLookupByLibrary.simpleMessage("Load Fx"),
     "Load_Fy": MessageLookupByLibrary.simpleMessage("Load Fy"),
     "Load_Type": MessageLookupByLibrary.simpleMessage("Load Type"),
+    "Log_Mean_Delta_T": MessageLookupByLibrary.simpleMessage("Log mean ΔT"),
     "ME_Toolkit": MessageLookupByLibrary.simpleMessage("ME Toolkit"),
     "Machine_Design": MessageLookupByLibrary.simpleMessage("Machine Design"),
     "Material_Density_Default_Steel": MessageLookupByLibrary.simpleMessage(
@@ -543,6 +699,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Metric_Fine": MessageLookupByLibrary.simpleMessage("Metric fine"),
     "Metric_SI": MessageLookupByLibrary.simpleMessage("Metric (SI)"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("Metronome Go"),
+    "Minor_Head_Loss": MessageLookupByLibrary.simpleMessage("Minor head loss"),
+    "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("Minor losses, ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
     "Module_M": MessageLookupByLibrary.simpleMessage("Module, m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("Modulus, E"),
@@ -571,6 +729,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "No_Favorites_Yet": MessageLookupByLibrary.simpleMessage(
       "No favorites yet",
     ),
+    "No_Fluids_Found": MessageLookupByLibrary.simpleMessage("No fluids found"),
     "No_History_Yet": MessageLookupByLibrary.simpleMessage("No history yet"),
     "No_Matches": MessageLookupByLibrary.simpleMessage("No matches"),
     "No_Matches_Description": MessageLookupByLibrary.simpleMessage(
@@ -584,6 +743,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "No_Saved_Projects_Yet": MessageLookupByLibrary.simpleMessage(
       "No saved projects yet",
+    ),
+    "No_Sections_Found": MessageLookupByLibrary.simpleMessage(
+      "No sections found",
     ),
     "No_Tools_Found": MessageLookupByLibrary.simpleMessage("No tools found"),
     "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage(
@@ -614,17 +776,39 @@ class MessageLookup extends MessageLookupByLibrary {
       "Orthotropic material",
     ),
     "Output_Speed_N2": MessageLookupByLibrary.simpleMessage("Output speed, n2"),
+    "Outside_Air": MessageLookupByLibrary.simpleMessage("Outside air"),
+    "Outside_Film_Coefficient": MessageLookupByLibrary.simpleMessage(
+      "Outside film coefficient, ho",
+    ),
+    "Outside_Temperature": MessageLookupByLibrary.simpleMessage(
+      "Outside temperature",
+    ),
+    "Overall_Coefficient_U": MessageLookupByLibrary.simpleMessage(
+      "Overall coefficient, U",
+    ),
     "Overall_Height": MessageLookupByLibrary.simpleMessage("Overall height"),
     "PDF_Missing_Characters": MessageLookupByLibrary.simpleMessage(
       "Some characters may be missing from the PDF",
     ),
     "P_Load": MessageLookupByLibrary.simpleMessage("P (load)"),
+    "Parallel_Flow": MessageLookupByLibrary.simpleMessage("Parallel flow"),
+    "Pick_Fluid": MessageLookupByLibrary.simpleMessage("Pick fluid"),
     "Pick_Material": MessageLookupByLibrary.simpleMessage("Pick material"),
+    "Pick_Standard_Section": MessageLookupByLibrary.simpleMessage(
+      "Pick standard section",
+    ),
+    "Pick_Thermal_Material": MessageLookupByLibrary.simpleMessage(
+      "Pick material",
+    ),
     "Pin": MessageLookupByLibrary.simpleMessage("Pin"),
     "Pinion_Pitch_Diameter_D1": MessageLookupByLibrary.simpleMessage(
       "Pinion pitch diameter, d1",
     ),
     "Pinion_Teeth_N1": MessageLookupByLibrary.simpleMessage("Pinion teeth, N1"),
+    "Pipe_Length_L": MessageLookupByLibrary.simpleMessage("Pipe length, L"),
+    "Pipe_Pressure_Drop": MessageLookupByLibrary.simpleMessage(
+      "Pipe Pressure Drop",
+    ),
     "Pitch_TPI": MessageLookupByLibrary.simpleMessage("Pitch / TPI"),
     "Plane_Stresses": MessageLookupByLibrary.simpleMessage("Plane Stresses"),
     "Plane_stresses_transformation": MessageLookupByLibrary.simpleMessage(
@@ -638,12 +822,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "Polar_Area_Moment_J": MessageLookupByLibrary.simpleMessage(
       "Polar area moment, J",
     ),
+    "Power_Lost": MessageLookupByLibrary.simpleMessage("Power lost"),
     "Power_Optional": MessageLookupByLibrary.simpleMessage("Power (optional)"),
     "Precision": MessageLookupByLibrary.simpleMessage("PRECISION"),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Press / Shrink-Fit Interference",
     ),
-    "Preview_Value": m2,
+    "Pressure_Drop": MessageLookupByLibrary.simpleMessage("Pressure drop, Δp"),
+    "Pressure_Rise": MessageLookupByLibrary.simpleMessage("Pressure rise, Δp"),
+    "Preview_Value": m3,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Principal stresses and plane",
     ),
@@ -666,8 +853,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Name_Required": MessageLookupByLibrary.simpleMessage(
       "Enter a name",
     ),
-    "Project_Saved": m3,
-    "Project_Updated": m4,
+    "Project_Saved": m4,
+    "Project_Updated": m5,
+    "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage("Pump & Fan Power"),
+    "Pump_Head": MessageLookupByLibrary.simpleMessage("Head, H"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
       "Purchase cancelled. No changes were made.",
     ),
@@ -684,16 +873,26 @@ class MessageLookup extends MessageLookupByLibrary {
       "Purchases are currently unavailable.",
     ),
     "Purchasing": MessageLookupByLibrary.simpleMessage("Purchasing…"),
+    "Radius_Gyration_rx": MessageLookupByLibrary.simpleMessage(
+      "Radius of gyration, rx",
+    ),
+    "Radius_Gyration_ry": MessageLookupByLibrary.simpleMessage(
+      "Radius of gyration, ry",
+    ),
     "RatethisApp": MessageLookupByLibrary.simpleMessage("Rate this App"),
     "Recommended_by_Major": MessageLookupByLibrary.simpleMessage(
       "Recommended by Major",
+    ),
+    "Relative_Roughness": MessageLookupByLibrary.simpleMessage(
+      "Relative roughness, ε/D",
     ),
     "Relaxing_Up": MessageLookupByLibrary.simpleMessage("Relaxing Up"),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("Remove Ads"),
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "Remove ads permanently from this app.",
     ),
-    "Remove_Tool_from_Favorites": m5,
+    "Remove_Layer": MessageLookupByLibrary.simpleMessage("Remove layer"),
+    "Remove_Tool_from_Favorites": m6,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Remove from favorites",
     ),
@@ -701,6 +900,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Removed from favorites",
     ),
     "Rename_Project": MessageLookupByLibrary.simpleMessage("Rename project"),
+    "Required_Area_A": MessageLookupByLibrary.simpleMessage("Required area, A"),
     "Required_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Required diameter, d",
     ),
@@ -724,6 +924,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Resultant_of_Forces_2D": MessageLookupByLibrary.simpleMessage(
       "Resultant of Forces (2D)",
     ),
+    "Reynolds_Number": MessageLookupByLibrary.simpleMessage(
+      "Reynolds Number & Flow Regime",
+    ),
+    "Reynolds_Number_Re": MessageLookupByLibrary.simpleMessage(
+      "Reynolds number, Re",
+    ),
     "Right_Reaction_RB": MessageLookupByLibrary.simpleMessage(
       "Right reaction, RB",
     ),
@@ -743,8 +949,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Save_as_Project": MessageLookupByLibrary.simpleMessage("Save as project"),
     "Saved_Projects": MessageLookupByLibrary.simpleMessage("Saved Projects"),
     "Search": MessageLookupByLibrary.simpleMessage("Search"),
+    "Search_Fluids": MessageLookupByLibrary.simpleMessage("Search fluids"),
     "Search_Materials": MessageLookupByLibrary.simpleMessage(
       "Search materials",
+    ),
+    "Search_Section": MessageLookupByLibrary.simpleMessage(
+      "Search a designation, e.g. W12X40",
     ),
     "Search_Size_Or_Fit": MessageLookupByLibrary.simpleMessage(
       "Search a diameter or fit",
@@ -760,16 +970,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "Second_Moment_Iy": MessageLookupByLibrary.simpleMessage(
       "Second moment, Iy",
     ),
+    "Section_Depth_d": MessageLookupByLibrary.simpleMessage("Depth, d"),
+    "Section_Designation": MessageLookupByLibrary.simpleMessage("Designation"),
+    "Section_Dimensions": MessageLookupByLibrary.simpleMessage("Dimensions"),
+    "Section_Fill_Note": MessageLookupByLibrary.simpleMessage(
+      "Picking a shape fills the dimensions below. Properties computed from them ignore the root fillets, so they run a few percent under the published values.",
+    ),
+    "Section_Flange_tf": MessageLookupByLibrary.simpleMessage("Flange, tf"),
     "Section_Modulus_Zx": MessageLookupByLibrary.simpleMessage(
       "Section modulus, Zx",
     ),
     "Section_Modulus_Zy": MessageLookupByLibrary.simpleMessage(
       "Section modulus, Zy",
     ),
+    "Section_Web_tw": MessageLookupByLibrary.simpleMessage("Web, tw"),
+    "Section_Width_b": MessageLookupByLibrary.simpleMessage("Width, b"),
+    "Sections_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Nominal published values for the listed shapes. Section modulus and radius of gyration are computed from the listed A and I. Check a current mill or standard table before detailing.",
+    ),
     "Settings": MessageLookupByLibrary.simpleMessage("Settings"),
     "Shaft_Fatigue_Design": MessageLookupByLibrary.simpleMessage(
       "Shaft Fatigue Design (DE-Goodman)",
     ),
+    "Shaft_Power": MessageLookupByLibrary.simpleMessage("Shaft power"),
     "Shaft_Surface_Stress": MessageLookupByLibrary.simpleMessage(
       "Shaft surface stress, σs",
     ),
@@ -830,6 +1053,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Spur_Gear_Geometry": MessageLookupByLibrary.simpleMessage(
       "Spur Gear Geometry",
     ),
+    "Standard_Sections": MessageLookupByLibrary.simpleMessage(
+      "Standard Sections",
+    ),
     "Stiffness_Matrix_C": MessageLookupByLibrary.simpleMessage(
       "Stiffness Matrix C",
     ),
@@ -854,6 +1080,7 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "Stress/strain of linear elastic material",
         ),
+    "Strong_Axis": MessageLookupByLibrary.simpleMessage("Strong axis (x-x)"),
     "Subtract": MessageLookupByLibrary.simpleMessage("Subtract"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("Sudoku Lover"),
     "Support": MessageLookupByLibrary.simpleMessage("Support"),
@@ -897,16 +1124,25 @@ class MessageLookup extends MessageLookupByLibrary {
       "Theory of Elasticity",
     ),
     "Thermal": MessageLookupByLibrary.simpleMessage("Thermal"),
+    "Thermal_Material_Presets": MessageLookupByLibrary.simpleMessage(
+      "Thermal materials",
+    ),
     "Thermal_Results": MessageLookupByLibrary.simpleMessage("Thermal Results"),
     "Thermal_deformation_and_stress": MessageLookupByLibrary.simpleMessage(
       "Thermal deformation and stress",
     ),
+    "Thickness_t": MessageLookupByLibrary.simpleMessage("Thickness, t"),
     "Thread": MessageLookupByLibrary.simpleMessage("Thread"),
     "Tightening_Torque_T": MessageLookupByLibrary.simpleMessage(
       "Tightening torque, T",
     ),
+    "Tip_Temperature": MessageLookupByLibrary.simpleMessage("Tip temperature"),
     "Torsion_formula_of_bar": MessageLookupByLibrary.simpleMessage(
       "Torsion formula of bar",
+    ),
+    "Total_Head_Loss": MessageLookupByLibrary.simpleMessage("Total head loss"),
+    "Total_Resistance_R": MessageLookupByLibrary.simpleMessage(
+      "Total resistance, R",
     ),
     "Transverse_shear_stress_in_beam": MessageLookupByLibrary.simpleMessage(
       "Transverse shear stress in beam",
@@ -936,12 +1172,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "Unit_Converter": MessageLookupByLibrary.simpleMessage("Unit Converter"),
     "Unit_System": MessageLookupByLibrary.simpleMessage("UNIT SYSTEM"),
     "Utilities": MessageLookupByLibrary.simpleMessage("Utilities"),
+    "Velocity_Head": MessageLookupByLibrary.simpleMessage(
+      "Velocity head, V²/2g",
+    ),
     "W_Intensity": MessageLookupByLibrary.simpleMessage("w (intensity)"),
     "Wahl_Factor_Kw": MessageLookupByLibrary.simpleMessage("Wahl factor, Kw"),
+    "Wall_Area_A": MessageLookupByLibrary.simpleMessage("Wall area, A"),
+    "Wall_Interface": MessageLookupByLibrary.simpleMessage("Interface"),
+    "Wall_Layers": MessageLookupByLibrary.simpleMessage("Wall layers"),
+    "Wall_Roughness": MessageLookupByLibrary.simpleMessage("Wall roughness, ε"),
+    "Wall_Surface": MessageLookupByLibrary.simpleMessage("Surface"),
+    "Wall_Temperatures": MessageLookupByLibrary.simpleMessage(
+      "Temperatures through the wall",
+    ),
     "Wall_Thickness": MessageLookupByLibrary.simpleMessage("Wall thickness"),
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
+    "Weak_Axis": MessageLookupByLibrary.simpleMessage("Weak axis (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Web thickness"),
-    "What_If": m6,
+    "What_If": m7,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("Wire diameter, d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

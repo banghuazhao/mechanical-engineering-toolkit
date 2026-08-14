@@ -3913,6 +3913,1176 @@ class S {
       args: [],
     );
   }
+
+  /// `Fluids & Thermal`
+  String get Fluids_and_Thermal {
+    return Intl.message(
+      'Fluids & Thermal',
+      name: 'Fluids_and_Thermal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reynolds Number & Flow Regime`
+  String get Reynolds_Number {
+    return Intl.message(
+      'Reynolds Number & Flow Regime',
+      name: 'Reynolds_Number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pipe Pressure Drop`
+  String get Pipe_Pressure_Drop {
+    return Intl.message(
+      'Pipe Pressure Drop',
+      name: 'Pipe_Pressure_Drop',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pump & Fan Power`
+  String get Pump_Fan_Power {
+    return Intl.message(
+      'Pump & Fan Power',
+      name: 'Pump_Fan_Power',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Composite Wall Conduction`
+  String get Composite_Wall_Conduction {
+    return Intl.message(
+      'Composite Wall Conduction',
+      name: 'Composite_Wall_Conduction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fin Efficiency`
+  String get Fin_Efficiency {
+    return Intl.message(
+      'Fin Efficiency',
+      name: 'Fin_Efficiency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Heat Exchanger (LMTD)`
+  String get Heat_Exchanger_LMTD {
+    return Intl.message(
+      'Heat Exchanger (LMTD)',
+      name: 'Heat_Exchanger_LMTD',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Standard Sections`
+  String get Standard_Sections {
+    return Intl.message(
+      'Standard Sections',
+      name: 'Standard_Sections',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reynolds number Re = ρVD/μ for flow in a round pipe, with the laminar / transitional / turbulent regime it falls in. Enter either a velocity or a volumetric flow rate; the other is reported back.`
+  String get Desc_Reynolds_Number {
+    return Intl.message(
+      'Reynolds number Re = ρVD/μ for flow in a round pipe, with the laminar / transitional / turbulent regime it falls in. Enter either a velocity or a volumetric flow rate; the other is reported back.',
+      name: 'Desc_Reynolds_Number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Darcy–Weisbach head loss and pressure drop for a full-running pipe: h = f·(L/D)·V²/2g, with the friction factor from the Colebrook equation and fitting losses added as ΣK velocity heads.`
+  String get Desc_Pipe_Pressure_Drop {
+    return Intl.message(
+      'Darcy–Weisbach head loss and pressure drop for a full-running pipe: h = f·(L/D)·V²/2g, with the friction factor from the Colebrook equation and fitting losses added as ΣK velocity heads.',
+      name: 'Desc_Pipe_Pressure_Drop',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Power a pump or fan needs: the fluid gets P = Δp·Q, and the driver must supply that divided by the efficiency. The pressure rise is also reported as a head of the pumped fluid.`
+  String get Desc_Pump_Fan_Power {
+    return Intl.message(
+      'Power a pump or fan needs: the fluid gets P = Δp·Q, and the driver must supply that divided by the efficiency. The pressure rise is also reported as a head of the pumped fluid.',
+      name: 'Desc_Pump_Fan_Power',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Steady one-dimensional conduction through a layered plane wall. Layer resistances t/k add in series with the optional convection films 1/h on each face, giving U, the heat flow, and the temperature at every interface.`
+  String get Desc_Composite_Wall {
+    return Intl.message(
+      'Steady one-dimensional conduction through a layered plane wall. Layer resistances t/k add in series with the optional convection films 1/h on each face, giving U, the heat flow, and the temperature at every interface.',
+      name: 'Desc_Composite_Wall',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Straight rectangular fin of uniform section, solved with an adiabatic tip and the corrected length Lc = L + t/2: m = √(2h/kt) and η = tanh(mLc)/(mLc).`
+  String get Desc_Fin_Efficiency {
+    return Intl.message(
+      'Straight rectangular fin of uniform section, solved with an adiabatic tip and the corrected length Lc = L + t/2: m = √(2h/kt) and η = tanh(mLc)/(mLc).',
+      name: 'Desc_Fin_Efficiency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log mean temperature difference from the four terminal temperatures, and the surface area a given duty needs: A = Q/(U·ΔT_lm). Counter flow pairs each inlet with the opposite outlet; parallel flow pairs the two inlets.`
+  String get Desc_Lmtd {
+    return Intl.message(
+      'Log mean temperature difference from the four terminal temperatures, and the surface area a given duty needs: A = Q/(U·ΔT_lm). Counter flow pairs each inlet with the opposite outlet; parallel flow pairs the two inlets.',
+      name: 'Desc_Lmtd',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Published dimensions and section properties for standard structural shapes. Section modulus and radius of gyration are derived from the listed area and second moment, so they stay consistent with them.`
+  String get Desc_Standard_Sections {
+    return Intl.message(
+      'Published dimensions and section properties for standard structural shapes. Section modulus and radius of gyration are derived from the listed area and second moment, so they stay consistent with them.',
+      name: 'Desc_Standard_Sections',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inside diameter, D`
+  String get Inside_Diameter_D {
+    return Intl.message(
+      'Inside diameter, D',
+      name: 'Inside_Diameter_D',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pipe length, L`
+  String get Pipe_Length_L {
+    return Intl.message(
+      'Pipe length, L',
+      name: 'Pipe_Length_L',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flow rate, Q`
+  String get Flow_Rate_Q {
+    return Intl.message(
+      'Flow rate, Q',
+      name: 'Flow_Rate_Q',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flow velocity, V`
+  String get Flow_Velocity_V {
+    return Intl.message(
+      'Flow velocity, V',
+      name: 'Flow_Velocity_V',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dynamic viscosity, μ`
+  String get Dynamic_Viscosity {
+    return Intl.message(
+      'Dynamic viscosity, μ',
+      name: 'Dynamic_Viscosity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wall roughness, ε`
+  String get Wall_Roughness {
+    return Intl.message(
+      'Wall roughness, ε',
+      name: 'Wall_Roughness',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minor losses, ΣK`
+  String get Minor_Loss_K {
+    return Intl.message(
+      'Minor losses, ΣK',
+      name: 'Minor_Loss_K',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pressure rise, Δp`
+  String get Pressure_Rise {
+    return Intl.message(
+      'Pressure rise, Δp',
+      name: 'Pressure_Rise',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Efficiency, η (%)`
+  String get Efficiency_Eta {
+    return Intl.message(
+      'Efficiency, η (%)',
+      name: 'Efficiency_Eta',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wall area, A`
+  String get Wall_Area_A {
+    return Intl.message(
+      'Wall area, A',
+      name: 'Wall_Area_A',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inside temperature`
+  String get Inside_Temperature {
+    return Intl.message(
+      'Inside temperature',
+      name: 'Inside_Temperature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Outside temperature`
+  String get Outside_Temperature {
+    return Intl.message(
+      'Outside temperature',
+      name: 'Outside_Temperature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inside film coefficient, hi`
+  String get Inside_Film_Coefficient {
+    return Intl.message(
+      'Inside film coefficient, hi',
+      name: 'Inside_Film_Coefficient',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Outside film coefficient, ho`
+  String get Outside_Film_Coefficient {
+    return Intl.message(
+      'Outside film coefficient, ho',
+      name: 'Outside_Film_Coefficient',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Leave a film coefficient blank to treat that temperature as the surface temperature itself.`
+  String get Film_Optional_Note {
+    return Intl.message(
+      'Leave a film coefficient blank to treat that temperature as the surface temperature itself.',
+      name: 'Film_Optional_Note',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thickness, t`
+  String get Thickness_t {
+    return Intl.message(
+      'Thickness, t',
+      name: 'Thickness_t',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Conductivity, k`
+  String get Conductivity_k {
+    return Intl.message(
+      'Conductivity, k',
+      name: 'Conductivity_k',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fin length, L`
+  String get Fin_Length_L {
+    return Intl.message(
+      'Fin length, L',
+      name: 'Fin_Length_L',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fin thickness, t`
+  String get Fin_Thickness_t {
+    return Intl.message(
+      'Fin thickness, t',
+      name: 'Fin_Thickness_t',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fin width, w`
+  String get Fin_Width_w {
+    return Intl.message(
+      'Fin width, w',
+      name: 'Fin_Width_w',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Film coefficient, h`
+  String get Film_Coefficient_h {
+    return Intl.message(
+      'Film coefficient, h',
+      name: 'Film_Coefficient_h',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Base temperature`
+  String get Base_Temperature {
+    return Intl.message(
+      'Base temperature',
+      name: 'Base_Temperature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ambient temperature`
+  String get Ambient_Temperature {
+    return Intl.message(
+      'Ambient temperature',
+      name: 'Ambient_Temperature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hot inlet`
+  String get Hot_Inlet {
+    return Intl.message('Hot inlet', name: 'Hot_Inlet', desc: '', args: []);
+  }
+
+  /// `Hot outlet`
+  String get Hot_Outlet {
+    return Intl.message('Hot outlet', name: 'Hot_Outlet', desc: '', args: []);
+  }
+
+  /// `Cold inlet`
+  String get Cold_Inlet {
+    return Intl.message('Cold inlet', name: 'Cold_Inlet', desc: '', args: []);
+  }
+
+  /// `Cold outlet`
+  String get Cold_Outlet {
+    return Intl.message('Cold outlet', name: 'Cold_Outlet', desc: '', args: []);
+  }
+
+  /// `Overall coefficient, U`
+  String get Overall_Coefficient_U {
+    return Intl.message(
+      'Overall coefficient, U',
+      name: 'Overall_Coefficient_U',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Heat duty, Q`
+  String get Heat_Duty_Q {
+    return Intl.message(
+      'Heat duty, Q',
+      name: 'Heat_Duty_Q',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flow arrangement`
+  String get Flow_Arrangement {
+    return Intl.message(
+      'Flow arrangement',
+      name: 'Flow_Arrangement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reynolds number, Re`
+  String get Reynolds_Number_Re {
+    return Intl.message(
+      'Reynolds number, Re',
+      name: 'Reynolds_Number_Re',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flow regime`
+  String get Flow_Regime {
+    return Intl.message('Flow regime', name: 'Flow_Regime', desc: '', args: []);
+  }
+
+  /// `Laminar`
+  String get Flow_Laminar {
+    return Intl.message('Laminar', name: 'Flow_Laminar', desc: '', args: []);
+  }
+
+  /// `Transitional`
+  String get Flow_Transitional {
+    return Intl.message(
+      'Transitional',
+      name: 'Flow_Transitional',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Turbulent`
+  String get Flow_Turbulent {
+    return Intl.message(
+      'Turbulent',
+      name: 'Flow_Turbulent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Kinematic viscosity, ν`
+  String get Kinematic_Viscosity {
+    return Intl.message(
+      'Kinematic viscosity, ν',
+      name: 'Kinematic_Viscosity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flow area`
+  String get Flow_Area {
+    return Intl.message('Flow area', name: 'Flow_Area', desc: '', args: []);
+  }
+
+  /// `Friction factor, f`
+  String get Friction_Factor_f {
+    return Intl.message(
+      'Friction factor, f',
+      name: 'Friction_Factor_f',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Relative roughness, ε/D`
+  String get Relative_Roughness {
+    return Intl.message(
+      'Relative roughness, ε/D',
+      name: 'Relative_Roughness',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Velocity head, V²/2g`
+  String get Velocity_Head {
+    return Intl.message(
+      'Velocity head, V²/2g',
+      name: 'Velocity_Head',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Friction head loss`
+  String get Friction_Head_Loss {
+    return Intl.message(
+      'Friction head loss',
+      name: 'Friction_Head_Loss',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minor head loss`
+  String get Minor_Head_Loss {
+    return Intl.message(
+      'Minor head loss',
+      name: 'Minor_Head_Loss',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total head loss`
+  String get Total_Head_Loss {
+    return Intl.message(
+      'Total head loss',
+      name: 'Total_Head_Loss',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pressure drop, Δp`
+  String get Pressure_Drop {
+    return Intl.message(
+      'Pressure drop, Δp',
+      name: 'Pressure_Drop',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Head, H`
+  String get Pump_Head {
+    return Intl.message('Head, H', name: 'Pump_Head', desc: '', args: []);
+  }
+
+  /// `Hydraulic power`
+  String get Hydraulic_Power {
+    return Intl.message(
+      'Hydraulic power',
+      name: 'Hydraulic_Power',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shaft power`
+  String get Shaft_Power {
+    return Intl.message('Shaft power', name: 'Shaft_Power', desc: '', args: []);
+  }
+
+  /// `Power lost`
+  String get Power_Lost {
+    return Intl.message('Power lost', name: 'Power_Lost', desc: '', args: []);
+  }
+
+  /// `Total resistance, R`
+  String get Total_Resistance_R {
+    return Intl.message(
+      'Total resistance, R',
+      name: 'Total_Resistance_R',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Heat flux, q"`
+  String get Heat_Flux {
+    return Intl.message('Heat flux, q"', name: 'Heat_Flux', desc: '', args: []);
+  }
+
+  /// `Heat flow, Q`
+  String get Heat_Flow_Q {
+    return Intl.message(
+      'Heat flow, Q',
+      name: 'Heat_Flow_Q',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Layer resistances`
+  String get Layer_Resistances {
+    return Intl.message(
+      'Layer resistances',
+      name: 'Layer_Resistances',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Temperatures through the wall`
+  String get Wall_Temperatures {
+    return Intl.message(
+      'Temperatures through the wall',
+      name: 'Wall_Temperatures',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inside air`
+  String get Inside_Air {
+    return Intl.message('Inside air', name: 'Inside_Air', desc: '', args: []);
+  }
+
+  /// `Outside air`
+  String get Outside_Air {
+    return Intl.message('Outside air', name: 'Outside_Air', desc: '', args: []);
+  }
+
+  /// `Surface`
+  String get Wall_Surface {
+    return Intl.message('Surface', name: 'Wall_Surface', desc: '', args: []);
+  }
+
+  /// `Interface`
+  String get Wall_Interface {
+    return Intl.message(
+      'Interface',
+      name: 'Wall_Interface',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Layer {index}`
+  String Layer_Number(Object index) {
+    return Intl.message(
+      'Layer $index',
+      name: 'Layer_Number',
+      desc: '',
+      args: [index],
+    );
+  }
+
+  /// `Corrected length, Lc`
+  String get Corrected_Length_Lc {
+    return Intl.message(
+      'Corrected length, Lc',
+      name: 'Corrected_Length_Lc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fin parameter, m`
+  String get Fin_Parameter_m {
+    return Intl.message(
+      'Fin parameter, m',
+      name: 'Fin_Parameter_m',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fin efficiency, ηf`
+  String get Fin_Efficiency_Eta {
+    return Intl.message(
+      'Fin efficiency, ηf',
+      name: 'Fin_Efficiency_Eta',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fin heat flow`
+  String get Fin_Heat_Flow {
+    return Intl.message(
+      'Fin heat flow',
+      name: 'Fin_Heat_Flow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Isothermal-fin maximum`
+  String get Isothermal_Max_Heat_Flow {
+    return Intl.message(
+      'Isothermal-fin maximum',
+      name: 'Isothermal_Max_Heat_Flow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fin effectiveness, εf`
+  String get Fin_Effectiveness {
+    return Intl.message(
+      'Fin effectiveness, εf',
+      name: 'Fin_Effectiveness',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fin surface area`
+  String get Fin_Surface_Area {
+    return Intl.message(
+      'Fin surface area',
+      name: 'Fin_Surface_Area',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tip temperature`
+  String get Tip_Temperature {
+    return Intl.message(
+      'Tip temperature',
+      name: 'Tip_Temperature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End approach, ΔT1`
+  String get End_Approach_1 {
+    return Intl.message(
+      'End approach, ΔT1',
+      name: 'End_Approach_1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End approach, ΔT2`
+  String get End_Approach_2 {
+    return Intl.message(
+      'End approach, ΔT2',
+      name: 'End_Approach_2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log mean ΔT`
+  String get Log_Mean_Delta_T {
+    return Intl.message(
+      'Log mean ΔT',
+      name: 'Log_Mean_Delta_T',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Required area, A`
+  String get Required_Area_A {
+    return Intl.message(
+      'Required area, A',
+      name: 'Required_Area_A',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hot stream range`
+  String get Hot_Stream_Range {
+    return Intl.message(
+      'Hot stream range',
+      name: 'Hot_Stream_Range',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cold stream range`
+  String get Cold_Stream_Range {
+    return Intl.message(
+      'Cold stream range',
+      name: 'Cold_Stream_Range',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Counter flow`
+  String get Counter_Flow {
+    return Intl.message(
+      'Counter flow',
+      name: 'Counter_Flow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Parallel flow`
+  String get Parallel_Flow {
+    return Intl.message(
+      'Parallel flow',
+      name: 'Parallel_Flow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pick fluid`
+  String get Pick_Fluid {
+    return Intl.message('Pick fluid', name: 'Pick_Fluid', desc: '', args: []);
+  }
+
+  /// `Fluid presets`
+  String get Fluid_Presets {
+    return Intl.message(
+      'Fluid presets',
+      name: 'Fluid_Presets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search fluids`
+  String get Search_Fluids {
+    return Intl.message(
+      'Search fluids',
+      name: 'Search_Fluids',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No fluids found`
+  String get No_Fluids_Found {
+    return Intl.message(
+      'No fluids found',
+      name: 'No_Fluids_Found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pick material`
+  String get Pick_Thermal_Material {
+    return Intl.message(
+      'Pick material',
+      name: 'Pick_Thermal_Material',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thermal materials`
+  String get Thermal_Material_Presets {
+    return Intl.message(
+      'Thermal materials',
+      name: 'Thermal_Material_Presets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Metals`
+  String get Group_Metal {
+    return Intl.message('Metals', name: 'Group_Metal', desc: '', args: []);
+  }
+
+  /// `Building materials`
+  String get Group_Building {
+    return Intl.message(
+      'Building materials',
+      name: 'Group_Building',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Insulation`
+  String get Group_Insulation {
+    return Intl.message(
+      'Insulation',
+      name: 'Group_Insulation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wall layers`
+  String get Wall_Layers {
+    return Intl.message('Wall layers', name: 'Wall_Layers', desc: '', args: []);
+  }
+
+  /// `Add layer`
+  String get Add_Layer {
+    return Intl.message('Add layer', name: 'Add_Layer', desc: '', args: []);
+  }
+
+  /// `Remove layer`
+  String get Remove_Layer {
+    return Intl.message(
+      'Remove layer',
+      name: 'Remove_Layer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the diameter, length, flow rate and fluid properties.`
+  String get Err_Enter_Pipe_Inputs {
+    return Intl.message(
+      'Enter the diameter, length, flow rate and fluid properties.',
+      name: 'Err_Enter_Pipe_Inputs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the diameter, fluid properties, and either a velocity or a flow rate.`
+  String get Err_Enter_Reynolds_Inputs {
+    return Intl.message(
+      'Enter the diameter, fluid properties, and either a velocity or a flow rate.',
+      name: 'Err_Enter_Reynolds_Inputs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the flow rate, pressure rise, density and efficiency.`
+  String get Err_Enter_Pump_Inputs {
+    return Intl.message(
+      'Enter the flow rate, pressure rise, density and efficiency.',
+      name: 'Err_Enter_Pump_Inputs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the wall area and both temperatures.`
+  String get Err_Enter_Wall_Inputs {
+    return Intl.message(
+      'Enter the wall area and both temperatures.',
+      name: 'Err_Enter_Wall_Inputs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Every layer needs a thickness and a conductivity.`
+  String get Err_Enter_Layer_Values {
+    return Intl.message(
+      'Every layer needs a thickness and a conductivity.',
+      name: 'Err_Enter_Layer_Values',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the fin geometry, conductivity, film coefficient and temperatures.`
+  String get Err_Enter_Fin_Inputs {
+    return Intl.message(
+      'Enter the fin geometry, conductivity, film coefficient and temperatures.',
+      name: 'Err_Enter_Fin_Inputs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter all four temperatures, U and the heat duty.`
+  String get Err_Enter_Lmtd_Inputs {
+    return Intl.message(
+      'Enter all four temperatures, U and the heat duty.',
+      name: 'Err_Enter_Lmtd_Inputs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Designation`
+  String get Section_Designation {
+    return Intl.message(
+      'Designation',
+      name: 'Section_Designation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Depth, d`
+  String get Section_Depth_d {
+    return Intl.message(
+      'Depth, d',
+      name: 'Section_Depth_d',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Width, b`
+  String get Section_Width_b {
+    return Intl.message(
+      'Width, b',
+      name: 'Section_Width_b',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Web, tw`
+  String get Section_Web_tw {
+    return Intl.message('Web, tw', name: 'Section_Web_tw', desc: '', args: []);
+  }
+
+  /// `Flange, tf`
+  String get Section_Flange_tf {
+    return Intl.message(
+      'Flange, tf',
+      name: 'Section_Flange_tf',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Radius of gyration, rx`
+  String get Radius_Gyration_rx {
+    return Intl.message(
+      'Radius of gyration, rx',
+      name: 'Radius_Gyration_rx',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Radius of gyration, ry`
+  String get Radius_Gyration_ry {
+    return Intl.message(
+      'Radius of gyration, ry',
+      name: 'Radius_Gyration_ry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dimensions`
+  String get Section_Dimensions {
+    return Intl.message(
+      'Dimensions',
+      name: 'Section_Dimensions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Strong axis (x-x)`
+  String get Strong_Axis {
+    return Intl.message(
+      'Strong axis (x-x)',
+      name: 'Strong_Axis',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Weak axis (y-y)`
+  String get Weak_Axis {
+    return Intl.message(
+      'Weak axis (y-y)',
+      name: 'Weak_Axis',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search a designation, e.g. W12X40`
+  String get Search_Section {
+    return Intl.message(
+      'Search a designation, e.g. W12X40',
+      name: 'Search_Section',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nominal published values for the listed shapes. Section modulus and radius of gyration are computed from the listed A and I. Check a current mill or standard table before detailing.`
+  String get Sections_Footnote {
+    return Intl.message(
+      'Nominal published values for the listed shapes. Section modulus and radius of gyration are computed from the listed A and I. Check a current mill or standard table before detailing.',
+      name: 'Sections_Footnote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `W shapes`
+  String get Family_W {
+    return Intl.message('W shapes', name: 'Family_W', desc: '', args: []);
+  }
+
+  /// `Channels`
+  String get Family_Channel {
+    return Intl.message('Channels', name: 'Family_Channel', desc: '', args: []);
+  }
+
+  /// `Angles`
+  String get Family_Angle {
+    return Intl.message('Angles', name: 'Family_Angle', desc: '', args: []);
+  }
+
+  /// `HSS tube`
+  String get Family_HSS {
+    return Intl.message('HSS tube', name: 'Family_HSS', desc: '', args: []);
+  }
+
+  /// `Pipe`
+  String get Family_Pipe {
+    return Intl.message('Pipe', name: 'Family_Pipe', desc: '', args: []);
+  }
+
+  /// `IPE`
+  String get Family_IPE {
+    return Intl.message('IPE', name: 'Family_IPE', desc: '', args: []);
+  }
+
+  /// `HEB`
+  String get Family_HEB {
+    return Intl.message('HEB', name: 'Family_HEB', desc: '', args: []);
+  }
+
+  /// `Pick standard section`
+  String get Pick_Standard_Section {
+    return Intl.message(
+      'Pick standard section',
+      name: 'Pick_Standard_Section',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No sections found`
+  String get No_Sections_Found {
+    return Intl.message(
+      'No sections found',
+      name: 'No_Sections_Found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Picking a shape fills the dimensions below. Properties computed from them ignore the root fillets, so they run a few percent under the published values.`
+  String get Section_Fill_Note {
+    return Intl.message(
+      'Picking a shape fills the dimensions below. Properties computed from them ignore the root fillets, so they run a few percent under the published values.',
+      name: 'Section_Fill_Note',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

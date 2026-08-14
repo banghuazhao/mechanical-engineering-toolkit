@@ -27,15 +27,19 @@ const List<MajorRecommendation> majorRecommendations = [
     title: _mechanical,
     icon: Icons.precision_manufacturing_rounded,
     toolIds: [
-      100, 101, 102, 103, 104, 114, 115, 112, 116, 500, 501, 502,
+      100, 101, 102, 103, 104, 114, 115, 112, 116, 500, 501, 502, 503,
       118, 119, 120, 121, // stress analysis / joint design
       701, 702, 703, 704, 705, 706, 707, 708, // machine element sizing
+      800, 801, 802, 810, 811, 812, // fluids and heat transfer
     ],
   ),
   MajorRecommendation(
     title: _civil,
     icon: Icons.foundation_rounded,
-    toolIds: [401, 105, 106, 117, 102, 111, 400, 402, 113, 403, 118, 120, 707],
+    toolIds: [
+      401, 105, 106, 117, 102, 111, 400, 402, 113, 403, 118, 120, 707, 503,
+      801, 810, // building services and envelope heat loss
+    ],
   ),
   MajorRecommendation(
     title: _aerospace,
@@ -43,11 +47,12 @@ const List<MajorRecommendation> majorRecommendations = [
     toolIds: [
       300, 301, 302, 303, 304, 305, 110, 109, 111,
       119, 120, 121, 306, 706, // fatigue, joints, composite failure
+      800, 801, 811, 812, // propulsion and thermal management
     ],
   ),
   MajorRecommendation(
     title: _materials,
     icon: Icons.science_rounded,
-    toolIds: [116, 108, 107, 301, 305, 200, 201, 112, 306],
+    toolIds: [116, 108, 107, 301, 305, 200, 201, 112, 306, 810],
   ),
 ];

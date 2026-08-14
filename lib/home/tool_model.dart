@@ -5,8 +5,15 @@ import 'package:mechanical_engineering_toolkit/home/beam/page/beam_section_prope
 import 'package:mechanical_engineering_toolkit/home/statics/page/centroid_page.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/page/resultant_force_page.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/page/truss_analysis_page.dart';
+import 'package:mechanical_engineering_toolkit/home/fluids_thermal/page/composite_wall_page.dart';
+import 'package:mechanical_engineering_toolkit/home/fluids_thermal/page/fin_efficiency_page.dart';
+import 'package:mechanical_engineering_toolkit/home/fluids_thermal/page/lmtd_page.dart';
+import 'package:mechanical_engineering_toolkit/home/fluids_thermal/page/pipe_pressure_drop_page.dart';
+import 'package:mechanical_engineering_toolkit/home/fluids_thermal/page/pump_power_page.dart';
+import 'package:mechanical_engineering_toolkit/home/fluids_thermal/page/reynolds_number_page.dart';
 import 'package:mechanical_engineering_toolkit/home/reference/drill_tap_chart_page.dart';
 import 'package:mechanical_engineering_toolkit/home/reference/fits_tolerances_page.dart';
+import 'package:mechanical_engineering_toolkit/home/reference/standard_sections_page.dart';
 import 'package:mechanical_engineering_toolkit/home/unit_converter/unit_converter_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/bar_force_displacement_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/beam_flexure_formula_page.dart';
@@ -56,6 +63,7 @@ enum ToolType {
   statics,
   utilities,
   machineDesign,
+  fluidsThermal,
 }
 
 class Tool {
@@ -657,6 +665,29 @@ class ToolLibrary {
                       title: title,
                       toolId: toolId,
                       initialInputs: initialInputs)))),
+      Tool(
+          id: 503,
+          image: AssetImage("images/icons/icon_standard_sections.png"),
+          title: S.of(context).Standard_Sections,
+          type: ToolType.utilities,
+          keywords: const [
+            'w shape',
+            'wide flange',
+            'i beam',
+            'ipe',
+            'heb',
+            'aisc',
+            'rolled section',
+            'section properties',
+            'steel'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => StandardSectionsPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
       // Machine Design
       Tool(
           id: 701,
@@ -784,6 +815,131 @@ class ToolLibrary {
               context,
               MaterialPageRoute(
                   builder: (context) => PressFitPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      // Fluids & Thermal
+      Tool(
+          id: 800,
+          image: AssetImage("images/icons/icon_reynolds.png"),
+          title: S.of(context).Reynolds_Number,
+          type: ToolType.fluidsThermal,
+          keywords: const [
+            'reynolds',
+            'laminar',
+            'turbulent',
+            'flow regime',
+            'viscosity',
+            'pipe flow'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ReynoldsNumberPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 801,
+          image: AssetImage("images/icons/icon_pipe_pressure_drop.png"),
+          title: S.of(context).Pipe_Pressure_Drop,
+          type: ToolType.fluidsThermal,
+          keywords: const [
+            'darcy',
+            'weisbach',
+            'colebrook',
+            'moody',
+            'friction factor',
+            'head loss',
+            'pressure drop',
+            'pipe'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PipePressureDropPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 802,
+          image: AssetImage("images/icons/icon_pump_power.png"),
+          title: S.of(context).Pump_Fan_Power,
+          type: ToolType.fluidsThermal,
+          keywords: const [
+            'pump',
+            'fan',
+            'blower',
+            'hydraulic power',
+            'shaft power',
+            'head',
+            'efficiency'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PumpPowerPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 810,
+          image: AssetImage("images/icons/icon_composite_wall.png"),
+          title: S.of(context).Composite_Wall_Conduction,
+          type: ToolType.fluidsThermal,
+          keywords: const [
+            'conduction',
+            'thermal resistance',
+            'u value',
+            'r value',
+            'insulation',
+            'heat loss',
+            'wall'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CompositeWallPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 811,
+          image: AssetImage("images/icons/icon_fin.png"),
+          title: S.of(context).Fin_Efficiency,
+          type: ToolType.fluidsThermal,
+          keywords: const [
+            'fin',
+            'heat sink',
+            'extended surface',
+            'convection',
+            'effectiveness'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => FinEfficiencyPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 812,
+          image: AssetImage("images/icons/icon_heat_exchanger.png"),
+          title: S.of(context).Heat_Exchanger_LMTD,
+          type: ToolType.fluidsThermal,
+          keywords: const [
+            'lmtd',
+            'heat exchanger',
+            'counter flow',
+            'parallel flow',
+            'log mean',
+            'duty',
+            'surface area'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => LmtdPage(
                       title: title,
                       toolId: toolId,
                       initialInputs: initialInputs)))),

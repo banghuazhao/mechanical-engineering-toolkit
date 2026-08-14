@@ -100,6 +100,33 @@ const Map<UnitCategory, _Known> _known = {
   UnitCategory.frequency: _Known(
     si: 60, imperial: 60, siLabel: 'Hz', imperialLabel: 'Hz',
   ),
+  UnitCategory.velocity: _Known(
+    si: 0.3048, imperial: 1, siLabel: 'm/s', imperialLabel: 'ft/s',
+  ),
+  UnitCategory.volumeFlow: _Known(
+    // 1 US gal = 3.785411784 L exactly, so 1 gpm = that over 60 s.
+    si: 0.0630901964, imperial: 1, siLabel: 'L/s', imperialLabel: 'gpm',
+  ),
+  UnitCategory.dynamicViscosity: _Known(
+    // 1 lb/(ft·s) = 0.45359237 kg / (0.3048 m · s).
+    si: 1.4881639436, imperial: 1,
+    siLabel: 'Pa·s', imperialLabel: 'lb/(ft·s)',
+  ),
+  UnitCategory.pressure: _Known(
+    si: 6.89476, imperial: 1, siLabel: 'kPa', imperialLabel: 'psi',
+  ),
+  UnitCategory.thermalConductivity: _Known(
+    si: 1.730735, imperial: 1,
+    siLabel: 'W/(m·K)', imperialLabel: 'BTU/(h·ft·°F)',
+  ),
+  UnitCategory.heatTransferCoefficient: _Known(
+    si: 5.678263, imperial: 1,
+    siLabel: 'W/(m²·K)', imperialLabel: 'BTU/(h·ft²·°F)',
+  ),
+  UnitCategory.heatFlow: _Known(
+    // 1 BTU = 1055.056 J, so 1 W = 3600/1055.056 BTU/h.
+    si: 1, imperial: 3.412142, siLabel: 'W', imperialLabel: 'BTU/h',
+  ),
 };
 
 /// Categories whose two systems share a unit, so conversion must be exact
@@ -277,6 +304,29 @@ void main() {
       );
     });
 
+    test('velocity converts by the same factor as a structural span', () {
+      // m/s -> ft/s is just m -> ft; a drift between them would put a pipe
+      // velocity and the pipe's own length on different scales.
+      expect(
+        fromSI(1, UnitCategory.velocity, imperial),
+        _closeRel(fromSI(1, UnitCategory.span, imperial)),
+      );
+    });
+
+    test('h divided by a length gives k, in both systems', () {
+      // h = k/L is the defining relation between the two; if the factors ever
+      // drift apart, a conduction result and a convection result stop adding
+      // up in a resistance network. Length here is the span category (m/ft).
+      expect(
+        fromSI(1, UnitCategory.heatTransferCoefficient, imperial),
+        _closeRel(
+          fromSI(1, UnitCategory.thermalConductivity, imperial) /
+              fromSI(1, UnitCategory.span, imperial),
+          1e-5,
+        ),
+      );
+    });
+
     test('I and S agree with the length category to the 4th and 3rd power', () {
       final f = fromSI(1, UnitCategory.length, imperial);
       expect(
@@ -373,6 +423,18 @@ void main() {
       'in³->mm³': [in3_2_mm3, mm3_2_in3, 1.0, 16387.064],
       'deg->rad': [deg2rad, rad2deg, 180.0, math.pi],
       'deg/s->rad/s': [degs2rads, rads2degs, 180.0, math.pi],
+      'ft/s->m/s': [ftps2mps, mps2ftps, 1.0, 0.3048],
+      'gpm->L/s': [gpm2Lps, Lps2gpm, 1.0, 0.0630901964],
+      'lb/(ft·s)->Pa·s': [lbpfts2Pas, Pas2lbpfts, 1.0, 1.4881639436],
+      'psi->kPa': [psi2kPa, kPa2psi, 1.0, 6.89476],
+      'BTU/(h·ft·°F)->W/(m·K)': [BtuphftF2WpmK, WpmK2BtuphftF, 1.0, 1.730735],
+      'BTU/(h·ft²·°F)->W/(m²·K)': [
+        Btuphft2F2Wpm2K,
+        Wpm2K2Btuphft2F,
+        1.0,
+        5.678263
+      ],
+      'W->BTU/h': [W2Btuph, Btuph2W, 1.0, 3.412142],
     };
 
     pairs.forEach((name, spec) {
@@ -481,6 +543,63 @@ void main() {
         precs.formatSI(25.4, UnitCategory.length, UnitSystem.imperial),
         '1.0 in',
       );
+    });
+  });
+
+  group('NumberPrecisionHelper.formatSmallSI', () {
+    setUp(() async {
+      SharedPreferences.setMockInitialValues({});
+      await SharedPreferencesHelper.init();
+    });
+
+    test('keeps two nearly-equal viscosities distinguishable', () {
+      // The bug this exists for: at the default three decimals both of these
+      // render as a bare "0.001" through formatSI.
+      final precs = NumberPrecisionHelper();
+      const water = 1.002e-3;
+      const seawater = 1.070e-3;
+      expect(precs.formatSI(water, UnitCategory.dynamicViscosity,
+          UnitSystem.si), '0.001 Pa·s');
+      expect(precs.formatSI(seawater, UnitCategory.dynamicViscosity,
+          UnitSystem.si), '0.001 Pa·s');
+
+      final formattedWater = precs.formatSmallSI(
+          water, UnitCategory.dynamicViscosity, UnitSystem.si);
+      final formattedSeawater = precs.formatSmallSI(
+          seawater, UnitCategory.dynamicViscosity, UnitSystem.si);
+      expect(formattedWater, isNot(equals(formattedSeawater)));
+      expect(formattedWater, '1.002e-3 Pa·s');
+      expect(formattedSeawater, '1.070e-3 Pa·s');
+    });
+
+    test('leaves ordinary magnitudes in the normal decimal form', () {
+      final precs = NumberPrecisionHelper();
+      // Glycerin and engine oil are well above the cutoff.
+      expect(
+        precs.formatSmallSI(1.519, UnitCategory.dynamicViscosity,
+            UnitSystem.si),
+        '1.519 Pa·s',
+      );
+      expect(
+        precs.formatSmallSI(0.8374, UnitCategory.dynamicViscosity,
+            UnitSystem.si),
+        '0.837 Pa·s',
+      );
+    });
+
+    test('handles zero and dimensionless values', () {
+      final precs = NumberPrecisionHelper();
+      expect(precs.formatSmallSI(0, UnitCategory.dynamicViscosity,
+          UnitSystem.si), '0 Pa·s');
+      expect(precs.formatSmallSI(1.5e-4, null, UnitSystem.si), '1.500e-4');
+    });
+
+    test('converts before deciding, so the unit system is honoured', () {
+      final precs = NumberPrecisionHelper();
+      final imperial = precs.formatSmallSI(
+          1.002e-3, UnitCategory.dynamicViscosity, UnitSystem.imperial);
+      expect(imperial, contains('lb/(ft·s)'));
+      expect(imperial, contains('e-4'));
     });
   });
 }

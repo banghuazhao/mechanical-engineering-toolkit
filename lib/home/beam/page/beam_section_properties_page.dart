@@ -7,6 +7,7 @@ import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/standard_section_picker.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +36,10 @@ class _BeamSectionPropertiesPageState extends State<BeamSectionPropertiesPage> {
   double? _wall;
   double? _flange;
   double? _web;
+
+  /// Bumped when a standard section overwrites the dimension fields, so they
+  /// rebuild with the picked shape instead of whatever was typed before.
+  int _presetGeneration = 0;
 
   @override
   void initState() {
@@ -98,10 +103,29 @@ class _BeamSectionPropertiesPageState extends State<BeamSectionPropertiesPage> {
                         .toList(),
                     onChanged: (value) => setState(() => _type = value!),
                   ),
+                  StandardSectionButton(
+                    onSelected: (section) => setState(() {
+                      // Every shape in the library is a symmetric I; filling
+                      // the four dimensions is all this tool needs.
+                      _type = BeamSectionType.iSection;
+                      _width = section.width;
+                      _height = section.depth;
+                      _flange = section.flangeThickness;
+                      _web = section.webThickness;
+                      _presetGeneration++;
+                    }),
+                  ),
+                  Text(
+                    S.of(context).Section_Fill_Note,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
                   SizedBox(height: context.tokens.space3),
                   AdaptiveFieldGrid(
                     children: [
                       UnitField(
+                        key: ValueKey('width$_presetGeneration'),
                         label:
                             isCircular ? 'Outside diameter' : 'Overall width',
                         category: UnitCategory.length,
@@ -110,6 +134,7 @@ class _BeamSectionPropertiesPageState extends State<BeamSectionPropertiesPage> {
                       ),
                       if (!isCircular)
                         UnitField(
+                          key: ValueKey('height$_presetGeneration'),
                           label: S.of(context).Overall_Height,
                           category: UnitCategory.length,
                           initialSI: _height,
@@ -124,12 +149,14 @@ class _BeamSectionPropertiesPageState extends State<BeamSectionPropertiesPage> {
                         ),
                       if (isISection) ...[
                         UnitField(
+                          key: ValueKey('flange$_presetGeneration'),
                           label: S.of(context).Flange_Thickness,
                           category: UnitCategory.length,
                           initialSI: _flange,
                           onChangedSI: (v) => _flange = v,
                         ),
                         UnitField(
+                          key: ValueKey('web$_presetGeneration'),
                           label: S.of(context).Web_Thickness,
                           category: UnitCategory.length,
                           initialSI: _web,

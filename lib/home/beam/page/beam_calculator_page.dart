@@ -8,6 +8,7 @@ import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/standard_section_picker.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +36,10 @@ class _BeamCalculatorPageState extends State<BeamCalculatorPage> {
   double? _udl = 0;
   double? _elasticModulus = 200;
   double? _secondMoment = 100000000;
+
+  /// Bumped when a preset overwrites E or I, so those fields rebuild with the
+  /// new value rather than keeping the text last typed into them.
+  int _presetGeneration = 0;
 
   @override
   void initState() {
@@ -112,12 +117,14 @@ class _BeamCalculatorPageState extends State<BeamCalculatorPage> {
                       onChangedSI: (v) => _udl = v,
                     ),
                     UnitField(
+                      key: ValueKey('E$_presetGeneration'),
                       label: S.of(context).Elastic_Modulus_E,
                       category: UnitCategory.modulus,
                       initialSI: _elasticModulus,
                       onChangedSI: (v) => _elasticModulus = v,
                     ),
                     UnitField(
+                      key: ValueKey('I$_presetGeneration'),
                       label: S.of(context).Second_Moment_I,
                       category: UnitCategory.momentOfInertia,
                       initialSI: _secondMoment,
@@ -129,7 +136,18 @@ class _BeamCalculatorPageState extends State<BeamCalculatorPage> {
                     onSelected: (preset) => setState(() {
                       if (preset.elasticModulusSI != null) {
                         _elasticModulus = preset.elasticModulusSI;
+                        _presetGeneration++;
                       }
+                    }),
+                  ),
+                  StandardSectionButton(
+                    // Takes the published Ix straight across rather than
+                    // recomputing it from the shape's dimensions: the table
+                    // value includes the root fillets, and I is the only
+                    // section property this tool needs.
+                    onSelected: (section) => setState(() {
+                      _secondMoment = section.ix;
+                      _presetGeneration++;
                     }),
                   ),
                 ],

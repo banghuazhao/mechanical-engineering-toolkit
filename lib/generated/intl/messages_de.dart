@@ -25,15 +25,17 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(label) =>
       "Entlang der Linie ziehen, um andere Werte von ${label} zu erkunden.";
 
-  static String m2(value) => "Vorschau: ${value}";
+  static String m2(index) => "Schicht ${index}";
 
-  static String m3(name) => "„${name}“ gespeichert";
+  static String m3(value) => "Vorschau: ${value}";
 
-  static String m4(name) => "In „${name}“ umbenannt";
+  static String m4(name) => "„${name}“ gespeichert";
 
-  static String m5(tool) => "${tool} aus Favoriten entfernen";
+  static String m5(name) => "In „${name}“ umbenannt";
 
-  static String m6(label) => "Was wäre wenn: ${label}";
+  static String m6(tool) => "${tool} aus Favoriten entfernen";
+
+  static String m7(label) => "Was wäre wenn: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -46,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Add_Force": MessageLookupByLibrary.simpleMessage("Kraft hinzufügen"),
     "Add_Joint": MessageLookupByLibrary.simpleMessage("Knoten hinzufügen"),
+    "Add_Layer": MessageLookupByLibrary.simpleMessage("Schicht hinzufügen"),
     "Add_Member": MessageLookupByLibrary.simpleMessage("Stab hinzufügen"),
     "Add_Shape": MessageLookupByLibrary.simpleMessage("Form hinzufügen"),
     "Add_to_Favorites": MessageLookupByLibrary.simpleMessage(
@@ -71,6 +74,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Alternating_Torque_Ta": MessageLookupByLibrary.simpleMessage(
       "Wechseldrehmoment, Ta",
     ),
+    "Ambient_Temperature": MessageLookupByLibrary.simpleMessage(
+      "Umgebungstemperatur",
+    ),
     "Analysis_Type": MessageLookupByLibrary.simpleMessage("Analyseart"),
     "Angle_of_Rotation": MessageLookupByLibrary.simpleMessage("Drehwinkel"),
     "Angle_of_twist": MessageLookupByLibrary.simpleMessage("Verdrehwinkel"),
@@ -84,6 +90,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Area": MessageLookupByLibrary.simpleMessage("Fläche"),
     "Area_A": MessageLookupByLibrary.simpleMessage("Fläche, A"),
     "Ball_Bearing": MessageLookupByLibrary.simpleMessage("Kugellager (p = 3)"),
+    "Base_Temperature": MessageLookupByLibrary.simpleMessage("Fußtemperatur"),
     "Beam_Configuration": MessageLookupByLibrary.simpleMessage(
       "Balkenkonfiguration",
     ),
@@ -151,6 +158,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Durchgangsloch weit",
     ),
     "Clearance_um": MessageLookupByLibrary.simpleMessage("Spiel (µm)"),
+    "Cold_Inlet": MessageLookupByLibrary.simpleMessage("Kalteintritt"),
+    "Cold_Outlet": MessageLookupByLibrary.simpleMessage("Kaltaustritt"),
+    "Cold_Stream_Range": MessageLookupByLibrary.simpleMessage(
+      "Temperaturspanne kalt",
+    ),
     "Combined_Loading_at_a_Point": MessageLookupByLibrary.simpleMessage(
       "Kombinierte Belastung an einem Punkt",
     ),
@@ -162,6 +174,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Composite_Material": MessageLookupByLibrary.simpleMessage(
       "Verbundwerkstoff",
+    ),
+    "Composite_Wall_Conduction": MessageLookupByLibrary.simpleMessage(
+      "Wärmeleitung durch Schichtwand",
+    ),
+    "Conductivity_k": MessageLookupByLibrary.simpleMessage(
+      "Wärmeleitfähigkeit, k",
     ),
     "Constitutive_relation_of_linear_elastic_material":
         MessageLookupByLibrary.simpleMessage(
@@ -175,7 +193,11 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Copied_Value": m0,
     "Copy_Result": MessageLookupByLibrary.simpleMessage("Ergebnis kopieren"),
+    "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage(
+      "Korrigierte Länge, Lc",
+    ),
     "CountdownDays": MessageLookupByLibrary.simpleMessage("Countdown Days"),
+    "Counter_Flow": MessageLookupByLibrary.simpleMessage("Gegenstrom"),
     "Cross_Section": MessageLookupByLibrary.simpleMessage("Querschnitt"),
     "Deflection": MessageLookupByLibrary.simpleMessage("Durchbiegung"),
     "Deflection_Delta": MessageLookupByLibrary.simpleMessage("Durchbiegung, δ"),
@@ -210,11 +232,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "Desc_Bolt_Preload": MessageLookupByLibrary.simpleMessage(
       "Schätzt das erforderliche Anzugsmoment für eine geforderte Schraubenvorspannung anhand der vereinfachten Kurzform der Anzugsmomenten-Gleichung.",
     ),
+    "Desc_Composite_Wall": MessageLookupByLibrary.simpleMessage(
+      "Stationäre eindimensionale Wärmeleitung durch eine geschichtete ebene Wand. Die Schichtwiderstände t/k liegen in Reihe mit den optionalen Wärmeübergangswiderständen 1/h an beiden Oberflächen und ergeben U, den Wärmestrom und die Temperatur an jeder Schichtgrenze.",
+    ),
     "Desc_Fillet_Weld": MessageLookupByLibrary.simpleMessage(
       "Schubspannung in der Nahtwurzel einer Kehlnaht mit Nahtdicke w und wirksamer Länge L, wobei die Wurzel als Versagensebene angenommen wird (übliches vereinfachtes Verfahren).",
     ),
+    "Desc_Fin_Efficiency": MessageLookupByLibrary.simpleMessage(
+      "Gerade Rechteckrippe mit konstantem Querschnitt, gelöst mit adiabater Spitze und der korrigierten Länge Lc = L + t/2: m = √(2h/kt) und η = tanh(mLc)/(mLc).",
+    ),
+    "Desc_Lmtd": MessageLookupByLibrary.simpleMessage(
+      "Mittlere logarithmische Temperaturdifferenz aus den vier Ein- und Austrittstemperaturen sowie die Fläche, die eine gegebene Leistung benötigt: A = Q/(U·ΔT_lm). Im Gegenstrom gehört zu jedem Eintritt der gegenüberliegende Austritt, im Gleichstrom stehen die beiden Eintritte zusammen.",
+    ),
+    "Desc_Pipe_Pressure_Drop": MessageLookupByLibrary.simpleMessage(
+      "Druckverlust und Verlusthöhe nach Darcy–Weisbach für ein vollgefülltes Rohr: h = f·(L/D)·V²/2g. Die Rohrreibungszahl folgt aus der Colebrook-Gleichung, Einbautenverluste kommen als ΣK Geschwindigkeitshöhen hinzu.",
+    ),
     "Desc_Press_Fit": MessageLookupByLibrary.simpleMessage(
       "Kontaktdruck und Tangentialspannung für eine massive Welle, die in eine Nabe gepresst wird, wobei für beide Teile dasselbe Material angenommen wird (übliche Vereinfachung — die Poissonzahl hebt sich weg).",
+    ),
+    "Desc_Pump_Fan_Power": MessageLookupByLibrary.simpleMessage(
+      "Leistungsbedarf einer Pumpe oder eines Ventilators: dem Fluid wird P = Δp·Q zugeführt, der Antrieb muss diesen Wert geteilt durch den Wirkungsgrad aufbringen. Die Druckerhöhung wird zusätzlich als Förderhöhe des Fluids angegeben.",
+    ),
+    "Desc_Reynolds_Number": MessageLookupByLibrary.simpleMessage(
+      "Reynolds-Zahl Re = ρVD/μ für die Strömung im Kreisrohr, mit der zugehörigen laminaren, transitionalen oder turbulenten Strömungsform. Geben Sie entweder eine Geschwindigkeit oder einen Volumenstrom ein; der jeweils andere Wert wird mit ausgegeben.",
     ),
     "Desc_Section_Properties": MessageLookupByLibrary.simpleMessage(
       "Berechnet die auf den Schwerpunkt bezogenen geometrischen Kennwerte für Biege- und Spannungsberechnungen am Balken. Die x-Achse verläuft horizontal, die y-Achse vertikal durch den Schwerpunkt.",
@@ -227,6 +267,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Spur_Gear": MessageLookupByLibrary.simpleMessage(
       "Stirnradpaar mit 20°-Vollflankenevolvente: Teilkreisdurchmesser, Achsabstand und einfache Biegespannung nach Lewis mit vereinfachter Schätzung der Flankenpressung. Keine vollständige AGMA-Auslegung.",
+    ),
+    "Desc_Standard_Sections": MessageLookupByLibrary.simpleMessage(
+      "Veröffentlichte Abmessungen und Querschnittswerte gebräuchlicher Normprofile. Widerstandsmoment und Trägheitsradius werden aus der angegebenen Fläche und dem Flächenträgheitsmoment abgeleitet und bleiben dadurch mit diesen konsistent.",
     ),
     "Desc_Truss_Determinacy": MessageLookupByLibrary.simpleMessage(
       "Ein statisch bestimmtes ebenes Fachwerk erfordert Stäbe + Reaktionen = 2 × Knoten. Geben Sie mindestens ein Fest- und ein Loslager an.",
@@ -255,9 +298,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "Dynamic_Load_Rating_C": MessageLookupByLibrary.simpleMessage(
       "Dynamische Tragzahl, C",
     ),
+    "Dynamic_Viscosity": MessageLookupByLibrary.simpleMessage(
+      "Dynamische Viskosität, μ",
+    ),
     "E_Modulus": MessageLookupByLibrary.simpleMessage("E (Elastizitätsmodul)"),
     "Effective_Length_L": MessageLookupByLibrary.simpleMessage(
       "Wirksame Länge, L",
+    ),
+    "Efficiency_Eta": MessageLookupByLibrary.simpleMessage(
+      "Wirkungsgrad, η (%)",
     ),
     "Elastic": MessageLookupByLibrary.simpleMessage("Elastisch"),
     "Elastic_Coefficient_Cp": MessageLookupByLibrary.simpleMessage(
@@ -268,6 +317,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Elastic_Modulus_E": MessageLookupByLibrary.simpleMessage(
       "Elastizitätsmodul, E",
+    ),
+    "End_Approach_1": MessageLookupByLibrary.simpleMessage(
+      "Temperaturdifferenz Ende 1, ΔT1",
+    ),
+    "End_Approach_2": MessageLookupByLibrary.simpleMessage(
+      "Temperaturdifferenz Ende 2, ΔT2",
     ),
     "End_Condition": MessageLookupByLibrary.simpleMessage("Randbedingung"),
     "Endurance_Limit_Se": MessageLookupByLibrary.simpleMessage(
@@ -309,6 +364,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Enter_F_D": MessageLookupByLibrary.simpleMessage(
       "Geben Sie F und d ein.",
     ),
+    "Err_Enter_Fin_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Geben Sie Rippengeometrie, Wärmeleitfähigkeit, Wärmeübergangskoeffizient und Temperaturen ein.",
+    ),
+    "Err_Enter_Layer_Values": MessageLookupByLibrary.simpleMessage(
+      "Jede Schicht braucht eine Dicke und eine Wärmeleitfähigkeit.",
+    ),
+    "Err_Enter_Lmtd_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Geben Sie alle vier Temperaturen, U und die Wärmeleistung ein.",
+    ),
     "Err_Enter_Module_N1_N2_Face": MessageLookupByLibrary.simpleMessage(
       "Geben Sie Modul, N1, N2 und Zahnbreite ein.",
     ),
@@ -318,14 +382,26 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Enter_One_Load": MessageLookupByLibrary.simpleMessage(
       "Geben Sie mindestens eine Last ein.",
     ),
+    "Err_Enter_Pipe_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Geben Sie Durchmesser, Länge, Volumenstrom und Fluideigenschaften ein.",
+    ),
+    "Err_Enter_Pump_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Geben Sie Volumenstrom, Druckerhöhung, Dichte und Wirkungsgrad ein.",
+    ),
     "Err_Enter_R_Ro_Delta_E": MessageLookupByLibrary.simpleMessage(
       "Geben Sie r, ro, δ und E ein.",
+    ),
+    "Err_Enter_Reynolds_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Geben Sie Durchmesser, Fluideigenschaften und entweder eine Geschwindigkeit oder einen Volumenstrom ein.",
     ),
     "Err_Enter_Se_Sut": MessageLookupByLibrary.simpleMessage(
       "Geben Sie Se und Sut ein.",
     ),
     "Err_Enter_W_L_F": MessageLookupByLibrary.simpleMessage(
       "Geben Sie w, L und F ein.",
+    ),
+    "Err_Enter_Wall_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Geben Sie die Wandfläche und beide Temperaturen ein.",
     ),
     "Err_F_D_Positive": MessageLookupByLibrary.simpleMessage(
       "F und d müssen positiv sein.",
@@ -395,6 +471,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "Failure_criteria_von_Mises_Tresca": MessageLookupByLibrary.simpleMessage(
       "Versagenskriterien (Von Mises & Tresca)",
     ),
+    "Family_Angle": MessageLookupByLibrary.simpleMessage("Winkelprofile"),
+    "Family_Channel": MessageLookupByLibrary.simpleMessage("U-Profile"),
+    "Family_HEB": MessageLookupByLibrary.simpleMessage("HEB-Profile"),
+    "Family_HSS": MessageLookupByLibrary.simpleMessage("Hohlprofile"),
+    "Family_IPE": MessageLookupByLibrary.simpleMessage("IPE-Profile"),
+    "Family_Pipe": MessageLookupByLibrary.simpleMessage("Rohre"),
+    "Family_W": MessageLookupByLibrary.simpleMessage("W-Profile"),
     "Fatigue_Safety_Factor": MessageLookupByLibrary.simpleMessage(
       "Dauerfestigkeits-Sicherheitsfaktor (modifiziertes Goodman-Kriterium)",
     ),
@@ -403,6 +486,31 @@ class MessageLookup extends MessageLookupByLibrary {
     "Fillet_Weld_Strength": MessageLookupByLibrary.simpleMessage(
       "Festigkeit einer Kehlnaht",
     ),
+    "Film_Coefficient_h": MessageLookupByLibrary.simpleMessage(
+      "Wärmeübergangskoeffizient, h",
+    ),
+    "Film_Optional_Note": MessageLookupByLibrary.simpleMessage(
+      "Bleibt ein Wärmeübergangskoeffizient leer, gilt die zugehörige Temperatur als Oberflächentemperatur.",
+    ),
+    "Fin_Effectiveness": MessageLookupByLibrary.simpleMessage(
+      "Rippenwirksamkeit, εf",
+    ),
+    "Fin_Efficiency": MessageLookupByLibrary.simpleMessage(
+      "Rippenwirkungsgrad",
+    ),
+    "Fin_Efficiency_Eta": MessageLookupByLibrary.simpleMessage(
+      "Rippenwirkungsgrad, ηf",
+    ),
+    "Fin_Heat_Flow": MessageLookupByLibrary.simpleMessage("Rippenwärmestrom"),
+    "Fin_Length_L": MessageLookupByLibrary.simpleMessage("Rippenlänge, L"),
+    "Fin_Parameter_m": MessageLookupByLibrary.simpleMessage(
+      "Rippenparameter, m",
+    ),
+    "Fin_Surface_Area": MessageLookupByLibrary.simpleMessage(
+      "Rippenoberfläche",
+    ),
+    "Fin_Thickness_t": MessageLookupByLibrary.simpleMessage("Rippendicke, t"),
+    "Fin_Width_w": MessageLookupByLibrary.simpleMessage("Rippenbreite, w"),
     "FinanceGo": MessageLookupByLibrary.simpleMessage("Finance Go"),
     "Find_Power": MessageLookupByLibrary.simpleMessage("Leistung berechnen"),
     "Find_Torque": MessageLookupByLibrary.simpleMessage("Drehmoment berechnen"),
@@ -417,6 +525,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "Flexure_formula_of_beam": MessageLookupByLibrary.simpleMessage(
       "Biegeformel eines Balkens",
     ),
+    "Flow_Area": MessageLookupByLibrary.simpleMessage("Strömungsquerschnitt"),
+    "Flow_Arrangement": MessageLookupByLibrary.simpleMessage("Stromführung"),
+    "Flow_Laminar": MessageLookupByLibrary.simpleMessage("Laminar"),
+    "Flow_Rate_Q": MessageLookupByLibrary.simpleMessage("Volumenstrom, Q"),
+    "Flow_Regime": MessageLookupByLibrary.simpleMessage("Strömungsform"),
+    "Flow_Transitional": MessageLookupByLibrary.simpleMessage(
+      "Übergangsbereich",
+    ),
+    "Flow_Turbulent": MessageLookupByLibrary.simpleMessage("Turbulent"),
+    "Flow_Velocity_V": MessageLookupByLibrary.simpleMessage(
+      "Strömungsgeschwindigkeit, V",
+    ),
+    "Fluid_Presets": MessageLookupByLibrary.simpleMessage("Fluid-Vorlagen"),
+    "Fluids_and_Thermal": MessageLookupByLibrary.simpleMessage(
+      "Strömung & Wärme",
+    ),
     "Force": MessageLookupByLibrary.simpleMessage("Kraft"),
     "Force_displacement_relation_of_bar": MessageLookupByLibrary.simpleMessage(
       "Kraft-Verschiebungs-Beziehung eines Stabs",
@@ -430,6 +554,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Formula": MessageLookupByLibrary.simpleMessage("Formel"),
     "Formulas": MessageLookupByLibrary.simpleMessage("Formeln"),
+    "Friction_Factor_f": MessageLookupByLibrary.simpleMessage(
+      "Rohrreibungszahl, f",
+    ),
+    "Friction_Head_Loss": MessageLookupByLibrary.simpleMessage(
+      "Reibungsverlusthöhe",
+    ),
     "From": MessageLookupByLibrary.simpleMessage("Von"),
     "Full_Span_UDL_W": MessageLookupByLibrary.simpleMessage(
       "Gleichmäßige Streckenlast über die volle Spannweite, w",
@@ -446,17 +576,34 @@ class MessageLookup extends MessageLookupByLibrary {
       "Allgemeine Spannungsberechnung",
     ),
     "Grid_View": MessageLookupByLibrary.simpleMessage("Rasteransicht"),
+    "Group_Building": MessageLookupByLibrary.simpleMessage("Baustoffe"),
+    "Group_Insulation": MessageLookupByLibrary.simpleMessage("Dämmstoffe"),
+    "Group_Metal": MessageLookupByLibrary.simpleMessage("Metalle"),
+    "Heat_Duty_Q": MessageLookupByLibrary.simpleMessage("Wärmeleistung, Q"),
+    "Heat_Exchanger_LMTD": MessageLookupByLibrary.simpleMessage(
+      "Wärmeübertrager (LMTD)",
+    ),
+    "Heat_Flow_Q": MessageLookupByLibrary.simpleMessage("Wärmestrom, Q"),
+    "Heat_Flux": MessageLookupByLibrary.simpleMessage("Wärmestromdichte, q\""),
     "Height_H": MessageLookupByLibrary.simpleMessage("Höhe h"),
     "Helical_Compression_Spring": MessageLookupByLibrary.simpleMessage(
       "Schraubendruckfeder",
     ),
     "History": MessageLookupByLibrary.simpleMessage("Verlauf"),
     "Hole_um": MessageLookupByLibrary.simpleMessage("Bohrung (µm)"),
+    "Hot_Inlet": MessageLookupByLibrary.simpleMessage("Heißeintritt"),
+    "Hot_Outlet": MessageLookupByLibrary.simpleMessage("Heißaustritt"),
+    "Hot_Stream_Range": MessageLookupByLibrary.simpleMessage(
+      "Temperaturspanne heiß",
+    ),
     "Hub_Hoop_Stress": MessageLookupByLibrary.simpleMessage(
       "Tangentialspannung der Nabenbohrung, σt",
     ),
     "Hub_Outer_Radius_Ro": MessageLookupByLibrary.simpleMessage(
       "Außenradius der Nabe, ro",
+    ),
+    "Hydraulic_Power": MessageLookupByLibrary.simpleMessage(
+      "Hydraulische Leistung",
     ),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
     "Imperial_US": MessageLookupByLibrary.simpleMessage(
@@ -466,9 +613,22 @@ class MessageLookup extends MessageLookupByLibrary {
       "Antriebsdrehzahl, n1",
     ),
     "Inputs": MessageLookupByLibrary.simpleMessage("Eingaben"),
+    "Inside_Air": MessageLookupByLibrary.simpleMessage("Innenluft"),
+    "Inside_Diameter_D": MessageLookupByLibrary.simpleMessage(
+      "Innendurchmesser, D",
+    ),
+    "Inside_Film_Coefficient": MessageLookupByLibrary.simpleMessage(
+      "Innerer Wärmeübergangskoeffizient, hi",
+    ),
+    "Inside_Temperature": MessageLookupByLibrary.simpleMessage(
+      "Innentemperatur",
+    ),
     "Instant_Face": MessageLookupByLibrary.simpleMessage("Instant Face"),
     "Interface_Radius_R": MessageLookupByLibrary.simpleMessage(
       "Kontaktradius, r",
+    ),
+    "Isothermal_Max_Heat_Flow": MessageLookupByLibrary.simpleMessage(
+      "Maximum bei isothermer Rippe",
     ),
     "Isotropic_material": MessageLookupByLibrary.simpleMessage(
       "Isotropes Material",
@@ -476,6 +636,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Joints": MessageLookupByLibrary.simpleMessage("Knoten"),
     "Kf_Bending": MessageLookupByLibrary.simpleMessage("Kf (Biegung)"),
     "Kfs_Torsion": MessageLookupByLibrary.simpleMessage("Kfs (Torsion)"),
+    "Kinematic_Viscosity": MessageLookupByLibrary.simpleMessage(
+      "Kinematische Viskosität, ν",
+    ),
     "L10_Hours": MessageLookupByLibrary.simpleMessage("L10 (Stunden)"),
     "L10_Million_Revolutions": MessageLookupByLibrary.simpleMessage(
       "L10 (Millionen Umdrehungen)",
@@ -502,6 +665,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Large_Pulley_Diameter_D2": MessageLookupByLibrary.simpleMessage(
       "Großer Riemenscheibendurchmesser, d2",
     ),
+    "Layer_Number": m2,
+    "Layer_Resistances": MessageLookupByLibrary.simpleMessage(
+      "Schichtwiderstände",
+    ),
     "Layer_Thickness": MessageLookupByLibrary.simpleMessage("Schichtdicke"),
     "Layup_Angle": MessageLookupByLibrary.simpleMessage("Faserwinkel"),
     "Layup_Sequence": MessageLookupByLibrary.simpleMessage("Schichtaufbau"),
@@ -517,6 +684,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Load_Fx": MessageLookupByLibrary.simpleMessage("Last Fx"),
     "Load_Fy": MessageLookupByLibrary.simpleMessage("Last Fy"),
     "Load_Type": MessageLookupByLibrary.simpleMessage("Lasttyp"),
+    "Log_Mean_Delta_T": MessageLookupByLibrary.simpleMessage(
+      "Mittlere log. Temperaturdifferenz",
+    ),
     "ME_Toolkit": MessageLookupByLibrary.simpleMessage("ME Toolkit"),
     "Machine_Design": MessageLookupByLibrary.simpleMessage(
       "Maschinenkonstruktion",
@@ -559,6 +729,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Metric_Fine": MessageLookupByLibrary.simpleMessage("Metrisch fein"),
     "Metric_SI": MessageLookupByLibrary.simpleMessage("Metrisch (SI)"),
     "Metronome_Go": MessageLookupByLibrary.simpleMessage("Metronome Go"),
+    "Minor_Head_Loss": MessageLookupByLibrary.simpleMessage(
+      "Einzelverlusthöhe",
+    ),
+    "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("Einzelverluste, ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
     "Module_M": MessageLookupByLibrary.simpleMessage("Modul, m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("Elastizitätsmodul, E"),
@@ -587,6 +761,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "No_Favorites_Yet": MessageLookupByLibrary.simpleMessage(
       "Noch keine Favoriten",
     ),
+    "No_Fluids_Found": MessageLookupByLibrary.simpleMessage(
+      "Keine Fluide gefunden",
+    ),
     "No_History_Yet": MessageLookupByLibrary.simpleMessage("Noch kein Verlauf"),
     "No_Matches": MessageLookupByLibrary.simpleMessage("Keine Treffer"),
     "No_Matches_Description": MessageLookupByLibrary.simpleMessage(
@@ -600,6 +777,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "No_Saved_Projects_Yet": MessageLookupByLibrary.simpleMessage(
       "Noch keine gespeicherten Projekte",
+    ),
+    "No_Sections_Found": MessageLookupByLibrary.simpleMessage(
+      "Keine Profile gefunden",
     ),
     "No_Tools_Found": MessageLookupByLibrary.simpleMessage(
       "Keine Werkzeuge gefunden",
@@ -634,17 +814,39 @@ class MessageLookup extends MessageLookupByLibrary {
     "Output_Speed_N2": MessageLookupByLibrary.simpleMessage(
       "Abtriebsdrehzahl, n2",
     ),
+    "Outside_Air": MessageLookupByLibrary.simpleMessage("Außenluft"),
+    "Outside_Film_Coefficient": MessageLookupByLibrary.simpleMessage(
+      "Äußerer Wärmeübergangskoeffizient, ho",
+    ),
+    "Outside_Temperature": MessageLookupByLibrary.simpleMessage(
+      "Außentemperatur",
+    ),
+    "Overall_Coefficient_U": MessageLookupByLibrary.simpleMessage(
+      "Wärmedurchgangskoeffizient, U",
+    ),
     "Overall_Height": MessageLookupByLibrary.simpleMessage("Gesamthöhe"),
     "PDF_Missing_Characters": MessageLookupByLibrary.simpleMessage(
       "Im PDF fehlen möglicherweise einige Zeichen",
     ),
     "P_Load": MessageLookupByLibrary.simpleMessage("P (Last)"),
+    "Parallel_Flow": MessageLookupByLibrary.simpleMessage("Gleichstrom"),
+    "Pick_Fluid": MessageLookupByLibrary.simpleMessage("Fluid wählen"),
     "Pick_Material": MessageLookupByLibrary.simpleMessage("Material auswählen"),
+    "Pick_Standard_Section": MessageLookupByLibrary.simpleMessage(
+      "Normprofil wählen",
+    ),
+    "Pick_Thermal_Material": MessageLookupByLibrary.simpleMessage(
+      "Material wählen",
+    ),
     "Pin": MessageLookupByLibrary.simpleMessage("Festlager"),
     "Pinion_Pitch_Diameter_D1": MessageLookupByLibrary.simpleMessage(
       "Teilkreisdurchmesser Ritzel, d1",
     ),
     "Pinion_Teeth_N1": MessageLookupByLibrary.simpleMessage("Ritzelzähne, N1"),
+    "Pipe_Length_L": MessageLookupByLibrary.simpleMessage("Rohrlänge, L"),
+    "Pipe_Pressure_Drop": MessageLookupByLibrary.simpleMessage(
+      "Rohrdruckverlust",
+    ),
     "Pitch_TPI": MessageLookupByLibrary.simpleMessage("Steigung / TPI"),
     "Plane_Stresses": MessageLookupByLibrary.simpleMessage("Ebene Spannungen"),
     "Plane_stresses_transformation": MessageLookupByLibrary.simpleMessage(
@@ -658,6 +860,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Polar_Area_Moment_J": MessageLookupByLibrary.simpleMessage(
       "Polares Flächenträgheitsmoment, J",
     ),
+    "Power_Lost": MessageLookupByLibrary.simpleMessage("Verlustleistung"),
     "Power_Optional": MessageLookupByLibrary.simpleMessage(
       "Leistung (optional)",
     ),
@@ -665,7 +868,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Übermaß bei Press-/Schrumpfsitz",
     ),
-    "Preview_Value": m2,
+    "Pressure_Drop": MessageLookupByLibrary.simpleMessage("Druckverlust, Δp"),
+    "Pressure_Rise": MessageLookupByLibrary.simpleMessage("Druckerhöhung, Δp"),
+    "Preview_Value": m3,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Hauptspannungen und Hauptebene",
     ),
@@ -692,8 +897,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Name_Required": MessageLookupByLibrary.simpleMessage(
       "Bitte einen Namen eingeben",
     ),
-    "Project_Saved": m3,
-    "Project_Updated": m4,
+    "Project_Saved": m4,
+    "Project_Updated": m5,
+    "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage(
+      "Pumpen- & Ventilatorleistung",
+    ),
+    "Pump_Head": MessageLookupByLibrary.simpleMessage("Förderhöhe, H"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
       "Kauf abgebrochen. Es wurden keine Änderungen vorgenommen.",
     ),
@@ -710,16 +919,26 @@ class MessageLookup extends MessageLookupByLibrary {
       "Käufe sind derzeit nicht verfügbar.",
     ),
     "Purchasing": MessageLookupByLibrary.simpleMessage("Kauf läuft…"),
+    "Radius_Gyration_rx": MessageLookupByLibrary.simpleMessage(
+      "Trägheitsradius, rx",
+    ),
+    "Radius_Gyration_ry": MessageLookupByLibrary.simpleMessage(
+      "Trägheitsradius, ry",
+    ),
     "RatethisApp": MessageLookupByLibrary.simpleMessage("App bewerten"),
     "Recommended_by_Major": MessageLookupByLibrary.simpleMessage(
       "Nach Fachrichtung empfohlen",
+    ),
+    "Relative_Roughness": MessageLookupByLibrary.simpleMessage(
+      "Relative Rauheit, ε/D",
     ),
     "Relaxing_Up": MessageLookupByLibrary.simpleMessage("Relaxing Up"),
     "Remove_Ads": MessageLookupByLibrary.simpleMessage("Werbung entfernen"),
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "Entfernt dauerhaft alle Werbung aus dieser App.",
     ),
-    "Remove_Tool_from_Favorites": m5,
+    "Remove_Layer": MessageLookupByLibrary.simpleMessage("Schicht entfernen"),
+    "Remove_Tool_from_Favorites": m6,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Aus Favoriten entfernen",
     ),
@@ -728,6 +947,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Rename_Project": MessageLookupByLibrary.simpleMessage(
       "Projekt umbenennen",
+    ),
+    "Required_Area_A": MessageLookupByLibrary.simpleMessage(
+      "Erforderliche Fläche, A",
     ),
     "Required_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Erforderlicher Durchmesser, d",
@@ -754,6 +976,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Resultant_of_Forces_2D": MessageLookupByLibrary.simpleMessage(
       "Kräfteresultierende (2D)",
     ),
+    "Reynolds_Number": MessageLookupByLibrary.simpleMessage(
+      "Reynolds-Zahl & Strömungsform",
+    ),
+    "Reynolds_Number_Re": MessageLookupByLibrary.simpleMessage(
+      "Reynolds-Zahl, Re",
+    ),
     "Right_Reaction_RB": MessageLookupByLibrary.simpleMessage(
       "Rechte Auflagerreaktion, RB",
     ),
@@ -775,8 +1003,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Gespeicherte Projekte",
     ),
     "Search": MessageLookupByLibrary.simpleMessage("Suche"),
+    "Search_Fluids": MessageLookupByLibrary.simpleMessage("Fluide suchen"),
     "Search_Materials": MessageLookupByLibrary.simpleMessage(
       "Materialien durchsuchen",
+    ),
+    "Search_Section": MessageLookupByLibrary.simpleMessage(
+      "Bezeichnung suchen, z. B. W12X40",
     ),
     "Search_Size_Or_Fit": MessageLookupByLibrary.simpleMessage(
       "Durchmesser oder Passung suchen",
@@ -796,16 +1028,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "Second_Moment_Iy": MessageLookupByLibrary.simpleMessage(
       "Flächenträgheitsmoment, Iy",
     ),
+    "Section_Depth_d": MessageLookupByLibrary.simpleMessage("Höhe, d"),
+    "Section_Designation": MessageLookupByLibrary.simpleMessage("Bezeichnung"),
+    "Section_Dimensions": MessageLookupByLibrary.simpleMessage("Abmessungen"),
+    "Section_Fill_Note": MessageLookupByLibrary.simpleMessage(
+      "Die Auswahl eines Profils füllt die Abmessungen unten aus. Daraus berechnete Querschnittswerte lassen die Ausrundungen außer Acht und liegen daher einige Prozent unter den Tabellenwerten.",
+    ),
+    "Section_Flange_tf": MessageLookupByLibrary.simpleMessage("Flansch, tf"),
     "Section_Modulus_Zx": MessageLookupByLibrary.simpleMessage(
       "Widerstandsmoment, Zx",
     ),
     "Section_Modulus_Zy": MessageLookupByLibrary.simpleMessage(
       "Widerstandsmoment, Zy",
     ),
+    "Section_Web_tw": MessageLookupByLibrary.simpleMessage("Steg, tw"),
+    "Section_Width_b": MessageLookupByLibrary.simpleMessage("Breite, b"),
+    "Sections_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Nennwerte der aufgeführten Profile. Widerstandsmoment und Trägheitsradius werden aus den angegebenen A und I berechnet. Prüfen Sie vor der Ausführungsplanung eine aktuelle Werks- oder Normtabelle.",
+    ),
     "Settings": MessageLookupByLibrary.simpleMessage("Einstellungen"),
     "Shaft_Fatigue_Design": MessageLookupByLibrary.simpleMessage(
       "Wellenauslegung auf Dauerfestigkeit (DE-Goodman)",
     ),
+    "Shaft_Power": MessageLookupByLibrary.simpleMessage("Wellenleistung"),
     "Shaft_Surface_Stress": MessageLookupByLibrary.simpleMessage(
       "Oberflächenspannung der Welle, σs",
     ),
@@ -870,6 +1115,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Spur_Gear_Geometry": MessageLookupByLibrary.simpleMessage(
       "Stirnradgeometrie",
     ),
+    "Standard_Sections": MessageLookupByLibrary.simpleMessage("Normprofile"),
     "Stiffness_Matrix_C": MessageLookupByLibrary.simpleMessage(
       "Steifigkeitsmatrix C",
     ),
@@ -896,6 +1142,7 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "Spannung/Dehnung eines linear-elastischen Materials",
         ),
+    "Strong_Axis": MessageLookupByLibrary.simpleMessage("Starke Achse (x-x)"),
     "Subtract": MessageLookupByLibrary.simpleMessage("Subtrahieren"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("Sudoku Lover"),
     "Support": MessageLookupByLibrary.simpleMessage("Lager"),
@@ -939,18 +1186,31 @@ class MessageLookup extends MessageLookupByLibrary {
       "Elastizitätstheorie",
     ),
     "Thermal": MessageLookupByLibrary.simpleMessage("Thermisch"),
+    "Thermal_Material_Presets": MessageLookupByLibrary.simpleMessage(
+      "Wärmetechnische Materialien",
+    ),
     "Thermal_Results": MessageLookupByLibrary.simpleMessage(
       "Thermische Ergebnisse",
     ),
     "Thermal_deformation_and_stress": MessageLookupByLibrary.simpleMessage(
       "Thermische Verformung und Spannung",
     ),
+    "Thickness_t": MessageLookupByLibrary.simpleMessage("Dicke, t"),
     "Thread": MessageLookupByLibrary.simpleMessage("Gewinde"),
     "Tightening_Torque_T": MessageLookupByLibrary.simpleMessage(
       "Anzugsmoment, T",
     ),
+    "Tip_Temperature": MessageLookupByLibrary.simpleMessage(
+      "Spitzentemperatur",
+    ),
     "Torsion_formula_of_bar": MessageLookupByLibrary.simpleMessage(
       "Torsionsformel eines Stabs",
+    ),
+    "Total_Head_Loss": MessageLookupByLibrary.simpleMessage(
+      "Gesamtverlusthöhe",
+    ),
+    "Total_Resistance_R": MessageLookupByLibrary.simpleMessage(
+      "Gesamtwiderstand, R",
     ),
     "Transverse_shear_stress_in_beam": MessageLookupByLibrary.simpleMessage(
       "Querschubspannung im Balken",
@@ -980,12 +1240,24 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Unit_System": MessageLookupByLibrary.simpleMessage("EINHEITENSYSTEM"),
     "Utilities": MessageLookupByLibrary.simpleMessage("Werkzeuge"),
+    "Velocity_Head": MessageLookupByLibrary.simpleMessage(
+      "Geschwindigkeitshöhe, V²/2g",
+    ),
     "W_Intensity": MessageLookupByLibrary.simpleMessage("w (Streckenlast)"),
     "Wahl_Factor_Kw": MessageLookupByLibrary.simpleMessage("Wahl-Faktor, Kw"),
+    "Wall_Area_A": MessageLookupByLibrary.simpleMessage("Wandfläche, A"),
+    "Wall_Interface": MessageLookupByLibrary.simpleMessage("Schichtgrenze"),
+    "Wall_Layers": MessageLookupByLibrary.simpleMessage("Wandschichten"),
+    "Wall_Roughness": MessageLookupByLibrary.simpleMessage("Wandrauheit, ε"),
+    "Wall_Surface": MessageLookupByLibrary.simpleMessage("Oberfläche"),
+    "Wall_Temperatures": MessageLookupByLibrary.simpleMessage(
+      "Temperaturen durch die Wand",
+    ),
     "Wall_Thickness": MessageLookupByLibrary.simpleMessage("Wandstärke"),
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
+    "Weak_Axis": MessageLookupByLibrary.simpleMessage("Schwache Achse (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Stegdicke"),
-    "What_If": m6,
+    "What_If": m7,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Drahtdurchmesser, d",
     ),

@@ -115,6 +115,29 @@ double lbfin2Nmm(double v) => v * 112.985;
 // Distributed load at cross-section scale (force / mm): N/mm <-> lbf/in
 double Npmm2lbfpin(double v) => v / 0.175127;
 double lbfpin2Npmm(double v) => v * 0.175127;
+// Velocity: m/s <-> ft/s
+double mps2ftps(double v) => v / 0.3048;
+double ftps2mps(double v) => v * 0.3048;
+// Volumetric flow: L/s <-> US gal/min.
+// 1 US gal = 231 in³ = 3.785411784 L exactly, so 1 gpm = that over 60 s.
+double gpm2Lps(double v) => v * 0.0630901964;
+double Lps2gpm(double v) => v / 0.0630901964;
+// Dynamic viscosity: Pa·s <-> lb/(ft·s).
+// 1 lb/(ft·s) = 0.45359237 kg / (0.3048 m · s).
+double lbpfts2Pas(double v) => v * 1.4881639436;
+double Pas2lbpfts(double v) => v / 1.4881639436;
+// Pressure at process scale: kPa <-> psi
+double psi2kPa(double v) => v * 6.89476;
+double kPa2psi(double v) => v / 6.89476;
+// Thermal conductivity: W/(m·K) <-> BTU/(h·ft·°F)
+double WpmK2BtuphftF(double v) => v / 1.730735;
+double BtuphftF2WpmK(double v) => v * 1.730735;
+// Convection coefficient: W/(m²·K) <-> BTU/(h·ft²·°F)
+double Wpm2K2Btuphft2F(double v) => v / 5.678263;
+double Btuphft2F2Wpm2K(double v) => v * 5.678263;
+// Heat flow rate: W <-> BTU/h
+double W2Btuph(double v) => v * 3.412142;
+double Btuph2W(double v) => v / 3.412142;
 // Identity
 double id(double v) => v;
 
@@ -196,6 +219,34 @@ enum UnitCategory {
 
   /// Frequency (e.g. spring natural/surge frequency).
   frequency,
+
+  /// Flow velocity.
+  velocity,
+
+  /// Volumetric flow rate.
+  volumeFlow,
+
+  /// Dynamic (absolute) viscosity, μ.
+  dynamicViscosity,
+
+  /// Pressure at process scale (kPa / psi) — pipe pressure drop, pump head.
+  ///
+  /// Distinct from [stress], whose MPa/ksi are three orders too coarse to read
+  /// a friction loss in: a long run of pipe drops tens of kPa, which would
+  /// round to 0.0 MPa at the app's default precision.
+  pressure,
+
+  /// Thermal conductivity, k.
+  thermalConductivity,
+
+  /// Convection heat transfer coefficient, h.
+  heatTransferCoefficient,
+
+  /// Heat flow rate (thermal power).
+  ///
+  /// Separate from [power], whose kW/hp suit shaft work; heat duties are
+  /// quoted in W and BTU/h.
+  heatFlow,
 }
 
 class _UnitPair {
@@ -351,6 +402,48 @@ final Map<UnitCategory, _UnitPair> _pairs = {
     siToImperial: id,
     imperialToSi: id,
   ),
+  UnitCategory.velocity: _UnitPair(
+    siLabel: 'm/s',
+    imperialLabel: 'ft/s',
+    siToImperial: mps2ftps,
+    imperialToSi: ftps2mps,
+  ),
+  UnitCategory.volumeFlow: _UnitPair(
+    siLabel: 'L/s',
+    imperialLabel: 'gpm',
+    siToImperial: Lps2gpm,
+    imperialToSi: gpm2Lps,
+  ),
+  UnitCategory.dynamicViscosity: _UnitPair(
+    siLabel: 'Pa·s',
+    imperialLabel: 'lb/(ft·s)',
+    siToImperial: Pas2lbpfts,
+    imperialToSi: lbpfts2Pas,
+  ),
+  UnitCategory.pressure: _UnitPair(
+    siLabel: 'kPa',
+    imperialLabel: 'psi',
+    siToImperial: kPa2psi,
+    imperialToSi: psi2kPa,
+  ),
+  UnitCategory.thermalConductivity: _UnitPair(
+    siLabel: 'W/(m·K)',
+    imperialLabel: 'BTU/(h·ft·°F)',
+    siToImperial: WpmK2BtuphftF,
+    imperialToSi: BtuphftF2WpmK,
+  ),
+  UnitCategory.heatTransferCoefficient: _UnitPair(
+    siLabel: 'W/(m²·K)',
+    imperialLabel: 'BTU/(h·ft²·°F)',
+    siToImperial: Wpm2K2Btuphft2F,
+    imperialToSi: Btuphft2F2Wpm2K,
+  ),
+  UnitCategory.heatFlow: _UnitPair(
+    siLabel: 'W',
+    imperialLabel: 'BTU/h',
+    siToImperial: W2Btuph,
+    imperialToSi: Btuph2W,
+  ),
 };
 
 String unitLabel(UnitCategory category, UnitSystem system) {
@@ -408,5 +501,28 @@ extension SIValueFormatting on NumberPrecisionHelper {
     if (category == null) return formatValue(valueSI);
     return '${formatValue(fromSI(valueSI, category, system))} '
         '${unitLabel(category, system)}';
+  }
+
+  /// [formatSI] for a quantity whose useful range straddles the auto format's
+  /// 0.001 cutoff, below which it switches to exponential.
+  ///
+  /// Dynamic viscosity is the case this exists for: it runs from 1.8e-5 Pa·s
+  /// for air to 1.5 Pa·s for glycerin, so at the default three decimals water
+  /// (1.002e-3) and seawater (1.070e-3) both render as a bare "0.001" —
+  /// identical on screen, and useless in a derivation step that is supposed to
+  /// reproduce the answer. Anything under 0.01 is therefore shown in
+  /// exponential form regardless of the display-format setting.
+  String formatSmallSI(
+    double valueSI,
+    UnitCategory? category,
+    UnitSystem system,
+  ) {
+    final display =
+        category == null ? valueSI : fromSI(valueSI, category, system);
+    final unit = category == null ? '' : ' ${unitLabel(category, system)}';
+    if (display != 0 && display.abs() < 0.01) {
+      return '${display.toStringAsExponential(3)}$unit';
+    }
+    return '${formatValue(display)}$unit';
   }
 }

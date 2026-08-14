@@ -183,6 +183,11 @@ class _ToolPageState extends State<ToolPage> {
     ));
 
     sections.add(ToolSection(
+      S.of(context).Fluids_and_Thermal,
+      allTools.where((e) => e.type == ToolType.fluidsThermal).toList(),
+    ));
+
+    sections.add(ToolSection(
       S.of(context).Utilities,
       allTools.where((e) => e.type == ToolType.utilities).toList(),
     ));

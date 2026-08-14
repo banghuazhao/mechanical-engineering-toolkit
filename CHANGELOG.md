@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Added a new Fluids & Thermal category: Reynolds number and flow regime, pipe pressure drop (Darcy–Weisbach with a Colebrook friction factor), pump and fan power, composite wall conduction, fin efficiency, and heat exchanger sizing by LMTD.
+- Added a fluid property picker covering water, air, oils, glycol, glycerin, kerosene and mercury, so density and viscosity are filled as a matching pair.
+- Added a thermal material picker covering metals, building materials and insulation.
+- Added a Standard Sections reference covering AISC W shapes and European IPE and HEB shapes, with a full property sheet per shape that exports like any other result.
+- Beam Section Properties and Beam Load Analysis can now be filled straight from a standard section.
+
 ## 1.8.0 - 2026-08-08
 
 - Added Projects: save any calculation's inputs under a name and reopen it later.

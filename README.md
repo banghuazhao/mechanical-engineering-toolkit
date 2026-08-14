@@ -63,6 +63,19 @@
 - **Fillet weld strength**
 - **Press / shrink-fit interference**
 
+### 5. 💧 Fluids & Thermal
+- **Reynolds number & flow regime** (laminar / transitional / turbulent)
+- **Pipe pressure drop** (Darcy–Weisbach, Colebrook friction factor, minor losses)
+- **Pump & fan power** (hydraulic and shaft power, head)
+- **Composite wall conduction** (layer resistances, U value, interface temperatures)
+- **Fin efficiency** (straight rectangular fin, corrected length)
+- **Heat exchanger (LMTD)** (counter / parallel flow, required area)
+
+### 6. 📐 Reference Tables
+- **Drill & tap chart**
+- **ISO 286 fits & tolerances**
+- **Standard sections** — AISC W shapes plus European IPE and HEB, with dimensions, area, second moments, section moduli and radii of gyration
+
 *(This list covers the major categories; the in-app search finds every tool by name or keyword — see [tool_model.dart](lib/home/tool_model.dart) for the full, current registry.)*
 
 ## 🛠️ Technical Information
