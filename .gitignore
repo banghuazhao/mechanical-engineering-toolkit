@@ -55,3 +55,6 @@ ios/*.zip
 ios/fastlane/*p8
 ios/fastlane/.env
 ios/fastlane/report.xml
+
+# Store-release and listing scripts are kept local only.
+/scripts/
