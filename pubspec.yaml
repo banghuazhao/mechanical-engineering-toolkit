@@ -50,6 +50,9 @@ dependencies:
   url_launcher: ^6.2.5
   in_app_review: ^2.0.9
   in_app_purchase: ^3.3.0
+  # Direct, so the purchase adapter can read Play's own purchase state off
+  # a GooglePlayPurchaseDetails. See remove_ads_service.dart for why.
+  in_app_purchase_android: ^0.5.1
 #  in_app_review: ^2.0.9
   shared_preferences: ^2.2.2
   google_mobile_ads: ^9.1.0

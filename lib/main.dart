@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_page.dart';
@@ -25,12 +27,17 @@ Future<void> main() async {
 
   await SharedPreferencesHelper.init();
 
-  final removeAdsService = RemoveAdsService();
-  await removeAdsService.init();
+  final removeAdsService = RemoveAdsService()..loadPersistedEntitlement();
   AdsManager.setAdsRemoved(removeAdsService.isAdsRemoved);
   removeAdsService.addListener(
     () => AdsManager.setAdsRemoved(removeAdsService.isAdsRemoved),
   );
+  // Left unawaited on purpose. Reaching the store means an availability check,
+  // a product query and a restore, and on a cold Play Billing connection or a
+  // bad network that is seconds the launch would otherwise spend on a blank
+  // screen. The persisted entitlement read above is what decides whether ads
+  // load in the meantime; this only refines it.
+  unawaited(removeAdsService.init());
 
   AdsManager.debugPrintID();
 

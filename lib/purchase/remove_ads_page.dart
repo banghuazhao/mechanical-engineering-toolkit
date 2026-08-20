@@ -12,7 +12,39 @@ class RemoveAdsPage extends StatefulWidget {
 }
 
 class _RemoveAdsPageState extends State<RemoveAdsPage> {
-  RemoveAdsStatus? _lastNotifiedStatus;
+  /// States that are a step on the way somewhere rather than an outcome, and
+  /// so are never announced.
+  static const _transientStatuses = {
+    RemoveAdsStatus.idle,
+    RemoveAdsStatus.loading,
+    RemoveAdsStatus.ready,
+    RemoveAdsStatus.purchasing,
+    RemoveAdsStatus.restoring,
+  };
+
+  /// Tracked by revision rather than by status value: two restores that both
+  /// come up empty end on the same status, and the user needs to hear about
+  /// the second one too.
+  int _lastNotifiedRevision = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    final service = context.read<RemoveAdsService>();
+    // Whatever the launch-time refresh settled on is history, not news: the
+    // page opening should not announce it.
+    _lastNotifiedRevision = service.statusRevision;
+
+    // A launch with no network leaves the product unloaded, and nothing else
+    // ever retries — the page would read "unavailable" for the rest of the
+    // session. Retry on open, after the first frame, so the resulting status
+    // change does not rebuild the tree mid-build.
+    if (service.product == null && !service.isBusy) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) service.loadProducts();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +53,7 @@ class _RemoveAdsPageState extends State<RemoveAdsPage> {
       body: SafeArea(
         child: Consumer<RemoveAdsService>(
           builder: (context, service, _) {
-            _notifyPurchaseStatus(service.status);
+            _notifyPurchaseStatus(service);
             return ListView(
               padding: const EdgeInsets.all(16),
               children: [RemoveAdsSection(service: service)],
@@ -32,18 +64,13 @@ class _RemoveAdsPageState extends State<RemoveAdsPage> {
     );
   }
 
-  void _notifyPurchaseStatus(RemoveAdsStatus status) {
-    if (_lastNotifiedStatus == status ||
-        const {
-          RemoveAdsStatus.idle,
-          RemoveAdsStatus.loading,
-          RemoveAdsStatus.ready,
-          RemoveAdsStatus.purchasing,
-          RemoveAdsStatus.restoring,
-        }.contains(status)) {
-      return;
-    }
-    _lastNotifiedStatus = status;
+  void _notifyPurchaseStatus(RemoveAdsService service) {
+    if (_lastNotifiedRevision == service.statusRevision) return;
+    _lastNotifiedRevision = service.statusRevision;
+
+    final status = service.status;
+    if (_transientStatuses.contains(status)) return;
+
     final strings = S.of(context);
     final message = switch (status) {
       RemoveAdsStatus.unavailable => strings.Purchase_Unavailable,
@@ -100,7 +127,11 @@ class RemoveAdsSection extends StatelessWidget {
     }
 
     final price = service.localizedPrice;
-    final canBuy = price != null && !service.isBusy;
+    final isPending = service.hasPendingPurchase;
+    // A pending order blocks a second purchase — the store would reject it —
+    // but leaves restore available, since a Play order can stay pending for
+    // days and the user needs a way to re-check it.
+    final canBuy = price != null && !service.isBusy && !isPending;
     return AppSectionCard(
       title: strings.Remove_Ads,
       child: Column(
@@ -119,10 +150,12 @@ class RemoveAdsSection extends StatelessWidget {
                     dimension: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Icon(Icons.shopping_bag_rounded),
+                : Icon(isPending
+                    ? Icons.hourglass_top_rounded
+                    : Icons.shopping_bag_rounded),
             label: Text(service.status == RemoveAdsStatus.purchasing
                 ? strings.Purchasing
-                : service.status == RemoveAdsStatus.pending
+                : isPending
                     ? strings.Purchase_Pending
                     : price == null
                         ? strings.Purchase_Unavailable
