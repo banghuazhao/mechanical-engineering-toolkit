@@ -7,9 +7,9 @@
 
 A cross-platform engineering calculator for students, researchers, and practising
 engineers. Over 50 tools spanning mechanics of materials, beam analysis, statics,
-machine design, fluids and heat transfer, elasticity, and composites — each one
-showing the governing formula, the substituted calculation steps, and a result you
-can export or share.
+machine design and vibration, fluids and heat transfer, elasticity, and composites
+— each one showing the governing formula, the substituted calculation steps, and a
+result you can export or share.
 
 <p align="center">
   <img src="./doc_images/1.webp" alt="Tool library" width="220"/>
@@ -39,9 +39,9 @@ can export or share.
 
 | Category | Tools | Coverage |
 |---|---:|---|
-| Mechanics of Material | 15 | General stress, bar force–displacement, torsion and angle of twist, plane-stress transformation, principal stresses, Mohr's circle, spherical shell, column buckling, thermal deformation, shaft power and torque, Von Mises / Tresca, fatigue safety factor (Modified Goodman), bolted and riveted joints, combined loading |
+| Mechanics of Material | 16 | General stress, bar force–displacement, torsion and angle of twist, plane-stress transformation, principal stresses, Mohr's circle, spherical shell, thin-walled cylindrical pressure vessel, column buckling, thermal deformation, shaft power and torque, Von Mises / Tresca, fatigue safety factor (Modified Goodman), bolted and riveted joints, combined loading |
 | Beam Engineering | 7 | Moments of inertia, flexure formula, cantilever and simple-beam deflections and slopes, transverse shear stress, beam section properties, beam load analysis |
-| Machine Design | 8 | Helical compression springs, spur gear geometry, shaft fatigue design (DE-Goodman), bearing L10 life, belt and chain drives, bolt preload / torque-tension, fillet weld strength, press / shrink-fit interference |
+| Machine Design | 11 | Helical compression springs, spur gear geometry, shaft fatigue design (DE-Goodman), bearing L10 life, belt and chain drives, bolt preload / torque-tension, fillet weld strength, press / shrink-fit interference, shaft critical speed (Dunkerley), beam natural frequency (first three modes, five end conditions), torsional natural frequency (one or two rotors) |
 | Fluids & Thermal | 6 | Reynolds number and flow regime, pipe pressure drop (Darcy–Weisbach with Colebrook), pump and fan power, composite wall conduction, fin efficiency, heat exchanger sizing by LMTD |
 | Composite Material | 7 | Lamina and laminate stress/strain, lamina engineering constants, laminate plane and 3D properties, rule of mixtures, Tsai-Hill and Tsai-Wu failure criteria |
 | Statics | 3 | Resultant of forces (2D), centroid of composite area, truss analysis by method of joints |
@@ -111,26 +111,47 @@ for anything new, including in those areas.
 - Result page: `lib/home/<category>/page/<tool>_result_page.dart`
 - Register a `Tool` entry in [`tool_model.dart`](lib/home/tool_model.dart)
   (`ToolLibrary.getTools`), taking the next free id in the category block:
-  `100s` Mechanics of Material · `200s` Theory of Elasticity · `300s` Composite
-  Material · `400s` Statics · `500s` Utilities.
+  `100s` Mechanics of Material and Beam Engineering · `200s` Theory of
+  Elasticity · `300s` Composite Material · `400s` Statics · `500s` Reference and
+  Utilities · `700s` Machine Design, vibration included · `800s` Fluids &
+  Thermal.
 
 ### Requirements for every new tool
 
 1. **Respect the unit system.** Every physical input and output uses
    [`UnitField`](lib/util/unit_field.dart) with a `UnitCategory` from
-   [`units.dart`](lib/util/units.dart); add a category if none fits. Never
-   hardcode a unit string — `UnitField` renders the correct suffix and converts
-   in place from `UnitSystemPreference`.
+   [`units.dart`](lib/util/units.dart); add a category if none fits, and give it
+   a hand-checked row in the `_known` table in
+   [`units_test.dart`](test/units_test.dart) — the suite fails until every
+   category has one, which is what stops a `kN` label shipping with an `N`
+   factor. Never hardcode a unit string; `UnitField` renders the correct suffix
+   and converts in place from `UnitSystemPreference`.
 2. **Respect precision settings.** Route displayed values through
    `NumberPrecisionHelper.formatValue()`, directly or via the shared
    `AppCopyableValue` / `UnitField` widgets. Never call `toStringAsFixed(n)` on a
    user-facing result.
-3. **Explain the calculation.** State what the tool computes and show the
-   governing formula near the inputs — plain text or `Math.tex` via
-   `flutter_math_fork`. The result page must show the substituted steps; see
-   `CalculationCard`.
-4. **Give the tool a visual identity.** Set either `icon:` (a Material *rounded*
-   icon) or `image: AssetImage('images/…')` on the `Tool` entry.
+3. **Typeset the formula, don't spell it out.** Say what the tool computes in
+   prose, then set the governing equation with `Math.tex` from
+   `flutter_math_fork` — under the description on the input page, and passed as
+   `FormulaCard(steps: …, tex: …)` on the result page. Keep the description
+   itself formula-free: an ASCII `fn = (bL)^2/(2*pi*L^2)*sqrt(EI/(rho*A))` above
+   a typeset copy of the same thing reads as a mistake. The plain-text steps
+   stay alongside the equation and carry the substituted numbers — they are also
+   the only part that reaches the PDF report, which draws text and not math. See
+   [`torsional_frequency_page.dart`](lib/home/vibration/page/torsional_frequency_page.dart)
+   and its result page.
+4. **Draw the tool a real icon.** Set
+   `image: AssetImage('images/icons/icon_<tool>.png')` on the `Tool` entry and
+   draw the illustration by adding a function to
+   [`tool/make_tool_icons.py`](tool/make_tool_icons.py), then re-running it. The
+   house style, sampled from the hand-drawn originals: white ground, black
+   outlines, `#E8D8C8` for a solid body, `#D8D8D8` for a secondary one, and
+   `#E02020` for whatever the diagram is actually about. Show the mechanism, not
+   a symbol — the shaft critical speed icon is a rotor on a bowed shaft with a
+   rotation arrow, which is what distinguishes it from the statically deflected
+   beam next to it. `icon:` with a Material glyph is reserved for the reference
+   tables that have no mechanism to draw, such as the drill and tap chart; a
+   generic glyph anywhere else reads as an unfinished placeholder.
 5. **Make results shareable.** Offer both `shareResult(toolName, lines)` and
    `shareResultImage(exportKey, toolName)` from
    [`share_helper.dart`](lib/util/share_helper.dart) in `AppBar.actions`. For the

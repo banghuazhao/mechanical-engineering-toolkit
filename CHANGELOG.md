@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.10.0 - 2026-08-20
+
+- Added three vibration tools under Machine Design: shaft critical speed (Dunkerley), beam natural frequency across five end conditions, and torsional natural frequency for one or two rotors.
+- Beam natural frequency can be filled straight from the standard-section picker.
+- Added the Remove Ads purchase on Android, with purchase restoration.
+- Fixed a launch delay caused by the store check running before the first frame.
+- Fixed restore on Android reporting unpaid or pending orders as restored.
+- Fixed a pending purchase leaving the buy button spinning and restore disabled.
+- Updated the Android app-open test ad unit used in development builds.
+
 ## 1.9.0 - 2026-08-14
 
 - Added a new Fluids & Thermal category: Reynolds number and flow regime, pipe pressure drop (Darcy–Weisbach with a Colebrook friction factor), pump and fan power, composite wall conduction, fin efficiency, and heat exchanger sizing by LMTD.
