@@ -5083,6 +5083,536 @@ class S {
       args: [],
     );
   }
+
+  /// `Beam Natural Frequency`
+  String get Beam_Natural_Frequency {
+    return Intl.message(
+      'Beam Natural Frequency',
+      name: 'Beam_Natural_Frequency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shaft Critical Speed`
+  String get Shaft_Critical_Speed {
+    return Intl.message(
+      'Shaft Critical Speed',
+      name: 'Shaft_Critical_Speed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Torsional Natural Frequency`
+  String get Torsional_Natural_Frequency {
+    return Intl.message(
+      'Torsional Natural Frequency',
+      name: 'Torsional_Natural_Frequency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transverse natural frequencies of a uniform prismatic beam, from its section, length and material. The first three bending modes, across five end conditions.`
+  String get Desc_Beam_Natural_Frequency {
+    return Intl.message(
+      'Transverse natural frequencies of a uniform prismatic beam, from its section, length and material. The first three bending modes, across five end conditions.',
+      name: 'Desc_Beam_Natural_Frequency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First lateral critical speed of a shaft carrying one rotor, anywhere along the span. The rotor's whirl and the shaft's own distributed mass are combined by Dunkerley's equation.`
+  String get Desc_Shaft_Critical_Speed {
+    return Intl.message(
+      'First lateral critical speed of a shaft carrying one rotor, anywhere along the span. The rotor\'s whirl and the shaft\'s own distributed mass are combined by Dunkerley\'s equation.',
+      name: 'Desc_Shaft_Critical_Speed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fundamental torsional natural frequency of a round shaft, carrying either one rotor against a fixed end or two rotors on a free shaft.`
+  String get Desc_Torsional_Natural_Frequency {
+    return Intl.message(
+      'Fundamental torsional natural frequency of a round shaft, carrying either one rotor against a fixed end or two rotors on a free shaft.',
+      name: 'Desc_Torsional_Natural_Frequency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Beam length, L`
+  String get Beam_Length_L {
+    return Intl.message(
+      'Beam length, L',
+      name: 'Beam_Length_L',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shaft diameter, d`
+  String get Shaft_Diameter_D {
+    return Intl.message(
+      'Shaft diameter, d',
+      name: 'Shaft_Diameter_D',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shaft length, L`
+  String get Shaft_Length_L {
+    return Intl.message(
+      'Shaft length, L',
+      name: 'Shaft_Length_L',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rotor mass, m`
+  String get Rotor_Mass_M {
+    return Intl.message(
+      'Rotor mass, m',
+      name: 'Rotor_Mass_M',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rotor position from left, a`
+  String get Rotor_Position_A {
+    return Intl.message(
+      'Rotor position from left, a',
+      name: 'Rotor_Position_A',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rotor inertia, J1`
+  String get Rotor_Inertia_J1 {
+    return Intl.message(
+      'Rotor inertia, J1',
+      name: 'Rotor_Inertia_J1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Second rotor inertia, J2`
+  String get Rotor_Inertia_J2 {
+    return Intl.message(
+      'Second rotor inertia, J2',
+      name: 'Rotor_Inertia_J2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Simply supported`
+  String get Beam_Simply_Supported {
+    return Intl.message(
+      'Simply supported',
+      name: 'Beam_Simply_Supported',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cantilever`
+  String get Beam_Cantilever {
+    return Intl.message(
+      'Cantilever',
+      name: 'Beam_Cantilever',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fixed–fixed`
+  String get Beam_Fixed_Fixed {
+    return Intl.message(
+      'Fixed–fixed',
+      name: 'Beam_Fixed_Fixed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fixed–pinned`
+  String get Beam_Fixed_Pinned {
+    return Intl.message(
+      'Fixed–pinned',
+      name: 'Beam_Fixed_Pinned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Free–free`
+  String get Beam_Free_Free {
+    return Intl.message(
+      'Free–free',
+      name: 'Beam_Free_Free',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Between bearings`
+  String get Shaft_Between_Bearings {
+    return Intl.message(
+      'Between bearings',
+      name: 'Shaft_Between_Bearings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Both ends fixed`
+  String get Shaft_Both_Ends_Fixed {
+    return Intl.message(
+      'Both ends fixed',
+      name: 'Shaft_Both_Ends_Fixed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Overhung`
+  String get Shaft_Overhung {
+    return Intl.message('Overhung', name: 'Shaft_Overhung', desc: '', args: []);
+  }
+
+  /// `One rotor, far end fixed`
+  String get Torsional_Single_Rotor {
+    return Intl.message(
+      'One rotor, far end fixed',
+      name: 'Torsional_Single_Rotor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Two rotors, free shaft`
+  String get Torsional_Two_Rotor {
+    return Intl.message(
+      'Two rotors, free shaft',
+      name: 'Torsional_Two_Rotor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mode {index}`
+  String Mode_Number(Object index) {
+    return Intl.message(
+      'Mode $index',
+      name: 'Mode_Number',
+      desc: '',
+      args: [index],
+    );
+  }
+
+  /// `Natural frequency, f`
+  String get Natural_Frequency_F {
+    return Intl.message(
+      'Natural frequency, f',
+      name: 'Natural_Frequency_F',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Circular frequency, ω`
+  String get Circular_Frequency_Omega {
+    return Intl.message(
+      'Circular frequency, ω',
+      name: 'Circular_Frequency_Omega',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Equivalent shaft speed`
+  String get Equivalent_Shaft_Speed {
+    return Intl.message(
+      'Equivalent shaft speed',
+      name: 'Equivalent_Shaft_Speed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mass per length, ρA`
+  String get Mass_Per_Length {
+    return Intl.message(
+      'Mass per length, ρA',
+      name: 'Mass_Per_Length',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flexural rigidity, EI`
+  String get Flexural_Rigidity_EI {
+    return Intl.message(
+      'Flexural rigidity, EI',
+      name: 'Flexural_Rigidity_EI',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mode constant, βL`
+  String get Beam_Mode_Constant {
+    return Intl.message(
+      'Mode constant, βL',
+      name: 'Beam_Mode_Constant',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shaft stiffness at rotor, k`
+  String get Shaft_Stiffness_K {
+    return Intl.message(
+      'Shaft stiffness at rotor, k',
+      name: 'Shaft_Stiffness_K',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Static deflection, δst`
+  String get Static_Deflection_Delta {
+    return Intl.message(
+      'Static deflection, δst',
+      name: 'Static_Deflection_Delta',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rotor alone, massless shaft`
+  String get Rotor_Alone_Frequency {
+    return Intl.message(
+      'Rotor alone, massless shaft',
+      name: 'Rotor_Alone_Frequency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shaft mass alone`
+  String get Shaft_Alone_Frequency {
+    return Intl.message(
+      'Shaft mass alone',
+      name: 'Shaft_Alone_Frequency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Critical speed, Nc`
+  String get Critical_Speed_Nc {
+    return Intl.message(
+      'Critical speed, Nc',
+      name: 'Critical_Speed_Nc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shaft mass`
+  String get Shaft_Mass {
+    return Intl.message('Shaft mass', name: 'Shaft_Mass', desc: '', args: []);
+  }
+
+  /// `Torsional stiffness, kt`
+  String get Torsional_Stiffness_Kt {
+    return Intl.message(
+      'Torsional stiffness, kt',
+      name: 'Torsional_Stiffness_Kt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Polar moment of area, Jp`
+  String get Polar_Moment_Jp {
+    return Intl.message(
+      'Polar moment of area, Jp',
+      name: 'Polar_Moment_Jp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Effective inertia, Jeff`
+  String get Effective_Inertia_J {
+    return Intl.message(
+      'Effective inertia, Jeff',
+      name: 'Effective_Inertia_J',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Node, from rotor 1`
+  String get Node_Position {
+    return Intl.message(
+      'Node, from rotor 1',
+      name: 'Node_Position',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Include the shaft's own mass`
+  String get Include_Shaft_Mass {
+    return Intl.message(
+      'Include the shaft\'s own mass',
+      name: 'Include_Shaft_Mass',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Natural frequencies`
+  String get Vibration_Modes {
+    return Intl.message(
+      'Natural frequencies',
+      name: 'Vibration_Modes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shaft and rotor`
+  String get Shaft_And_Rotor {
+    return Intl.message(
+      'Shaft and rotor',
+      name: 'Shaft_And_Rotor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contributing frequencies`
+  String get Contributing_Frequencies {
+    return Intl.message(
+      'Contributing frequencies',
+      name: 'Contributing_Frequencies',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter E, I, A, the length, and the density.`
+  String get Err_Enter_Beam_Frequency_Inputs {
+    return Intl.message(
+      'Enter E, I, A, the length, and the density.',
+      name: 'Err_Enter_Beam_Frequency_Inputs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter E, the shaft diameter, span, rotor mass and rotor position.`
+  String get Err_Enter_Critical_Speed_Inputs {
+    return Intl.message(
+      'Enter E, the shaft diameter, span, rotor mass and rotor position.',
+      name: 'Err_Enter_Critical_Speed_Inputs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter G, the shaft diameter, length, and rotor inertia.`
+  String get Err_Enter_Torsional_Inputs {
+    return Intl.message(
+      'Enter G, the shaft diameter, length, and rotor inertia.',
+      name: 'Err_Enter_Torsional_Inputs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The rotor must sit along the shaft, clear of the supports.`
+  String get Err_Rotor_Position_Range {
+    return Intl.message(
+      'The rotor must sit along the shaft, clear of the supports.',
+      name: 'Err_Rotor_Position_Range',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Every value must be greater than zero.`
+  String get Err_Values_Positive {
+    return Intl.message(
+      'Every value must be greater than zero.',
+      name: 'Err_Values_Positive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the second rotor's inertia.`
+  String get Err_Second_Rotor_Inertia {
+    return Intl.message(
+      'Enter the second rotor\'s inertia.',
+      name: 'Err_Second_Rotor_Inertia',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Euler–Bernoulli theory: shear deformation and rotary inertia are ignored, so the frequencies run high for a stubby beam (L/d under about 10) and for the higher modes.`
+  String get Beam_Frequency_Footnote {
+    return Intl.message(
+      'Euler–Bernoulli theory: shear deformation and rotary inertia are ignored, so the frequencies run high for a stubby beam (L/d under about 10) and for the higher modes.',
+      name: 'Beam_Frequency_Footnote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dunkerley's equation always errs low, so this critical speed is a conservative one. Keep the running speed clear of it by a comfortable margin.`
+  String get Critical_Speed_Footnote {
+    return Intl.message(
+      'Dunkerley\'s equation always errs low, so this critical speed is a conservative one. Keep the running speed clear of it by a comfortable margin.',
+      name: 'Critical_Speed_Footnote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The shaft's own inertia is neglected. Where it is comparable with the rotors', use a full multi-station (Holzer) analysis instead.`
+  String get Torsional_Footnote {
+    return Intl.message(
+      'The shaft\'s own inertia is neglected. Where it is comparable with the rotors\', use a full multi-station (Holzer) analysis instead.',
+      name: 'Torsional_Footnote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Beam properties`
+  String get Beam_Properties {
+    return Intl.message(
+      'Beam properties',
+      name: 'Beam_Properties',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

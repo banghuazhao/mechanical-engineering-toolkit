@@ -62,9 +62,16 @@ double lb2kg(double v) => v * 0.453592;
 double kg2lb(double v) => v / 0.453592;
 double slug2kg(double v) => v * 14.5939;
 double kg2slug(double v) => v / 14.5939;
+// Mass moment of inertia: kg·m² <-> lb·ft².
+// 1 lb·ft² = 0.45359237 kg · 0.3048² m² = 0.04214011 kg·m².
+double lbft2_2_kgm2(double v) => v * 0.04214011;
+double kgm2_2_lbft2(double v) => v / 0.04214011;
 // Density
 double kgm3_2_lbft3(double v) => v / 16.0185;
 double lbft3_2_kgm3(double v) => v * 16.0185;
+// Mass per unit length: kg/m <-> lb/ft. 1 lb/ft = 0.45359237 kg / 0.3048 m.
+double kgpm2lbpft(double v) => v / 1.4881639436;
+double lbpft2kgpm(double v) => v * 1.4881639436;
 // Temperature (absolute, base = degC)
 double F2C(double v) => (v - 32) * 5 / 9;
 double C2F(double v) => v * 9 / 5 + 32;
@@ -217,8 +224,26 @@ enum UnitCategory {
   /// Density.
   density,
 
+  /// Mass (e.g. a rotor or disc carried by a shaft).
+  mass,
+
+  /// Mass per unit length, ρA — how beams and rails are catalogued.
+  linearDensity,
+
+  /// Mass moment of inertia, J — the rotational inertia of a disc or rotor
+  /// about its spin axis. Length² × mass, not the length⁴ of
+  /// [momentOfInertia], which is a property of a cross-section's *area*.
+  massMomentOfInertia,
+
   /// Frequency (e.g. spring natural/surge frequency).
   frequency,
+
+  /// Circular frequency, ω = 2πf — rad/s in both systems.
+  ///
+  /// Distinct from [angularVelocity], which is the same dimension expressed
+  /// as a machine's running speed in rpm. Vibration results want both: the
+  /// mode in rad/s, and the speed that would excite it in rpm.
+  angularFrequency,
 
   /// Flow velocity.
   velocity,
@@ -396,9 +421,33 @@ final Map<UnitCategory, _UnitPair> _pairs = {
     siToImperial: kgm3_2_lbft3,
     imperialToSi: lbft3_2_kgm3,
   ),
+  UnitCategory.linearDensity: _UnitPair(
+    siLabel: 'kg/m',
+    imperialLabel: 'lb/ft',
+    siToImperial: kgpm2lbpft,
+    imperialToSi: lbpft2kgpm,
+  ),
+  UnitCategory.mass: _UnitPair(
+    siLabel: 'kg',
+    imperialLabel: 'lb',
+    siToImperial: kg2lb,
+    imperialToSi: lb2kg,
+  ),
+  UnitCategory.massMomentOfInertia: _UnitPair(
+    siLabel: 'kg·m²',
+    imperialLabel: 'lb·ft²',
+    siToImperial: kgm2_2_lbft2,
+    imperialToSi: lbft2_2_kgm2,
+  ),
   UnitCategory.frequency: _UnitPair(
     siLabel: 'Hz',
     imperialLabel: 'Hz',
+    siToImperial: id,
+    imperialToSi: id,
+  ),
+  UnitCategory.angularFrequency: _UnitPair(
+    siLabel: 'rad/s',
+    imperialLabel: 'rad/s',
     siToImperial: id,
     imperialToSi: id,
   ),

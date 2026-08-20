@@ -30,6 +30,7 @@ const List<MajorRecommendation> majorRecommendations = [
       100, 101, 102, 103, 104, 114, 115, 112, 116, 500, 501, 502, 503,
       118, 119, 120, 121, // stress analysis / joint design
       701, 702, 703, 704, 705, 706, 707, 708, // machine element sizing
+      709, 710, 711, // vibration and critical speed
       800, 801, 802, 810, 811, 812, // fluids and heat transfer
     ],
   ),
@@ -38,6 +39,7 @@ const List<MajorRecommendation> majorRecommendations = [
     icon: Icons.foundation_rounded,
     toolIds: [
       401, 105, 106, 117, 102, 111, 400, 402, 113, 403, 118, 120, 707, 503,
+      710, // floor and footbridge vibration
       801, 810, // building services and envelope heat loss
     ],
   ),
@@ -47,6 +49,7 @@ const List<MajorRecommendation> majorRecommendations = [
     toolIds: [
       300, 301, 302, 303, 304, 305, 110, 109, 111,
       119, 120, 121, 306, 706, // fatigue, joints, composite failure
+      709, 710, // flutter/resonance margins on shafts and structures
       800, 801, 811, 812, // propulsion and thermal management
     ],
   ),

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Draws the tool illustrations for the Fluids & Thermal and Standard Sections
-tools, in the style of the hand-made icons already in `images/icons/`.
+"""Draws the tool illustrations for the Fluids & Thermal, Standard Sections
+and Vibration tools, in the style of the hand-made icons already in
+`images/icons/`.
 
 Those were drawn by hand; these are generated so the seven of them stay
 consistent with each other and can be nudged without redrawing. The house style
@@ -101,6 +102,26 @@ class Canvas:
             (x1 - head * math.cos(ang + spread), y1 - head * math.sin(ang + spread)),
         ], fill=color)
 
+    def arc(self, center, r, a0, a1, color=BLACK, w=LW, head=None):
+        """Circular arc from a0 to a1 degrees, arrow-headed at a1 if asked.
+
+        Angles run the usual way but on screen axes, where y grows downward,
+        so 270 is the top of the circle and increasing angle sweeps clockwise.
+        Traced as a polyline because PIL's own arc has no antialiasing and no
+        way to cap an end with an arrowhead.
+        """
+        cx, cy = center
+        steps = max(8, int(abs(a1 - a0) / 3))
+        pts = []
+        for i in range(steps + 1):
+            a = math.radians(a0 + (a1 - a0) * i / steps)
+            pts.append((cx + r * math.cos(a), cy + r * math.sin(a)))
+        if head is None:
+            self.polyline(pts, color, w)
+        else:
+            self.polyline(pts[:-1], color, w)
+            self.arrow(pts[-2], pts[-1], color, w, head)
+
     def dim(self, p0, p1, color=BLACK, w=3.5, head=14):
         """Double-headed dimension arrow."""
         self.arrow(p0, p1, color, w, head)
@@ -148,6 +169,15 @@ class Canvas:
         OUT.mkdir(parents=True, exist_ok=True)
         self.img.resize((SIZE, SIZE), Image.LANCZOS).save(OUT / name)
         print(f"  {name}")
+
+
+def pin_support(c: Canvas, x, y, half=21, h=42):
+    """The triangle-on-hatched-ground support, apex at (x, y)."""
+    tri = [(x, y), (x - half, y + h), (x + half, y + h)]
+    c.polygon(tri, fill=TAN)
+    c.polyline(tri + [tri[0]], BLACK, LW)
+    c.hatch((x - half - 5, y + h, x + half + 5, y + h + 14))
+    c.line((x - half - 5, y + h), (x + half + 5, y + h), BLACK, 5)
 
 
 def i_shape(c: Canvas, cx, cy, h, w, tf, tw, fill=TAN, lw=LW):
@@ -302,6 +332,64 @@ def standard_sections():
     c.save("icon_standard_sections.png")
 
 
+def shaft_critical_speed():
+    """A rotor at midspan, the shaft bowed out into its first whirl."""
+    c = Canvas()
+    x0, x1, axis = 45, 255, 205
+    for x in (x0, x1):
+        pin_support(c, x, axis)
+    c.dashed((x0, axis), (x1, axis), DARK_GREY, 2.5, 10, 8)
+    # The whirl: half a sine between the bearings, which is what separates
+    # this from a statically deflected beam.
+    pts = []
+    for i in range(97):
+        t = i / 96
+        pts.append((x0 + (x1 - x0) * t, axis - 52 * math.sin(math.pi * t)))
+    c.polyline(pts, RED, 6)
+    # The rotor rides the bow and hides the shaft passing behind it.
+    cx, cy, r = 150, axis - 52, 34
+    c.ellipse((cx - r, cy - r, cx + r, cy + r), fill=TAN, w=LW)
+    c.arc((cx, cy), 50, 208, 332, RED, 4.5, head=16)
+    c.text_sub((150, 50), "N", "c", 52, RED)
+    c.save("icon_shaft_critical_speed.png")
+
+
+def beam_natural_frequency():
+    """A simply supported beam carrying its first two bending mode shapes."""
+    c = Canvas()
+    x0, x1, axis = 44, 256, 182
+    c.rect((x0, axis - 8, x1, axis + 8), fill=TAN, w=LW)
+    for x in (x0 + 10, x1 - 10):
+        pin_support(c, x, axis + 8, half=20, h=38)
+    # Two modes, not one: a single hump reads as a static deflection, and the
+    # tool reports three modes.
+    for amp, cycles, color, w in ((30, 2, DARK_GREY, 4), (58, 1, RED, 6)):
+        pts = []
+        for i in range(129):
+            t = i / 128
+            pts.append((x0 + (x1 - x0) * t,
+                        axis - amp * math.sin(cycles * math.pi * t)))
+        c.polyline(pts, color, w)
+    c.text_sub((150, 50), "f", "n", 52, RED)
+    c.save("icon_beam_natural_frequency.png")
+
+
+def torsional_frequency():
+    """Two rotors twisting against each other about a node on the shaft."""
+    c = Canvas()
+    c.rect((70, 146, 230, 174), fill=TAN, w=LW)
+    # Rotors face-on, the left the heavier of the two, drawn over the shaft.
+    c.ellipse((24, 108, 128, 212), fill=TAN, w=LW)
+    c.ellipse((190, 122, 270, 202), fill=TAN, w=LW)
+    # Opposed sweeps — that opposition is what holds a node still between them.
+    c.arc((76, 160), 64, 202, 338, RED, 5, head=17)
+    c.arc((230, 162), 52, 338, 202, RED, 5, head=17)
+    # The node sits nearer the larger inertia.
+    c.dashed((146, 104), (146, 218), DARK_GREY, 3, 10, 7)
+    c.text_sub((150, 256), "ω", "n", 50, RED)
+    c.save("icon_torsional_frequency.png")
+
+
 def main() -> None:
     print("writing icons:")
     reynolds()
@@ -311,6 +399,9 @@ def main() -> None:
     fin()
     heat_exchanger()
     standard_sections()
+    shaft_critical_speed()
+    beam_natural_frequency()
+    torsional_frequency()
 
 
 if __name__ == "__main__":

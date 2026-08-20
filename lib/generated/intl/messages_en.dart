@@ -27,15 +27,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(index) => "Layer ${index}";
 
-  static String m3(value) => "Preview: ${value}";
+  static String m3(index) => "Mode ${index}";
 
-  static String m4(name) => "Saved “${name}”";
+  static String m4(value) => "Preview: ${value}";
 
-  static String m5(name) => "Renamed to “${name}”";
+  static String m5(name) => "Saved “${name}”";
 
-  static String m6(tool) => "Remove ${tool} from favorites";
+  static String m6(name) => "Renamed to “${name}”";
 
-  static String m7(label) => "What if: ${label}";
+  static String m7(tool) => "Remove ${tool} from favorites";
+
+  static String m8(label) => "What if: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -93,17 +95,35 @@ class MessageLookup extends MessageLookupByLibrary {
     "Base_Temperature": MessageLookupByLibrary.simpleMessage(
       "Base temperature",
     ),
+    "Beam_Cantilever": MessageLookupByLibrary.simpleMessage("Cantilever"),
     "Beam_Configuration": MessageLookupByLibrary.simpleMessage(
       "Beam Configuration",
     ),
     "Beam_Engineering": MessageLookupByLibrary.simpleMessage(
       "Beam Engineering",
     ),
+    "Beam_Fixed_Fixed": MessageLookupByLibrary.simpleMessage("Fixed–fixed"),
+    "Beam_Fixed_Pinned": MessageLookupByLibrary.simpleMessage("Fixed–pinned"),
+    "Beam_Free_Free": MessageLookupByLibrary.simpleMessage("Free–free"),
+    "Beam_Frequency_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Euler–Bernoulli theory: shear deformation and rotary inertia are ignored, so the frequencies run high for a stubby beam (L/d under about 10) and for the higher modes.",
+    ),
+    "Beam_Length_L": MessageLookupByLibrary.simpleMessage("Beam length, L"),
     "Beam_Load_Analysis": MessageLookupByLibrary.simpleMessage(
       "Beam Load Analysis",
     ),
+    "Beam_Mode_Constant": MessageLookupByLibrary.simpleMessage(
+      "Mode constant, βL",
+    ),
+    "Beam_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Beam Natural Frequency",
+    ),
+    "Beam_Properties": MessageLookupByLibrary.simpleMessage("Beam properties"),
     "Beam_Section_Properties": MessageLookupByLibrary.simpleMessage(
       "Beam Section Properties",
+    ),
+    "Beam_Simply_Supported": MessageLookupByLibrary.simpleMessage(
+      "Simply supported",
     ),
     "Bearing_L10_Life": MessageLookupByLibrary.simpleMessage(
       "Bearing L10 Life",
@@ -142,6 +162,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Centroid_of_Composite_Area": MessageLookupByLibrary.simpleMessage(
       "Centroid of Composite Area",
+    ),
+    "Circular_Frequency_Omega": MessageLookupByLibrary.simpleMessage(
+      "Circular frequency, ω",
     ),
     "Civil_Structural_Engineering": MessageLookupByLibrary.simpleMessage(
       "Civil / Structural Engineering",
@@ -189,6 +212,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Contact_Stress_Est": MessageLookupByLibrary.simpleMessage(
       "Contact stress, σc (est.)",
     ),
+    "Contributing_Frequencies": MessageLookupByLibrary.simpleMessage(
+      "Contributing frequencies",
+    ),
     "Copied_Value": m0,
     "Copy_Result": MessageLookupByLibrary.simpleMessage("Copy result"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage(
@@ -196,6 +222,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "CountdownDays": MessageLookupByLibrary.simpleMessage("Countdown Days"),
     "Counter_Flow": MessageLookupByLibrary.simpleMessage("Counter flow"),
+    "Critical_Speed_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Dunkerley\'s equation always errs low, so this critical speed is a conservative one. Keep the running speed clear of it by a comfortable margin.",
+    ),
+    "Critical_Speed_Nc": MessageLookupByLibrary.simpleMessage(
+      "Critical speed, Nc",
+    ),
     "Cross_Section": MessageLookupByLibrary.simpleMessage("Cross-section"),
     "Deflection": MessageLookupByLibrary.simpleMessage("Deflection"),
     "Deflection_Delta": MessageLookupByLibrary.simpleMessage("Deflection, δ"),
@@ -217,6 +249,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Density": MessageLookupByLibrary.simpleMessage("Density"),
     "Desc_Beam_Analysis": MessageLookupByLibrary.simpleMessage(
       "Uses static equilibrium and Euler–Bernoulli beam theory for a simply supported beam. A downward point load and a full-span uniformly distributed load may be used separately or together.",
+    ),
+    "Desc_Beam_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Transverse natural frequencies of a uniform prismatic beam, from its section, length and material. The first three bending modes, across five end conditions.",
     ),
     "Desc_Beam_Supports": MessageLookupByLibrary.simpleMessage(
       "Pin support at the left, roller support at the right. Combine one downward point load with a full-span uniformly distributed load.",
@@ -257,6 +292,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Desc_Section_Properties": MessageLookupByLibrary.simpleMessage(
       "Calculates centroidal geometric properties used in beam bending and stress calculations. The x-axis is horizontal through the centroid and the y-axis is vertical through the centroid.",
     ),
+    "Desc_Shaft_Critical_Speed": MessageLookupByLibrary.simpleMessage(
+      "First lateral critical speed of a shaft carrying one rotor, anywhere along the span. The rotor\'s whirl and the shaft\'s own distributed mass are combined by Dunkerley\'s equation.",
+    ),
     "Desc_Shaft_Fatigue": MessageLookupByLibrary.simpleMessage(
       "Minimum shaft diameter for combined fluctuating bending and torsion, using the distortion-energy/modified-Goodman criterion (Shigley). Leave mean moment/torque at 0 for a fully-reversed-bending, steady-torque shaft — the common case.",
     ),
@@ -268,6 +306,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Published dimensions and section properties for standard structural shapes. Section modulus and radius of gyration are derived from the listed area and second moment, so they stay consistent with them.",
+    ),
+    "Desc_Torsional_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Fundamental torsional natural frequency of a round shaft, carrying either one rotor against a fixed end or two rotors on a free shaft.",
     ),
     "Desc_Truss_Determinacy": MessageLookupByLibrary.simpleMessage(
       "A statically determinate 2D truss needs members + reactions = 2 × joints. Give at least one pin and one roller support.",
@@ -300,6 +341,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Dynamic viscosity, μ",
     ),
     "E_Modulus": MessageLookupByLibrary.simpleMessage("E (modulus)"),
+    "Effective_Inertia_J": MessageLookupByLibrary.simpleMessage(
+      "Effective inertia, Jeff",
+    ),
     "Effective_Length_L": MessageLookupByLibrary.simpleMessage(
       "Effective length, L",
     ),
@@ -329,6 +373,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Equivalent_Load_P": MessageLookupByLibrary.simpleMessage(
       "Equivalent load, P",
     ),
+    "Equivalent_Shaft_Speed": MessageLookupByLibrary.simpleMessage(
+      "Equivalent shaft speed",
+    ),
     "Err_Active_Coils_Positive": MessageLookupByLibrary.simpleMessage(
       "Number of active coils must be positive.",
     ),
@@ -344,8 +391,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Dimensions_Positive": MessageLookupByLibrary.simpleMessage(
       "Dimensions must be greater than zero.",
     ),
+    "Err_Enter_Beam_Frequency_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Enter E, I, A, the length, and the density.",
+    ),
     "Err_Enter_C_P_N": MessageLookupByLibrary.simpleMessage(
       "Enter C, P, and n.",
+    ),
+    "Err_Enter_Critical_Speed_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Enter E, the shaft diameter, span, rotor mass and rotor position.",
     ),
     "Err_Enter_D1_D2_C_N1": MessageLookupByLibrary.simpleMessage(
       "Enter d1, d2, C, and n1.",
@@ -386,6 +439,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Enter_Se_Sut": MessageLookupByLibrary.simpleMessage(
       "Enter Se and Sut.",
+    ),
+    "Err_Enter_Torsional_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Enter G, the shaft diameter, length, and rotor inertia.",
     ),
     "Err_Enter_W_L_F": MessageLookupByLibrary.simpleMessage(
       "Enter w, L, and F.",
@@ -429,8 +485,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Pulley_Positive": MessageLookupByLibrary.simpleMessage(
       "Pulley diameters must be positive.",
     ),
+    "Err_Rotor_Position_Range": MessageLookupByLibrary.simpleMessage(
+      "The rotor must sit along the shaft, clear of the supports.",
+    ),
     "Err_Se_Sut_Positive": MessageLookupByLibrary.simpleMessage(
       "Se and Sut must be positive.",
+    ),
+    "Err_Second_Rotor_Inertia": MessageLookupByLibrary.simpleMessage(
+      "Enter the second rotor\'s inertia.",
     ),
     "Err_Shear_Modulus_Positive": MessageLookupByLibrary.simpleMessage(
       "Shear modulus must be positive.",
@@ -446,6 +508,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Truss_Two_Joints": MessageLookupByLibrary.simpleMessage(
       "A truss needs at least 2 joints.",
+    ),
+    "Err_Values_Positive": MessageLookupByLibrary.simpleMessage(
+      "Every value must be greater than zero.",
     ),
     "Err_W_L_F_Positive": MessageLookupByLibrary.simpleMessage(
       "w, L, and F must be positive.",
@@ -509,6 +574,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Flange_Thickness": MessageLookupByLibrary.simpleMessage(
       "Flange thickness",
+    ),
+    "Flexural_Rigidity_EI": MessageLookupByLibrary.simpleMessage(
+      "Flexural rigidity, EI",
     ),
     "Flexure_formula_of_beam": MessageLookupByLibrary.simpleMessage(
       "Flexure formula of beam",
@@ -589,6 +657,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Hydraulic_Power": MessageLookupByLibrary.simpleMessage("Hydraulic power"),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
     "Imperial_US": MessageLookupByLibrary.simpleMessage("Imperial (US)"),
+    "Include_Shaft_Mass": MessageLookupByLibrary.simpleMessage(
+      "Include the shaft\'s own mass",
+    ),
     "Input_Speed_N1": MessageLookupByLibrary.simpleMessage("Input speed, n1"),
     "Inputs": MessageLookupByLibrary.simpleMessage("Inputs"),
     "Inside_Air": MessageLookupByLibrary.simpleMessage("Inside air"),
@@ -665,6 +736,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Log_Mean_Delta_T": MessageLookupByLibrary.simpleMessage("Log mean ΔT"),
     "ME_Toolkit": MessageLookupByLibrary.simpleMessage("ME Toolkit"),
     "Machine_Design": MessageLookupByLibrary.simpleMessage("Machine Design"),
+    "Mass_Per_Length": MessageLookupByLibrary.simpleMessage(
+      "Mass per length, ρA",
+    ),
     "Material_Density_Default_Steel": MessageLookupByLibrary.simpleMessage(
       "Material density (default steel)",
     ),
@@ -702,6 +776,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minor_Head_Loss": MessageLookupByLibrary.simpleMessage("Minor head loss"),
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("Minor losses, ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
+    "Mode_Number": m3,
     "Module_M": MessageLookupByLibrary.simpleMessage("Module, m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("Modulus, E"),
     "Mohrs_Circle_for_Plane_Stress": MessageLookupByLibrary.simpleMessage(
@@ -726,6 +801,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Natural_Frequency_Estimate": MessageLookupByLibrary.simpleMessage(
       "Natural frequency (estimate)",
     ),
+    "Natural_Frequency_F": MessageLookupByLibrary.simpleMessage(
+      "Natural frequency, f",
+    ),
     "No_Favorites_Yet": MessageLookupByLibrary.simpleMessage(
       "No favorites yet",
     ),
@@ -748,6 +826,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "No sections found",
     ),
     "No_Tools_Found": MessageLookupByLibrary.simpleMessage("No tools found"),
+    "Node_Position": MessageLookupByLibrary.simpleMessage("Node, from rotor 1"),
     "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Nominal diameter, d",
     ),
@@ -822,6 +901,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Polar_Area_Moment_J": MessageLookupByLibrary.simpleMessage(
       "Polar area moment, J",
     ),
+    "Polar_Moment_Jp": MessageLookupByLibrary.simpleMessage(
+      "Polar moment of area, Jp",
+    ),
     "Power_Lost": MessageLookupByLibrary.simpleMessage("Power lost"),
     "Power_Optional": MessageLookupByLibrary.simpleMessage("Power (optional)"),
     "Precision": MessageLookupByLibrary.simpleMessage("PRECISION"),
@@ -830,7 +912,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Pressure_Drop": MessageLookupByLibrary.simpleMessage("Pressure drop, Δp"),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("Pressure rise, Δp"),
-    "Preview_Value": m3,
+    "Preview_Value": m4,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Principal stresses and plane",
     ),
@@ -853,8 +935,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Name_Required": MessageLookupByLibrary.simpleMessage(
       "Enter a name",
     ),
-    "Project_Saved": m4,
-    "Project_Updated": m5,
+    "Project_Saved": m5,
+    "Project_Updated": m6,
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage("Pump & Fan Power"),
     "Pump_Head": MessageLookupByLibrary.simpleMessage("Head, H"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
@@ -892,7 +974,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Remove ads permanently from this app.",
     ),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("Remove layer"),
-    "Remove_Tool_from_Favorites": m6,
+    "Remove_Tool_from_Favorites": m7,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Remove from favorites",
     ),
@@ -942,6 +1024,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "Roller_Vertical": MessageLookupByLibrary.simpleMessage(
       "Roller (vertical reaction)",
     ),
+    "Rotor_Alone_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Rotor alone, massless shaft",
+    ),
+    "Rotor_Inertia_J1": MessageLookupByLibrary.simpleMessage(
+      "Rotor inertia, J1",
+    ),
+    "Rotor_Inertia_J2": MessageLookupByLibrary.simpleMessage(
+      "Second rotor inertia, J2",
+    ),
+    "Rotor_Mass_M": MessageLookupByLibrary.simpleMessage("Rotor mass, m"),
+    "Rotor_Position_A": MessageLookupByLibrary.simpleMessage(
+      "Rotor position from left, a",
+    ),
     "Rule_of_mixtures": MessageLookupByLibrary.simpleMessage(
       "Rule of mixtures",
     ),
@@ -989,10 +1084,32 @@ class MessageLookup extends MessageLookupByLibrary {
       "Nominal published values for the listed shapes. Section modulus and radius of gyration are computed from the listed A and I. Check a current mill or standard table before detailing.",
     ),
     "Settings": MessageLookupByLibrary.simpleMessage("Settings"),
+    "Shaft_Alone_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Shaft mass alone",
+    ),
+    "Shaft_And_Rotor": MessageLookupByLibrary.simpleMessage("Shaft and rotor"),
+    "Shaft_Between_Bearings": MessageLookupByLibrary.simpleMessage(
+      "Between bearings",
+    ),
+    "Shaft_Both_Ends_Fixed": MessageLookupByLibrary.simpleMessage(
+      "Both ends fixed",
+    ),
+    "Shaft_Critical_Speed": MessageLookupByLibrary.simpleMessage(
+      "Shaft Critical Speed",
+    ),
+    "Shaft_Diameter_D": MessageLookupByLibrary.simpleMessage(
+      "Shaft diameter, d",
+    ),
     "Shaft_Fatigue_Design": MessageLookupByLibrary.simpleMessage(
       "Shaft Fatigue Design (DE-Goodman)",
     ),
+    "Shaft_Length_L": MessageLookupByLibrary.simpleMessage("Shaft length, L"),
+    "Shaft_Mass": MessageLookupByLibrary.simpleMessage("Shaft mass"),
+    "Shaft_Overhung": MessageLookupByLibrary.simpleMessage("Overhung"),
     "Shaft_Power": MessageLookupByLibrary.simpleMessage("Shaft power"),
+    "Shaft_Stiffness_K": MessageLookupByLibrary.simpleMessage(
+      "Shaft stiffness at rotor, k",
+    ),
     "Shaft_Surface_Stress": MessageLookupByLibrary.simpleMessage(
       "Shaft surface stress, σs",
     ),
@@ -1055,6 +1172,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Standard Sections",
+    ),
+    "Static_Deflection_Delta": MessageLookupByLibrary.simpleMessage(
+      "Static deflection, δst",
     ),
     "Stiffness_Matrix_C": MessageLookupByLibrary.simpleMessage(
       "Stiffness Matrix C",
@@ -1140,6 +1260,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "Torsion_formula_of_bar": MessageLookupByLibrary.simpleMessage(
       "Torsion formula of bar",
     ),
+    "Torsional_Footnote": MessageLookupByLibrary.simpleMessage(
+      "The shaft\'s own inertia is neglected. Where it is comparable with the rotors\', use a full multi-station (Holzer) analysis instead.",
+    ),
+    "Torsional_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Torsional Natural Frequency",
+    ),
+    "Torsional_Single_Rotor": MessageLookupByLibrary.simpleMessage(
+      "One rotor, far end fixed",
+    ),
+    "Torsional_Stiffness_Kt": MessageLookupByLibrary.simpleMessage(
+      "Torsional stiffness, kt",
+    ),
+    "Torsional_Two_Rotor": MessageLookupByLibrary.simpleMessage(
+      "Two rotors, free shaft",
+    ),
     "Total_Head_Loss": MessageLookupByLibrary.simpleMessage("Total head loss"),
     "Total_Resistance_R": MessageLookupByLibrary.simpleMessage(
       "Total resistance, R",
@@ -1175,6 +1310,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Velocity_Head": MessageLookupByLibrary.simpleMessage(
       "Velocity head, V²/2g",
     ),
+    "Vibration_Modes": MessageLookupByLibrary.simpleMessage(
+      "Natural frequencies",
+    ),
     "W_Intensity": MessageLookupByLibrary.simpleMessage("w (intensity)"),
     "Wahl_Factor_Kw": MessageLookupByLibrary.simpleMessage("Wahl factor, Kw"),
     "Wall_Area_A": MessageLookupByLibrary.simpleMessage("Wall area, A"),
@@ -1189,7 +1327,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Weak axis (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Web thickness"),
-    "What_If": m7,
+    "What_If": m8,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("Wire diameter, d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

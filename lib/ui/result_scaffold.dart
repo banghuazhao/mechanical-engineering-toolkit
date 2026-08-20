@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
@@ -15,18 +16,45 @@ import 'package:provider/provider.dart';
 
 /// A "Formula" card showing the worked calculation, one step per line.
 class FormulaCard extends StatelessWidget {
-  const FormulaCard({super.key, required this.steps});
+  const FormulaCard({super.key, required this.steps, this.tex});
 
   /// Lines of the derivation, joined with newlines for display.
   final List<String> steps;
 
+  /// The governing equation in TeX, typeset above [steps] when given.
+  ///
+  /// The two say different things and both are worth having: this is the
+  /// algebra as a textbook prints it, while [steps] is that algebra with
+  /// this calculation's numbers in it. Only [steps] reaches the PDF report —
+  /// the exporter draws text, not math.
+  final String? tex;
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final equation = tex;
     return AppSectionCard(
       title: S.of(context).Formula,
-      child: Text(
-        steps.join('\n'),
-        style: Theme.of(context).textTheme.bodyMedium,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (equation != null) ...[
+            Center(
+              // A long equation is wider than a phone; let it scroll rather
+              // than overflow the card.
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Math.tex(
+                  equation,
+                  mathStyle: MathStyle.display,
+                  textStyle: theme.textTheme.titleMedium,
+                ),
+              ),
+            ),
+            SizedBox(height: context.tokens.space4),
+          ],
+          Text(steps.join('\n'), style: theme.textTheme.bodyMedium),
+        ],
       ),
     );
   }

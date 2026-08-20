@@ -54,6 +54,9 @@ import 'mechancs_of_material/page/shaft_power_torque_page.dart';
 import 'mechancs_of_material/page/simple_beam_deflections_slopes_page.dart';
 import 'mechancs_of_material/page/thermal_deformation_page.dart';
 import 'mechancs_of_material/page/transverse_shear_stress_page.dart';
+import 'vibration/page/beam_natural_frequency_page.dart';
+import 'vibration/page/shaft_critical_speed_page.dart';
+import 'vibration/page/torsional_frequency_page.dart';
 
 enum ToolType {
   mechanicsOfMaterial,
@@ -815,6 +818,69 @@ class ToolLibrary {
               context,
               MaterialPageRoute(
                   builder: (context) => PressFitPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      // Vibration. Filed under Machine Design rather than a section of their
+      // own: a critical speed is checked in the same sitting as the shaft
+      // fatigue and bearing life it sits next to.
+      Tool(
+          id: 709,
+          image: AssetImage("images/icons/icon_shaft_critical_speed.png"),
+          title: S.of(context).Shaft_Critical_Speed,
+          type: ToolType.machineDesign,
+          keywords: const [
+            'vibration',
+            'whirl',
+            'critical speed',
+            'rotor',
+            'dunkerley',
+            'rotordynamics'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ShaftCriticalSpeedPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 710,
+          image: AssetImage("images/icons/icon_beam_natural_frequency.png"),
+          title: S.of(context).Beam_Natural_Frequency,
+          type: ToolType.machineDesign,
+          keywords: const [
+            'vibration',
+            'natural frequency',
+            'mode shape',
+            'resonance',
+            'eigenvalue',
+            'beam'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BeamNaturalFrequencyPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 711,
+          image: AssetImage("images/icons/icon_torsional_frequency.png"),
+          title: S.of(context).Torsional_Natural_Frequency,
+          type: ToolType.machineDesign,
+          keywords: const [
+            'vibration',
+            'torsional',
+            'resonance',
+            'flywheel',
+            'rotor inertia',
+            'shaft'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TorsionalFrequencyPage(
                       title: title,
                       toolId: toolId,
                       initialInputs: initialInputs)))),

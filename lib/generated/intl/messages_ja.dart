@@ -26,15 +26,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(index) => "第${index}層";
 
-  static String m3(value) => "プレビュー：${value}";
+  static String m3(index) => "第${index}次モード";
 
-  static String m4(name) => "「${name}」を保存しました";
+  static String m4(value) => "プレビュー：${value}";
 
-  static String m5(name) => "「${name}」に名前を変更しました";
+  static String m5(name) => "「${name}」を保存しました";
 
-  static String m6(tool) => "${tool}をお気に入りから削除";
+  static String m6(name) => "「${name}」に名前を変更しました";
 
-  static String m7(label) => "もし〜なら: ${label}";
+  static String m7(tool) => "${tool}をお気に入りから削除";
+
+  static String m8(label) => "もし〜なら: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -72,10 +74,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "Area_A": MessageLookupByLibrary.simpleMessage("断面積、A"),
     "Ball_Bearing": MessageLookupByLibrary.simpleMessage("玉軸受（p = 3）"),
     "Base_Temperature": MessageLookupByLibrary.simpleMessage("フィン基部温度"),
+    "Beam_Cantilever": MessageLookupByLibrary.simpleMessage("片持ち"),
     "Beam_Configuration": MessageLookupByLibrary.simpleMessage("梁の構成"),
     "Beam_Engineering": MessageLookupByLibrary.simpleMessage("梁の計算"),
+    "Beam_Fixed_Fixed": MessageLookupByLibrary.simpleMessage("両端固定"),
+    "Beam_Fixed_Pinned": MessageLookupByLibrary.simpleMessage("固定–ピン"),
+    "Beam_Free_Free": MessageLookupByLibrary.simpleMessage("自由–自由"),
+    "Beam_Frequency_Footnote": MessageLookupByLibrary.simpleMessage(
+      "オイラー・ベルヌーイ理論のため、せん断変形と回転慣性を無視します。短く太いはり（L/dが約10未満）や高次モードでは振動数が高めに出ます。",
+    ),
+    "Beam_Length_L": MessageLookupByLibrary.simpleMessage("はりの長さ, L"),
     "Beam_Load_Analysis": MessageLookupByLibrary.simpleMessage("梁の荷重解析"),
+    "Beam_Mode_Constant": MessageLookupByLibrary.simpleMessage("モード定数, βL"),
+    "Beam_Natural_Frequency": MessageLookupByLibrary.simpleMessage("はりの固有振動数"),
+    "Beam_Properties": MessageLookupByLibrary.simpleMessage("はりの諸元"),
     "Beam_Section_Properties": MessageLookupByLibrary.simpleMessage("梁の断面性能"),
+    "Beam_Simply_Supported": MessageLookupByLibrary.simpleMessage("単純支持"),
     "Bearing_L10_Life": MessageLookupByLibrary.simpleMessage("軸受のL10寿命"),
     "Belt_Chain_Drive": MessageLookupByLibrary.simpleMessage("ベルト・チェーン伝動"),
     "Belt_Length_L": MessageLookupByLibrary.simpleMessage("ベルト長さ、L"),
@@ -99,6 +113,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Center_Distance_C": MessageLookupByLibrary.simpleMessage("軸間距離、C"),
     "Centroid_of_Composite_Area": MessageLookupByLibrary.simpleMessage(
       "合成断面の図心",
+    ),
+    "Circular_Frequency_Omega": MessageLookupByLibrary.simpleMessage(
+      "角固有振動数, ω",
     ),
     "Civil_Structural_Engineering": MessageLookupByLibrary.simpleMessage(
       "土木・構造工学",
@@ -136,11 +153,16 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage("線形弾性材料の構成則"),
     "Contact_Pressure_P": MessageLookupByLibrary.simpleMessage("接触圧力、p"),
     "Contact_Stress_Est": MessageLookupByLibrary.simpleMessage("接触応力、σc（推定値）"),
+    "Contributing_Frequencies": MessageLookupByLibrary.simpleMessage("寄与する振動数"),
     "Copied_Value": m0,
     "Copy_Result": MessageLookupByLibrary.simpleMessage("結果をコピー"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage("修正長さ Lc"),
     "CountdownDays": MessageLookupByLibrary.simpleMessage("Countdown Days"),
     "Counter_Flow": MessageLookupByLibrary.simpleMessage("向流"),
+    "Critical_Speed_Footnote": MessageLookupByLibrary.simpleMessage(
+      "ダンカレーの式は常に低めの値を与えるため、表示される危険速度は安全側です。運転速度とは十分な余裕をとってください。",
+    ),
+    "Critical_Speed_Nc": MessageLookupByLibrary.simpleMessage("危険速度, Nc"),
     "Cross_Section": MessageLookupByLibrary.simpleMessage("断面"),
     "Deflection": MessageLookupByLibrary.simpleMessage("たわみ"),
     "Deflection_Delta": MessageLookupByLibrary.simpleMessage("たわみ、δ"),
@@ -158,6 +180,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Density": MessageLookupByLibrary.simpleMessage("密度"),
     "Desc_Beam_Analysis": MessageLookupByLibrary.simpleMessage(
       "単純支持梁に対して静力学的つり合いとオイラー・ベルヌーイ梁理論を用います。下向きの集中荷重と全スパン等分布荷重は、単独でも組み合わせても使用できます。",
+    ),
+    "Desc_Beam_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "断面・長さ・材料から求める一様はりの曲げ固有振動数。5種類の支持条件について、1次から3次までのモードを示します。",
     ),
     "Desc_Beam_Supports": MessageLookupByLibrary.simpleMessage(
       "左端はピン支点、右端はローラー支点です。下向きの集中荷重と全スパン等分布荷重を組み合わせられます。",
@@ -198,6 +223,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Desc_Section_Properties": MessageLookupByLibrary.simpleMessage(
       "梁の曲げおよび応力計算に用いる図心まわりの幾何学的特性を計算します。x軸は図心を通る水平軸、y軸は図心を通る垂直軸です。",
     ),
+    "Desc_Shaft_Critical_Speed": MessageLookupByLibrary.simpleMessage(
+      "支間の任意の位置にロータを1個支持する軸の一次危険速度。ロータの振れ回りと軸自身の分布質量をダンカレーの式で合成します。",
+    ),
     "Desc_Shaft_Fatigue": MessageLookupByLibrary.simpleMessage(
       "変動曲げとねじりの組合せを受ける軸の最小直径を、修正エネルギー説／修正グッドマン基準（シグリー）を用いて求めます。完全両振り曲げ・一定トルクの軸（よくあるケース）では平均モーメント／トルクを0のままにしてください。",
     ),
@@ -209,6 +237,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "標準的な構造用形鋼の公称寸法と断面性能です。断面係数と断面二次半径は掲載の断面積と断面二次モーメントから導出しているため、両者と整合します。",
+    ),
+    "Desc_Torsional_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "丸軸のねじり基本固有振動数。一端固定でロータ1個の場合と、自由軸にロータ2個の場合に対応します。",
     ),
     "Desc_Truss_Determinacy": MessageLookupByLibrary.simpleMessage(
       "静定な平面トラスには 部材数 + 反力数 = 2 × 節点数 が必要です。ピン支点とローラー支点を少なくとも1つずつ設けてください。",
@@ -229,6 +260,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Dynamic_Load_Rating_C": MessageLookupByLibrary.simpleMessage("動基本定格荷重、C"),
     "Dynamic_Viscosity": MessageLookupByLibrary.simpleMessage("粘度 μ"),
     "E_Modulus": MessageLookupByLibrary.simpleMessage("E（弾性係数）"),
+    "Effective_Inertia_J": MessageLookupByLibrary.simpleMessage(
+      "等価慣性モーメント, Jeff",
+    ),
     "Effective_Length_L": MessageLookupByLibrary.simpleMessage("有効長さ、L"),
     "Efficiency_Eta": MessageLookupByLibrary.simpleMessage("効率 η（%）"),
     "Elastic": MessageLookupByLibrary.simpleMessage("弾性"),
@@ -246,6 +280,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "各力のFx成分とFy成分を入力してください（N）",
     ),
     "Equivalent_Load_P": MessageLookupByLibrary.simpleMessage("動等価荷重、P"),
+    "Equivalent_Shaft_Speed": MessageLookupByLibrary.simpleMessage("相当回転速度"),
     "Err_Active_Coils_Positive": MessageLookupByLibrary.simpleMessage(
       "有効巻数は正の値である必要があります。",
     ),
@@ -261,7 +296,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Dimensions_Positive": MessageLookupByLibrary.simpleMessage(
       "寸法はゼロより大きい必要があります。",
     ),
+    "Err_Enter_Beam_Frequency_Inputs": MessageLookupByLibrary.simpleMessage(
+      "E、I、A、長さ、密度を入力してください。",
+    ),
     "Err_Enter_C_P_N": MessageLookupByLibrary.simpleMessage("C、P、nを入力してください。"),
+    "Err_Enter_Critical_Speed_Inputs": MessageLookupByLibrary.simpleMessage(
+      "E、軸径、支間、ロータ質量、ロータ位置を入力してください。",
+    ),
     "Err_Enter_D1_D2_C_N1": MessageLookupByLibrary.simpleMessage(
       "d1、d2、C、n1を入力してください。",
     ),
@@ -301,6 +342,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Enter_Se_Sut": MessageLookupByLibrary.simpleMessage(
       "SeとSutを入力してください。",
+    ),
+    "Err_Enter_Torsional_Inputs": MessageLookupByLibrary.simpleMessage(
+      "G、軸径、軸長さ、ロータ慣性モーメントを入力してください。",
     ),
     "Err_Enter_W_L_F": MessageLookupByLibrary.simpleMessage("w、L、Fを入力してください。"),
     "Err_Enter_Wall_Inputs": MessageLookupByLibrary.simpleMessage(
@@ -342,8 +386,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Pulley_Positive": MessageLookupByLibrary.simpleMessage(
       "プーリー径は正の値である必要があります。",
     ),
+    "Err_Rotor_Position_Range": MessageLookupByLibrary.simpleMessage(
+      "ロータは支持点を避けて軸上に配置してください。",
+    ),
     "Err_Se_Sut_Positive": MessageLookupByLibrary.simpleMessage(
       "SeとSutは正の値である必要があります。",
+    ),
+    "Err_Second_Rotor_Inertia": MessageLookupByLibrary.simpleMessage(
+      "第2ロータの慣性モーメントを入力してください。",
     ),
     "Err_Shear_Modulus_Positive": MessageLookupByLibrary.simpleMessage(
       "横弾性係数は正の値である必要があります。",
@@ -359,6 +409,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Truss_Two_Joints": MessageLookupByLibrary.simpleMessage(
       "トラスには少なくとも2つの節点が必要です。",
+    ),
+    "Err_Values_Positive": MessageLookupByLibrary.simpleMessage(
+      "すべての値は0より大きい必要があります。",
     ),
     "Err_W_L_F_Positive": MessageLookupByLibrary.simpleMessage(
       "w、L、Fは正の値である必要があります。",
@@ -407,6 +460,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Fits_Tolerances": MessageLookupByLibrary.simpleMessage("はめあい・公差（ISO 286）"),
     "Flange_Thickness": MessageLookupByLibrary.simpleMessage("フランジ厚"),
+    "Flexural_Rigidity_EI": MessageLookupByLibrary.simpleMessage("曲げ剛性, EI"),
     "Flexure_formula_of_beam": MessageLookupByLibrary.simpleMessage("梁の曲げ公式"),
     "Flow_Area": MessageLookupByLibrary.simpleMessage("流路断面積"),
     "Flow_Arrangement": MessageLookupByLibrary.simpleMessage("流れ方式"),
@@ -466,6 +520,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Hydraulic_Power": MessageLookupByLibrary.simpleMessage("水動力"),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
     "Imperial_US": MessageLookupByLibrary.simpleMessage("ヤード・ポンド法 (US)"),
+    "Include_Shaft_Mass": MessageLookupByLibrary.simpleMessage("軸自身の質量を考慮する"),
     "Input_Speed_N1": MessageLookupByLibrary.simpleMessage("入力回転速度、n1"),
     "Inputs": MessageLookupByLibrary.simpleMessage("入力"),
     "Inside_Air": MessageLookupByLibrary.simpleMessage("内側流体"),
@@ -520,6 +575,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Log_Mean_Delta_T": MessageLookupByLibrary.simpleMessage("対数平均温度差"),
     "ME_Toolkit": MessageLookupByLibrary.simpleMessage("ME Toolkit"),
     "Machine_Design": MessageLookupByLibrary.simpleMessage("機械設計"),
+    "Mass_Per_Length": MessageLookupByLibrary.simpleMessage("単位長さ質量, ρA"),
     "Material_Density_Default_Steel": MessageLookupByLibrary.simpleMessage(
       "材料密度（既定値は鋼）",
     ),
@@ -547,6 +603,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minor_Head_Loss": MessageLookupByLibrary.simpleMessage("局部損失水頭"),
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("局部損失係数 ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
+    "Mode_Number": m3,
     "Module_M": MessageLookupByLibrary.simpleMessage("モジュール、m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("弾性係数、E"),
     "Mohrs_Circle_for_Plane_Stress": MessageLookupByLibrary.simpleMessage(
@@ -567,6 +624,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Natural_Frequency_Estimate": MessageLookupByLibrary.simpleMessage(
       "固有振動数（推定値）",
     ),
+    "Natural_Frequency_F": MessageLookupByLibrary.simpleMessage("固有振動数, f"),
     "No_Favorites_Yet": MessageLookupByLibrary.simpleMessage("お気に入りはまだありません"),
     "No_Fluids_Found": MessageLookupByLibrary.simpleMessage("流体が見つかりません"),
     "No_History_Yet": MessageLookupByLibrary.simpleMessage("履歴はまだありません"),
@@ -583,6 +641,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "No_Sections_Found": MessageLookupByLibrary.simpleMessage("断面が見つかりません"),
     "No_Tools_Found": MessageLookupByLibrary.simpleMessage("ツールが見つかりません"),
+    "Node_Position": MessageLookupByLibrary.simpleMessage("節の位置（ロータ1から）"),
     "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage("呼び径、d"),
     "Nominal_Size_mm": MessageLookupByLibrary.simpleMessage("サイズ (mm)"),
     "None": MessageLookupByLibrary.simpleMessage("なし"),
@@ -637,6 +696,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Point_Load_P": MessageLookupByLibrary.simpleMessage("集中荷重、P"),
     "Point_Position_A": MessageLookupByLibrary.simpleMessage("荷重位置、a"),
     "Polar_Area_Moment_J": MessageLookupByLibrary.simpleMessage("断面極二次モーメント、J"),
+    "Polar_Moment_Jp": MessageLookupByLibrary.simpleMessage("断面二次極モーメント, Jp"),
     "Power_Lost": MessageLookupByLibrary.simpleMessage("損失動力"),
     "Power_Optional": MessageLookupByLibrary.simpleMessage("動力（任意）"),
     "Precision": MessageLookupByLibrary.simpleMessage("精度"),
@@ -645,7 +705,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Pressure_Drop": MessageLookupByLibrary.simpleMessage("圧力損失 Δp"),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("圧力上昇 Δp"),
-    "Preview_Value": m3,
+    "Preview_Value": m4,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "主応力と主応力面",
     ),
@@ -668,8 +728,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Name_Required": MessageLookupByLibrary.simpleMessage(
       "名前を入力してください",
     ),
-    "Project_Saved": m4,
-    "Project_Updated": m5,
+    "Project_Saved": m5,
+    "Project_Updated": m6,
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage("ポンプ・ファン動力"),
     "Pump_Head": MessageLookupByLibrary.simpleMessage("全揚程 H"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
@@ -695,7 +755,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "このアプリから広告を完全に削除します。",
     ),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("層を削除"),
-    "Remove_Tool_from_Favorites": m6,
+    "Remove_Tool_from_Favorites": m7,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage("お気に入りから削除"),
     "Removed_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "お気に入りから削除しました",
@@ -723,6 +783,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "Roller_Bearing": MessageLookupByLibrary.simpleMessage("ころ軸受（p = 10/3）"),
     "Roller_Horizontal": MessageLookupByLibrary.simpleMessage("ローラー支点（水平反力）"),
     "Roller_Vertical": MessageLookupByLibrary.simpleMessage("ローラー支点（垂直反力）"),
+    "Rotor_Alone_Frequency": MessageLookupByLibrary.simpleMessage(
+      "ロータ単独（軸質量なし）",
+    ),
+    "Rotor_Inertia_J1": MessageLookupByLibrary.simpleMessage("ロータ慣性モーメント, J1"),
+    "Rotor_Inertia_J2": MessageLookupByLibrary.simpleMessage(
+      "第2ロータの慣性モーメント, J2",
+    ),
+    "Rotor_Mass_M": MessageLookupByLibrary.simpleMessage("ロータ質量, m"),
+    "Rotor_Position_A": MessageLookupByLibrary.simpleMessage("左端からのロータ位置, a"),
     "Rule_of_mixtures": MessageLookupByLibrary.simpleMessage("混合則"),
     "Save": MessageLookupByLibrary.simpleMessage("保存"),
     "Save_as_Project": MessageLookupByLibrary.simpleMessage("プロジェクトとして保存"),
@@ -752,10 +821,20 @@ class MessageLookup extends MessageLookupByLibrary {
       "掲載形鋼の公称値です。断面係数と断面二次半径は掲載の A と I から算出しています。詳細設計の前に最新のメーカー資料または規格表を確認してください。",
     ),
     "Settings": MessageLookupByLibrary.simpleMessage("設定"),
+    "Shaft_Alone_Frequency": MessageLookupByLibrary.simpleMessage("軸質量のみ"),
+    "Shaft_And_Rotor": MessageLookupByLibrary.simpleMessage("軸とロータ"),
+    "Shaft_Between_Bearings": MessageLookupByLibrary.simpleMessage("両端軸受支持"),
+    "Shaft_Both_Ends_Fixed": MessageLookupByLibrary.simpleMessage("両端固定"),
+    "Shaft_Critical_Speed": MessageLookupByLibrary.simpleMessage("軸の危険速度"),
+    "Shaft_Diameter_D": MessageLookupByLibrary.simpleMessage("軸径, d"),
     "Shaft_Fatigue_Design": MessageLookupByLibrary.simpleMessage(
       "軸の疲労設計（DE-グッドマン法）",
     ),
+    "Shaft_Length_L": MessageLookupByLibrary.simpleMessage("軸長さ, L"),
+    "Shaft_Mass": MessageLookupByLibrary.simpleMessage("軸質量"),
+    "Shaft_Overhung": MessageLookupByLibrary.simpleMessage("オーバーハング"),
     "Shaft_Power": MessageLookupByLibrary.simpleMessage("軸動力"),
+    "Shaft_Stiffness_K": MessageLookupByLibrary.simpleMessage("ロータ位置の軸剛性, k"),
     "Shaft_Surface_Stress": MessageLookupByLibrary.simpleMessage("軸表面応力、σs"),
     "Shaft_power_and_torque": MessageLookupByLibrary.simpleMessage("軸の動力とトルク"),
     "Shaft_um": MessageLookupByLibrary.simpleMessage("軸 (µm)"),
@@ -807,6 +886,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Spring_Rate_K": MessageLookupByLibrary.simpleMessage("ばね定数、k"),
     "Spur_Gear_Geometry": MessageLookupByLibrary.simpleMessage("平歯車の幾何形状"),
     "Standard_Sections": MessageLookupByLibrary.simpleMessage("標準形鋼"),
+    "Static_Deflection_Delta": MessageLookupByLibrary.simpleMessage(
+      "静たわみ, δst",
+    ),
     "Stiffness_Matrix_C": MessageLookupByLibrary.simpleMessage("剛性マトリクス C"),
     "Stiffness_Matrix_Q": MessageLookupByLibrary.simpleMessage("剛性マトリクス Q"),
     "Strain": MessageLookupByLibrary.simpleMessage("ひずみ"),
@@ -863,6 +945,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "Tightening_Torque_T": MessageLookupByLibrary.simpleMessage("締付けトルク、T"),
     "Tip_Temperature": MessageLookupByLibrary.simpleMessage("先端温度"),
     "Torsion_formula_of_bar": MessageLookupByLibrary.simpleMessage("棒のねじり公式"),
+    "Torsional_Footnote": MessageLookupByLibrary.simpleMessage(
+      "軸自身の慣性は無視しています。ロータと同程度の場合は、多質点系（ホルツァー法）で解析してください。",
+    ),
+    "Torsional_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "ねじり固有振動数",
+    ),
+    "Torsional_Single_Rotor": MessageLookupByLibrary.simpleMessage(
+      "ロータ1個、他端固定",
+    ),
+    "Torsional_Stiffness_Kt": MessageLookupByLibrary.simpleMessage("ねじり剛性, kt"),
+    "Torsional_Two_Rotor": MessageLookupByLibrary.simpleMessage("ロータ2個、自由軸"),
     "Total_Head_Loss": MessageLookupByLibrary.simpleMessage("全損失水頭"),
     "Total_Resistance_R": MessageLookupByLibrary.simpleMessage("総熱抵抗 R"),
     "Transverse_shear_stress_in_beam": MessageLookupByLibrary.simpleMessage(
@@ -888,6 +981,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Unit_System": MessageLookupByLibrary.simpleMessage("単位系"),
     "Utilities": MessageLookupByLibrary.simpleMessage("ツール"),
     "Velocity_Head": MessageLookupByLibrary.simpleMessage("速度水頭 V²/2g"),
+    "Vibration_Modes": MessageLookupByLibrary.simpleMessage("固有振動数"),
     "W_Intensity": MessageLookupByLibrary.simpleMessage("w（荷重強度）"),
     "Wahl_Factor_Kw": MessageLookupByLibrary.simpleMessage("ワール係数、Kw"),
     "Wall_Area_A": MessageLookupByLibrary.simpleMessage("壁面積 A"),
@@ -900,7 +994,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("弱軸 (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("ウェブ厚"),
-    "What_If": m7,
+    "What_If": m8,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("線径、d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

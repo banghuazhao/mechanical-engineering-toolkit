@@ -27,15 +27,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(index) => "Couche ${index}";
 
-  static String m3(value) => "Aperçu : ${value}";
+  static String m3(index) => "Mode ${index}";
 
-  static String m4(name) => "« ${name} » enregistré";
+  static String m4(value) => "Aperçu : ${value}";
 
-  static String m5(name) => "Renommé en « ${name} »";
+  static String m5(name) => "« ${name} » enregistré";
 
-  static String m6(tool) => "Retirer ${tool} des favoris";
+  static String m6(name) => "Renommé en « ${name} »";
 
-  static String m7(label) => "Et si : ${label}";
+  static String m7(tool) => "Retirer ${tool} des favoris";
+
+  static String m8(label) => "Et si : ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -99,17 +101,43 @@ class MessageLookup extends MessageLookupByLibrary {
     "Base_Temperature": MessageLookupByLibrary.simpleMessage(
       "Température de base",
     ),
+    "Beam_Cantilever": MessageLookupByLibrary.simpleMessage("Console"),
     "Beam_Configuration": MessageLookupByLibrary.simpleMessage(
       "Configuration de la poutre",
     ),
     "Beam_Engineering": MessageLookupByLibrary.simpleMessage(
       "Calcul de poutres",
     ),
+    "Beam_Fixed_Fixed": MessageLookupByLibrary.simpleMessage(
+      "Encastré–encastré",
+    ),
+    "Beam_Fixed_Pinned": MessageLookupByLibrary.simpleMessage(
+      "Encastré–rotulé",
+    ),
+    "Beam_Free_Free": MessageLookupByLibrary.simpleMessage("Libre–libre"),
+    "Beam_Frequency_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Théorie d\'Euler-Bernoulli : la déformation de cisaillement et l\'inertie de rotation sont négligées ; les fréquences sont donc surestimées pour une poutre trapue (L/d inférieur à environ 10) et pour les modes supérieurs.",
+    ),
+    "Beam_Length_L": MessageLookupByLibrary.simpleMessage(
+      "Longueur de la poutre, L",
+    ),
     "Beam_Load_Analysis": MessageLookupByLibrary.simpleMessage(
       "Analyse des charges d\'une poutre",
     ),
+    "Beam_Mode_Constant": MessageLookupByLibrary.simpleMessage(
+      "Constante de mode, βL",
+    ),
+    "Beam_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Fréquence propre d\'une poutre",
+    ),
+    "Beam_Properties": MessageLookupByLibrary.simpleMessage(
+      "Caractéristiques de la poutre",
+    ),
     "Beam_Section_Properties": MessageLookupByLibrary.simpleMessage(
       "Propriétés de section d\'une poutre",
+    ),
+    "Beam_Simply_Supported": MessageLookupByLibrary.simpleMessage(
+      "Sur appuis simples",
     ),
     "Bearing_L10_Life": MessageLookupByLibrary.simpleMessage(
       "Durée de vie L10 d\'un roulement",
@@ -150,6 +178,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Center_Distance_C": MessageLookupByLibrary.simpleMessage("Entraxe, C"),
     "Centroid_of_Composite_Area": MessageLookupByLibrary.simpleMessage(
       "Centroïde d\'une surface composée",
+    ),
+    "Circular_Frequency_Omega": MessageLookupByLibrary.simpleMessage(
+      "Pulsation propre, ω",
     ),
     "Civil_Structural_Engineering": MessageLookupByLibrary.simpleMessage(
       "Génie civil / structures",
@@ -201,6 +232,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Contact_Stress_Est": MessageLookupByLibrary.simpleMessage(
       "Contrainte de contact, σc (estimée)",
     ),
+    "Contributing_Frequencies": MessageLookupByLibrary.simpleMessage(
+      "Fréquences contributives",
+    ),
     "Copied_Value": m0,
     "Copy_Result": MessageLookupByLibrary.simpleMessage("Copier le résultat"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage(
@@ -208,6 +242,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "CountdownDays": MessageLookupByLibrary.simpleMessage("Countdown Days"),
     "Counter_Flow": MessageLookupByLibrary.simpleMessage("Contre-courant"),
+    "Critical_Speed_Footnote": MessageLookupByLibrary.simpleMessage(
+      "L\'équation de Dunkerley sous-estime toujours : la vitesse critique affichée est donc conservative. Maintenez une marge confortable avec la vitesse de service.",
+    ),
+    "Critical_Speed_Nc": MessageLookupByLibrary.simpleMessage(
+      "Vitesse critique, Nc",
+    ),
     "Cross_Section": MessageLookupByLibrary.simpleMessage(
       "Section transversale",
     ),
@@ -231,6 +271,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Density": MessageLookupByLibrary.simpleMessage("Masse volumique"),
     "Desc_Beam_Analysis": MessageLookupByLibrary.simpleMessage(
       "Utilise l\'équilibre statique et la théorie des poutres d\'Euler-Bernoulli pour une poutre simplement appuyée. Une charge ponctuelle descendante et une charge uniformément répartie sur toute la portée peuvent être utilisées séparément ou ensemble.",
+    ),
+    "Desc_Beam_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Fréquences propres de flexion d\'une poutre prismatique, d\'après sa section, sa longueur et son matériau. Les trois premiers modes, pour cinq conditions d\'appui.",
     ),
     "Desc_Beam_Supports": MessageLookupByLibrary.simpleMessage(
       "Articulation fixe à gauche, appui à rouleau à droite. Combine une charge ponctuelle descendante avec une charge uniformément répartie sur toute la portée.",
@@ -271,6 +314,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Desc_Section_Properties": MessageLookupByLibrary.simpleMessage(
       "Calcule les caractéristiques géométriques centroïdales utilisées dans les calculs de flexion et de contrainte d\'une poutre. L\'axe x est horizontal et passe par le centroïde, l\'axe y est vertical et passe par le centroïde.",
     ),
+    "Desc_Shaft_Critical_Speed": MessageLookupByLibrary.simpleMessage(
+      "Première vitesse critique en flexion d\'un arbre portant un rotor, en tout point de la portée. Le tournoiement du rotor et la masse propre de l\'arbre sont combinés par l\'équation de Dunkerley.",
+    ),
     "Desc_Shaft_Fatigue": MessageLookupByLibrary.simpleMessage(
       "Diamètre minimal d\'un arbre soumis à une flexion et une torsion combinées et fluctuantes, selon le critère de l\'énergie de distorsion / Goodman modifié (Shigley). Laissez le moment/couple moyen à 0 pour un arbre en flexion purement alternée et couple constant — le cas courant.",
     ),
@@ -282,6 +328,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Dimensions et caractéristiques de section publiées pour les profilés de construction courants. Le module de flexion et le rayon de giration sont déduits de l\'aire et du moment quadratique listés, et restent donc cohérents avec eux.",
+    ),
+    "Desc_Torsional_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Fréquence propre fondamentale de torsion d\'un arbre circulaire, portant soit un rotor face à une extrémité encastrée, soit deux rotors sur un arbre libre.",
     ),
     "Desc_Truss_Determinacy": MessageLookupByLibrary.simpleMessage(
       "Un treillis plan isostatique nécessite barres + réactions = 2 × nœuds. Prévoyez au moins un appui fixe et un appui à rouleau.",
@@ -318,6 +367,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "E_Modulus": MessageLookupByLibrary.simpleMessage(
       "E (module d\'élasticité)",
     ),
+    "Effective_Inertia_J": MessageLookupByLibrary.simpleMessage(
+      "Inertie effective, Jeff",
+    ),
     "Effective_Length_L": MessageLookupByLibrary.simpleMessage(
       "Longueur effective, L",
     ),
@@ -351,6 +403,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Equivalent_Load_P": MessageLookupByLibrary.simpleMessage(
       "Charge équivalente, P",
     ),
+    "Equivalent_Shaft_Speed": MessageLookupByLibrary.simpleMessage(
+      "Vitesse de rotation équivalente",
+    ),
     "Err_Active_Coils_Positive": MessageLookupByLibrary.simpleMessage(
       "Le nombre de spires actives doit être positif.",
     ),
@@ -366,8 +421,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Dimensions_Positive": MessageLookupByLibrary.simpleMessage(
       "Les dimensions doivent être supérieures à zéro.",
     ),
+    "Err_Enter_Beam_Frequency_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Saisissez E, I, A, la longueur et la masse volumique.",
+    ),
     "Err_Enter_C_P_N": MessageLookupByLibrary.simpleMessage(
       "Saisissez C, P et n.",
+    ),
+    "Err_Enter_Critical_Speed_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Saisissez E, le diamètre de l\'arbre, la portée, la masse et la position du rotor.",
     ),
     "Err_Enter_D1_D2_C_N1": MessageLookupByLibrary.simpleMessage(
       "Saisissez d1, d2, C et n1.",
@@ -408,6 +469,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Enter_Se_Sut": MessageLookupByLibrary.simpleMessage(
       "Saisissez Se et Sut.",
+    ),
+    "Err_Enter_Torsional_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Saisissez G, le diamètre de l\'arbre, sa longueur et l\'inertie du rotor.",
     ),
     "Err_Enter_W_L_F": MessageLookupByLibrary.simpleMessage(
       "Saisissez w, L et F.",
@@ -451,8 +515,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Pulley_Positive": MessageLookupByLibrary.simpleMessage(
       "Les diamètres de poulie doivent être positifs.",
     ),
+    "Err_Rotor_Position_Range": MessageLookupByLibrary.simpleMessage(
+      "Le rotor doit se trouver sur l\'arbre, à l\'écart des appuis.",
+    ),
     "Err_Se_Sut_Positive": MessageLookupByLibrary.simpleMessage(
       "Se et Sut doivent être positifs.",
+    ),
+    "Err_Second_Rotor_Inertia": MessageLookupByLibrary.simpleMessage(
+      "Saisissez l\'inertie du second rotor.",
     ),
     "Err_Shear_Modulus_Positive": MessageLookupByLibrary.simpleMessage(
       "Le module de cisaillement doit être positif.",
@@ -468,6 +538,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Truss_Two_Joints": MessageLookupByLibrary.simpleMessage(
       "Un treillis nécessite au moins 2 nœuds.",
+    ),
+    "Err_Values_Positive": MessageLookupByLibrary.simpleMessage(
+      "Toutes les valeurs doivent être supérieures à zéro.",
     ),
     "Err_W_L_F_Positive": MessageLookupByLibrary.simpleMessage(
       "w, L et F doivent être positifs.",
@@ -545,6 +618,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Flange_Thickness": MessageLookupByLibrary.simpleMessage(
       "Épaisseur de semelle",
+    ),
+    "Flexural_Rigidity_EI": MessageLookupByLibrary.simpleMessage(
+      "Rigidité de flexion, EI",
     ),
     "Flexure_formula_of_beam": MessageLookupByLibrary.simpleMessage(
       "Formule de flexion d\'une poutre",
@@ -637,6 +713,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
     "Imperial_US": MessageLookupByLibrary.simpleMessage("Impérial (US)"),
+    "Include_Shaft_Mass": MessageLookupByLibrary.simpleMessage(
+      "Tenir compte de la masse propre de l\'arbre",
+    ),
     "Input_Speed_N1": MessageLookupByLibrary.simpleMessage(
       "Vitesse d\'entrée, n1",
     ),
@@ -721,6 +800,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Machine_Design": MessageLookupByLibrary.simpleMessage(
       "Conception mécanique",
     ),
+    "Mass_Per_Length": MessageLookupByLibrary.simpleMessage(
+      "Masse linéique, ρA",
+    ),
     "Material_Density_Default_Steel": MessageLookupByLibrary.simpleMessage(
       "Masse volumique du matériau (acier par défaut)",
     ),
@@ -762,6 +844,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Pertes singulières, ΣK",
     ),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
+    "Mode_Number": m3,
     "Module_M": MessageLookupByLibrary.simpleMessage("Module, m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("Module, E"),
     "Mohrs_Circle_for_Plane_Stress": MessageLookupByLibrary.simpleMessage(
@@ -785,6 +868,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Name": MessageLookupByLibrary.simpleMessage("Nom"),
     "Natural_Frequency_Estimate": MessageLookupByLibrary.simpleMessage(
       "Fréquence propre (estimation)",
+    ),
+    "Natural_Frequency_F": MessageLookupByLibrary.simpleMessage(
+      "Fréquence propre, f",
     ),
     "No_Favorites_Yet": MessageLookupByLibrary.simpleMessage(
       "Aucun favori pour le moment",
@@ -813,6 +899,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "No_Tools_Found": MessageLookupByLibrary.simpleMessage(
       "Aucun outil trouvé",
+    ),
+    "Node_Position": MessageLookupByLibrary.simpleMessage(
+      "Nœud, depuis le rotor 1",
     ),
     "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Diamètre nominal, d",
@@ -900,6 +989,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Polar_Area_Moment_J": MessageLookupByLibrary.simpleMessage(
       "Moment quadratique polaire, J",
     ),
+    "Polar_Moment_Jp": MessageLookupByLibrary.simpleMessage(
+      "Moment quadratique polaire, Jp",
+    ),
     "Power_Lost": MessageLookupByLibrary.simpleMessage("Puissance perdue"),
     "Power_Optional": MessageLookupByLibrary.simpleMessage(
       "Puissance (optionnel)",
@@ -914,7 +1006,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage(
       "Élévation de pression, Δp",
     ),
-    "Preview_Value": m3,
+    "Preview_Value": m4,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Contraintes principales et plan principal",
     ),
@@ -941,8 +1033,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Name_Required": MessageLookupByLibrary.simpleMessage(
       "Saisissez un nom",
     ),
-    "Project_Saved": m4,
-    "Project_Updated": m5,
+    "Project_Saved": m5,
+    "Project_Updated": m6,
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage(
       "Puissance de pompe et de ventilateur",
     ),
@@ -988,7 +1080,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Supprime définitivement les publicités de cette application.",
     ),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("Supprimer la couche"),
-    "Remove_Tool_from_Favorites": m6,
+    "Remove_Tool_from_Favorites": m7,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Retirer des favoris",
     ),
@@ -1046,6 +1138,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "Roller_Vertical": MessageLookupByLibrary.simpleMessage(
       "Appui à rouleau (réaction verticale)",
     ),
+    "Rotor_Alone_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Rotor seul, arbre sans masse",
+    ),
+    "Rotor_Inertia_J1": MessageLookupByLibrary.simpleMessage(
+      "Inertie du rotor, J1",
+    ),
+    "Rotor_Inertia_J2": MessageLookupByLibrary.simpleMessage(
+      "Inertie du second rotor, J2",
+    ),
+    "Rotor_Mass_M": MessageLookupByLibrary.simpleMessage("Masse du rotor, m"),
+    "Rotor_Position_A": MessageLookupByLibrary.simpleMessage(
+      "Position du rotor depuis la gauche, a",
+    ),
     "Rule_of_mixtures": MessageLookupByLibrary.simpleMessage(
       "Loi des mélanges",
     ),
@@ -1101,10 +1206,34 @@ class MessageLookup extends MessageLookupByLibrary {
       "Valeurs nominales publiées pour les profilés listés. Le module de flexion et le rayon de giration sont calculés à partir des A et I listés. Vérifiez une table normalisée ou un catalogue à jour avant l\'exécution.",
     ),
     "Settings": MessageLookupByLibrary.simpleMessage("Paramètres"),
+    "Shaft_Alone_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Masse de l\'arbre seule",
+    ),
+    "Shaft_And_Rotor": MessageLookupByLibrary.simpleMessage("Arbre et rotor"),
+    "Shaft_Between_Bearings": MessageLookupByLibrary.simpleMessage(
+      "Entre paliers",
+    ),
+    "Shaft_Both_Ends_Fixed": MessageLookupByLibrary.simpleMessage(
+      "Bi-encastré",
+    ),
+    "Shaft_Critical_Speed": MessageLookupByLibrary.simpleMessage(
+      "Vitesse critique d\'arbre",
+    ),
+    "Shaft_Diameter_D": MessageLookupByLibrary.simpleMessage(
+      "Diamètre de l\'arbre, d",
+    ),
     "Shaft_Fatigue_Design": MessageLookupByLibrary.simpleMessage(
       "Dimensionnement en fatigue d\'un arbre (DE-Goodman)",
     ),
+    "Shaft_Length_L": MessageLookupByLibrary.simpleMessage(
+      "Longueur de l\'arbre, L",
+    ),
+    "Shaft_Mass": MessageLookupByLibrary.simpleMessage("Masse de l\'arbre"),
+    "Shaft_Overhung": MessageLookupByLibrary.simpleMessage("En porte-à-faux"),
     "Shaft_Power": MessageLookupByLibrary.simpleMessage("Puissance à l\'arbre"),
+    "Shaft_Stiffness_K": MessageLookupByLibrary.simpleMessage(
+      "Raideur de l\'arbre au rotor, k",
+    ),
     "Shaft_Surface_Stress": MessageLookupByLibrary.simpleMessage(
       "Contrainte en surface de l\'arbre, σs",
     ),
@@ -1179,6 +1308,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Profilés normalisés",
+    ),
+    "Static_Deflection_Delta": MessageLookupByLibrary.simpleMessage(
+      "Flèche statique, δst",
     ),
     "Stiffness_Matrix_C": MessageLookupByLibrary.simpleMessage(
       "Matrice de rigidité C",
@@ -1274,6 +1406,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "Torsion_formula_of_bar": MessageLookupByLibrary.simpleMessage(
       "Formule de torsion d\'une barre",
     ),
+    "Torsional_Footnote": MessageLookupByLibrary.simpleMessage(
+      "L\'inertie propre de l\'arbre est négligée. Lorsqu\'elle est comparable à celle des rotors, utilisez plutôt une analyse multi-masses complète (Holzer).",
+    ),
+    "Torsional_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Fréquence propre de torsion",
+    ),
+    "Torsional_Single_Rotor": MessageLookupByLibrary.simpleMessage(
+      "Un rotor, extrémité opposée encastrée",
+    ),
+    "Torsional_Stiffness_Kt": MessageLookupByLibrary.simpleMessage(
+      "Raideur en torsion, kt",
+    ),
+    "Torsional_Two_Rotor": MessageLookupByLibrary.simpleMessage(
+      "Deux rotors, arbre libre",
+    ),
     "Total_Head_Loss": MessageLookupByLibrary.simpleMessage(
       "Perte de charge totale",
     ),
@@ -1319,6 +1466,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Velocity_Head": MessageLookupByLibrary.simpleMessage(
       "Hauteur dynamique, V²/2g",
     ),
+    "Vibration_Modes": MessageLookupByLibrary.simpleMessage(
+      "Fréquences propres",
+    ),
     "W_Intensity": MessageLookupByLibrary.simpleMessage("w (intensité)"),
     "Wahl_Factor_Kw": MessageLookupByLibrary.simpleMessage(
       "Facteur de Wahl, Kw",
@@ -1339,7 +1489,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Axe faible (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Épaisseur d\'âme"),
-    "What_If": m7,
+    "What_If": m8,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Diamètre du fil, d",
     ),

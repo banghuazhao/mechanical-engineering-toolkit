@@ -27,15 +27,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(index) => "Schicht ${index}";
 
-  static String m3(value) => "Vorschau: ${value}";
+  static String m3(index) => "Eigenform ${index}";
 
-  static String m4(name) => "„${name}“ gespeichert";
+  static String m4(value) => "Vorschau: ${value}";
 
-  static String m5(name) => "In „${name}“ umbenannt";
+  static String m5(name) => "„${name}“ gespeichert";
 
-  static String m6(tool) => "${tool} aus Favoriten entfernen";
+  static String m6(name) => "In „${name}“ umbenannt";
 
-  static String m7(label) => "Was wäre wenn: ${label}";
+  static String m7(tool) => "${tool} aus Favoriten entfernen";
+
+  static String m8(label) => "Was wäre wenn: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -91,17 +93,39 @@ class MessageLookup extends MessageLookupByLibrary {
     "Area_A": MessageLookupByLibrary.simpleMessage("Fläche, A"),
     "Ball_Bearing": MessageLookupByLibrary.simpleMessage("Kugellager (p = 3)"),
     "Base_Temperature": MessageLookupByLibrary.simpleMessage("Fußtemperatur"),
+    "Beam_Cantilever": MessageLookupByLibrary.simpleMessage("Kragbalken"),
     "Beam_Configuration": MessageLookupByLibrary.simpleMessage(
       "Balkenkonfiguration",
     ),
     "Beam_Engineering": MessageLookupByLibrary.simpleMessage(
       "Balkenberechnung",
     ),
+    "Beam_Fixed_Fixed": MessageLookupByLibrary.simpleMessage(
+      "Beidseitig eingespannt",
+    ),
+    "Beam_Fixed_Pinned": MessageLookupByLibrary.simpleMessage(
+      "Eingespannt–gelenkig",
+    ),
+    "Beam_Free_Free": MessageLookupByLibrary.simpleMessage("Frei–frei"),
+    "Beam_Frequency_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Euler-Bernoulli-Theorie: Schubverformung und Drehträgheit bleiben unberücksichtigt, daher fallen die Frequenzen bei gedrungenen Balken (L/d unter etwa 10) und bei höheren Eigenformen zu hoch aus.",
+    ),
+    "Beam_Length_L": MessageLookupByLibrary.simpleMessage("Balkenlänge, L"),
     "Beam_Load_Analysis": MessageLookupByLibrary.simpleMessage(
       "Balken-Lastanalyse",
     ),
+    "Beam_Mode_Constant": MessageLookupByLibrary.simpleMessage(
+      "Modenkonstante, βL",
+    ),
+    "Beam_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Eigenfrequenz eines Balkens",
+    ),
+    "Beam_Properties": MessageLookupByLibrary.simpleMessage("Balkenkennwerte"),
     "Beam_Section_Properties": MessageLookupByLibrary.simpleMessage(
       "Querschnittswerte des Balkens",
+    ),
+    "Beam_Simply_Supported": MessageLookupByLibrary.simpleMessage(
+      "Gelenkig gelagert",
     ),
     "Bearing_L10_Life": MessageLookupByLibrary.simpleMessage(
       "Lagerlebensdauer L10",
@@ -138,6 +162,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Center_Distance_C": MessageLookupByLibrary.simpleMessage("Achsabstand, C"),
     "Centroid_of_Composite_Area": MessageLookupByLibrary.simpleMessage(
       "Schwerpunkt einer zusammengesetzten Fläche",
+    ),
+    "Circular_Frequency_Omega": MessageLookupByLibrary.simpleMessage(
+      "Kreisfrequenz, ω",
     ),
     "Civil_Structural_Engineering": MessageLookupByLibrary.simpleMessage(
       "Bauwesen / Tragwerksplanung",
@@ -191,6 +218,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Contact_Stress_Est": MessageLookupByLibrary.simpleMessage(
       "Flankenpressung, σc (geschätzt)",
     ),
+    "Contributing_Frequencies": MessageLookupByLibrary.simpleMessage(
+      "Beitragende Frequenzen",
+    ),
     "Copied_Value": m0,
     "Copy_Result": MessageLookupByLibrary.simpleMessage("Ergebnis kopieren"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage(
@@ -198,6 +228,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "CountdownDays": MessageLookupByLibrary.simpleMessage("Countdown Days"),
     "Counter_Flow": MessageLookupByLibrary.simpleMessage("Gegenstrom"),
+    "Critical_Speed_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Die Gleichung nach Dunkerley liegt stets auf der sicheren Seite, die angegebene kritische Drehzahl ist also konservativ. Halten Sie zur Betriebsdrehzahl einen ausreichenden Abstand.",
+    ),
+    "Critical_Speed_Nc": MessageLookupByLibrary.simpleMessage(
+      "Kritische Drehzahl, Nc",
+    ),
     "Cross_Section": MessageLookupByLibrary.simpleMessage("Querschnitt"),
     "Deflection": MessageLookupByLibrary.simpleMessage("Durchbiegung"),
     "Deflection_Delta": MessageLookupByLibrary.simpleMessage("Durchbiegung, δ"),
@@ -219,6 +255,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Density": MessageLookupByLibrary.simpleMessage("Dichte"),
     "Desc_Beam_Analysis": MessageLookupByLibrary.simpleMessage(
       "Verwendet statisches Gleichgewicht und die Euler-Bernoulli-Balkentheorie für einen einfach gelagerten Balken. Eine nach unten gerichtete Einzellast und eine gleichmäßige Streckenlast über die volle Spannweite können einzeln oder gemeinsam verwendet werden.",
+    ),
+    "Desc_Beam_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Biegeeigenfrequenzen eines prismatischen Balkens aus Querschnitt, Länge und Werkstoff. Die ersten drei Biegeeigenformen für fünf Randbedingungen.",
     ),
     "Desc_Beam_Supports": MessageLookupByLibrary.simpleMessage(
       "Festlager links, Loslager rechts. Kombiniert eine nach unten gerichtete Einzellast mit einer gleichmäßigen Streckenlast über die volle Spannweite.",
@@ -259,6 +298,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Desc_Section_Properties": MessageLookupByLibrary.simpleMessage(
       "Berechnet die auf den Schwerpunkt bezogenen geometrischen Kennwerte für Biege- und Spannungsberechnungen am Balken. Die x-Achse verläuft horizontal, die y-Achse vertikal durch den Schwerpunkt.",
     ),
+    "Desc_Shaft_Critical_Speed": MessageLookupByLibrary.simpleMessage(
+      "Erste biegekritische Drehzahl einer Welle mit einem Läufer an beliebiger Stelle der Stützweite. Läuferwirbel und Eigenmasse der Welle werden nach Dunkerley überlagert.",
+    ),
     "Desc_Shaft_Fatigue": MessageLookupByLibrary.simpleMessage(
       "Mindestwellendurchmesser bei kombinierter wechselnder Biegung und Torsion nach dem Gestaltänderungsenergie-/modifizierten Goodman-Kriterium (Shigley). Belassen Sie mittleres Moment/Drehmoment bei 0 für eine Welle mit rein wechselnder Biegung und konstantem Drehmoment — der übliche Fall.",
     ),
@@ -270,6 +312,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Veröffentlichte Abmessungen und Querschnittswerte gebräuchlicher Normprofile. Widerstandsmoment und Trägheitsradius werden aus der angegebenen Fläche und dem Flächenträgheitsmoment abgeleitet und bleiben dadurch mit diesen konsistent.",
+    ),
+    "Desc_Torsional_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Torsionsgrundfrequenz einer runden Welle, mit einem Läufer gegen ein eingespanntes Ende oder mit zwei Läufern auf freier Welle.",
     ),
     "Desc_Truss_Determinacy": MessageLookupByLibrary.simpleMessage(
       "Ein statisch bestimmtes ebenes Fachwerk erfordert Stäbe + Reaktionen = 2 × Knoten. Geben Sie mindestens ein Fest- und ein Loslager an.",
@@ -302,6 +347,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Dynamische Viskosität, μ",
     ),
     "E_Modulus": MessageLookupByLibrary.simpleMessage("E (Elastizitätsmodul)"),
+    "Effective_Inertia_J": MessageLookupByLibrary.simpleMessage(
+      "Effektives Trägheitsmoment, Jeff",
+    ),
     "Effective_Length_L": MessageLookupByLibrary.simpleMessage(
       "Wirksame Länge, L",
     ),
@@ -337,6 +385,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Equivalent_Load_P": MessageLookupByLibrary.simpleMessage(
       "Äquivalente Belastung, P",
     ),
+    "Equivalent_Shaft_Speed": MessageLookupByLibrary.simpleMessage(
+      "Entsprechende Drehzahl",
+    ),
     "Err_Active_Coils_Positive": MessageLookupByLibrary.simpleMessage(
       "Die Anzahl der wirksamen Windungen muss positiv sein.",
     ),
@@ -352,8 +403,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Dimensions_Positive": MessageLookupByLibrary.simpleMessage(
       "Die Abmessungen müssen größer als null sein.",
     ),
+    "Err_Enter_Beam_Frequency_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Geben Sie E, I, A, die Länge und die Dichte ein.",
+    ),
     "Err_Enter_C_P_N": MessageLookupByLibrary.simpleMessage(
       "Geben Sie C, P und n ein.",
+    ),
+    "Err_Enter_Critical_Speed_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Geben Sie E, Wellendurchmesser, Stützweite, Läufermasse und Läuferposition ein.",
     ),
     "Err_Enter_D1_D2_C_N1": MessageLookupByLibrary.simpleMessage(
       "Geben Sie d1, d2, C und n1 ein.",
@@ -397,6 +454,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Enter_Se_Sut": MessageLookupByLibrary.simpleMessage(
       "Geben Sie Se und Sut ein.",
     ),
+    "Err_Enter_Torsional_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Geben Sie G, Wellendurchmesser, Länge und Läuferträgheitsmoment ein.",
+    ),
     "Err_Enter_W_L_F": MessageLookupByLibrary.simpleMessage(
       "Geben Sie w, L und F ein.",
     ),
@@ -439,8 +499,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Pulley_Positive": MessageLookupByLibrary.simpleMessage(
       "Die Riemenscheibendurchmesser müssen positiv sein.",
     ),
+    "Err_Rotor_Position_Range": MessageLookupByLibrary.simpleMessage(
+      "Der Läufer muss auf der Welle liegen, abseits der Lager.",
+    ),
     "Err_Se_Sut_Positive": MessageLookupByLibrary.simpleMessage(
       "Se und Sut müssen positiv sein.",
+    ),
+    "Err_Second_Rotor_Inertia": MessageLookupByLibrary.simpleMessage(
+      "Geben Sie das Trägheitsmoment des zweiten Läufers ein.",
     ),
     "Err_Shear_Modulus_Positive": MessageLookupByLibrary.simpleMessage(
       "Der Schubmodul muss positiv sein.",
@@ -456,6 +522,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Truss_Two_Joints": MessageLookupByLibrary.simpleMessage(
       "Ein Fachwerk benötigt mindestens 2 Knoten.",
+    ),
+    "Err_Values_Positive": MessageLookupByLibrary.simpleMessage(
+      "Alle Werte müssen größer als null sein.",
     ),
     "Err_W_L_F_Positive": MessageLookupByLibrary.simpleMessage(
       "w, L und F müssen positiv sein.",
@@ -522,6 +591,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Passungen & Toleranzen (ISO 286)",
     ),
     "Flange_Thickness": MessageLookupByLibrary.simpleMessage("Flanschdicke"),
+    "Flexural_Rigidity_EI": MessageLookupByLibrary.simpleMessage(
+      "Biegesteifigkeit, EI",
+    ),
     "Flexure_formula_of_beam": MessageLookupByLibrary.simpleMessage(
       "Biegeformel eines Balkens",
     ),
@@ -609,6 +681,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Imperial_US": MessageLookupByLibrary.simpleMessage(
       "Angloamerikanisch (US)",
     ),
+    "Include_Shaft_Mass": MessageLookupByLibrary.simpleMessage(
+      "Eigenmasse der Welle berücksichtigen",
+    ),
     "Input_Speed_N1": MessageLookupByLibrary.simpleMessage(
       "Antriebsdrehzahl, n1",
     ),
@@ -691,6 +766,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Machine_Design": MessageLookupByLibrary.simpleMessage(
       "Maschinenkonstruktion",
     ),
+    "Mass_Per_Length": MessageLookupByLibrary.simpleMessage(
+      "Masse pro Länge, ρA",
+    ),
     "Material_Density_Default_Steel": MessageLookupByLibrary.simpleMessage(
       "Materialdichte (Standard Stahl)",
     ),
@@ -734,6 +812,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("Einzelverluste, ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
+    "Mode_Number": m3,
     "Module_M": MessageLookupByLibrary.simpleMessage("Modul, m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("Elastizitätsmodul, E"),
     "Mohrs_Circle_for_Plane_Stress": MessageLookupByLibrary.simpleMessage(
@@ -757,6 +836,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Name": MessageLookupByLibrary.simpleMessage("Name"),
     "Natural_Frequency_Estimate": MessageLookupByLibrary.simpleMessage(
       "Eigenfrequenz (Schätzung)",
+    ),
+    "Natural_Frequency_F": MessageLookupByLibrary.simpleMessage(
+      "Eigenfrequenz, f",
     ),
     "No_Favorites_Yet": MessageLookupByLibrary.simpleMessage(
       "Noch keine Favoriten",
@@ -783,6 +865,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "No_Tools_Found": MessageLookupByLibrary.simpleMessage(
       "Keine Werkzeuge gefunden",
+    ),
+    "Node_Position": MessageLookupByLibrary.simpleMessage(
+      "Knoten, ab Läufer 1",
     ),
     "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Nenndurchmesser, d",
@@ -860,6 +945,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Polar_Area_Moment_J": MessageLookupByLibrary.simpleMessage(
       "Polares Flächenträgheitsmoment, J",
     ),
+    "Polar_Moment_Jp": MessageLookupByLibrary.simpleMessage(
+      "Polares Flächenmoment, Jp",
+    ),
     "Power_Lost": MessageLookupByLibrary.simpleMessage("Verlustleistung"),
     "Power_Optional": MessageLookupByLibrary.simpleMessage(
       "Leistung (optional)",
@@ -870,7 +958,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Pressure_Drop": MessageLookupByLibrary.simpleMessage("Druckverlust, Δp"),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("Druckerhöhung, Δp"),
-    "Preview_Value": m3,
+    "Preview_Value": m4,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Hauptspannungen und Hauptebene",
     ),
@@ -897,8 +985,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Name_Required": MessageLookupByLibrary.simpleMessage(
       "Bitte einen Namen eingeben",
     ),
-    "Project_Saved": m4,
-    "Project_Updated": m5,
+    "Project_Saved": m5,
+    "Project_Updated": m6,
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage(
       "Pumpen- & Ventilatorleistung",
     ),
@@ -938,7 +1026,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Entfernt dauerhaft alle Werbung aus dieser App.",
     ),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("Schicht entfernen"),
-    "Remove_Tool_from_Favorites": m6,
+    "Remove_Tool_from_Favorites": m7,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Aus Favoriten entfernen",
     ),
@@ -994,6 +1082,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "Roller_Vertical": MessageLookupByLibrary.simpleMessage(
       "Loslager (vertikale Reaktion)",
     ),
+    "Rotor_Alone_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Nur Läufer, masselose Welle",
+    ),
+    "Rotor_Inertia_J1": MessageLookupByLibrary.simpleMessage(
+      "Läuferträgheitsmoment, J1",
+    ),
+    "Rotor_Inertia_J2": MessageLookupByLibrary.simpleMessage(
+      "Trägheitsmoment des zweiten Läufers, J2",
+    ),
+    "Rotor_Mass_M": MessageLookupByLibrary.simpleMessage("Läufermasse, m"),
+    "Rotor_Position_A": MessageLookupByLibrary.simpleMessage(
+      "Läuferposition von links, a",
+    ),
     "Rule_of_mixtures": MessageLookupByLibrary.simpleMessage("Mischungsregel"),
     "Save": MessageLookupByLibrary.simpleMessage("Speichern"),
     "Save_as_Project": MessageLookupByLibrary.simpleMessage(
@@ -1047,10 +1148,32 @@ class MessageLookup extends MessageLookupByLibrary {
       "Nennwerte der aufgeführten Profile. Widerstandsmoment und Trägheitsradius werden aus den angegebenen A und I berechnet. Prüfen Sie vor der Ausführungsplanung eine aktuelle Werks- oder Normtabelle.",
     ),
     "Settings": MessageLookupByLibrary.simpleMessage("Einstellungen"),
+    "Shaft_Alone_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Nur Wellenmasse",
+    ),
+    "Shaft_And_Rotor": MessageLookupByLibrary.simpleMessage("Welle und Läufer"),
+    "Shaft_Between_Bearings": MessageLookupByLibrary.simpleMessage(
+      "Zwischen Lagern",
+    ),
+    "Shaft_Both_Ends_Fixed": MessageLookupByLibrary.simpleMessage(
+      "Beide Enden eingespannt",
+    ),
+    "Shaft_Critical_Speed": MessageLookupByLibrary.simpleMessage(
+      "Kritische Drehzahl der Welle",
+    ),
+    "Shaft_Diameter_D": MessageLookupByLibrary.simpleMessage(
+      "Wellendurchmesser, d",
+    ),
     "Shaft_Fatigue_Design": MessageLookupByLibrary.simpleMessage(
       "Wellenauslegung auf Dauerfestigkeit (DE-Goodman)",
     ),
+    "Shaft_Length_L": MessageLookupByLibrary.simpleMessage("Wellenlänge, L"),
+    "Shaft_Mass": MessageLookupByLibrary.simpleMessage("Wellenmasse"),
+    "Shaft_Overhung": MessageLookupByLibrary.simpleMessage("Fliegend gelagert"),
     "Shaft_Power": MessageLookupByLibrary.simpleMessage("Wellenleistung"),
+    "Shaft_Stiffness_K": MessageLookupByLibrary.simpleMessage(
+      "Wellensteifigkeit am Läufer, k",
+    ),
     "Shaft_Surface_Stress": MessageLookupByLibrary.simpleMessage(
       "Oberflächenspannung der Welle, σs",
     ),
@@ -1116,6 +1239,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Stirnradgeometrie",
     ),
     "Standard_Sections": MessageLookupByLibrary.simpleMessage("Normprofile"),
+    "Static_Deflection_Delta": MessageLookupByLibrary.simpleMessage(
+      "Statische Durchbiegung, δst",
+    ),
     "Stiffness_Matrix_C": MessageLookupByLibrary.simpleMessage(
       "Steifigkeitsmatrix C",
     ),
@@ -1206,6 +1332,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "Torsion_formula_of_bar": MessageLookupByLibrary.simpleMessage(
       "Torsionsformel eines Stabs",
     ),
+    "Torsional_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Die Eigenträgheit der Welle bleibt unberücksichtigt. Ist sie mit der der Läufer vergleichbar, verwenden Sie stattdessen eine vollständige Mehrmassenrechnung (Holzer).",
+    ),
+    "Torsional_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
+      "Torsionseigenfrequenz",
+    ),
+    "Torsional_Single_Rotor": MessageLookupByLibrary.simpleMessage(
+      "Ein Läufer, fernes Ende eingespannt",
+    ),
+    "Torsional_Stiffness_Kt": MessageLookupByLibrary.simpleMessage(
+      "Torsionssteifigkeit, kt",
+    ),
+    "Torsional_Two_Rotor": MessageLookupByLibrary.simpleMessage(
+      "Zwei Läufer, freie Welle",
+    ),
     "Total_Head_Loss": MessageLookupByLibrary.simpleMessage(
       "Gesamtverlusthöhe",
     ),
@@ -1243,6 +1384,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Velocity_Head": MessageLookupByLibrary.simpleMessage(
       "Geschwindigkeitshöhe, V²/2g",
     ),
+    "Vibration_Modes": MessageLookupByLibrary.simpleMessage("Eigenfrequenzen"),
     "W_Intensity": MessageLookupByLibrary.simpleMessage("w (Streckenlast)"),
     "Wahl_Factor_Kw": MessageLookupByLibrary.simpleMessage("Wahl-Faktor, Kw"),
     "Wall_Area_A": MessageLookupByLibrary.simpleMessage("Wandfläche, A"),
@@ -1257,7 +1399,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Schwache Achse (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Stegdicke"),
-    "What_If": m7,
+    "What_If": m8,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Drahtdurchmesser, d",
     ),

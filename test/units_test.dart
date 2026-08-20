@@ -97,8 +97,23 @@ const Map<UnitCategory, _Known> _known = {
   UnitCategory.density: _Known(
     si: 16.0185, imperial: 1, siLabel: 'kg/m³', imperialLabel: 'lb/ft³',
   ),
+  UnitCategory.mass: _Known(
+    si: 0.453592, imperial: 1, siLabel: 'kg', imperialLabel: 'lb',
+  ),
+  UnitCategory.linearDensity: _Known(
+    // 1 lb/ft = 0.45359237 kg / 0.3048 m.
+    si: 1.4881639436, imperial: 1, siLabel: 'kg/m', imperialLabel: 'lb/ft',
+  ),
+  UnitCategory.massMomentOfInertia: _Known(
+    // 1 lb·ft² = 0.45359237 kg · 0.3048² m².
+    si: 0.04214011, imperial: 1, siLabel: 'kg·m²', imperialLabel: 'lb·ft²',
+  ),
   UnitCategory.frequency: _Known(
     si: 60, imperial: 60, siLabel: 'Hz', imperialLabel: 'Hz',
+  ),
+  UnitCategory.angularFrequency: _Known(
+    si: 314.159, imperial: 314.159,
+    siLabel: 'rad/s', imperialLabel: 'rad/s',
   ),
   UnitCategory.velocity: _Known(
     si: 0.3048, imperial: 1, siLabel: 'm/s', imperialLabel: 'ft/s',
@@ -135,6 +150,7 @@ const _identityCategories = {
   UnitCategory.angle,
   UnitCategory.angularVelocity,
   UnitCategory.frequency,
+  UnitCategory.angularFrequency,
 };
 
 /// Round-trip probes. Chosen to span the magnitudes real inputs cover, and to
