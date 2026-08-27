@@ -302,6 +302,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Desc_Pipe_Pressure_Drop": MessageLookupByLibrary.simpleMessage(
       "Perte de charge et chute de pression de Darcy-Weisbach pour une conduite en charge : h = f·(L/D)·V²/2g. Le coefficient de frottement provient de l\'équation de Colebrook et les pertes singulières s\'ajoutent sous forme de ΣK hauteurs dynamiques.",
     ),
+    "Desc_Pipe_Schedules": MessageLookupByLibrary.simpleMessage(
+      "Diamètre extérieur, épaisseur de paroi et alésage des tuyaux en acier ASME B36.10M, du NPS 1/8 au 24, en séries 10, 40, 80 et 160. Le diamètre intérieur et la section de passage sont calculés à partir du diamètre extérieur et de l\'épaisseur indiqués.",
+    ),
     "Desc_Press_Fit": MessageLookupByLibrary.simpleMessage(
       "Pression de contact et contrainte tangentielle pour un arbre plein emmanché à force dans un moyeu, en supposant le même matériau pour les deux pièces (cas simplifié usuel — le coefficient de Poisson s\'annule).",
     ),
@@ -888,6 +891,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "No_Materials_Found": MessageLookupByLibrary.simpleMessage(
       "Aucun matériau trouvé",
     ),
+    "No_Pipes_Found": MessageLookupByLibrary.simpleMessage(
+      "Aucune taille de tuyau trouvée",
+    ),
     "No_Saved_Projects_Message": MessageLookupByLibrary.simpleMessage(
       "Enregistrez un calcul depuis l\'historique pour conserver ses valeurs ici.",
     ),
@@ -934,6 +940,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Vitesse de sortie, n2",
     ),
     "Outside_Air": MessageLookupByLibrary.simpleMessage("Air extérieur"),
+    "Outside_Diameter_OD": MessageLookupByLibrary.simpleMessage(
+      "Diamètre extérieur, OD",
+    ),
     "Outside_Film_Coefficient": MessageLookupByLibrary.simpleMessage(
       "Coefficient d\'échange extérieur, ho",
     ),
@@ -953,6 +962,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Pick_Material": MessageLookupByLibrary.simpleMessage(
       "Choisir un matériau",
     ),
+    "Pick_Pipe_Size": MessageLookupByLibrary.simpleMessage(
+      "Choisir une taille de tuyau",
+    ),
     "Pick_Standard_Section": MessageLookupByLibrary.simpleMessage(
       "Choisir un profilé",
     ),
@@ -966,11 +978,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "Pinion_Teeth_N1": MessageLookupByLibrary.simpleMessage(
       "Dents du pignon, N1",
     ),
+    "Pipe_Fill_Note": MessageLookupByLibrary.simpleMessage(
+      "Le choix d\'une taille remplit le diamètre intérieur ci-dessous.",
+    ),
     "Pipe_Length_L": MessageLookupByLibrary.simpleMessage(
       "Longueur de conduite, L",
     ),
     "Pipe_Pressure_Drop": MessageLookupByLibrary.simpleMessage(
       "Perte de charge en conduite",
+    ),
+    "Pipe_Schedule": MessageLookupByLibrary.simpleMessage("Série"),
+    "Pipe_Schedules": MessageLookupByLibrary.simpleMessage("Séries de tuyaux"),
+    "Pipe_Size_NPS": MessageLookupByLibrary.simpleMessage("NPS"),
+    "Pipes_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Tuyaux en acier soudés et sans soudure selon ASME B36.10M. NPS et DN sont des désignations, pas des mesures : ce n\'est qu\'à partir du NPS 14 que le nombre correspond au diamètre extérieur en pouces. STD et XS ne sont indiqués que là où ils coïncident avec Sch 40 et Sch 80.",
     ),
     "Pitch_TPI": MessageLookupByLibrary.simpleMessage("Pas / TPI"),
     "Plane_Stresses": MessageLookupByLibrary.simpleMessage(
@@ -1167,6 +1188,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Search_Materials": MessageLookupByLibrary.simpleMessage(
       "Rechercher des matériaux",
+    ),
+    "Search_Pipe_Size": MessageLookupByLibrary.simpleMessage(
+      "Rechercher NPS, DN ou série",
     ),
     "Search_Section": MessageLookupByLibrary.simpleMessage(
       "Rechercher une désignation, p. ex. W12X40",

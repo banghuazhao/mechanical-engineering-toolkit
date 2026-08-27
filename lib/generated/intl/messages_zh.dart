@@ -199,6 +199,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Desc_Pipe_Pressure_Drop": MessageLookupByLibrary.simpleMessage(
       "满管流动的达西—魏斯巴赫水头损失与压降：h = f·(L/D)·V²/2g。摩擦系数由科尔布鲁克公式求解，管件损失按 ΣK 个速度水头计入。",
     ),
+    "Desc_Pipe_Schedules": MessageLookupByLibrary.simpleMessage(
+      "ASME B36.10M 钢管的外径、壁厚和内径，NPS 1/8 至 24，包括 Sch 10、40、80 和 160。内径和流通面积由所列外径与壁厚计算得出。",
+    ),
     "Desc_Press_Fit": MessageLookupByLibrary.simpleMessage(
       "实心轴压入轮毂时的接触压力与周向应力，假定两零件材料相同（标准简化情形 — 泊松比可约去）。",
     ),
@@ -581,6 +584,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "请换一个规格或清除筛选条件。",
     ),
     "No_Materials_Found": MessageLookupByLibrary.simpleMessage("未找到材料"),
+    "No_Pipes_Found": MessageLookupByLibrary.simpleMessage("未找到管道规格"),
     "No_Saved_Projects_Message": MessageLookupByLibrary.simpleMessage(
       "从历史记录中保存一次计算，即可在此长期保留其输入值。",
     ),
@@ -611,6 +615,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Orthotropic_material": MessageLookupByLibrary.simpleMessage("正交各向异性材料"),
     "Output_Speed_N2": MessageLookupByLibrary.simpleMessage("输出转速 n2"),
     "Outside_Air": MessageLookupByLibrary.simpleMessage("外侧流体"),
+    "Outside_Diameter_OD": MessageLookupByLibrary.simpleMessage("外径, OD"),
     "Outside_Film_Coefficient": MessageLookupByLibrary.simpleMessage(
       "外侧表面传热系数 ho",
     ),
@@ -624,6 +629,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Parallel_Flow": MessageLookupByLibrary.simpleMessage("顺流"),
     "Pick_Fluid": MessageLookupByLibrary.simpleMessage("选择流体"),
     "Pick_Material": MessageLookupByLibrary.simpleMessage("选择材料"),
+    "Pick_Pipe_Size": MessageLookupByLibrary.simpleMessage("选择管道规格"),
     "Pick_Standard_Section": MessageLookupByLibrary.simpleMessage("选择标准截面"),
     "Pick_Thermal_Material": MessageLookupByLibrary.simpleMessage("选择材料"),
     "Pin": MessageLookupByLibrary.simpleMessage("铰支座"),
@@ -631,8 +637,15 @@ class MessageLookup extends MessageLookupByLibrary {
       "小齿轮分度圆直径 d1",
     ),
     "Pinion_Teeth_N1": MessageLookupByLibrary.simpleMessage("小齿轮齿数 N1"),
+    "Pipe_Fill_Note": MessageLookupByLibrary.simpleMessage("选择规格后将自动填入下方的内径。"),
     "Pipe_Length_L": MessageLookupByLibrary.simpleMessage("管长 L"),
     "Pipe_Pressure_Drop": MessageLookupByLibrary.simpleMessage("管道压降"),
+    "Pipe_Schedule": MessageLookupByLibrary.simpleMessage("壁厚系列"),
+    "Pipe_Schedules": MessageLookupByLibrary.simpleMessage("管道壁厚系列"),
+    "Pipe_Size_NPS": MessageLookupByLibrary.simpleMessage("公称管径 NPS"),
+    "Pipes_Footnote": MessageLookupByLibrary.simpleMessage(
+      "ASME B36.10M 焊接及无缝钢管。NPS 与 DN 均为公称代号，并非真实尺寸：NPS 14 及以上时，该数字等于以英寸计的外径。STD 与 XS 仅在与 Sch 40、Sch 80 一致时显示。",
+    ),
     "Pitch_TPI": MessageLookupByLibrary.simpleMessage("螺距 / 每英寸牙数"),
     "Plane_Stresses": MessageLookupByLibrary.simpleMessage("平面应力"),
     "Plane_stresses_transformation": MessageLookupByLibrary.simpleMessage(
@@ -725,6 +738,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Search": MessageLookupByLibrary.simpleMessage("搜索"),
     "Search_Fluids": MessageLookupByLibrary.simpleMessage("搜索流体"),
     "Search_Materials": MessageLookupByLibrary.simpleMessage("搜索材料"),
+    "Search_Pipe_Size": MessageLookupByLibrary.simpleMessage("搜索 NPS、DN 或壁厚系列"),
     "Search_Section": MessageLookupByLibrary.simpleMessage("搜索型号，例如 W12X40"),
     "Search_Size_Or_Fit": MessageLookupByLibrary.simpleMessage("搜索直径或配合"),
     "Search_Thread_Size": MessageLookupByLibrary.simpleMessage("搜索螺纹规格"),

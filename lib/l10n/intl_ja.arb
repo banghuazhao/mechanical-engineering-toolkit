@@ -639,5 +639,16 @@
   "Beam_Frequency_Footnote": "オイラー・ベルヌーイ理論のため、せん断変形と回転慣性を無視します。短く太いはり（L/dが約10未満）や高次モードでは振動数が高めに出ます。",
   "Critical_Speed_Footnote": "ダンカレーの式は常に低めの値を与えるため、表示される危険速度は安全側です。運転速度とは十分な余裕をとってください。",
   "Torsional_Footnote": "軸自身の慣性は無視しています。ロータと同程度の場合は、多質点系（ホルツァー法）で解析してください。",
-  "Beam_Properties": "はりの諸元"
+  "Beam_Properties": "はりの諸元",
+
+  "Pipe_Schedules": "配管スケジュール",
+  "Desc_Pipe_Schedules": "ASME B36.10M 鋼管の外径・肉厚・内径。NPS 1/8 から 24、スケジュール 10・40・80・160。内径と流路断面積は記載の外径と肉厚から計算しています。",
+  "Search_Pipe_Size": "NPS・DN・スケジュールを検索",
+  "Pipes_Footnote": "ASME B36.10M の溶接鋼管および継目無鋼管。NPS と DN は呼称であり実寸ではありません。数値が外径(インチ)と一致するのは NPS 14 以上のみです。STD と XS は Sch 40・Sch 80 と一致する場合のみ表示しています。",
+  "Pick_Pipe_Size": "配管サイズを選択",
+  "No_Pipes_Found": "配管サイズが見つかりません",
+  "Pipe_Schedule": "スケジュール",
+  "Outside_Diameter_OD": "外径, OD",
+  "Pipe_Size_NPS": "NPS",
+  "Pipe_Fill_Note": "サイズを選ぶと下の内径が入力されます。"
 }

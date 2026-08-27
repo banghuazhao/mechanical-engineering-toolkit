@@ -286,6 +286,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Desc_Pipe_Pressure_Drop": MessageLookupByLibrary.simpleMessage(
       "Druckverlust und Verlusthöhe nach Darcy–Weisbach für ein vollgefülltes Rohr: h = f·(L/D)·V²/2g. Die Rohrreibungszahl folgt aus der Colebrook-Gleichung, Einbautenverluste kommen als ΣK Geschwindigkeitshöhen hinzu.",
     ),
+    "Desc_Pipe_Schedules": MessageLookupByLibrary.simpleMessage(
+      "Außendurchmesser, Wanddicke und lichte Weite für Stahlrohre nach ASME B36.10M, NPS 1/8 bis 24, in den Schedules 10, 40, 80 und 160. Innendurchmesser und Strömungsquerschnitt werden aus dem angegebenen Außendurchmesser und der Wanddicke berechnet.",
+    ),
     "Desc_Press_Fit": MessageLookupByLibrary.simpleMessage(
       "Kontaktdruck und Tangentialspannung für eine massive Welle, die in eine Nabe gepresst wird, wobei für beide Teile dasselbe Material angenommen wird (übliche Vereinfachung — die Poissonzahl hebt sich weg).",
     ),
@@ -854,6 +857,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "No_Materials_Found": MessageLookupByLibrary.simpleMessage(
       "Keine Materialien gefunden",
     ),
+    "No_Pipes_Found": MessageLookupByLibrary.simpleMessage(
+      "Keine Rohrgrößen gefunden",
+    ),
     "No_Saved_Projects_Message": MessageLookupByLibrary.simpleMessage(
       "Speichern Sie eine Berechnung aus dem Verlauf, um ihre Eingaben hier aufzubewahren.",
     ),
@@ -900,6 +906,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Abtriebsdrehzahl, n2",
     ),
     "Outside_Air": MessageLookupByLibrary.simpleMessage("Außenluft"),
+    "Outside_Diameter_OD": MessageLookupByLibrary.simpleMessage(
+      "Außendurchmesser, OD",
+    ),
     "Outside_Film_Coefficient": MessageLookupByLibrary.simpleMessage(
       "Äußerer Wärmeübergangskoeffizient, ho",
     ),
@@ -917,6 +926,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Parallel_Flow": MessageLookupByLibrary.simpleMessage("Gleichstrom"),
     "Pick_Fluid": MessageLookupByLibrary.simpleMessage("Fluid wählen"),
     "Pick_Material": MessageLookupByLibrary.simpleMessage("Material auswählen"),
+    "Pick_Pipe_Size": MessageLookupByLibrary.simpleMessage("Rohrgröße wählen"),
     "Pick_Standard_Section": MessageLookupByLibrary.simpleMessage(
       "Normprofil wählen",
     ),
@@ -928,9 +938,20 @@ class MessageLookup extends MessageLookupByLibrary {
       "Teilkreisdurchmesser Ritzel, d1",
     ),
     "Pinion_Teeth_N1": MessageLookupByLibrary.simpleMessage("Ritzelzähne, N1"),
+    "Pipe_Fill_Note": MessageLookupByLibrary.simpleMessage(
+      "Die Auswahl einer Größe füllt den Innendurchmesser unten aus.",
+    ),
     "Pipe_Length_L": MessageLookupByLibrary.simpleMessage("Rohrlänge, L"),
     "Pipe_Pressure_Drop": MessageLookupByLibrary.simpleMessage(
       "Rohrdruckverlust",
+    ),
+    "Pipe_Schedule": MessageLookupByLibrary.simpleMessage("Schedule"),
+    "Pipe_Schedules": MessageLookupByLibrary.simpleMessage(
+      "Rohrmaße & Schedule",
+    ),
+    "Pipe_Size_NPS": MessageLookupByLibrary.simpleMessage("NPS"),
+    "Pipes_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Geschweißte und nahtlose Stahlrohre nach ASME B36.10M. NPS und DN sind Bezeichnungen, keine Maße: erst ab NPS 14 entspricht die Zahl dem Außendurchmesser in Zoll. STD und XS sind nur dort vermerkt, wo sie mit Sch 40 und Sch 80 übereinstimmen.",
     ),
     "Pitch_TPI": MessageLookupByLibrary.simpleMessage("Steigung / TPI"),
     "Plane_Stresses": MessageLookupByLibrary.simpleMessage("Ebene Spannungen"),
@@ -1107,6 +1128,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Search_Fluids": MessageLookupByLibrary.simpleMessage("Fluide suchen"),
     "Search_Materials": MessageLookupByLibrary.simpleMessage(
       "Materialien durchsuchen",
+    ),
+    "Search_Pipe_Size": MessageLookupByLibrary.simpleMessage(
+      "NPS, DN oder Schedule suchen",
     ),
     "Search_Section": MessageLookupByLibrary.simpleMessage(
       "Bezeichnung suchen, z. B. W12X40",

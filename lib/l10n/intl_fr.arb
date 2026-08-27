@@ -639,5 +639,16 @@
   "Beam_Frequency_Footnote": "Théorie d'Euler-Bernoulli : la déformation de cisaillement et l'inertie de rotation sont négligées ; les fréquences sont donc surestimées pour une poutre trapue (L/d inférieur à environ 10) et pour les modes supérieurs.",
   "Critical_Speed_Footnote": "L'équation de Dunkerley sous-estime toujours : la vitesse critique affichée est donc conservative. Maintenez une marge confortable avec la vitesse de service.",
   "Torsional_Footnote": "L'inertie propre de l'arbre est négligée. Lorsqu'elle est comparable à celle des rotors, utilisez plutôt une analyse multi-masses complète (Holzer).",
-  "Beam_Properties": "Caractéristiques de la poutre"
+  "Beam_Properties": "Caractéristiques de la poutre",
+
+  "Pipe_Schedules": "Séries de tuyaux",
+  "Desc_Pipe_Schedules": "Diamètre extérieur, épaisseur de paroi et alésage des tuyaux en acier ASME B36.10M, du NPS 1/8 au 24, en séries 10, 40, 80 et 160. Le diamètre intérieur et la section de passage sont calculés à partir du diamètre extérieur et de l'épaisseur indiqués.",
+  "Search_Pipe_Size": "Rechercher NPS, DN ou série",
+  "Pipes_Footnote": "Tuyaux en acier soudés et sans soudure selon ASME B36.10M. NPS et DN sont des désignations, pas des mesures : ce n'est qu'à partir du NPS 14 que le nombre correspond au diamètre extérieur en pouces. STD et XS ne sont indiqués que là où ils coïncident avec Sch 40 et Sch 80.",
+  "Pick_Pipe_Size": "Choisir une taille de tuyau",
+  "No_Pipes_Found": "Aucune taille de tuyau trouvée",
+  "Pipe_Schedule": "Série",
+  "Outside_Diameter_OD": "Diamètre extérieur, OD",
+  "Pipe_Size_NPS": "NPS",
+  "Pipe_Fill_Note": "Le choix d'une taille remplit le diamètre intérieur ci-dessous."
 }

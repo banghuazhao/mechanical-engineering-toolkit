@@ -639,5 +639,16 @@
   "Beam_Frequency_Footnote": "Euler-Bernoulli-Theorie: Schubverformung und Drehträgheit bleiben unberücksichtigt, daher fallen die Frequenzen bei gedrungenen Balken (L/d unter etwa 10) und bei höheren Eigenformen zu hoch aus.",
   "Critical_Speed_Footnote": "Die Gleichung nach Dunkerley liegt stets auf der sicheren Seite, die angegebene kritische Drehzahl ist also konservativ. Halten Sie zur Betriebsdrehzahl einen ausreichenden Abstand.",
   "Torsional_Footnote": "Die Eigenträgheit der Welle bleibt unberücksichtigt. Ist sie mit der der Läufer vergleichbar, verwenden Sie stattdessen eine vollständige Mehrmassenrechnung (Holzer).",
-  "Beam_Properties": "Balkenkennwerte"
+  "Beam_Properties": "Balkenkennwerte",
+
+  "Pipe_Schedules": "Rohrmaße & Schedule",
+  "Desc_Pipe_Schedules": "Außendurchmesser, Wanddicke und lichte Weite für Stahlrohre nach ASME B36.10M, NPS 1/8 bis 24, in den Schedules 10, 40, 80 und 160. Innendurchmesser und Strömungsquerschnitt werden aus dem angegebenen Außendurchmesser und der Wanddicke berechnet.",
+  "Search_Pipe_Size": "NPS, DN oder Schedule suchen",
+  "Pipes_Footnote": "Geschweißte und nahtlose Stahlrohre nach ASME B36.10M. NPS und DN sind Bezeichnungen, keine Maße: erst ab NPS 14 entspricht die Zahl dem Außendurchmesser in Zoll. STD und XS sind nur dort vermerkt, wo sie mit Sch 40 und Sch 80 übereinstimmen.",
+  "Pick_Pipe_Size": "Rohrgröße wählen",
+  "No_Pipes_Found": "Keine Rohrgrößen gefunden",
+  "Pipe_Schedule": "Schedule",
+  "Outside_Diameter_OD": "Außendurchmesser, OD",
+  "Pipe_Size_NPS": "NPS",
+  "Pipe_Fill_Note": "Die Auswahl einer Größe füllt den Innendurchmesser unten aus."
 }

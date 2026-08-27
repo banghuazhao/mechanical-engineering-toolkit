@@ -14,6 +14,7 @@ import 'package:mechanical_engineering_toolkit/home/fluids_thermal/page/reynolds
 import 'package:mechanical_engineering_toolkit/home/reference/drill_tap_chart_page.dart';
 import 'package:mechanical_engineering_toolkit/home/reference/fits_tolerances_page.dart';
 import 'package:mechanical_engineering_toolkit/home/reference/standard_sections_page.dart';
+import 'package:mechanical_engineering_toolkit/home/reference/pipe_schedules_page.dart';
 import 'package:mechanical_engineering_toolkit/home/unit_converter/unit_converter_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/bar_force_displacement_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/beam_flexure_formula_page.dart';
@@ -688,6 +689,31 @@ class ToolLibrary {
               context,
               MaterialPageRoute(
                   builder: (context) => StandardSectionsPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 504,
+          icon: Icons.circle_outlined,
+          title: S.of(context).Pipe_Schedules,
+          type: ToolType.utilities,
+          keywords: const [
+            'pipe',
+            'schedule',
+            'sch 40',
+            'sch 80',
+            'nps',
+            'dn',
+            'bore',
+            'wall thickness',
+            'asme b36.10',
+            'std',
+            'xs'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PipeSchedulesPage(
                       title: title,
                       toolId: toolId,
                       initialInputs: initialInputs)))),

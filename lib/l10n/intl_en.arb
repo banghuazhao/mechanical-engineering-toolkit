@@ -639,5 +639,16 @@
   "Beam_Frequency_Footnote": "Euler–Bernoulli theory: shear deformation and rotary inertia are ignored, so the frequencies run high for a stubby beam (L/d under about 10) and for the higher modes.",
   "Critical_Speed_Footnote": "Dunkerley's equation always errs low, so this critical speed is a conservative one. Keep the running speed clear of it by a comfortable margin.",
   "Torsional_Footnote": "The shaft's own inertia is neglected. Where it is comparable with the rotors', use a full multi-station (Holzer) analysis instead.",
-  "Beam_Properties": "Beam properties"
+  "Beam_Properties": "Beam properties",
+
+  "Pipe_Schedules": "Pipe Schedules",
+  "Desc_Pipe_Schedules": "Outside diameter, wall thickness and bore for ASME B36.10M steel pipe, NPS 1/8 to 24, in schedules 10, 40, 80 and 160. Inside diameter and flow area are computed from the listed OD and wall, so they cannot disagree with them.",
+  "Search_Pipe_Size": "Search NPS, DN or schedule",
+  "Pipes_Footnote": "ASME B36.10M welded and seamless wrought steel pipe. NPS and DN are names, not measured sizes: only from NPS 14 up does the number equal the outside diameter in inches. STD and XS are marked only over the range where they coincide with Sch 40 and Sch 80.",
+  "Pick_Pipe_Size": "Pick pipe size",
+  "No_Pipes_Found": "No pipe sizes found",
+  "Pipe_Schedule": "Schedule",
+  "Outside_Diameter_OD": "Outside diameter, OD",
+  "Pipe_Size_NPS": "NPS",
+  "Pipe_Fill_Note": "Picking a size fills the inside diameter below."
 }

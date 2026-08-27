@@ -5613,6 +5613,96 @@ class S {
       args: [],
     );
   }
+
+  /// `Pipe Schedules`
+  String get Pipe_Schedules {
+    return Intl.message(
+      'Pipe Schedules',
+      name: 'Pipe_Schedules',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Outside diameter, wall thickness and bore for ASME B36.10M steel pipe, NPS 1/8 to 24, in schedules 10, 40, 80 and 160. Inside diameter and flow area are computed from the listed OD and wall, so they cannot disagree with them.`
+  String get Desc_Pipe_Schedules {
+    return Intl.message(
+      'Outside diameter, wall thickness and bore for ASME B36.10M steel pipe, NPS 1/8 to 24, in schedules 10, 40, 80 and 160. Inside diameter and flow area are computed from the listed OD and wall, so they cannot disagree with them.',
+      name: 'Desc_Pipe_Schedules',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search NPS, DN or schedule`
+  String get Search_Pipe_Size {
+    return Intl.message(
+      'Search NPS, DN or schedule',
+      name: 'Search_Pipe_Size',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ASME B36.10M welded and seamless wrought steel pipe. NPS and DN are names, not measured sizes: only from NPS 14 up does the number equal the outside diameter in inches. STD and XS are marked only over the range where they coincide with Sch 40 and Sch 80.`
+  String get Pipes_Footnote {
+    return Intl.message(
+      'ASME B36.10M welded and seamless wrought steel pipe. NPS and DN are names, not measured sizes: only from NPS 14 up does the number equal the outside diameter in inches. STD and XS are marked only over the range where they coincide with Sch 40 and Sch 80.',
+      name: 'Pipes_Footnote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pick pipe size`
+  String get Pick_Pipe_Size {
+    return Intl.message(
+      'Pick pipe size',
+      name: 'Pick_Pipe_Size',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No pipe sizes found`
+  String get No_Pipes_Found {
+    return Intl.message(
+      'No pipe sizes found',
+      name: 'No_Pipes_Found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Schedule`
+  String get Pipe_Schedule {
+    return Intl.message('Schedule', name: 'Pipe_Schedule', desc: '', args: []);
+  }
+
+  /// `Outside diameter, OD`
+  String get Outside_Diameter_OD {
+    return Intl.message(
+      'Outside diameter, OD',
+      name: 'Outside_Diameter_OD',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NPS`
+  String get Pipe_Size_NPS {
+    return Intl.message('NPS', name: 'Pipe_Size_NPS', desc: '', args: []);
+  }
+
+  /// `Picking a size fills the inside diameter below.`
+  String get Pipe_Fill_Note {
+    return Intl.message(
+      'Picking a size fills the inside diameter below.',
+      name: 'Pipe_Fill_Note',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

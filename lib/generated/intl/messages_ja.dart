@@ -211,6 +211,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Desc_Pipe_Pressure_Drop": MessageLookupByLibrary.simpleMessage(
       "満管流れに対するダルシー・ワイスバッハの損失水頭と圧力損失：h = f·(L/D)·V²/2g。摩擦係数はコールブルックの式から求め、継手類の損失は ΣK 個の速度水頭として加算します。",
     ),
+    "Desc_Pipe_Schedules": MessageLookupByLibrary.simpleMessage(
+      "ASME B36.10M 鋼管の外径・肉厚・内径。NPS 1/8 から 24、スケジュール 10・40・80・160。内径と流路断面積は記載の外径と肉厚から計算しています。",
+    ),
     "Desc_Press_Fit": MessageLookupByLibrary.simpleMessage(
       "同一材料の中実軸をハブに圧入した場合の接触圧力と周方向応力を求めます（一般的な簡易ケース — ポアソン比は相殺されます）。",
     ),
@@ -633,6 +636,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "別のサイズを試すか、フィルターをクリアしてください。",
     ),
     "No_Materials_Found": MessageLookupByLibrary.simpleMessage("材料が見つかりません"),
+    "No_Pipes_Found": MessageLookupByLibrary.simpleMessage("配管サイズが見つかりません"),
     "No_Saved_Projects_Message": MessageLookupByLibrary.simpleMessage(
       "履歴から計算を保存すると、その入力値をここに残せます。",
     ),
@@ -665,6 +669,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Orthotropic_material": MessageLookupByLibrary.simpleMessage("直交異方性材料"),
     "Output_Speed_N2": MessageLookupByLibrary.simpleMessage("出力回転速度、n2"),
     "Outside_Air": MessageLookupByLibrary.simpleMessage("外側流体"),
+    "Outside_Diameter_OD": MessageLookupByLibrary.simpleMessage("外径, OD"),
     "Outside_Film_Coefficient": MessageLookupByLibrary.simpleMessage(
       "外側熱伝達率 ho",
     ),
@@ -678,6 +683,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Parallel_Flow": MessageLookupByLibrary.simpleMessage("並流"),
     "Pick_Fluid": MessageLookupByLibrary.simpleMessage("流体を選択"),
     "Pick_Material": MessageLookupByLibrary.simpleMessage("材料を選択"),
+    "Pick_Pipe_Size": MessageLookupByLibrary.simpleMessage("配管サイズを選択"),
     "Pick_Standard_Section": MessageLookupByLibrary.simpleMessage("標準断面を選択"),
     "Pick_Thermal_Material": MessageLookupByLibrary.simpleMessage("材料を選択"),
     "Pin": MessageLookupByLibrary.simpleMessage("ピン支点"),
@@ -685,8 +691,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "ピニオンピッチ円直径、d1",
     ),
     "Pinion_Teeth_N1": MessageLookupByLibrary.simpleMessage("ピニオン歯数、N1"),
+    "Pipe_Fill_Note": MessageLookupByLibrary.simpleMessage(
+      "サイズを選ぶと下の内径が入力されます。",
+    ),
     "Pipe_Length_L": MessageLookupByLibrary.simpleMessage("管長さ L"),
     "Pipe_Pressure_Drop": MessageLookupByLibrary.simpleMessage("管路の圧力損失"),
+    "Pipe_Schedule": MessageLookupByLibrary.simpleMessage("スケジュール"),
+    "Pipe_Schedules": MessageLookupByLibrary.simpleMessage("配管スケジュール"),
+    "Pipe_Size_NPS": MessageLookupByLibrary.simpleMessage("NPS"),
+    "Pipes_Footnote": MessageLookupByLibrary.simpleMessage(
+      "ASME B36.10M の溶接鋼管および継目無鋼管。NPS と DN は呼称であり実寸ではありません。数値が外径(インチ)と一致するのは NPS 14 以上のみです。STD と XS は Sch 40・Sch 80 と一致する場合のみ表示しています。",
+    ),
     "Pitch_TPI": MessageLookupByLibrary.simpleMessage("ピッチ / TPI"),
     "Plane_Stresses": MessageLookupByLibrary.simpleMessage("平面応力"),
     "Plane_stresses_transformation": MessageLookupByLibrary.simpleMessage(
@@ -799,6 +814,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Search": MessageLookupByLibrary.simpleMessage("検索"),
     "Search_Fluids": MessageLookupByLibrary.simpleMessage("流体を検索"),
     "Search_Materials": MessageLookupByLibrary.simpleMessage("材料を検索"),
+    "Search_Pipe_Size": MessageLookupByLibrary.simpleMessage(
+      "NPS・DN・スケジュールを検索",
+    ),
     "Search_Section": MessageLookupByLibrary.simpleMessage("呼称で検索（例：W12X40）"),
     "Search_Size_Or_Fit": MessageLookupByLibrary.simpleMessage("直径またははめあいを検索"),
     "Search_Thread_Size": MessageLookupByLibrary.simpleMessage("ねじサイズを検索"),

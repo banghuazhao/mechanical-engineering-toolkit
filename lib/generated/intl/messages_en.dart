@@ -280,6 +280,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Desc_Pipe_Pressure_Drop": MessageLookupByLibrary.simpleMessage(
       "Darcy–Weisbach head loss and pressure drop for a full-running pipe: h = f·(L/D)·V²/2g, with the friction factor from the Colebrook equation and fitting losses added as ΣK velocity heads.",
     ),
+    "Desc_Pipe_Schedules": MessageLookupByLibrary.simpleMessage(
+      "Outside diameter, wall thickness and bore for ASME B36.10M steel pipe, NPS 1/8 to 24, in schedules 10, 40, 80 and 160. Inside diameter and flow area are computed from the listed OD and wall, so they cannot disagree with them.",
+    ),
     "Desc_Press_Fit": MessageLookupByLibrary.simpleMessage(
       "Contact pressure and hoop stress for a solid shaft pressed into a hub, same material assumed for both parts (a standard simplified case — Poisson\\\'s ratio cancels out).",
     ),
@@ -816,6 +819,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "No_Materials_Found": MessageLookupByLibrary.simpleMessage(
       "No materials found",
     ),
+    "No_Pipes_Found": MessageLookupByLibrary.simpleMessage(
+      "No pipe sizes found",
+    ),
     "No_Saved_Projects_Message": MessageLookupByLibrary.simpleMessage(
       "Save a calculation from your history to keep its inputs here for later.",
     ),
@@ -856,6 +862,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Output_Speed_N2": MessageLookupByLibrary.simpleMessage("Output speed, n2"),
     "Outside_Air": MessageLookupByLibrary.simpleMessage("Outside air"),
+    "Outside_Diameter_OD": MessageLookupByLibrary.simpleMessage(
+      "Outside diameter, OD",
+    ),
     "Outside_Film_Coefficient": MessageLookupByLibrary.simpleMessage(
       "Outside film coefficient, ho",
     ),
@@ -873,6 +882,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Parallel_Flow": MessageLookupByLibrary.simpleMessage("Parallel flow"),
     "Pick_Fluid": MessageLookupByLibrary.simpleMessage("Pick fluid"),
     "Pick_Material": MessageLookupByLibrary.simpleMessage("Pick material"),
+    "Pick_Pipe_Size": MessageLookupByLibrary.simpleMessage("Pick pipe size"),
     "Pick_Standard_Section": MessageLookupByLibrary.simpleMessage(
       "Pick standard section",
     ),
@@ -884,9 +894,18 @@ class MessageLookup extends MessageLookupByLibrary {
       "Pinion pitch diameter, d1",
     ),
     "Pinion_Teeth_N1": MessageLookupByLibrary.simpleMessage("Pinion teeth, N1"),
+    "Pipe_Fill_Note": MessageLookupByLibrary.simpleMessage(
+      "Picking a size fills the inside diameter below.",
+    ),
     "Pipe_Length_L": MessageLookupByLibrary.simpleMessage("Pipe length, L"),
     "Pipe_Pressure_Drop": MessageLookupByLibrary.simpleMessage(
       "Pipe Pressure Drop",
+    ),
+    "Pipe_Schedule": MessageLookupByLibrary.simpleMessage("Schedule"),
+    "Pipe_Schedules": MessageLookupByLibrary.simpleMessage("Pipe Schedules"),
+    "Pipe_Size_NPS": MessageLookupByLibrary.simpleMessage("NPS"),
+    "Pipes_Footnote": MessageLookupByLibrary.simpleMessage(
+      "ASME B36.10M welded and seamless wrought steel pipe. NPS and DN are names, not measured sizes: only from NPS 14 up does the number equal the outside diameter in inches. STD and XS are marked only over the range where they coincide with Sch 40 and Sch 80.",
     ),
     "Pitch_TPI": MessageLookupByLibrary.simpleMessage("Pitch / TPI"),
     "Plane_Stresses": MessageLookupByLibrary.simpleMessage("Plane Stresses"),
@@ -1047,6 +1066,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Search_Fluids": MessageLookupByLibrary.simpleMessage("Search fluids"),
     "Search_Materials": MessageLookupByLibrary.simpleMessage(
       "Search materials",
+    ),
+    "Search_Pipe_Size": MessageLookupByLibrary.simpleMessage(
+      "Search NPS, DN or schedule",
     ),
     "Search_Section": MessageLookupByLibrary.simpleMessage(
       "Search a designation, e.g. W12X40",

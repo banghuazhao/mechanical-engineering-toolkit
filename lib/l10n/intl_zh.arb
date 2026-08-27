@@ -638,5 +638,16 @@
   "Beam_Frequency_Footnote": "采用欧拉–伯努利理论，忽略剪切变形与转动惯性；因此对短粗梁（L/d 小于约 10）和高阶模态，频率会偏高。",
   "Critical_Speed_Footnote": "邓克利公式总是偏低，因此所示临界转速偏保守。请使工作转速与之保持足够裕度。",
   "Torsional_Footnote": "已忽略轴自身的转动惯量。若其与转子相当，请改用完整的多质量（霍尔泽）分析。",
-  "Beam_Properties": "梁的参数"
+  "Beam_Properties": "梁的参数",
+
+  "Pipe_Schedules": "管道壁厚系列",
+  "Desc_Pipe_Schedules": "ASME B36.10M 钢管的外径、壁厚和内径，NPS 1/8 至 24，包括 Sch 10、40、80 和 160。内径和流通面积由所列外径与壁厚计算得出。",
+  "Search_Pipe_Size": "搜索 NPS、DN 或壁厚系列",
+  "Pipes_Footnote": "ASME B36.10M 焊接及无缝钢管。NPS 与 DN 均为公称代号，并非真实尺寸：NPS 14 及以上时，该数字等于以英寸计的外径。STD 与 XS 仅在与 Sch 40、Sch 80 一致时显示。",
+  "Pick_Pipe_Size": "选择管道规格",
+  "No_Pipes_Found": "未找到管道规格",
+  "Pipe_Schedule": "壁厚系列",
+  "Outside_Diameter_OD": "外径, OD",
+  "Pipe_Size_NPS": "公称管径 NPS",
+  "Pipe_Fill_Note": "选择规格后将自动填入下方的内径。"
 }

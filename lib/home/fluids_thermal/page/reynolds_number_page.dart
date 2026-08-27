@@ -7,6 +7,7 @@ import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/preset_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/pipe_size_picker.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -34,9 +35,10 @@ class _ReynoldsNumberPageState extends State<ReynoldsNumberPage> {
   double? _density;
   double? _viscosity;
 
-  /// Bumped whenever a preset overwrites the fluid fields, so the two
+  /// Bumped whenever a preset overwrites a field, so the affected
   /// [UnitField]s rebuild with their new values rather than keeping the text
-  /// the user last typed.
+  /// the user last typed. Shared by the fluid and pipe pickers: they write to
+  /// different fields, and rebuilding all of them costs nothing.
   int _presetGeneration = 0;
 
   @override
@@ -93,9 +95,18 @@ class _ReynoldsNumberPageState extends State<ReynoldsNumberPage> {
                       _presetGeneration++;
                     }),
                   ),
+                  PipeSizeButton(
+                    // The bore, not the size in the pipe's name: NPS 2 pipe
+                    // runs 52.5 mm inside at Sch 40 and 49.2 mm at Sch 80.
+                    onSelected: (pipe) => setState(() {
+                      _diameter = pipe.insideDiameter;
+                      _presetGeneration++;
+                    }),
+                  ),
                   SizedBox(height: context.tokens.space2),
                   AdaptiveFieldGrid(children: [
                     UnitField(
+                      key: ValueKey('D$_presetGeneration'),
                       label: l10n.Inside_Diameter_D,
                       category: UnitCategory.length,
                       signed: false,
