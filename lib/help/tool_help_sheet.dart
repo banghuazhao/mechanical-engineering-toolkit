@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help.dart';
-import 'package:mechanical_engineering_toolkit/help/tool_help_content.dart';
+import 'package:mechanical_engineering_toolkit/help/tool_help_localizations.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/share_helper.dart';
 
@@ -51,7 +51,7 @@ class ToolHelpView extends StatelessWidget {
     final l10n = S.of(context);
     final theme = Theme.of(context);
     final tokens = context.tokens;
-    final help = toolHelp[toolId];
+    final help = helpFor(toolId, Localizations.localeOf(context));
 
     if (help == null) {
       return Padding(
@@ -77,7 +77,8 @@ class ToolHelpView extends StatelessWidget {
                 icon: const Icon(Icons.copy_rounded),
                 onPressed: () async {
                   await Clipboard.setData(ClipboardData(
-                      text: toolHelpAsText(help, toolTitle)));
+                      text: toolHelpAsText(help, toolTitle,
+                          headings: HelpHeadings.of(context))));
                   if (!context.mounted) return;
                   // maybeOf: the copy itself has already happened, and the
                   // confirmation is not worth asserting over if this sheet is
@@ -93,7 +94,9 @@ class ToolHelpView extends StatelessWidget {
                 icon: const Icon(Icons.share_rounded),
                 onPressed: () => shareResult(
                   toolTitle,
-                  toolHelpAsText(help, toolTitle).split('\n'),
+                  toolHelpAsText(help, toolTitle,
+                          headings: HelpHeadings.of(context))
+                      .split('\n'),
                 ),
               ),
             ],
@@ -284,12 +287,46 @@ class _Bullet extends StatelessWidget {
   }
 }
 
+/// The section headings the plain-text export writes, in the reader's
+/// language — so a shared explanation reads the same as the sheet it came
+/// from rather than reverting to English around localized content.
+class HelpHeadings {
+  const HelpHeadings({
+    required this.symbols,
+    required this.assumptions,
+    required this.references,
+  });
+
+  final String symbols;
+  final String assumptions;
+  final String references;
+
+  factory HelpHeadings.of(BuildContext context) {
+    final l10n = S.of(context);
+    return HelpHeadings(
+      symbols: l10n.Help_Symbols,
+      assumptions: l10n.Help_Assumptions,
+      references: l10n.Help_References,
+    );
+  }
+
+  static const english = HelpHeadings(
+    symbols: 'Symbols',
+    assumptions: 'Assumptions & limits',
+    references: 'References',
+  );
+}
+
 /// The sheet as plain text, for the copy and share actions.
 ///
 /// Equations go out in their [HelpFormula.plain] form: TeX pasted into an
 /// email is unreadable, and the point of sharing is that someone else can read
 /// it without this app.
-String toolHelpAsText(ToolHelp help, String toolTitle) {
+String toolHelpAsText(
+  ToolHelp help,
+  String toolTitle, {
+  HelpHeadings headings = HelpHeadings.english,
+}) {
   final buffer = StringBuffer()
     ..writeln(toolTitle)
     ..writeln()
@@ -305,7 +342,7 @@ String toolHelpAsText(ToolHelp help, String toolTitle) {
     }
   }
   if (help.symbols.isNotEmpty) {
-    buffer..writeln()..writeln('Symbols');
+    buffer..writeln()..writeln(headings.symbols);
     for (final symbol in help.symbols) {
       final unit = symbol.unit;
       buffer.writeln('  ${symbol.symbol} — ${symbol.meaning}'
@@ -313,13 +350,13 @@ String toolHelpAsText(ToolHelp help, String toolTitle) {
     }
   }
   if (help.notes.isNotEmpty) {
-    buffer..writeln()..writeln('Assumptions & limits');
+    buffer..writeln()..writeln(headings.assumptions);
     for (final note in help.notes) {
       buffer.writeln('  - $note');
     }
   }
   if (help.references.isNotEmpty) {
-    buffer..writeln()..writeln('References');
+    buffer..writeln()..writeln(headings.references);
     for (final reference in help.references) {
       buffer.writeln('  - $reference');
     }

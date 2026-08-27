@@ -5,6 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_content.dart';
+import 'package:mechanical_engineering_toolkit/help/tool_help_content_zh.dart';
+import 'package:mechanical_engineering_toolkit/help/tool_help_localizations.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_sheet.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
@@ -106,6 +108,76 @@ void main() {
       for (final id in toolHelp.keys) {
         expect(ids, contains(id), reason: 'help for tool $id, which is gone');
       }
+    });
+  });
+
+  group('translations', () {
+    test('every translated entry belongs to a documented tool', () {
+      localizedToolHelp.forEach((tag, byTool) {
+        for (final id in byTool.keys) {
+          expect(toolHelp, contains(id),
+              reason: '$tag has help for tool $id, which English does not');
+        }
+      });
+    });
+
+    test('every translated entry is filled in like the English one', () {
+      localizedToolHelp.forEach((tag, byTool) {
+        byTool.forEach((id, help) {
+          final english = toolHelp[id]!;
+          expect(help.summary.trim(), isNotEmpty, reason: '$tag/$id');
+          // The equations are notation, not prose: a translation that dropped
+          // or added one would no longer describe the same calculation.
+          expect(help.formulas.length, english.formulas.length,
+              reason: '$tag/$id formula count');
+          expect(help.symbols.length, english.symbols.length,
+              reason: '$tag/$id symbol count');
+          for (var i = 0; i < help.formulas.length; i++) {
+            expect(help.formulas[i].tex, english.formulas[i].tex,
+                reason: '$tag/$id formula $i was altered');
+          }
+          for (var i = 0; i < help.symbols.length; i++) {
+            expect(help.symbols[i].symbol, english.symbols[i].symbol,
+                reason: '$tag/$id symbol $i glyph was altered');
+            // Unit *symbols* are international and must survive translation
+            // untouched — mm is mm everywhere. The one unit written as a word
+            // rather than a symbol is prose, and does get translated.
+            if (english.symbols[i].unit != 'million rev') {
+              expect(help.symbols[i].unit, english.symbols[i].unit,
+                  reason: '$tag/$id symbol $i unit was altered');
+            }
+          }
+          // Citations stay in the language the book was published in.
+          expect(help.references, english.references, reason: '$tag/$id refs');
+          expect(help.diagram, english.diagram, reason: '$tag/$id diagram');
+        });
+      });
+    });
+
+    test('a fully translated language covers every tool', () {
+      // Partial languages are allowed — helpFor falls back per tool — but a
+      // language that claims to be done should not be quietly missing one.
+      for (final tag in ['zh']) {
+        expect(localizedToolHelp[tag]!.keys.toSet(), toolHelp.keys.toSet(),
+            reason: '$tag is incomplete');
+      }
+    });
+
+    test('resolves the reader language, and falls back sensibly', () {
+      const id = 100;
+      expect(helpFor(id, const Locale('zh')), toolHelpZh[id]);
+      // Traditional has no text of its own yet, so it takes Simplified rather
+      // than English.
+      expect(helpFor(id, const Locale('zh', 'HK')), toolHelpZh[id]);
+      // An untranslated language falls back to English.
+      expect(helpFor(id, const Locale('de')), toolHelp[id]);
+      expect(helpFor(-1, const Locale('zh')), isNull);
+    });
+
+    test('tags Chinese by script rather than by language', () {
+      expect(helpLocaleTag(const Locale('zh')), 'zh');
+      expect(helpLocaleTag(const Locale('zh', 'HK')), 'zh_HK');
+      expect(helpLocaleTag(const Locale('ja')), 'ja');
     });
   });
 
