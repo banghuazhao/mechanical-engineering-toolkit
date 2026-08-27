@@ -20,26 +20,30 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'fr';
 
-  static String m0(label) => "${label} copié";
+  static String m0(name) => "Ajouté à « ${name} »";
 
-  static String m1(label) =>
+  static String m1(label) => "${label} copié";
+
+  static String m2(label) =>
       "Faites glisser le long de la ligne pour explorer d\'autres valeurs de ${label}.";
 
-  static String m2(index) => "Couche ${index}";
+  static String m3(index) => "Couche ${index}";
 
-  static String m3(index) => "Mode ${index}";
+  static String m4(index) => "Mode ${index}";
 
-  static String m4(value) => "Aperçu : ${value}";
+  static String m5(value) => "Aperçu : ${value}";
 
-  static String m5(name) => "« ${name} » enregistré";
+  static String m6(count) => "${count} calculs";
 
-  static String m6(name) => "Renommé en « ${name} »";
+  static String m7(name) => "« ${name} » enregistré";
 
-  static String m7(tool) => "Retirer ${tool} des favoris";
+  static String m8(name) => "Renommé en « ${name} »";
 
-  static String m8(n) => "Cote ${n}";
+  static String m9(tool) => "Retirer ${tool} des favoris";
 
-  static String m9(label) => "Et si : ${label}";
+  static String m10(n) => "Cote ${n}";
+
+  static String m11(label) => "Et si : ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -59,6 +63,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_to_Favorites": MessageLookupByLibrary.simpleMessage(
       "Ajouter aux favoris",
     ),
+    "Added_To_Project": m0,
     "Added_to_Favorites": MessageLookupByLibrary.simpleMessage(
       "Ajouté aux favoris",
     ),
@@ -182,6 +187,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Centroid_of_Composite_Area": MessageLookupByLibrary.simpleMessage(
       "Centroïde d\'une surface composée",
     ),
+    "Choose_Project": MessageLookupByLibrary.simpleMessage("Choisir un projet"),
     "Circular_Frequency_Omega": MessageLookupByLibrary.simpleMessage(
       "Pulsation propre, ω",
     ),
@@ -239,7 +245,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Contributing_Frequencies": MessageLookupByLibrary.simpleMessage(
       "Fréquences contributives",
     ),
-    "Copied_Value": m0,
+    "Copied_Value": m1,
     "Copy_Result": MessageLookupByLibrary.simpleMessage("Copier le résultat"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage(
       "Longueur corrigée, Lc",
@@ -358,7 +364,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "FORMAT D\'AFFICHAGE",
     ),
     "Double_Shear": MessageLookupByLibrary.simpleMessage("Double cisaillement"),
-    "Drag_Along_Line": m1,
+    "Drag_Along_Line": m2,
     "Drill_Tap_Chart": MessageLookupByLibrary.simpleMessage(
       "Tableau perçage & taraudage",
     ),
@@ -525,6 +531,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Pulley_Positive": MessageLookupByLibrary.simpleMessage(
       "Les diamètres de poulie doivent être positifs.",
     ),
+    "Err_Result_Not_Savable": MessageLookupByLibrary.simpleMessage(
+      "Ce résultat ne correspond à aucun outil et ne peut donc pas être enregistré.",
+    ),
     "Err_Rotor_Position_Range": MessageLookupByLibrary.simpleMessage(
       "Le rotor doit se trouver sur l\'arbre, à l\'écart des appuis.",
     ),
@@ -563,6 +572,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "Le diamètre du fil et de la spire doivent être positifs.",
+    ),
+    "Export_Report": MessageLookupByLibrary.simpleMessage(
+      "Exporter le rapport",
     ),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("Express Scan"),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage(
@@ -788,7 +800,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Large_Pulley_Diameter_D2": MessageLookupByLibrary.simpleMessage(
       "Diamètre de la grande poulie, d2",
     ),
-    "Layer_Number": m2,
+    "Layer_Number": m3,
     "Layer_Resistances": MessageLookupByLibrary.simpleMessage(
       "Résistances des couches",
     ),
@@ -863,7 +875,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minus_Tolerance": MessageLookupByLibrary.simpleMessage(
       "Écart inférieur, −",
     ),
-    "Mode_Number": m3,
+    "Mode_Number": m4,
     "Module_M": MessageLookupByLibrary.simpleMessage("Module, m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("Module, E"),
     "Mohrs_Circle_for_Plane_Stress": MessageLookupByLibrary.simpleMessage(
@@ -891,6 +903,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Natural_Frequency_F": MessageLookupByLibrary.simpleMessage(
       "Fréquence propre, f",
     ),
+    "New_Project": MessageLookupByLibrary.simpleMessage("Nouveau projet"),
     "No_Favorites_Yet": MessageLookupByLibrary.simpleMessage(
       "Aucun favori pour le moment",
     ),
@@ -1048,7 +1061,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage(
       "Élévation de pression, Δp",
     ),
-    "Preview_Value": m4,
+    "Preview_Value": m5,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Contraintes principales et plan principal",
     ),
@@ -1068,6 +1081,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "« Supprimer les publicités » n\'est pas encore disponible sur l\'App Store.",
     ),
+    "Project_Calculations": m6,
+    "Project_Entry_No_Result": MessageLookupByLibrary.simpleMessage(
+      "Données seules",
+    ),
     "Project_Name": MessageLookupByLibrary.simpleMessage("Nom du projet"),
     "Project_Name_Hint": MessageLookupByLibrary.simpleMessage(
       "ex. Ressort de soupape — rév. C",
@@ -1075,8 +1092,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Name_Required": MessageLookupByLibrary.simpleMessage(
       "Saisissez un nom",
     ),
-    "Project_Saved": m5,
-    "Project_Updated": m6,
+    "Project_Report_Empty": MessageLookupByLibrary.simpleMessage(
+      "Ce projet ne contient encore aucun résultat enregistré. Ouvrez un calcul et utilisez Enregistrer dans un projet.",
+    ),
+    "Project_Saved": m7,
+    "Project_Updated": m8,
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage(
       "Puissance de pompe et de ventilateur",
     ),
@@ -1122,8 +1142,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Supprime définitivement les publicités de cette application.",
     ),
     "Remove_Dimension": MessageLookupByLibrary.simpleMessage("Retirer"),
+    "Remove_From_Project": MessageLookupByLibrary.simpleMessage(
+      "Retirer du projet",
+    ),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("Supprimer la couche"),
-    "Remove_Tool_from_Favorites": m7,
+    "Remove_Tool_from_Favorites": m9,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Retirer des favoris",
     ),
@@ -1198,6 +1221,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Loi des mélanges",
     ),
     "Save": MessageLookupByLibrary.simpleMessage("Enregistrer"),
+    "Save_To_Project": MessageLookupByLibrary.simpleMessage(
+      "Enregistrer dans un projet",
+    ),
     "Save_as_Project": MessageLookupByLibrary.simpleMessage(
       "Enregistrer comme projet",
     ),
@@ -1357,7 +1383,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage(
       "Part de la dispersion",
     ),
-    "Stackup_Dimension_N": m8,
+    "Stackup_Dimension_N": m10,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage(
       "Chaîne de cotes",
     ),
@@ -1570,7 +1596,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Axe faible (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Épaisseur d\'âme"),
-    "What_If": m9,
+    "What_If": m11,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Diamètre du fil, d",
     ),

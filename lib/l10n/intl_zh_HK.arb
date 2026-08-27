@@ -679,5 +679,16 @@
   "Stackup_RSS_Saving": "RSS 使公差帶縮小",
   "Stackup_Footnote": "極值法是簡單的加總：若極值法通過，裝配一定能裝上。RSS 假定各尺寸獨立變動、位於公差帶中心且近似常態分布，對五件這樣的小批量作用不大；工序偏移或供應廠長期接近公差帶一側製造時，結果會低估變動。按極值法定尺寸，按 RSS 的指向分配公差。",
   "Err_Stackup_Dimension": "請為每個尺寸輸入基本尺寸和上下偏差。",
-  "Err_Stackup_Two_Rows": "尺寸鏈至少需要兩個尺寸。"
+  "Err_Stackup_Two_Rows": "尺寸鏈至少需要兩個尺寸。",
+
+  "Save_To_Project": "儲存到項目",
+  "Choose_Project": "選擇項目",
+  "New_Project": "新增項目",
+  "Added_To_Project": "已加入「{name}」",
+  "Project_Calculations": "{count} 個計算",
+  "Export_Report": "導出報告",
+  "Project_Entry_No_Result": "僅輸入",
+  "Project_Report_Empty": "此項目尚未有已儲存的結果。打開一個計算並使用「儲存到項目」即可加入。",
+  "Remove_From_Project": "從項目中移除",
+  "Err_Result_Not_Savable": "此結果找不到對應的工具，因此不能儲存。"
 }

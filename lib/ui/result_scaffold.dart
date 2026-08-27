@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
+import 'package:mechanical_engineering_toolkit/home/keep_to_project.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -312,6 +313,21 @@ class _ResultScaffoldState extends State<ResultScaffold> {
         title: Text(widget.title ?? l10n.Result),
         actions: [
           ...widget.extraActions,
+          // Only for pages that declared their results as data: a project
+          // entry keeps the numbers, and a page that renders its own body
+          // without declaring them has none to keep.
+          if (results != null)
+            IconButton(
+              key: const Key('keepInProject'),
+              tooltip: l10n.Save_To_Project,
+              icon: const Icon(Icons.bookmark_add_outlined),
+              onPressed: () => keepResultInProject(
+                context,
+                toolName: widget.toolName,
+                sections: results,
+                formulaSteps: widget.formulaSteps,
+              ),
+            ),
           // One share action for every format. Image is always available —
           // it is a capture of the screen and needs nothing declared.
           // KeyedSubtree adds no layout — it just gives _shareOrigin a handle

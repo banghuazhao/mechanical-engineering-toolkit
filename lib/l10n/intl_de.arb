@@ -680,5 +680,16 @@
   "Stackup_RSS_Saving": "RSS verringert das Band um",
   "Stackup_Footnote": "Der Worst Case ist reine Arithmetik: geht er auf, passt die Baugruppe immer. RSS setzt voraus, dass die Maße unabhängig streuen, mittig im Toleranzfeld liegen und annähernd normalverteilt sind — für eine Losgröße von fünf sagt es nichts aus, und bei driftendem Prozess oder einem Lieferanten am Feldrand unterschätzt es die Streuung. Auslegen nach Worst Case; Toleranz dort vergeben, wohin RSS zeigt.",
   "Err_Stackup_Dimension": "Für jedes Maß Nennmaß und beide Abmaße eingeben.",
-  "Err_Stackup_Two_Rows": "Eine Toleranzkette braucht mindestens zwei Maße."
+  "Err_Stackup_Two_Rows": "Eine Toleranzkette braucht mindestens zwei Maße.",
+
+  "Save_To_Project": "Im Projekt speichern",
+  "Choose_Project": "Projekt wählen",
+  "New_Project": "Neues Projekt",
+  "Added_To_Project": "Zu „{name}“ hinzugefügt",
+  "Project_Calculations": "{count} Berechnungen",
+  "Export_Report": "Bericht exportieren",
+  "Project_Report_Empty": "Dieses Projekt enthält noch keine gespeicherten Ergebnisse. Öffne eine Berechnung und speichere sie im Projekt.",
+  "Remove_From_Project": "Aus Projekt entfernen",
+  "Err_Result_Not_Savable": "Dieses Ergebnis lässt sich keinem Werkzeug zuordnen und kann daher nicht gespeichert werden.",
+  "Project_Entry_No_Result": "Nur Eingaben"
 }

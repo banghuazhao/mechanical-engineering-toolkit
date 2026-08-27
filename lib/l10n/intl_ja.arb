@@ -680,5 +680,16 @@
   "Stackup_RSS_Saving": "RSS による幅の縮小",
   "Stackup_Footnote": "ワーストケース法は単純な足し引きで、これが成立すれば組立は必ず可能です。RSS は各寸法が独立にばらつき、公差域の中心にあり、およそ正規分布であることを前提とします。5 個程度の小さな数では意味をもたず、工程が偏るときや供給者が公差域の端で作るときはばらつきを小さく見積もります。設計はワーストケースで、公差の配分は RSS の示すところで行ってください。",
   "Err_Stackup_Dimension": "すべての寸法に基準寸法と上下の寸法差を入力してください。",
-  "Err_Stackup_Two_Rows": "積み上げには 2 つ以上の寸法が必要です。"
+  "Err_Stackup_Two_Rows": "積み上げには 2 つ以上の寸法が必要です。",
+
+  "Save_To_Project": "プロジェクトに保存",
+  "Choose_Project": "プロジェクトを選択",
+  "New_Project": "新しいプロジェクト",
+  "Added_To_Project": "「{name}」に追加しました",
+  "Project_Calculations": "計算 {count} 件",
+  "Export_Report": "レポートを出力",
+  "Project_Entry_No_Result": "入力のみ",
+  "Project_Report_Empty": "このプロジェクトにはまだ保存された結果がありません。計算を開き、プロジェクトに保存してください。",
+  "Remove_From_Project": "プロジェクトから削除",
+  "Err_Result_Not_Savable": "この結果に対応するツールがないため保存できません。"
 }

@@ -298,6 +298,217 @@ pw.Widget _formulaBlock(List<String> steps) => pw.Column(
       ],
     );
 
+/// One calculation in a project report.
+///
+/// Deliberately not a `ProjectEntry`: the PDF layer knows about results and
+/// units, and nothing about how projects are stored. Callers translate.
+class ReportItem {
+  const ReportItem({
+    required this.title,
+    this.sections = const [],
+    this.formulaSteps = const [],
+    this.inputs = const {},
+    this.capturedAt,
+  });
+
+  /// Heading for this calculation — the tool's name.
+  final String title;
+
+  /// The stored result. Empty for an entry saved from history, which never
+  /// had one; [inputs] is then all there is to show.
+  final List<ResultSection> sections;
+
+  final List<String> formulaSteps;
+
+  /// The calculator's inputs, keyed by its own labels.
+  final Map<String, String> inputs;
+
+  final DateTime? capturedAt;
+
+  bool get hasResult => sections.isNotEmpty;
+}
+
+/// Every string a project report draws, for checking coverage before export.
+Iterable<String> projectReportStrings({
+  required String projectName,
+  required List<ReportItem> items,
+}) sync* {
+  yield projectName;
+  for (final item in items) {
+    yield item.title;
+    yield* reportStrings(
+      toolName: item.title,
+      sections: item.sections,
+      formulaSteps: item.formulaSteps,
+    );
+    for (final entry in item.inputs.entries) {
+      yield entry.key;
+      yield entry.value;
+    }
+  }
+}
+
+/// True when every string in the project report can be drawn by [fonts].
+bool canRenderProjectReport({
+  required PdfReportFonts fonts,
+  required String projectName,
+  required List<ReportItem> items,
+}) =>
+    projectReportStrings(projectName: projectName, items: items)
+        .every(fonts.hasGlyphsFor);
+
+/// Renders one document covering every calculation in a project.
+///
+/// The point of a project report over a stack of single-result PDFs is that it
+/// reads as one document: a contents list at the front, the calculations in
+/// the order they were added, and the project's name in the running header of
+/// every page. That is what makes it something to attach to an email rather
+/// than a pile of attachments.
+///
+/// Values are converted at render time from their stored SI magnitudes, so a
+/// report of year-old calculations still comes out in the reader's current
+/// unit system and precision.
+Future<Uint8List> buildProjectReportPdf({
+  required String projectName,
+  required List<ReportItem> items,
+  required NumberPrecisionHelper precs,
+  required UnitSystem system,
+  PdfReportFonts? fonts,
+  String? languageCode,
+  DateTime? generatedAt,
+}) async {
+  final timestamp = generatedAt ?? DateTime.now();
+  final reportFonts =
+      fonts ?? await PdfReportFonts.load(languageCode: languageCode);
+  final document = pw.Document(theme: reportFonts.toTheme());
+
+  document.addPage(
+    pw.MultiPage(
+      pageFormat: PdfPageFormat.a4,
+      margin: const pw.EdgeInsets.all(32),
+      header: (context) => context.pageNumber == 1
+          ? pw.SizedBox.shrink()
+          : pw.Container(
+              alignment: pw.Alignment.centerRight,
+              margin: const pw.EdgeInsets.only(bottom: 12),
+              child: pw.Text(projectName,
+                  style: const pw.TextStyle(
+                      fontSize: 9, color: PdfColors.grey700)),
+            ),
+      footer: (context) => pw.Container(
+        alignment: pw.Alignment.centerRight,
+        margin: const pw.EdgeInsets.only(top: 12),
+        child: pw.Text(
+          '${context.pageNumber} / ${context.pagesCount}',
+          style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey700),
+        ),
+      ),
+      build: (context) => [
+        _title(projectName, timestamp, system),
+        pw.SizedBox(height: 14),
+        if (items.length > 1) ...[
+          _contents(items),
+          pw.SizedBox(height: 16),
+        ],
+        for (var i = 0; i < items.length; i++) ...[
+          _reportItem(items[i], i + 1, precs, system),
+          pw.SizedBox(height: 18),
+        ],
+      ],
+    ),
+  );
+
+  return document.save();
+}
+
+/// A numbered contents list, so a reader can find the one calculation they
+/// came for. Skipped for a single-item report, where it would only repeat the
+/// heading directly under it.
+pw.Widget _contents(List<ReportItem> items) => pw.Column(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Text('Contents',
+            style: const pw.TextStyle(
+                fontSize: 11, fontWeight: pw.FontWeight.bold)),
+        pw.SizedBox(height: 6),
+        for (var i = 0; i < items.length; i++)
+          pw.Padding(
+            padding: const pw.EdgeInsets.only(bottom: 2),
+            child: pw.Text('${i + 1}.  ${items[i].title}',
+                style: const pw.TextStyle(fontSize: 10)),
+          ),
+      ],
+    );
+
+pw.Widget _reportItem(
+  ReportItem item,
+  int ordinal,
+  NumberPrecisionHelper precs,
+  UnitSystem system,
+) {
+  final captured = item.capturedAt;
+  return pw.Column(
+    crossAxisAlignment: pw.CrossAxisAlignment.start,
+    children: [
+      pw.Text('$ordinal.  ${item.title}',
+          style: const pw.TextStyle(
+              fontSize: 14, fontWeight: pw.FontWeight.bold)),
+      if (captured != null) ...[
+        pw.SizedBox(height: 2),
+        pw.Text(_formatTimestamp(captured),
+            style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey700)),
+      ],
+      pw.SizedBox(height: 8),
+      if (item.hasResult)
+        for (final section in item.sections) ...[
+          _sectionTable(section, precs, system),
+          pw.SizedBox(height: 10),
+        ]
+      else
+        // No stored result: this entry was kept from history, where only the
+        // inputs were ever recorded. Showing them is still a record of what
+        // was specified, and is more honest than omitting the entry.
+        _inputsTable(item.inputs),
+      if (item.formulaSteps.isNotEmpty) _formulaBlock(item.formulaSteps),
+    ],
+  );
+}
+
+pw.Widget _inputsTable(Map<String, String> inputs) {
+  if (inputs.isEmpty) {
+    return pw.Text('No stored result.',
+        style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700));
+  }
+  return pw.Column(
+    crossAxisAlignment: pw.CrossAxisAlignment.start,
+    children: [
+      pw.Text('Inputs',
+          style: const pw.TextStyle(
+              fontSize: 11, fontWeight: pw.FontWeight.bold)),
+      pw.SizedBox(height: 6),
+      pw.TableHelper.fromTextArray(
+        cellStyle: const pw.TextStyle(fontSize: 10),
+        headerStyle:
+            const pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold),
+        headerDecoration: const pw.BoxDecoration(color: PdfColors.grey200),
+        cellHeight: 18,
+        columnWidths: const {
+          0: pw.FlexColumnWidth(3),
+          1: pw.FlexColumnWidth(2),
+        },
+        cellAlignments: const {
+          0: pw.Alignment.centerLeft,
+          1: pw.Alignment.centerRight,
+        },
+        headers: const ['Input', 'Value'],
+        data: [
+          for (final entry in inputs.entries) [entry.key, entry.value],
+        ],
+      ),
+    ],
+  );
+}
+
 /// ASCII-safe file stem, matching the rule the CSV and image exports use.
 String pdfFileName(String toolName) {
   final stem = toolName

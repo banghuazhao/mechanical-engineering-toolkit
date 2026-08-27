@@ -20,25 +20,29 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'zh';
 
-  static String m0(label) => "已复制 ${label}";
+  static String m0(name) => "已添加到“${name}”";
 
-  static String m1(label) => "沿曲线拖动可查看 ${label} 的其他取值。";
+  static String m1(label) => "已复制 ${label}";
 
-  static String m2(index) => "第 ${index} 层";
+  static String m2(label) => "沿曲线拖动可查看 ${label} 的其他取值。";
 
-  static String m3(index) => "第 ${index} 阶模态";
+  static String m3(index) => "第 ${index} 层";
 
-  static String m4(value) => "预览：${value}";
+  static String m4(index) => "第 ${index} 阶模态";
 
-  static String m5(name) => "已保存“${name}”";
+  static String m5(value) => "预览：${value}";
 
-  static String m6(name) => "已重命名为“${name}”";
+  static String m6(count) => "${count} 个计算";
 
-  static String m7(tool) => "将${tool}从收藏中移除";
+  static String m7(name) => "已保存“${name}”";
 
-  static String m8(n) => "尺寸 ${n}";
+  static String m8(name) => "已重命名为“${name}”";
 
-  static String m9(label) => "假设分析：${label}";
+  static String m9(tool) => "将${tool}从收藏中移除";
+
+  static String m10(n) => "尺寸 ${n}";
+
+  static String m11(label) => "假设分析：${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -52,6 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_Member": MessageLookupByLibrary.simpleMessage("添加杆件"),
     "Add_Shape": MessageLookupByLibrary.simpleMessage("添加形状"),
     "Add_to_Favorites": MessageLookupByLibrary.simpleMessage("添加到收藏"),
+    "Added_To_Project": m0,
     "Added_to_Favorites": MessageLookupByLibrary.simpleMessage("已添加到收藏"),
     "Ads_Removed": MessageLookupByLibrary.simpleMessage("广告已移除"),
     "Ads_Removed_Description": MessageLookupByLibrary.simpleMessage(
@@ -115,6 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Centroid_of_Composite_Area": MessageLookupByLibrary.simpleMessage(
       "组合面积形心",
     ),
+    "Choose_Project": MessageLookupByLibrary.simpleMessage("选择项目"),
     "Circular_Frequency_Omega": MessageLookupByLibrary.simpleMessage("圆频率, ω"),
     "Civil_Structural_Engineering": MessageLookupByLibrary.simpleMessage(
       "土木 / 结构工程",
@@ -148,7 +154,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Contact_Pressure_P": MessageLookupByLibrary.simpleMessage("接触压力 p"),
     "Contact_Stress_Est": MessageLookupByLibrary.simpleMessage("接触应力 σc（估算）"),
     "Contributing_Frequencies": MessageLookupByLibrary.simpleMessage("各分量频率"),
-    "Copied_Value": m0,
+    "Copied_Value": m1,
     "Copy_Result": MessageLookupByLibrary.simpleMessage("复制结果"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage("修正长度 Lc"),
     "CountdownDays": MessageLookupByLibrary.simpleMessage("日期倒计时"),
@@ -249,7 +255,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Displacement": MessageLookupByLibrary.simpleMessage("位移"),
     "Display_Format": MessageLookupByLibrary.simpleMessage("显示格式"),
     "Double_Shear": MessageLookupByLibrary.simpleMessage("双剪"),
-    "Drag_Along_Line": m1,
+    "Drag_Along_Line": m2,
     "Drill_Tap_Chart": MessageLookupByLibrary.simpleMessage("钻孔与攻丝对照表"),
     "Drill_Tap_Footnote": MessageLookupByLibrary.simpleMessage(
       "直径单位为 mm；英制钻头显示规格代号，下方为对应毫米值。底孔钻头按钢件约 75% 牙深选取，公制过孔依据 ISO 273（紧配与松配系列）。点按任意行可复制。",
@@ -358,6 +364,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_P_Positive": MessageLookupByLibrary.simpleMessage("当量载荷 P 必须为正值。"),
     "Err_Pulley_Positive": MessageLookupByLibrary.simpleMessage("带轮直径必须为正值。"),
+    "Err_Result_Not_Savable": MessageLookupByLibrary.simpleMessage(
+      "该结果没有对应的工具，因此不能保存。",
+    ),
     "Err_Rotor_Position_Range": MessageLookupByLibrary.simpleMessage(
       "转子必须位于轴上，且避开支承处。",
     ),
@@ -391,6 +400,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "簧丝直径与中径必须为正值。",
     ),
+    "Export_Report": MessageLookupByLibrary.simpleMessage("导出报告"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("飞速扫描"),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage("齿宽 F"),
     "Factor_of_Safety": MessageLookupByLibrary.simpleMessage("安全系数"),
@@ -523,7 +533,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Large_Pulley_Diameter_D2": MessageLookupByLibrary.simpleMessage(
       "大带轮直径 d2",
     ),
-    "Layer_Number": m2,
+    "Layer_Number": m3,
     "Layer_Resistances": MessageLookupByLibrary.simpleMessage("各层热阻"),
     "Layer_Thickness": MessageLookupByLibrary.simpleMessage("单层厚度"),
     "Layup_Angle": MessageLookupByLibrary.simpleMessage("铺层角"),
@@ -568,7 +578,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("局部损失系数 ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("薄荷翻译"),
     "Minus_Tolerance": MessageLookupByLibrary.simpleMessage("下偏差, −"),
-    "Mode_Number": m3,
+    "Mode_Number": m4,
     "Module_M": MessageLookupByLibrary.simpleMessage("模数 m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("弹性模量 E"),
     "Mohrs_Circle_for_Plane_Stress": MessageLookupByLibrary.simpleMessage(
@@ -590,6 +600,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "固有频率（估算）",
     ),
     "Natural_Frequency_F": MessageLookupByLibrary.simpleMessage("固有频率, f"),
+    "New_Project": MessageLookupByLibrary.simpleMessage("新建项目"),
     "No_Favorites_Yet": MessageLookupByLibrary.simpleMessage("暂无收藏"),
     "No_Fluids_Found": MessageLookupByLibrary.simpleMessage("未找到流体"),
     "No_History_Yet": MessageLookupByLibrary.simpleMessage("暂无历史记录"),
@@ -681,7 +692,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Pressure_Drop": MessageLookupByLibrary.simpleMessage("压降 Δp"),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("压升 Δp"),
-    "Preview_Value": m4,
+    "Preview_Value": m5,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "主应力和平面",
     ),
@@ -697,11 +708,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "App Store 暂未提供移除广告项目。",
     ),
+    "Project_Calculations": m6,
+    "Project_Entry_No_Result": MessageLookupByLibrary.simpleMessage("仅输入"),
     "Project_Name": MessageLookupByLibrary.simpleMessage("项目名称"),
     "Project_Name_Hint": MessageLookupByLibrary.simpleMessage("例如：气门弹簧 — C 版"),
     "Project_Name_Required": MessageLookupByLibrary.simpleMessage("请输入名称"),
-    "Project_Saved": m5,
-    "Project_Updated": m6,
+    "Project_Report_Empty": MessageLookupByLibrary.simpleMessage(
+      "该项目还没有保存的结果。打开一个计算并使用“保存到项目”即可添加。",
+    ),
+    "Project_Saved": m7,
+    "Project_Updated": m8,
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage("泵与风机功率"),
     "Pump_Head": MessageLookupByLibrary.simpleMessage("扬程 H"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage("购买已取消，未作任何更改。"),
@@ -721,8 +737,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "永久移除此应用中的广告。",
     ),
     "Remove_Dimension": MessageLookupByLibrary.simpleMessage("删除"),
+    "Remove_From_Project": MessageLookupByLibrary.simpleMessage("从项目中移除"),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("删除该层"),
-    "Remove_Tool_from_Favorites": m7,
+    "Remove_Tool_from_Favorites": m9,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage("从收藏中移除"),
     "Removed_from_Favorites": MessageLookupByLibrary.simpleMessage("已从收藏中移除"),
     "Rename_Project": MessageLookupByLibrary.simpleMessage("重命名项目"),
@@ -751,6 +768,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Rotor_Position_A": MessageLookupByLibrary.simpleMessage("转子距左端位置, a"),
     "Rule_of_mixtures": MessageLookupByLibrary.simpleMessage("复合材料混合定律"),
     "Save": MessageLookupByLibrary.simpleMessage("保存"),
+    "Save_To_Project": MessageLookupByLibrary.simpleMessage("保存到项目"),
     "Save_as_Project": MessageLookupByLibrary.simpleMessage("保存为项目"),
     "Saved_Projects": MessageLookupByLibrary.simpleMessage("已保存的项目"),
     "Search": MessageLookupByLibrary.simpleMessage("搜索"),
@@ -842,7 +860,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Adds": MessageLookupByLibrary.simpleMessage("增大"),
     "Stackup_Clearance": MessageLookupByLibrary.simpleMessage("始终有间隙"),
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage("变动的比例"),
-    "Stackup_Dimension_N": m8,
+    "Stackup_Dimension_N": m10,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage("尺寸链"),
     "Stackup_Dominant": MessageLookupByLibrary.simpleMessage("比例最大的尺寸"),
     "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
@@ -959,7 +977,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("喝水吧"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("弱轴 (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("腹板厚度"),
-    "What_If": m9,
+    "What_If": m11,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("簧丝直径 d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage("极简天气"),
     "Wrap_Angle_Large_Pulley": MessageLookupByLibrary.simpleMessage("大带轮包角"),

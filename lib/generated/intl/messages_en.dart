@@ -20,26 +20,30 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(label) => "Copied ${label}";
+  static String m0(name) => "Added to “${name}”";
 
-  static String m1(label) =>
+  static String m1(label) => "Copied ${label}";
+
+  static String m2(label) =>
       "Drag along the line to explore other values of ${label}.";
 
-  static String m2(index) => "Layer ${index}";
+  static String m3(index) => "Layer ${index}";
 
-  static String m3(index) => "Mode ${index}";
+  static String m4(index) => "Mode ${index}";
 
-  static String m4(value) => "Preview: ${value}";
+  static String m5(value) => "Preview: ${value}";
 
-  static String m5(name) => "Saved “${name}”";
+  static String m6(count) => "${count} calculations";
 
-  static String m6(name) => "Renamed to “${name}”";
+  static String m7(name) => "Saved “${name}”";
 
-  static String m7(tool) => "Remove ${tool} from favorites";
+  static String m8(name) => "Renamed to “${name}”";
 
-  static String m8(n) => "Dimension ${n}";
+  static String m9(tool) => "Remove ${tool} from favorites";
 
-  static String m9(label) => "What if: ${label}";
+  static String m10(n) => "Dimension ${n}";
+
+  static String m11(label) => "What if: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -57,6 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_to_Favorites": MessageLookupByLibrary.simpleMessage(
       "Add to favorites",
     ),
+    "Added_To_Project": m0,
     "Added_to_Favorites": MessageLookupByLibrary.simpleMessage(
       "Added to favorites",
     ),
@@ -166,6 +171,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Centroid_of_Composite_Area": MessageLookupByLibrary.simpleMessage(
       "Centroid of Composite Area",
     ),
+    "Choose_Project": MessageLookupByLibrary.simpleMessage("Choose a project"),
     "Circular_Frequency_Omega": MessageLookupByLibrary.simpleMessage(
       "Circular frequency, ω",
     ),
@@ -219,7 +225,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Contributing_Frequencies": MessageLookupByLibrary.simpleMessage(
       "Contributing frequencies",
     ),
-    "Copied_Value": m0,
+    "Copied_Value": m1,
     "Copy_Result": MessageLookupByLibrary.simpleMessage("Copy result"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage(
       "Corrected length, Lc",
@@ -334,7 +340,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Displacement": MessageLookupByLibrary.simpleMessage("Displacement"),
     "Display_Format": MessageLookupByLibrary.simpleMessage("DISPLAY FORMAT"),
     "Double_Shear": MessageLookupByLibrary.simpleMessage("Double shear"),
-    "Drag_Along_Line": m1,
+    "Drag_Along_Line": m2,
     "Drill_Tap_Chart": MessageLookupByLibrary.simpleMessage(
       "Drill & Tap Chart",
     ),
@@ -495,6 +501,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Pulley_Positive": MessageLookupByLibrary.simpleMessage(
       "Pulley diameters must be positive.",
     ),
+    "Err_Result_Not_Savable": MessageLookupByLibrary.simpleMessage(
+      "This result cannot be matched to a tool, so it cannot be saved.",
+    ),
     "Err_Rotor_Position_Range": MessageLookupByLibrary.simpleMessage(
       "The rotor must sit along the shaft, clear of the supports.",
     ),
@@ -534,6 +543,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "Wire and coil diameter must be positive.",
     ),
+    "Export_Report": MessageLookupByLibrary.simpleMessage("Export report"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("Express Scan"),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage("Face width, F"),
     "Factor_of_Safety": MessageLookupByLibrary.simpleMessage(
@@ -730,7 +740,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Large_Pulley_Diameter_D2": MessageLookupByLibrary.simpleMessage(
       "Large pulley diameter, d2",
     ),
-    "Layer_Number": m2,
+    "Layer_Number": m3,
     "Layer_Resistances": MessageLookupByLibrary.simpleMessage(
       "Layer resistances",
     ),
@@ -793,7 +803,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("Minor losses, ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
     "Minus_Tolerance": MessageLookupByLibrary.simpleMessage("Lower, −"),
-    "Mode_Number": m3,
+    "Mode_Number": m4,
     "Module_M": MessageLookupByLibrary.simpleMessage("Module, m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("Modulus, E"),
     "Mohrs_Circle_for_Plane_Stress": MessageLookupByLibrary.simpleMessage(
@@ -821,6 +831,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Natural_Frequency_F": MessageLookupByLibrary.simpleMessage(
       "Natural frequency, f",
     ),
+    "New_Project": MessageLookupByLibrary.simpleMessage("New project"),
     "No_Favorites_Yet": MessageLookupByLibrary.simpleMessage(
       "No favorites yet",
     ),
@@ -948,7 +959,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Pressure_Drop": MessageLookupByLibrary.simpleMessage("Pressure drop, Δp"),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("Pressure rise, Δp"),
-    "Preview_Value": m4,
+    "Preview_Value": m5,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Principal stresses and plane",
     ),
@@ -964,6 +975,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Remove Ads is not available from the App Store yet.",
     ),
+    "Project_Calculations": m6,
+    "Project_Entry_No_Result": MessageLookupByLibrary.simpleMessage(
+      "Inputs only",
+    ),
     "Project_Name": MessageLookupByLibrary.simpleMessage("Project name"),
     "Project_Name_Hint": MessageLookupByLibrary.simpleMessage(
       "e.g. Valve spring — rev C",
@@ -971,8 +986,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Name_Required": MessageLookupByLibrary.simpleMessage(
       "Enter a name",
     ),
-    "Project_Saved": m5,
-    "Project_Updated": m6,
+    "Project_Report_Empty": MessageLookupByLibrary.simpleMessage(
+      "This project has no saved results yet. Open a calculation and use Save to project to add one.",
+    ),
+    "Project_Saved": m7,
+    "Project_Updated": m8,
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage("Pump & Fan Power"),
     "Pump_Head": MessageLookupByLibrary.simpleMessage("Head, H"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
@@ -1010,8 +1028,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Remove ads permanently from this app.",
     ),
     "Remove_Dimension": MessageLookupByLibrary.simpleMessage("Remove"),
+    "Remove_From_Project": MessageLookupByLibrary.simpleMessage(
+      "Remove from project",
+    ),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("Remove layer"),
-    "Remove_Tool_from_Favorites": m7,
+    "Remove_Tool_from_Favorites": m9,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Remove from favorites",
     ),
@@ -1078,6 +1099,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Rule of mixtures",
     ),
     "Save": MessageLookupByLibrary.simpleMessage("Save"),
+    "Save_To_Project": MessageLookupByLibrary.simpleMessage("Save to project"),
     "Save_as_Project": MessageLookupByLibrary.simpleMessage("Save as project"),
     "Saved_Projects": MessageLookupByLibrary.simpleMessage("Saved Projects"),
     "Search": MessageLookupByLibrary.simpleMessage("Search"),
@@ -1215,7 +1237,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage(
       "Share of the variation",
     ),
-    "Stackup_Dimension_N": m8,
+    "Stackup_Dimension_N": m10,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage(
       "Dimension chain",
     ),
@@ -1404,7 +1426,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Weak axis (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Web thickness"),
-    "What_If": m9,
+    "What_If": m11,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("Wire diameter, d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

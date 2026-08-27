@@ -20,25 +20,29 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ja';
 
-  static String m0(label) => "${label}をコピーしました";
+  static String m0(name) => "「${name}」に追加しました";
 
-  static String m1(label) => "線に沿ってドラッグすると${label}の他の値を確認できます。";
+  static String m1(label) => "${label}をコピーしました";
 
-  static String m2(index) => "第${index}層";
+  static String m2(label) => "線に沿ってドラッグすると${label}の他の値を確認できます。";
 
-  static String m3(index) => "第${index}次モード";
+  static String m3(index) => "第${index}層";
 
-  static String m4(value) => "プレビュー：${value}";
+  static String m4(index) => "第${index}次モード";
 
-  static String m5(name) => "「${name}」を保存しました";
+  static String m5(value) => "プレビュー：${value}";
 
-  static String m6(name) => "「${name}」に名前を変更しました";
+  static String m6(count) => "計算 ${count} 件";
 
-  static String m7(tool) => "${tool}をお気に入りから削除";
+  static String m7(name) => "「${name}」を保存しました";
 
-  static String m8(n) => "寸法 ${n}";
+  static String m8(name) => "「${name}」に名前を変更しました";
 
-  static String m9(label) => "もし〜なら: ${label}";
+  static String m9(tool) => "${tool}をお気に入りから削除";
+
+  static String m10(n) => "寸法 ${n}";
+
+  static String m11(label) => "もし〜なら: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -52,6 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_Member": MessageLookupByLibrary.simpleMessage("部材を追加"),
     "Add_Shape": MessageLookupByLibrary.simpleMessage("形状を追加"),
     "Add_to_Favorites": MessageLookupByLibrary.simpleMessage("お気に入りに追加"),
+    "Added_To_Project": m0,
     "Added_to_Favorites": MessageLookupByLibrary.simpleMessage("お気に入りに追加しました"),
     "Ads_Removed": MessageLookupByLibrary.simpleMessage("広告を削除しました"),
     "Ads_Removed_Description": MessageLookupByLibrary.simpleMessage(
@@ -117,6 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Centroid_of_Composite_Area": MessageLookupByLibrary.simpleMessage(
       "合成断面の図心",
     ),
+    "Choose_Project": MessageLookupByLibrary.simpleMessage("プロジェクトを選択"),
     "Circular_Frequency_Omega": MessageLookupByLibrary.simpleMessage(
       "角固有振動数, ω",
     ),
@@ -158,7 +164,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Contact_Pressure_P": MessageLookupByLibrary.simpleMessage("接触圧力、p"),
     "Contact_Stress_Est": MessageLookupByLibrary.simpleMessage("接触応力、σc（推定値）"),
     "Contributing_Frequencies": MessageLookupByLibrary.simpleMessage("寄与する振動数"),
-    "Copied_Value": m0,
+    "Copied_Value": m1,
     "Copy_Result": MessageLookupByLibrary.simpleMessage("結果をコピー"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage("修正長さ Lc"),
     "CountdownDays": MessageLookupByLibrary.simpleMessage("Countdown Days"),
@@ -261,7 +267,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Displacement": MessageLookupByLibrary.simpleMessage("変位"),
     "Display_Format": MessageLookupByLibrary.simpleMessage("表示形式"),
     "Double_Shear": MessageLookupByLibrary.simpleMessage("二面せん断"),
-    "Drag_Along_Line": m1,
+    "Drag_Along_Line": m2,
     "Drill_Tap_Chart": MessageLookupByLibrary.simpleMessage("ドリル・タップ表"),
     "Drill_Tap_Footnote": MessageLookupByLibrary.simpleMessage(
       "径の単位はmmです。インチドリルは呼び径の下にmm換算値を表示します。下穴径は鋼材でおよそ75%のねじ山かかりを想定し、メートルばか穴はISO 273（精級・並級）に準拠しています。行をタップするとコピーできます。",
@@ -396,6 +402,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Pulley_Positive": MessageLookupByLibrary.simpleMessage(
       "プーリー径は正の値である必要があります。",
     ),
+    "Err_Result_Not_Savable": MessageLookupByLibrary.simpleMessage(
+      "この結果に対応するツールがないため保存できません。",
+    ),
     "Err_Rotor_Position_Range": MessageLookupByLibrary.simpleMessage(
       "ロータは支持点を避けて軸上に配置してください。",
     ),
@@ -435,6 +444,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "線径とコイル径は正の値である必要があります。",
     ),
+    "Export_Report": MessageLookupByLibrary.simpleMessage("レポートを出力"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("Express Scan"),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage("歯幅、F"),
     "Factor_of_Safety": MessageLookupByLibrary.simpleMessage("安全率"),
@@ -573,7 +583,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Large_Pulley_Diameter_D2": MessageLookupByLibrary.simpleMessage(
       "大プーリー径、d2",
     ),
-    "Layer_Number": m2,
+    "Layer_Number": m3,
     "Layer_Resistances": MessageLookupByLibrary.simpleMessage("各層の熱抵抗"),
     "Layer_Thickness": MessageLookupByLibrary.simpleMessage("層厚"),
     "Layup_Angle": MessageLookupByLibrary.simpleMessage("積層角度"),
@@ -620,7 +630,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("局部損失係数 ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
     "Minus_Tolerance": MessageLookupByLibrary.simpleMessage("下の寸法差, −"),
-    "Mode_Number": m3,
+    "Mode_Number": m4,
     "Module_M": MessageLookupByLibrary.simpleMessage("モジュール、m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("弾性係数、E"),
     "Mohrs_Circle_for_Plane_Stress": MessageLookupByLibrary.simpleMessage(
@@ -642,6 +652,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "固有振動数（推定値）",
     ),
     "Natural_Frequency_F": MessageLookupByLibrary.simpleMessage("固有振動数, f"),
+    "New_Project": MessageLookupByLibrary.simpleMessage("新しいプロジェクト"),
     "No_Favorites_Yet": MessageLookupByLibrary.simpleMessage("お気に入りはまだありません"),
     "No_Fluids_Found": MessageLookupByLibrary.simpleMessage("流体が見つかりません"),
     "No_History_Yet": MessageLookupByLibrary.simpleMessage("履歴はまだありません"),
@@ -737,7 +748,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Pressure_Drop": MessageLookupByLibrary.simpleMessage("圧力損失 Δp"),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("圧力上昇 Δp"),
-    "Preview_Value": m4,
+    "Preview_Value": m5,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "主応力と主応力面",
     ),
@@ -753,6 +764,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "「広告を削除」はまだApp Storeでご利用いただけません。",
     ),
+    "Project_Calculations": m6,
+    "Project_Entry_No_Result": MessageLookupByLibrary.simpleMessage("入力のみ"),
     "Project_Name": MessageLookupByLibrary.simpleMessage("プロジェクト名"),
     "Project_Name_Hint": MessageLookupByLibrary.simpleMessage(
       "例：バルブスプリング — rev C",
@@ -760,8 +773,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Name_Required": MessageLookupByLibrary.simpleMessage(
       "名前を入力してください",
     ),
-    "Project_Saved": m5,
-    "Project_Updated": m6,
+    "Project_Report_Empty": MessageLookupByLibrary.simpleMessage(
+      "このプロジェクトにはまだ保存された結果がありません。計算を開き、プロジェクトに保存してください。",
+    ),
+    "Project_Saved": m7,
+    "Project_Updated": m8,
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage("ポンプ・ファン動力"),
     "Pump_Head": MessageLookupByLibrary.simpleMessage("全揚程 H"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
@@ -787,8 +803,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "このアプリから広告を完全に削除します。",
     ),
     "Remove_Dimension": MessageLookupByLibrary.simpleMessage("削除"),
+    "Remove_From_Project": MessageLookupByLibrary.simpleMessage("プロジェクトから削除"),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("層を削除"),
-    "Remove_Tool_from_Favorites": m7,
+    "Remove_Tool_from_Favorites": m9,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage("お気に入りから削除"),
     "Removed_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "お気に入りから削除しました",
@@ -827,6 +844,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Rotor_Position_A": MessageLookupByLibrary.simpleMessage("左端からのロータ位置, a"),
     "Rule_of_mixtures": MessageLookupByLibrary.simpleMessage("混合則"),
     "Save": MessageLookupByLibrary.simpleMessage("保存"),
+    "Save_To_Project": MessageLookupByLibrary.simpleMessage("プロジェクトに保存"),
     "Save_as_Project": MessageLookupByLibrary.simpleMessage("プロジェクトとして保存"),
     "Saved_Projects": MessageLookupByLibrary.simpleMessage("保存したプロジェクト"),
     "Search": MessageLookupByLibrary.simpleMessage("検索"),
@@ -924,7 +942,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Adds": MessageLookupByLibrary.simpleMessage("加える"),
     "Stackup_Clearance": MessageLookupByLibrary.simpleMessage("常にすきまあり"),
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage("ばらつきの寄与"),
-    "Stackup_Dimension_N": m8,
+    "Stackup_Dimension_N": m10,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage("寸法の連なり"),
     "Stackup_Dominant": MessageLookupByLibrary.simpleMessage("最大の寄与"),
     "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
@@ -1051,7 +1069,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("弱軸 (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("ウェブ厚"),
-    "What_If": m9,
+    "What_If": m11,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("線径、d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

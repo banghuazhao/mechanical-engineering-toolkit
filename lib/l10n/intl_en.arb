@@ -680,5 +680,16 @@
   "Stackup_RSS_Saving": "RSS narrows the band by",
   "Stackup_Footnote": "Worst case is arithmetic: if it clears, the assembly always goes together. RSS assumes the dimensions vary independently, sit centred in their bands and are roughly normal — it says nothing about a lot of five parts, and understates the spread when a process drifts or a supplier runs to one edge. Size on the worst case; spend tolerance where RSS points.",
   "Err_Stackup_Dimension": "Enter a nominal and both tolerances for every dimension.",
-  "Err_Stackup_Two_Rows": "A stack-up needs at least two dimensions."
+  "Err_Stackup_Two_Rows": "A stack-up needs at least two dimensions.",
+
+  "Save_To_Project": "Save to project",
+  "Choose_Project": "Choose a project",
+  "New_Project": "New project",
+  "Added_To_Project": "Added to “{name}”",
+  "Project_Calculations": "{count} calculations",
+  "Export_Report": "Export report",
+  "Project_Report_Empty": "This project has no saved results yet. Open a calculation and use Save to project to add one.",
+  "Remove_From_Project": "Remove from project",
+  "Err_Result_Not_Savable": "This result cannot be matched to a tool, so it cannot be saved.",
+  "Project_Entry_No_Result": "Inputs only"
 }

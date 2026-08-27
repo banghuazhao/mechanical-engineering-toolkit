@@ -10,6 +10,8 @@ import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/saved_projects.dart';
 import 'package:mechanical_engineering_toolkit/home/saved_projects_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_history_page.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
+import 'package:mechanical_engineering_toolkit/ui/result_snapshot.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/language.dart';
@@ -413,6 +415,80 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(store.projects, isEmpty);
+    });
+  });
+
+  group('Project report', () {
+    ResultSnapshot snapshot() => ResultSnapshot(
+          toolName: 'Bearing L10 Life',
+          capturedAt: DateTime.utc(2026, 8, 20),
+          sections: const [
+            ResultSection(
+              title: 'Bearing L10 Life',
+              values: [ResultValue(label: 'L10', valueSI: 1000)],
+            ),
+          ],
+        );
+
+    testWidgets('the export item is offered but disabled with nothing to '
+        'report', (tester) async {
+      final store = SavedProjects();
+      // Saved from history: inputs only, so there are no numbers to render.
+      store.save(name: 'Gearbox', toolId: 100, inputs: const {'F': '10'});
+
+      await tester.pumpWidget(_wrap(const SavedProjectsPage(), projects: store));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('projectMenu')));
+      await tester.pumpAndSettle();
+
+      final item = tester.widget<PopupMenuItem<String>>(
+        find.widgetWithText(PopupMenuItem<String>, 'Export report'),
+      );
+      // Present, so the feature is discoverable, but inert until there is
+      // something to put in the document.
+      expect(item.enabled, isFalse);
+    });
+
+    testWidgets('the export item is enabled once a result is stored',
+        (tester) async {
+      final store = SavedProjects();
+      store.save(
+        name: 'Gearbox',
+        toolId: 100,
+        inputs: const {'F': '10'},
+        snapshot: snapshot(),
+      );
+
+      await tester.pumpWidget(_wrap(const SavedProjectsPage(), projects: store));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('projectMenu')));
+      await tester.pumpAndSettle();
+
+      final item = tester.widget<PopupMenuItem<String>>(
+        find.widgetWithText(PopupMenuItem<String>, 'Export report'),
+      );
+      expect(item.enabled, isTrue);
+    });
+
+    testWidgets('a multi-calculation project shows its count and its tools',
+        (tester) async {
+      final store = SavedProjects();
+      final saved = store.save(
+        name: 'Gearbox',
+        toolId: 100,
+        inputs: const {},
+        snapshot: snapshot(),
+      );
+      store.addEntry(saved.id,
+          toolId: 101, inputs: const {}, snapshot: snapshot());
+
+      await tester.pumpWidget(_wrap(const SavedProjectsPage(), projects: store));
+      await tester.pumpAndSettle();
+
+      // The first tool's name alone would say nothing about the rest.
+      expect(find.textContaining('2 calculations'), findsOneWidget);
     });
   });
 }

@@ -5948,6 +5948,101 @@ class S {
       args: [],
     );
   }
+
+  /// `Save to project`
+  String get Save_To_Project {
+    return Intl.message(
+      'Save to project',
+      name: 'Save_To_Project',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose a project`
+  String get Choose_Project {
+    return Intl.message(
+      'Choose a project',
+      name: 'Choose_Project',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New project`
+  String get New_Project {
+    return Intl.message('New project', name: 'New_Project', desc: '', args: []);
+  }
+
+  /// `Added to “{name}”`
+  String Added_To_Project(Object name) {
+    return Intl.message(
+      'Added to “$name”',
+      name: 'Added_To_Project',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `{count} calculations`
+  String Project_Calculations(Object count) {
+    return Intl.message(
+      '$count calculations',
+      name: 'Project_Calculations',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Export report`
+  String get Export_Report {
+    return Intl.message(
+      'Export report',
+      name: 'Export_Report',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This project has no saved results yet. Open a calculation and use Save to project to add one.`
+  String get Project_Report_Empty {
+    return Intl.message(
+      'This project has no saved results yet. Open a calculation and use Save to project to add one.',
+      name: 'Project_Report_Empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove from project`
+  String get Remove_From_Project {
+    return Intl.message(
+      'Remove from project',
+      name: 'Remove_From_Project',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This result cannot be matched to a tool, so it cannot be saved.`
+  String get Err_Result_Not_Savable {
+    return Intl.message(
+      'This result cannot be matched to a tool, so it cannot be saved.',
+      name: 'Err_Result_Not_Savable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inputs only`
+  String get Project_Entry_No_Result {
+    return Intl.message(
+      'Inputs only',
+      name: 'Project_Entry_No_Result',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

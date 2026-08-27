@@ -4,6 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/saved_projects.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/util/number.dart';
+import 'package:mechanical_engineering_toolkit/util/pdf_export.dart';
+import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -117,6 +120,76 @@ class SavedProjectsPage extends StatelessWidget {
     );
   }
 
+  /// Renders every calculation in [project] as one document and hands it to
+  /// the share sheet.
+  ///
+  /// [origin] anchors iPadOS's popover — see [shareResultPdf], where passing
+  /// nothing leaves the sheet mispositioned over a screen that has stopped
+  /// responding.
+  static Future<void> exportReport(
+    BuildContext context,
+    SavedProject project,
+    Rect origin,
+  ) async {
+    final l10n = S.of(context);
+    if (project.reportable.isEmpty) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(l10n.Project_Report_Empty)));
+      return;
+    }
+
+    final precs = context.read<NumberPrecisionHelper>();
+    final system = context.read<UnitSystemPreference>().system;
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final items = [
+      for (final entry in project.entries)
+        ReportItem(
+          // The tool's name as it reads *now* where the tool is still
+          // installed, so a report follows the reader's language; the
+          // snapshot's frozen copy is the fallback.
+          title: _toolName(context, entry) ??
+              entry.snapshot?.toolName ??
+              l10n.Result,
+          sections: entry.snapshot?.sections ?? const [],
+          formulaSteps: entry.snapshot?.formulaSteps ?? const [],
+          inputs: entry.inputs,
+          capturedAt: entry.snapshot?.capturedAt ?? entry.addedAt,
+        ),
+    ];
+
+    final fonts = await PdfReportFonts.load(languageCode: languageCode);
+    final complete = canRenderProjectReport(
+      fonts: fonts,
+      projectName: project.name,
+      items: items,
+    );
+    if (!complete && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(S.of(context).PDF_Missing_Characters)),
+      );
+    }
+
+    final bytes = await buildProjectReportPdf(
+      projectName: project.name,
+      items: items,
+      precs: precs,
+      system: system,
+      fonts: fonts,
+    );
+    await shareResultPdf(project.name, bytes, origin: origin);
+  }
+
+  /// The live title of the tool an entry came from, or null if this build no
+  /// longer ships it.
+  static String? _toolName(BuildContext context, ProjectEntry entry) {
+    try {
+      return ToolLibrary.shared.item(entry.toolId, context).title;
+    } catch (_) {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,12 +223,15 @@ class SavedProjectsPage extends StatelessWidget {
 }
 
 class _ProjectCard extends StatelessWidget {
-  const _ProjectCard({
+  _ProjectCard({
     required this.project,
     required this.store,
     required this.onRename,
     required this.onDelete,
   });
+
+  /// Handle on the card's box, for anchoring the iPad share popover.
+  final GlobalKey _cardKey = GlobalKey();
 
   final SavedProject project;
   final SavedProjects store;
@@ -164,29 +240,53 @@ class _ProjectCard extends StatelessWidget {
   final Future<void> Function(BuildContext, SavedProjects, SavedProject)
       onDelete;
 
+  /// Anchors iPadOS's share popover on the card the user acted on.
+  Rect _cardOrigin() {
+    final box = _cardKey.currentContext?.findRenderObject() as RenderBox?;
+    if (box != null && box.hasSize) {
+      return box.localToGlobal(Offset.zero) & box.size;
+    }
+    return const Rect.fromLTWH(0, 0, 1, 1);
+  }
+
   @override
   Widget build(BuildContext context) {
     Tool? tool;
     try {
       tool = ToolLibrary.shared.item(project.toolId, context);
     } catch (_) {
-      // A project saved against a tool this build no longer ships. Hiding the
-      // row keeps the rest of the list usable; the record stays on disk in
-      // case the tool comes back.
+      // A project whose first calculation used a tool this build no longer
+      // ships. Hiding the row keeps the rest of the list usable; the record
+      // stays on disk in case the tool comes back.
       return const SizedBox.shrink();
     }
     final resolvedTool = tool;
     final theme = Theme.of(context);
+    final l10n = S.of(context);
+    final entries = project.entries;
+    final hasResults = project.reportable.isNotEmpty;
 
     return Card(
+      key: _cardKey,
       clipBehavior: Clip.antiAlias,
       child: ListTile(
         title: Text(project.name, style: theme.textTheme.titleMedium),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(resolvedTool.title, style: theme.textTheme.bodySmall),
-            if (project.inputs.isNotEmpty)
+            // One calculation reads as its tool's name; several read as a
+            // count and the tools they came from, because the name of the
+            // first says nothing useful about the rest.
+            Text(
+              entries.length == 1
+                  ? resolvedTool.title
+                  : '${l10n.Project_Calculations('${entries.length}')} · '
+                      '${_entrySummary(context, entries)}',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodySmall,
+            ),
+            if (entries.length == 1 && project.inputs.isNotEmpty)
               Padding(
                 padding: EdgeInsets.only(top: context.tokens.space1),
                 child: Text(
@@ -208,21 +308,33 @@ class _ProjectCard extends StatelessWidget {
         ),
         isThreeLine: true,
         trailing: PopupMenuButton<String>(
+          key: const Key('projectMenu'),
           onSelected: (value) {
-            if (value == 'rename') {
-              onRename(context, store, project);
-            } else if (value == 'delete') {
-              onDelete(context, store, project);
+            switch (value) {
+              case 'rename':
+                onRename(context, store, project);
+              case 'report':
+                SavedProjectsPage.exportReport(context, project, _cardOrigin());
+              case 'delete':
+                onDelete(context, store, project);
             }
           },
           itemBuilder: (context) => [
             PopupMenuItem(
               value: 'rename',
-              child: Text(S.of(context).Rename_Project),
+              child: Text(l10n.Rename_Project),
+            ),
+            PopupMenuItem(
+              value: 'report',
+              // Offered but disabled with nothing to report: the menu is where
+              // a user goes looking for the feature, and an item that is
+              // simply absent teaches them nothing about why.
+              enabled: hasResults,
+              child: Text(l10n.Export_Report),
             ),
             PopupMenuItem(
               value: 'delete',
-              child: Text(S.of(context).Delete),
+              child: Text(l10n.Delete),
             ),
           ],
         ),
@@ -234,5 +346,19 @@ class _ProjectCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /// The distinct tools a multi-calculation project draws on.
+  static String _entrySummary(
+    BuildContext context,
+    List<ProjectEntry> entries,
+  ) {
+    final names = <String>{};
+    for (final entry in entries) {
+      final name = SavedProjectsPage._toolName(context, entry) ??
+          entry.snapshot?.toolName;
+      if (name != null) names.add(name);
+    }
+    return names.join(', ');
   }
 }

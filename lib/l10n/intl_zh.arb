@@ -679,5 +679,16 @@
   "Stackup_RSS_Saving": "RSS 使公差带缩小",
   "Stackup_Footnote": "极值法是简单的加总：若极值法通过，装配一定能装上。RSS 假定各尺寸独立变动、位于公差带中心且近似正态分布，对五件这样的小批量作用不大；工序偏移或供应厂长期接近公差带一侧制造时，结果会低估变动。按极值法定尺寸，按 RSS 的指向分配公差。",
   "Err_Stackup_Dimension": "请为每个尺寸输入基本尺寸和上下偏差。",
-  "Err_Stackup_Two_Rows": "尺寸链至少需要两个尺寸。"
+  "Err_Stackup_Two_Rows": "尺寸链至少需要两个尺寸。",
+
+  "Save_To_Project": "保存到项目",
+  "Choose_Project": "选择项目",
+  "New_Project": "新建项目",
+  "Added_To_Project": "已添加到“{name}”",
+  "Project_Calculations": "{count} 个计算",
+  "Export_Report": "导出报告",
+  "Project_Entry_No_Result": "仅输入",
+  "Project_Report_Empty": "该项目还没有保存的结果。打开一个计算并使用“保存到项目”即可添加。",
+  "Remove_From_Project": "从项目中移除",
+  "Err_Result_Not_Savable": "该结果没有对应的工具，因此不能保存。"
 }
