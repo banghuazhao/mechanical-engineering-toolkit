@@ -48,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "A_From_A": MessageLookupByLibrary.simpleMessage("a (from A)"),
+    "About_This_Tool": MessageLookupByLibrary.simpleMessage("About this tool"),
     "Active_Coils_Na": MessageLookupByLibrary.simpleMessage("Active coils, Na"),
     "Add_Custom_Material": MessageLookupByLibrary.simpleMessage(
       "Add custom material",
@@ -225,7 +226,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Contributing_Frequencies": MessageLookupByLibrary.simpleMessage(
       "Contributing frequencies",
     ),
+    "Copied": MessageLookupByLibrary.simpleMessage("Copied"),
     "Copied_Value": m1,
+    "Copy": MessageLookupByLibrary.simpleMessage("Copy"),
     "Copy_Result": MessageLookupByLibrary.simpleMessage("Copy result"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage(
       "Corrected length, Lc",
@@ -666,6 +669,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Height_H": MessageLookupByLibrary.simpleMessage("Height h"),
     "Helical_Compression_Spring": MessageLookupByLibrary.simpleMessage(
       "Helical Compression Spring",
+    ),
+    "Help_Assumptions": MessageLookupByLibrary.simpleMessage(
+      "Assumptions & limits",
+    ),
+    "Help_References": MessageLookupByLibrary.simpleMessage("References"),
+    "Help_Symbols": MessageLookupByLibrary.simpleMessage("Symbols"),
+    "Help_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "No detailed notes for this tool yet.",
     ),
     "History": MessageLookupByLibrary.simpleMessage("History"),
     "Hole_um": MessageLookupByLibrary.simpleMessage("Hole (µm)"),

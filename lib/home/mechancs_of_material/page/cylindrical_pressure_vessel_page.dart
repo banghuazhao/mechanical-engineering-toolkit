@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
 import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
@@ -53,6 +54,9 @@ class _CylindricalPressureVesselPageState
             onPressed: () => Navigator.of(context).pop(),
           ),
           title: Text(widget.title),
+          actions: [
+            ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
+          ],
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {

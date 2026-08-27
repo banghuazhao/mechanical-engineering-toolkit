@@ -690,5 +690,13 @@
   "Project_Entry_No_Result": "仅输入",
   "Project_Report_Empty": "该项目还没有保存的结果。打开一个计算并使用“保存到项目”即可添加。",
   "Remove_From_Project": "从项目中移除",
-  "Err_Result_Not_Savable": "该结果没有对应的工具，因此不能保存。"
+  "Err_Result_Not_Savable": "该结果没有对应的工具，因此不能保存。",
+
+  "About_This_Tool": "关于此工具",
+  "Help_Symbols": "符号",
+  "Help_Assumptions": "假定与适用条件",
+  "Help_References": "参考出处",
+  "Help_Unavailable": "此工具尚无说明。",
+  "Copy": "复制",
+  "Copied": "已复制"
 }

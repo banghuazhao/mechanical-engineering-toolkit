@@ -691,5 +691,13 @@
   "Project_Entry_No_Result": "入力のみ",
   "Project_Report_Empty": "このプロジェクトにはまだ保存された結果がありません。計算を開き、プロジェクトに保存してください。",
   "Remove_From_Project": "プロジェクトから削除",
-  "Err_Result_Not_Savable": "この結果に対応するツールがないため保存できません。"
+  "Err_Result_Not_Savable": "この結果に対応するツールがないため保存できません。",
+
+  "About_This_Tool": "このツールについて",
+  "Help_Symbols": "記号",
+  "Help_Assumptions": "前提と適用条件",
+  "Help_References": "出典",
+  "Help_Unavailable": "このツールの詳しい説明はまだありません。",
+  "Copy": "コピー",
+  "Copied": "コピーしました"
 }

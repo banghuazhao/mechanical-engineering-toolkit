@@ -6043,6 +6043,61 @@ class S {
       args: [],
     );
   }
+
+  /// `About this tool`
+  String get About_This_Tool {
+    return Intl.message(
+      'About this tool',
+      name: 'About_This_Tool',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Symbols`
+  String get Help_Symbols {
+    return Intl.message('Symbols', name: 'Help_Symbols', desc: '', args: []);
+  }
+
+  /// `Assumptions & limits`
+  String get Help_Assumptions {
+    return Intl.message(
+      'Assumptions & limits',
+      name: 'Help_Assumptions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `References`
+  String get Help_References {
+    return Intl.message(
+      'References',
+      name: 'Help_References',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No detailed notes for this tool yet.`
+  String get Help_Unavailable {
+    return Intl.message(
+      'No detailed notes for this tool yet.',
+      name: 'Help_Unavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copy`
+  String get Copy {
+    return Intl.message('Copy', name: 'Copy', desc: '', args: []);
+  }
+
+  /// `Copied`
+  String get Copied {
+    return Intl.message('Copied', name: 'Copied', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

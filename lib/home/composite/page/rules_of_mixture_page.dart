@@ -11,6 +11,7 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/lamina_cons
 import 'package:mechanical_engineering_toolkit/home/composite/widget/thermal_constants_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/volume_fraction_row.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
 import 'package:provider/provider.dart';
 
 import 'rules_of_mixture_result_page.dart';
@@ -115,6 +116,9 @@ class _RulesOfMixturePageState extends State<RulesOfMixturePage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(widget.title),
+        actions: [
+          ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {

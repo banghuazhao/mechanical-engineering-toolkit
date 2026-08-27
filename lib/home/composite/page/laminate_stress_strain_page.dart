@@ -13,6 +13,7 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/laminate_st
 import 'package:mechanical_engineering_toolkit/home/composite/widget/layer_thickness_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/layup_sequence_row.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
 import 'package:provider/provider.dart';
 
 import 'laminate_stress_strain_result_page.dart';
@@ -87,6 +88,9 @@ class _LaminateStressStrainPageState extends State<LaminateStressStrainPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(widget.title),
+        actions: [
+          ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {

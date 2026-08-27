@@ -47,6 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "A_From_A": MessageLookupByLibrary.simpleMessage("a（距 A）"),
+    "About_This_Tool": MessageLookupByLibrary.simpleMessage("關於此工具"),
     "Active_Coils_Na": MessageLookupByLibrary.simpleMessage("有效圈數 Na"),
     "Add_Custom_Material": MessageLookupByLibrary.simpleMessage("新增自訂材料"),
     "Add_Dimension": MessageLookupByLibrary.simpleMessage("新增尺寸"),
@@ -154,7 +155,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Contact_Pressure_P": MessageLookupByLibrary.simpleMessage("接觸壓力 p"),
     "Contact_Stress_Est": MessageLookupByLibrary.simpleMessage("接觸應力 σc（估算）"),
     "Contributing_Frequencies": MessageLookupByLibrary.simpleMessage("各分量頻率"),
+    "Copied": MessageLookupByLibrary.simpleMessage("已複製"),
     "Copied_Value": m1,
+    "Copy": MessageLookupByLibrary.simpleMessage("複製"),
     "Copy_Result": MessageLookupByLibrary.simpleMessage("複製結果"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage("修正長度 Lc"),
     "CountdownDays": MessageLookupByLibrary.simpleMessage("日期倒計時"),
@@ -488,6 +491,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Helical_Compression_Spring": MessageLookupByLibrary.simpleMessage(
       "螺旋壓縮彈簧",
     ),
+    "Help_Assumptions": MessageLookupByLibrary.simpleMessage("假定與適用條件"),
+    "Help_References": MessageLookupByLibrary.simpleMessage("參考出處"),
+    "Help_Symbols": MessageLookupByLibrary.simpleMessage("符號"),
+    "Help_Unavailable": MessageLookupByLibrary.simpleMessage("此工具暫無說明。"),
     "History": MessageLookupByLibrary.simpleMessage("歷史記錄"),
     "Hole_um": MessageLookupByLibrary.simpleMessage("孔（µm）"),
     "Hot_Inlet": MessageLookupByLibrary.simpleMessage("熱流體進口"),

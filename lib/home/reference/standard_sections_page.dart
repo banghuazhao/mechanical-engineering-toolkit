@@ -34,6 +34,7 @@ class StandardSectionsPage extends StatelessWidget {
 
     return ReferenceTablePage<StandardSection>(
       title: title ?? l10n.Standard_Sections,
+      toolId: toolId,
       rows: standardSections,
       searchHint: l10n.Search_Section,
       footnote: l10n.Sections_Footnote,

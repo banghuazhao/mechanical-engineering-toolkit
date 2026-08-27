@@ -3,6 +3,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/model/truss_solver.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/page/truss_analysis_result_page.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -88,7 +89,12 @@ class _TrussAnalysisPageState extends State<TrussAnalysisPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

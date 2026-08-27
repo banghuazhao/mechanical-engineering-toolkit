@@ -691,5 +691,13 @@
   "Project_Report_Empty": "Dieses Projekt enthält noch keine gespeicherten Ergebnisse. Öffne eine Berechnung und speichere sie im Projekt.",
   "Remove_From_Project": "Aus Projekt entfernen",
   "Err_Result_Not_Savable": "Dieses Ergebnis lässt sich keinem Werkzeug zuordnen und kann daher nicht gespeichert werden.",
-  "Project_Entry_No_Result": "Nur Eingaben"
+  "Project_Entry_No_Result": "Nur Eingaben",
+
+  "About_This_Tool": "Über dieses Werkzeug",
+  "Help_Symbols": "Formelzeichen",
+  "Help_Assumptions": "Annahmen & Grenzen",
+  "Help_References": "Quellen",
+  "Help_Unavailable": "Für dieses Werkzeug gibt es noch keine ausführlichen Hinweise.",
+  "Copy": "Kopieren",
+  "Copied": "Kopiert"
 }

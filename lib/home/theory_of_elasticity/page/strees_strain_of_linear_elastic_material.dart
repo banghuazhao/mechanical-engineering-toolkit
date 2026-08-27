@@ -10,6 +10,7 @@ import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/page/strees_strain_of_linear_elastic_material_result.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/widget/linear_elastic_stress_strain_row.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/widget/material_input_row.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
 import 'package:provider/provider.dart';
 
 class StressStrainLinearElasticPage extends StatefulWidget {
@@ -145,6 +146,9 @@ class _StressStrainLinearElasticPageState
             onPressed: () => Navigator.of(context).pop(),
           ),
           title: Text(widget.title),
+          actions: [
+            ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
+          ],
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {

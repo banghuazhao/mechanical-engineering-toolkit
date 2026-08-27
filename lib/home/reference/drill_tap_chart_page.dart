@@ -32,6 +32,7 @@ class DrillTapChartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReferenceTablePage<ThreadEntry>(
       title: title ?? S.of(context).Drill_Tap_Chart,
+      toolId: toolId,
       rows: threadEntries,
       searchHint: S.of(context).Search_Thread_Size,
       footnote: S.of(context).Drill_Tap_Footnote,

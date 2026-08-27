@@ -691,5 +691,13 @@
   "Project_Report_Empty": "This project has no saved results yet. Open a calculation and use Save to project to add one.",
   "Remove_From_Project": "Remove from project",
   "Err_Result_Not_Savable": "This result cannot be matched to a tool, so it cannot be saved.",
-  "Project_Entry_No_Result": "Inputs only"
+  "Project_Entry_No_Result": "Inputs only",
+
+  "About_This_Tool": "About this tool",
+  "Help_Symbols": "Symbols",
+  "Help_Assumptions": "Assumptions & limits",
+  "Help_References": "References",
+  "Help_Unavailable": "No detailed notes for this tool yet.",
+  "Copy": "Copy",
+  "Copied": "Copied"
 }

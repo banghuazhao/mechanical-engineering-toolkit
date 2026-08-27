@@ -47,6 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "A_From_A": MessageLookupByLibrary.simpleMessage("a（Aからの距離）"),
+    "About_This_Tool": MessageLookupByLibrary.simpleMessage("このツールについて"),
     "Active_Coils_Na": MessageLookupByLibrary.simpleMessage("有効巻数、Na"),
     "Add_Custom_Material": MessageLookupByLibrary.simpleMessage("カスタム材料を追加"),
     "Add_Dimension": MessageLookupByLibrary.simpleMessage("寸法を追加"),
@@ -164,7 +165,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Contact_Pressure_P": MessageLookupByLibrary.simpleMessage("接触圧力、p"),
     "Contact_Stress_Est": MessageLookupByLibrary.simpleMessage("接触応力、σc（推定値）"),
     "Contributing_Frequencies": MessageLookupByLibrary.simpleMessage("寄与する振動数"),
+    "Copied": MessageLookupByLibrary.simpleMessage("コピーしました"),
     "Copied_Value": m1,
+    "Copy": MessageLookupByLibrary.simpleMessage("コピー"),
     "Copy_Result": MessageLookupByLibrary.simpleMessage("結果をコピー"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage("修正長さ Lc"),
     "CountdownDays": MessageLookupByLibrary.simpleMessage("Countdown Days"),
@@ -535,6 +538,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Height_H": MessageLookupByLibrary.simpleMessage("高さ h"),
     "Helical_Compression_Spring": MessageLookupByLibrary.simpleMessage(
       "コイル圧縮ばね",
+    ),
+    "Help_Assumptions": MessageLookupByLibrary.simpleMessage("前提と適用条件"),
+    "Help_References": MessageLookupByLibrary.simpleMessage("出典"),
+    "Help_Symbols": MessageLookupByLibrary.simpleMessage("記号"),
+    "Help_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "このツールの詳しい説明はまだありません。",
     ),
     "History": MessageLookupByLibrary.simpleMessage("履歴"),
     "Hole_um": MessageLookupByLibrary.simpleMessage("穴 (µm)"),

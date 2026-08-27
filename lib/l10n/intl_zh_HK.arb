@@ -690,5 +690,13 @@
   "Project_Entry_No_Result": "僅輸入",
   "Project_Report_Empty": "此項目尚未有已儲存的結果。打開一個計算並使用「儲存到項目」即可加入。",
   "Remove_From_Project": "從項目中移除",
-  "Err_Result_Not_Savable": "此結果找不到對應的工具，因此不能儲存。"
+  "Err_Result_Not_Savable": "此結果找不到對應的工具，因此不能儲存。",
+
+  "About_This_Tool": "關於此工具",
+  "Help_Symbols": "符號",
+  "Help_Assumptions": "假定與適用條件",
+  "Help_References": "參考出處",
+  "Help_Unavailable": "此工具暫無說明。",
+  "Copy": "複製",
+  "Copied": "已複製"
 }

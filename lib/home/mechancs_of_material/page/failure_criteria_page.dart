@@ -11,6 +11,7 @@ import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -54,7 +55,12 @@ class _FailureCriteriaPageState extends State<FailureCriteriaPage> {
   Widget build(BuildContext context) {
     final tool = ToolLibrary.shared.item(widget.toolId, context);
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _calculate,
         icon: const Icon(Icons.analytics_rounded),

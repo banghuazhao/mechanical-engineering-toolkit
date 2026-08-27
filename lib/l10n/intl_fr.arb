@@ -691,5 +691,13 @@
   "Project_Report_Empty": "Ce projet ne contient encore aucun résultat enregistré. Ouvrez un calcul et utilisez Enregistrer dans un projet.",
   "Remove_From_Project": "Retirer du projet",
   "Err_Result_Not_Savable": "Ce résultat ne correspond à aucun outil et ne peut donc pas être enregistré.",
-  "Project_Entry_No_Result": "Données seules"
+  "Project_Entry_No_Result": "Données seules",
+
+  "About_This_Tool": "À propos de cet outil",
+  "Help_Symbols": "Symboles",
+  "Help_Assumptions": "Hypothèses et limites",
+  "Help_References": "Références",
+  "Help_Unavailable": "Pas encore de notes détaillées pour cet outil.",
+  "Copy": "Copier",
+  "Copied": "Copié"
 }

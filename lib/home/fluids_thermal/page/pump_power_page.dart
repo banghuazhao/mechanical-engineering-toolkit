@@ -7,6 +7,7 @@ import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/preset_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -53,7 +54,12 @@ class _PumpPowerPageState extends State<PumpPowerPage> {
     final tool = ToolLibrary.shared.item(widget.toolId, context);
     final l10n = S.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _calculate,
         icon: const Icon(Icons.analytics_rounded),

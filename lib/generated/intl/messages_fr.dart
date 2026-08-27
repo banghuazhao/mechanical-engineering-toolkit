@@ -48,6 +48,9 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "A_From_A": MessageLookupByLibrary.simpleMessage("a (depuis A)"),
+    "About_This_Tool": MessageLookupByLibrary.simpleMessage(
+      "À propos de cet outil",
+    ),
     "Active_Coils_Na": MessageLookupByLibrary.simpleMessage(
       "Spires actives, Na",
     ),
@@ -245,7 +248,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Contributing_Frequencies": MessageLookupByLibrary.simpleMessage(
       "Fréquences contributives",
     ),
+    "Copied": MessageLookupByLibrary.simpleMessage("Copié"),
     "Copied_Value": m1,
+    "Copy": MessageLookupByLibrary.simpleMessage("Copier"),
     "Copy_Result": MessageLookupByLibrary.simpleMessage("Copier le résultat"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage(
       "Longueur corrigée, Lc",
@@ -722,6 +727,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Height_H": MessageLookupByLibrary.simpleMessage("Hauteur h"),
     "Helical_Compression_Spring": MessageLookupByLibrary.simpleMessage(
       "Ressort hélicoïdal de compression",
+    ),
+    "Help_Assumptions": MessageLookupByLibrary.simpleMessage(
+      "Hypothèses et limites",
+    ),
+    "Help_References": MessageLookupByLibrary.simpleMessage("Références"),
+    "Help_Symbols": MessageLookupByLibrary.simpleMessage("Symboles"),
+    "Help_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "Pas encore de notes détaillées pour cet outil.",
     ),
     "History": MessageLookupByLibrary.simpleMessage("Historique"),
     "Hole_um": MessageLookupByLibrary.simpleMessage("Alésage (µm)"),

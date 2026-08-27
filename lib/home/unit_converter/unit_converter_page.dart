@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:flutter/services.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart' as units;
 
 class _UnitCategory {
@@ -207,7 +208,16 @@ class _UnitConverterPageState extends State<UnitConverterPage> {
     final units = _cat.units;
 
     return Scaffold(
-      appBar: AppBar(title: Text(S.of(context).Unit_Converter)),
+      appBar: AppBar(
+        title: Text(S.of(context).Unit_Converter),
+        actions: [
+          if (widget.toolId != null)
+            ToolHelpButton(
+              toolId: widget.toolId!,
+              toolTitle: S.of(context).Unit_Converter,
+            ),
+        ],
+      ),
       body: Column(
         children: [
           // Category chips

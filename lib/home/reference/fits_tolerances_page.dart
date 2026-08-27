@@ -29,6 +29,7 @@ class FitsTolerancesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReferenceTablePage<FitEntry>(
       title: title ?? S.of(context).Fits_Tolerances,
+      toolId: toolId,
       rows: fitEntries,
       searchHint: S.of(context).Search_Size_Or_Fit,
       footnote: S.of(context).Fits_Footnote,

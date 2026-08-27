@@ -48,6 +48,9 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "A_From_A": MessageLookupByLibrary.simpleMessage("a (ab A)"),
+    "About_This_Tool": MessageLookupByLibrary.simpleMessage(
+      "Über dieses Werkzeug",
+    ),
     "Active_Coils_Na": MessageLookupByLibrary.simpleMessage(
       "Wirksame Windungen, Na",
     ),
@@ -231,7 +234,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Contributing_Frequencies": MessageLookupByLibrary.simpleMessage(
       "Beitragende Frequenzen",
     ),
+    "Copied": MessageLookupByLibrary.simpleMessage("Kopiert"),
     "Copied_Value": m1,
+    "Copy": MessageLookupByLibrary.simpleMessage("Kopieren"),
     "Copy_Result": MessageLookupByLibrary.simpleMessage("Ergebnis kopieren"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage(
       "Korrigierte Länge, Lc",
@@ -688,6 +693,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Height_H": MessageLookupByLibrary.simpleMessage("Höhe h"),
     "Helical_Compression_Spring": MessageLookupByLibrary.simpleMessage(
       "Schraubendruckfeder",
+    ),
+    "Help_Assumptions": MessageLookupByLibrary.simpleMessage(
+      "Annahmen & Grenzen",
+    ),
+    "Help_References": MessageLookupByLibrary.simpleMessage("Quellen"),
+    "Help_Symbols": MessageLookupByLibrary.simpleMessage("Formelzeichen"),
+    "Help_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "Für dieses Werkzeug gibt es noch keine ausführlichen Hinweise.",
     ),
     "History": MessageLookupByLibrary.simpleMessage("Verlauf"),
     "Hole_um": MessageLookupByLibrary.simpleMessage("Bohrung (µm)"),

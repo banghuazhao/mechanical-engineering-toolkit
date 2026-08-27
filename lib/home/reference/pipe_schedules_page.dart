@@ -46,6 +46,7 @@ class PipeSchedulesPage extends StatelessWidget {
 
     return ReferenceTablePage<PipeSpec>(
       title: title ?? l10n.Pipe_Schedules,
+      toolId: toolId,
       rows: pipeSpecs,
       searchHint: l10n.Search_Pipe_Size,
       footnote: l10n.Pipes_Footnote,

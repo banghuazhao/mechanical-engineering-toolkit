@@ -4,6 +4,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
 
 /// Horizontal breathing room on each side of a header or data row.
 const double _rowPadding = 12;
@@ -56,6 +57,7 @@ class ReferenceTablePage<T> extends StatefulWidget {
     required this.rows,
     required this.columns,
     required this.searchText,
+    this.toolId,
     this.matcher,
     this.filters = const [],
     this.searchHint,
@@ -64,6 +66,11 @@ class ReferenceTablePage<T> extends StatefulWidget {
   });
 
   final String title;
+
+  /// Which tool this table is, so the "?" can find its explanation. Null for
+  /// a table opened outside the tool library, which then shows no button.
+  final int? toolId;
+
   final List<T> rows;
   final List<ReferenceColumn<T>> columns;
 
@@ -122,7 +129,13 @@ class _ReferenceTablePageState<T> extends State<ReferenceTablePage<T>> {
   Widget build(BuildContext context) {
     final rows = _visibleRows;
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+        title: Text(widget.title),
+        actions: [
+          if (widget.toolId != null)
+            ToolHelpButton(toolId: widget.toolId!, toolTitle: widget.title),
+        ],
+      ),
       bottomNavigationBar: const AppBannerAd(),
       body: SafeArea(
         child: Center(
