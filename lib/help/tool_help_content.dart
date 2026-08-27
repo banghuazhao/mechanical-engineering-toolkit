@@ -1785,9 +1785,10 @@ const Map<int, ToolHelp> toolHelp = {
     notes: [
       "Dunkerley's equation always errs low, so the critical speed reported "
           'is conservative. That is the useful direction to be wrong in.',
-      'Keep the running speed clear by a comfortable margin — 20% below or '
-          '40% above the first critical is common practice. Passing through a '
-          'critical on run-up is acceptable if it is done briskly.',
+      'Keep the running speed clear by a comfortable margin — below about '
+          '75% of the first critical, or above about 140% of it, is the usual '
+          'rule. Passing through a critical on run-up is acceptable if it is '
+          'done briskly.',
       'Bearing stiffness is assumed rigid. Soft bearings or a flexible '
           'housing lower the critical speed, sometimes a great deal.',
       'Gyroscopic effects, which split the critical into forward and backward '
@@ -2173,9 +2174,9 @@ const Map<int, ToolHelp> toolHelp = {
         'and the torque needed to cut it.',
     formulas: [
       HelpFormula(
-        tex: r'd_{\text{tap}} \approx D - P \;\text{(metric, 100\% basis)}',
-        plain: 'tap drill ≈ D − P  (metric, before the 75% allowance)',
-        caption: 'Major diameter less one pitch',
+        tex: r'd_{\text{tap}} \approx D - P',
+        plain: 'tap drill ≈ D − P   (metric, ≈75% thread)',
+        caption: 'Major diameter less one pitch — the usual 75% rule',
       ),
     ],
     symbols: [
@@ -2183,6 +2184,8 @@ const Map<int, ToolHelp> toolHelp = {
       HelpSymbol('P', 'Thread pitch', 'mm'),
     ],
     notes: [
+      'D − P is not the minor diameter: the basic minor is D − 1.0825·P, so '
+          'the usual tap drill deliberately leaves a shallower thread.',
       'Going from 75% to 100% thread engagement adds only about 5% to the '
           'strength while roughly doubling the tapping torque. It is almost '
           'never worth it, and it breaks taps.',
@@ -2224,7 +2227,7 @@ const Map<int, ToolHelp> toolHelp = {
       'A negative clearance is an interference. H7/p6 and tighter are press '
           'fits and need the press-fit tool to check hub stress.',
       'Tolerance width grows with size for the same IT grade — an IT7 zone is '
-          '15 µm at 20 mm and 46 µm at 300 mm.',
+          '21 µm at 20 mm and 52 µm at 300 mm.',
       'The tables are limits only. Whether a shaft actually fits also depends '
           'on form: roundness and straightness errors eat into the clearance.',
     ],
