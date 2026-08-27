@@ -15,6 +15,7 @@ import 'package:mechanical_engineering_toolkit/home/reference/drill_tap_chart_pa
 import 'package:mechanical_engineering_toolkit/home/reference/fits_tolerances_page.dart';
 import 'package:mechanical_engineering_toolkit/home/reference/standard_sections_page.dart';
 import 'package:mechanical_engineering_toolkit/home/reference/pipe_schedules_page.dart';
+import 'package:mechanical_engineering_toolkit/home/tolerance/page/tolerance_stackup_page.dart';
 import 'package:mechanical_engineering_toolkit/home/unit_converter/unit_converter_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/bar_force_displacement_page.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/beam_flexure_formula_page.dart';
@@ -714,6 +715,33 @@ class ToolLibrary {
               context,
               MaterialPageRoute(
                   builder: (context) => PipeSchedulesPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 505,
+          icon: Icons.straighten_rounded,
+          title: S.of(context).Tolerance_Stackup,
+          type: ToolType.utilities,
+          keywords: const [
+            'tolerance',
+            'stack up',
+            'stackup',
+            'stack-up',
+            'dimension chain',
+            'worst case',
+            'rss',
+            'root sum square',
+            'statistical',
+            'gap',
+            'clearance',
+            'gd&t',
+            'fit'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ToleranceStackupPage(
                       title: title,
                       toolId: toolId,
                       initialInputs: initialInputs)))),

@@ -36,13 +36,16 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(tool) => "${tool}をお気に入りから削除";
 
-  static String m8(label) => "もし〜なら: ${label}";
+  static String m8(n) => "寸法 ${n}";
+
+  static String m9(label) => "もし〜なら: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "A_From_A": MessageLookupByLibrary.simpleMessage("a（Aからの距離）"),
     "Active_Coils_Na": MessageLookupByLibrary.simpleMessage("有効巻数、Na"),
     "Add_Custom_Material": MessageLookupByLibrary.simpleMessage("カスタム材料を追加"),
+    "Add_Dimension": MessageLookupByLibrary.simpleMessage("寸法を追加"),
     "Add_Force": MessageLookupByLibrary.simpleMessage("力を追加"),
     "Add_Joint": MessageLookupByLibrary.simpleMessage("節点を追加"),
     "Add_Layer": MessageLookupByLibrary.simpleMessage("層を追加"),
@@ -132,6 +135,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Clearance_Close": MessageLookupByLibrary.simpleMessage("すきまばめ（精級）"),
     "Clearance_Free": MessageLookupByLibrary.simpleMessage("すきまばめ（並級）"),
     "Clearance_um": MessageLookupByLibrary.simpleMessage("すきま (µm)"),
+    "Closing_Gap": MessageLookupByLibrary.simpleMessage("すきま"),
     "Cold_Inlet": MessageLookupByLibrary.simpleMessage("低温側入口"),
     "Cold_Outlet": MessageLookupByLibrary.simpleMessage("低温側出口"),
     "Cold_Stream_Range": MessageLookupByLibrary.simpleMessage("低温側温度変化"),
@@ -240,6 +244,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "標準的な構造用形鋼の公称寸法と断面性能です。断面係数と断面二次半径は掲載の断面積と断面二次モーメントから導出しているため、両者と整合します。",
+    ),
+    "Desc_Tolerance_Stackup": MessageLookupByLibrary.simpleMessage(
+      "公差をもつ寸法の連なりを一次元で積み上げ、ワーストケース法と統計法(RSS)の両方で計算します。すきまの上限と下限、負になり得るかどうか、どの寸法がばらつきの大半を生むかを示します。",
     ),
     "Desc_Torsional_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
       "丸軸のねじり基本固有振動数。一端固定でロータ1個の場合と、自由軸にロータ2個の場合に対応します。",
@@ -406,6 +413,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Speed_Positive": MessageLookupByLibrary.simpleMessage(
       "回転速度は正の値である必要があります。",
+    ),
+    "Err_Stackup_Dimension": MessageLookupByLibrary.simpleMessage(
+      "すべての寸法に基準寸法と上下の寸法差を入力してください。",
+    ),
+    "Err_Stackup_Two_Rows": MessageLookupByLibrary.simpleMessage(
+      "積み上げには 2 つ以上の寸法が必要です。",
     ),
     "Err_Target_FoS_Positive": MessageLookupByLibrary.simpleMessage(
       "目標安全率は正の値である必要があります。",
@@ -606,6 +619,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minor_Head_Loss": MessageLookupByLibrary.simpleMessage("局部損失水頭"),
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("局部損失係数 ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
+    "Minus_Tolerance": MessageLookupByLibrary.simpleMessage("下の寸法差, −"),
     "Mode_Number": m3,
     "Module_M": MessageLookupByLibrary.simpleMessage("モジュール、m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("弾性係数、E"),
@@ -647,6 +661,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "No_Tools_Found": MessageLookupByLibrary.simpleMessage("ツールが見つかりません"),
     "Node_Position": MessageLookupByLibrary.simpleMessage("節の位置（ロータ1から）"),
     "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage("呼び径、d"),
+    "Nominal_Gap": MessageLookupByLibrary.simpleMessage("基準すきま"),
+    "Nominal_Size": MessageLookupByLibrary.simpleMessage("基準寸法"),
     "Nominal_Size_mm": MessageLookupByLibrary.simpleMessage("サイズ (mm)"),
     "None": MessageLookupByLibrary.simpleMessage("なし"),
     "Not_a_number": MessageLookupByLibrary.simpleMessage("数値ではありません"),
@@ -707,6 +723,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Plane_stresses_transformation": MessageLookupByLibrary.simpleMessage(
       "平面応力の変換",
     ),
+    "Plus_Tolerance": MessageLookupByLibrary.simpleMessage("上の寸法差, +"),
     "Point_Load": MessageLookupByLibrary.simpleMessage("集中荷重"),
     "Point_Load_P": MessageLookupByLibrary.simpleMessage("集中荷重、P"),
     "Point_Position_A": MessageLookupByLibrary.simpleMessage("荷重位置、a"),
@@ -769,6 +786,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "このアプリから広告を完全に削除します。",
     ),
+    "Remove_Dimension": MessageLookupByLibrary.simpleMessage("削除"),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("層を削除"),
     "Remove_Tool_from_Favorites": m7,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage("お気に入りから削除"),
@@ -903,6 +921,26 @@ class MessageLookup extends MessageLookupByLibrary {
     "Spring_Index_C": MessageLookupByLibrary.simpleMessage("ばね指数、C"),
     "Spring_Rate_K": MessageLookupByLibrary.simpleMessage("ばね定数、k"),
     "Spur_Gear_Geometry": MessageLookupByLibrary.simpleMessage("平歯車の幾何形状"),
+    "Stackup_Adds": MessageLookupByLibrary.simpleMessage("加える"),
+    "Stackup_Clearance": MessageLookupByLibrary.simpleMessage("常にすきまあり"),
+    "Stackup_Contributions": MessageLookupByLibrary.simpleMessage("ばらつきの寄与"),
+    "Stackup_Dimension_N": m8,
+    "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage("寸法の連なり"),
+    "Stackup_Dominant": MessageLookupByLibrary.simpleMessage("最大の寄与"),
+    "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
+      "ワーストケース法は単純な足し引きで、これが成立すれば組立は必ず可能です。RSS は各寸法が独立にばらつき、公差域の中心にあり、およそ正規分布であることを前提とします。5 個程度の小さな数では意味をもたず、工程が偏るときや供給者が公差域の端で作るときはばらつきを小さく見積もります。設計はワーストケースで、公差の配分は RSS の示すところで行ってください。",
+    ),
+    "Stackup_Interference": MessageLookupByLibrary.simpleMessage("しめしろの可能性"),
+    "Stackup_Line_To_Line": MessageLookupByLibrary.simpleMessage("すきまゼロ"),
+    "Stackup_Maximum": MessageLookupByLibrary.simpleMessage("最大"),
+    "Stackup_Mean": MessageLookupByLibrary.simpleMessage("平均"),
+    "Stackup_Minimum": MessageLookupByLibrary.simpleMessage("最小"),
+    "Stackup_Outcome": MessageLookupByLibrary.simpleMessage("ワーストケースの結果"),
+    "Stackup_RSS": MessageLookupByLibrary.simpleMessage("統計(RSS)"),
+    "Stackup_RSS_Saving": MessageLookupByLibrary.simpleMessage("RSS による幅の縮小"),
+    "Stackup_Spread": MessageLookupByLibrary.simpleMessage("全体のばらつき"),
+    "Stackup_Subtracts": MessageLookupByLibrary.simpleMessage("引く"),
+    "Stackup_Worst_Case": MessageLookupByLibrary.simpleMessage("ワーストケース"),
     "Standard_Sections": MessageLookupByLibrary.simpleMessage("標準形鋼"),
     "Static_Deflection_Delta": MessageLookupByLibrary.simpleMessage(
       "静たわみ, δst",
@@ -962,6 +1000,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Thread": MessageLookupByLibrary.simpleMessage("ねじ"),
     "Tightening_Torque_T": MessageLookupByLibrary.simpleMessage("締付けトルク、T"),
     "Tip_Temperature": MessageLookupByLibrary.simpleMessage("先端温度"),
+    "Tolerance_Stackup": MessageLookupByLibrary.simpleMessage("公差の積み上げ"),
     "Torsion_formula_of_bar": MessageLookupByLibrary.simpleMessage("棒のねじり公式"),
     "Torsional_Footnote": MessageLookupByLibrary.simpleMessage(
       "軸自身の慣性は無視しています。ロータと同程度の場合は、多質点系（ホルツァー法）で解析してください。",
@@ -1012,7 +1051,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("弱軸 (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("ウェブ厚"),
-    "What_If": m8,
+    "What_If": m9,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("線径、d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

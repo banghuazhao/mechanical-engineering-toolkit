@@ -5703,6 +5703,251 @@ class S {
       args: [],
     );
   }
+
+  /// `Tolerance Stack-Up`
+  String get Tolerance_Stackup {
+    return Intl.message(
+      'Tolerance Stack-Up',
+      name: 'Tolerance_Stackup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `One-dimensional stack-up of a chain of toleranced dimensions, by both the worst-case and the statistical (RSS) method. Reports the closing gap's limits, whether it can go negative, and which dimension is responsible for most of the variation.`
+  String get Desc_Tolerance_Stackup {
+    return Intl.message(
+      'One-dimensional stack-up of a chain of toleranced dimensions, by both the worst-case and the statistical (RSS) method. Reports the closing gap\'s limits, whether it can go negative, and which dimension is responsible for most of the variation.',
+      name: 'Desc_Tolerance_Stackup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dimension chain`
+  String get Stackup_Dimensions {
+    return Intl.message(
+      'Dimension chain',
+      name: 'Stackup_Dimensions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dimension {n}`
+  String Stackup_Dimension_N(Object n) {
+    return Intl.message(
+      'Dimension $n',
+      name: 'Stackup_Dimension_N',
+      desc: '',
+      args: [n],
+    );
+  }
+
+  /// `Adds`
+  String get Stackup_Adds {
+    return Intl.message('Adds', name: 'Stackup_Adds', desc: '', args: []);
+  }
+
+  /// `Subtracts`
+  String get Stackup_Subtracts {
+    return Intl.message(
+      'Subtracts',
+      name: 'Stackup_Subtracts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nominal`
+  String get Nominal_Size {
+    return Intl.message('Nominal', name: 'Nominal_Size', desc: '', args: []);
+  }
+
+  /// `Upper, +`
+  String get Plus_Tolerance {
+    return Intl.message('Upper, +', name: 'Plus_Tolerance', desc: '', args: []);
+  }
+
+  /// `Lower, −`
+  String get Minus_Tolerance {
+    return Intl.message(
+      'Lower, −',
+      name: 'Minus_Tolerance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add dimension`
+  String get Add_Dimension {
+    return Intl.message(
+      'Add dimension',
+      name: 'Add_Dimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove`
+  String get Remove_Dimension {
+    return Intl.message('Remove', name: 'Remove_Dimension', desc: '', args: []);
+  }
+
+  /// `Closing gap`
+  String get Closing_Gap {
+    return Intl.message('Closing gap', name: 'Closing_Gap', desc: '', args: []);
+  }
+
+  /// `Nominal gap`
+  String get Nominal_Gap {
+    return Intl.message('Nominal gap', name: 'Nominal_Gap', desc: '', args: []);
+  }
+
+  /// `Worst case`
+  String get Stackup_Worst_Case {
+    return Intl.message(
+      'Worst case',
+      name: 'Stackup_Worst_Case',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statistical (RSS)`
+  String get Stackup_RSS {
+    return Intl.message(
+      'Statistical (RSS)',
+      name: 'Stackup_RSS',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minimum`
+  String get Stackup_Minimum {
+    return Intl.message('Minimum', name: 'Stackup_Minimum', desc: '', args: []);
+  }
+
+  /// `Maximum`
+  String get Stackup_Maximum {
+    return Intl.message('Maximum', name: 'Stackup_Maximum', desc: '', args: []);
+  }
+
+  /// `Mean`
+  String get Stackup_Mean {
+    return Intl.message('Mean', name: 'Stackup_Mean', desc: '', args: []);
+  }
+
+  /// `Total spread`
+  String get Stackup_Spread {
+    return Intl.message(
+      'Total spread',
+      name: 'Stackup_Spread',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Worst-case outcome`
+  String get Stackup_Outcome {
+    return Intl.message(
+      'Worst-case outcome',
+      name: 'Stackup_Outcome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Always clears`
+  String get Stackup_Clearance {
+    return Intl.message(
+      'Always clears',
+      name: 'Stackup_Clearance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Line-to-line`
+  String get Stackup_Line_To_Line {
+    return Intl.message(
+      'Line-to-line',
+      name: 'Stackup_Line_To_Line',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Can interfere`
+  String get Stackup_Interference {
+    return Intl.message(
+      'Can interfere',
+      name: 'Stackup_Interference',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Share of the variation`
+  String get Stackup_Contributions {
+    return Intl.message(
+      'Share of the variation',
+      name: 'Stackup_Contributions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Largest contributor`
+  String get Stackup_Dominant {
+    return Intl.message(
+      'Largest contributor',
+      name: 'Stackup_Dominant',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RSS narrows the band by`
+  String get Stackup_RSS_Saving {
+    return Intl.message(
+      'RSS narrows the band by',
+      name: 'Stackup_RSS_Saving',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Worst case is arithmetic: if it clears, the assembly always goes together. RSS assumes the dimensions vary independently, sit centred in their bands and are roughly normal — it says nothing about a lot of five parts, and understates the spread when a process drifts or a supplier runs to one edge. Size on the worst case; spend tolerance where RSS points.`
+  String get Stackup_Footnote {
+    return Intl.message(
+      'Worst case is arithmetic: if it clears, the assembly always goes together. RSS assumes the dimensions vary independently, sit centred in their bands and are roughly normal — it says nothing about a lot of five parts, and understates the spread when a process drifts or a supplier runs to one edge. Size on the worst case; spend tolerance where RSS points.',
+      name: 'Stackup_Footnote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a nominal and both tolerances for every dimension.`
+  String get Err_Stackup_Dimension {
+    return Intl.message(
+      'Enter a nominal and both tolerances for every dimension.',
+      name: 'Err_Stackup_Dimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A stack-up needs at least two dimensions.`
+  String get Err_Stackup_Two_Rows {
+    return Intl.message(
+      'A stack-up needs at least two dimensions.',
+      name: 'Err_Stackup_Two_Rows',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -37,7 +37,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(tool) => "Retirer ${tool} des favoris";
 
-  static String m8(label) => "Et si : ${label}";
+  static String m8(n) => "Cote ${n}";
+
+  static String m9(label) => "Et si : ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -48,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_Custom_Material": MessageLookupByLibrary.simpleMessage(
       "Ajouter un matériau personnalisé",
     ),
+    "Add_Dimension": MessageLookupByLibrary.simpleMessage("Ajouter une cote"),
     "Add_Force": MessageLookupByLibrary.simpleMessage("Ajouter une force"),
     "Add_Joint": MessageLookupByLibrary.simpleMessage("Ajouter un nœud"),
     "Add_Layer": MessageLookupByLibrary.simpleMessage("Ajouter une couche"),
@@ -201,6 +204,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Clearance_Close": MessageLookupByLibrary.simpleMessage("Passage ajusté"),
     "Clearance_Free": MessageLookupByLibrary.simpleMessage("Passage large"),
     "Clearance_um": MessageLookupByLibrary.simpleMessage("Jeu (µm)"),
+    "Closing_Gap": MessageLookupByLibrary.simpleMessage("Jeu résiduel"),
     "Cold_Inlet": MessageLookupByLibrary.simpleMessage("Entrée fluide froid"),
     "Cold_Outlet": MessageLookupByLibrary.simpleMessage("Sortie fluide froid"),
     "Cold_Stream_Range": MessageLookupByLibrary.simpleMessage(
@@ -331,6 +335,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Dimensions et caractéristiques de section publiées pour les profilés de construction courants. Le module de flexion et le rayon de giration sont déduits de l\'aire et du moment quadratique listés, et restent donc cohérents avec eux.",
+    ),
+    "Desc_Tolerance_Stackup": MessageLookupByLibrary.simpleMessage(
+      "Chaîne de cotes unidimensionnelle, par la méthode au pire des cas et par la méthode statistique (RSS). Donne les limites du jeu résiduel, s\'il peut devenir négatif, et quelle cote est responsable de l\'essentiel de la dispersion.",
     ),
     "Desc_Torsional_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
       "Fréquence propre fondamentale de torsion d\'un arbre circulaire, portant soit un rotor face à une extrémité encastrée, soit deux rotors sur un arbre libre.",
@@ -535,6 +542,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Speed_Positive": MessageLookupByLibrary.simpleMessage(
       "La vitesse doit être positive.",
+    ),
+    "Err_Stackup_Dimension": MessageLookupByLibrary.simpleMessage(
+      "Saisir une cote nominale et les deux écarts pour chaque cote.",
+    ),
+    "Err_Stackup_Two_Rows": MessageLookupByLibrary.simpleMessage(
+      "Une chaîne de cotes demande au moins deux cotes.",
     ),
     "Err_Target_FoS_Positive": MessageLookupByLibrary.simpleMessage(
       "Le facteur de sécurité cible doit être positif.",
@@ -847,6 +860,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Pertes singulières, ΣK",
     ),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
+    "Minus_Tolerance": MessageLookupByLibrary.simpleMessage(
+      "Écart inférieur, −",
+    ),
     "Mode_Number": m3,
     "Module_M": MessageLookupByLibrary.simpleMessage("Module, m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("Module, E"),
@@ -912,6 +928,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Diamètre nominal, d",
     ),
+    "Nominal_Gap": MessageLookupByLibrary.simpleMessage("Jeu nominal"),
+    "Nominal_Size": MessageLookupByLibrary.simpleMessage("Cote nominale"),
     "Nominal_Size_mm": MessageLookupByLibrary.simpleMessage("Taille (mm)"),
     "None": MessageLookupByLibrary.simpleMessage("Aucun"),
     "Not_a_number": MessageLookupByLibrary.simpleMessage("Pas un nombre"),
@@ -999,6 +1017,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Plane_stresses_transformation": MessageLookupByLibrary.simpleMessage(
       "Transformation des contraintes planes",
+    ),
+    "Plus_Tolerance": MessageLookupByLibrary.simpleMessage(
+      "Écart supérieur, +",
     ),
     "Point_Load": MessageLookupByLibrary.simpleMessage("Charge ponctuelle"),
     "Point_Load_P": MessageLookupByLibrary.simpleMessage(
@@ -1100,6 +1121,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "Supprime définitivement les publicités de cette application.",
     ),
+    "Remove_Dimension": MessageLookupByLibrary.simpleMessage("Retirer"),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("Supprimer la couche"),
     "Remove_Tool_from_Favorites": m7,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
@@ -1330,6 +1352,38 @@ class MessageLookup extends MessageLookupByLibrary {
     "Spur_Gear_Geometry": MessageLookupByLibrary.simpleMessage(
       "Géométrie d\'un engrenage droit",
     ),
+    "Stackup_Adds": MessageLookupByLibrary.simpleMessage("Ajoute"),
+    "Stackup_Clearance": MessageLookupByLibrary.simpleMessage("Jeu garanti"),
+    "Stackup_Contributions": MessageLookupByLibrary.simpleMessage(
+      "Part de la dispersion",
+    ),
+    "Stackup_Dimension_N": m8,
+    "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage(
+      "Chaîne de cotes",
+    ),
+    "Stackup_Dominant": MessageLookupByLibrary.simpleMessage(
+      "Contribution principale",
+    ),
+    "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Le pire des cas est purement arithmétique : s\'il passe, l\'assemblage se fait toujours. Le RSS suppose des cotes indépendantes, centrées dans leur intervalle et à peu près normales — il ne dit rien d\'un lot de cinq pièces, et sous-estime la dispersion si le procédé dérive ou si un fournisseur travaille sur un bord. Dimensionner au pire des cas ; répartir la tolérance là où le RSS l\'indique.",
+    ),
+    "Stackup_Interference": MessageLookupByLibrary.simpleMessage(
+      "Serrage possible",
+    ),
+    "Stackup_Line_To_Line": MessageLookupByLibrary.simpleMessage("Jeu nul"),
+    "Stackup_Maximum": MessageLookupByLibrary.simpleMessage("Maximum"),
+    "Stackup_Mean": MessageLookupByLibrary.simpleMessage("Moyenne"),
+    "Stackup_Minimum": MessageLookupByLibrary.simpleMessage("Minimum"),
+    "Stackup_Outcome": MessageLookupByLibrary.simpleMessage(
+      "Résultat au pire des cas",
+    ),
+    "Stackup_RSS": MessageLookupByLibrary.simpleMessage("Statistique (RSS)"),
+    "Stackup_RSS_Saving": MessageLookupByLibrary.simpleMessage(
+      "Le RSS resserre la plage de",
+    ),
+    "Stackup_Spread": MessageLookupByLibrary.simpleMessage("Dispersion totale"),
+    "Stackup_Subtracts": MessageLookupByLibrary.simpleMessage("Retranche"),
+    "Stackup_Worst_Case": MessageLookupByLibrary.simpleMessage("Pire des cas"),
     "Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Profilés normalisés",
     ),
@@ -1427,6 +1481,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Tip_Temperature": MessageLookupByLibrary.simpleMessage(
       "Température d\'extrémité",
     ),
+    "Tolerance_Stackup": MessageLookupByLibrary.simpleMessage(
+      "Chaîne de cotes",
+    ),
     "Torsion_formula_of_bar": MessageLookupByLibrary.simpleMessage(
       "Formule de torsion d\'une barre",
     ),
@@ -1513,7 +1570,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Axe faible (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Épaisseur d\'âme"),
-    "What_If": m8,
+    "What_If": m9,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Diamètre du fil, d",
     ),

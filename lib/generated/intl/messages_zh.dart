@@ -36,13 +36,16 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(tool) => "将${tool}从收藏中移除";
 
-  static String m8(label) => "假设分析：${label}";
+  static String m8(n) => "尺寸 ${n}";
+
+  static String m9(label) => "假设分析：${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "A_From_A": MessageLookupByLibrary.simpleMessage("a（距 A）"),
     "Active_Coils_Na": MessageLookupByLibrary.simpleMessage("有效圈数 Na"),
     "Add_Custom_Material": MessageLookupByLibrary.simpleMessage("添加自定义材料"),
+    "Add_Dimension": MessageLookupByLibrary.simpleMessage("添加尺寸"),
     "Add_Force": MessageLookupByLibrary.simpleMessage("添加力"),
     "Add_Joint": MessageLookupByLibrary.simpleMessage("添加节点"),
     "Add_Layer": MessageLookupByLibrary.simpleMessage("添加层"),
@@ -126,6 +129,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Clearance_Close": MessageLookupByLibrary.simpleMessage("过孔紧配"),
     "Clearance_Free": MessageLookupByLibrary.simpleMessage("过孔松配"),
     "Clearance_um": MessageLookupByLibrary.simpleMessage("间隙（µm）"),
+    "Closing_Gap": MessageLookupByLibrary.simpleMessage("总间隙"),
     "Cold_Inlet": MessageLookupByLibrary.simpleMessage("冷流体进口"),
     "Cold_Outlet": MessageLookupByLibrary.simpleMessage("冷流体出口"),
     "Cold_Stream_Range": MessageLookupByLibrary.simpleMessage("冷流体温升"),
@@ -228,6 +232,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "标准型钢的公称尺寸与截面特性。截面模数与回转半径由所列面积和惯性矩推算，因而与二者保持一致。",
+    ),
+    "Desc_Tolerance_Stackup": MessageLookupByLibrary.simpleMessage(
+      "对一列带公差的尺寸进行一维求和计算，同时给出极值法和统计法(RSS)的结果。输出总间隙的上下限、是否可能为负，以及变动最大的尺寸。",
     ),
     "Desc_Torsional_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
       "圆轴的基本扭转固有频率。支持一端固定的单转子，以及自由轴上的双转子两种情形。",
@@ -365,6 +372,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Span_Positive": MessageLookupByLibrary.simpleMessage("跨度必须大于零。"),
     "Err_Speed_Positive": MessageLookupByLibrary.simpleMessage("转速必须为正值。"),
+    "Err_Stackup_Dimension": MessageLookupByLibrary.simpleMessage(
+      "请为每个尺寸输入基本尺寸和上下偏差。",
+    ),
+    "Err_Stackup_Two_Rows": MessageLookupByLibrary.simpleMessage(
+      "尺寸链至少需要两个尺寸。",
+    ),
     "Err_Target_FoS_Positive": MessageLookupByLibrary.simpleMessage(
       "目标安全系数必须为正值。",
     ),
@@ -554,6 +567,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minor_Head_Loss": MessageLookupByLibrary.simpleMessage("局部水头损失"),
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("局部损失系数 ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("薄荷翻译"),
+    "Minus_Tolerance": MessageLookupByLibrary.simpleMessage("下偏差, −"),
     "Mode_Number": m3,
     "Module_M": MessageLookupByLibrary.simpleMessage("模数 m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("弹性模量 E"),
@@ -593,6 +607,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "No_Tools_Found": MessageLookupByLibrary.simpleMessage("未找到工具"),
     "Node_Position": MessageLookupByLibrary.simpleMessage("节点位置（自转子 1 起）"),
     "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage("公称直径 d"),
+    "Nominal_Gap": MessageLookupByLibrary.simpleMessage("基本间隙"),
+    "Nominal_Size": MessageLookupByLibrary.simpleMessage("基本尺寸"),
     "Nominal_Size_mm": MessageLookupByLibrary.simpleMessage("尺寸（mm）"),
     "None": MessageLookupByLibrary.simpleMessage("无"),
     "Not_a_number": MessageLookupByLibrary.simpleMessage("非数值"),
@@ -651,6 +667,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Plane_stresses_transformation": MessageLookupByLibrary.simpleMessage(
       "平面应力变换",
     ),
+    "Plus_Tolerance": MessageLookupByLibrary.simpleMessage("上偏差, +"),
     "Point_Load": MessageLookupByLibrary.simpleMessage("集中载荷"),
     "Point_Load_P": MessageLookupByLibrary.simpleMessage("集中载荷 P"),
     "Point_Position_A": MessageLookupByLibrary.simpleMessage("载荷位置 a"),
@@ -703,6 +720,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "永久移除此应用中的广告。",
     ),
+    "Remove_Dimension": MessageLookupByLibrary.simpleMessage("删除"),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("删除该层"),
     "Remove_Tool_from_Favorites": m7,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage("从收藏中移除"),
@@ -821,6 +839,26 @@ class MessageLookup extends MessageLookupByLibrary {
     "Spring_Index_C": MessageLookupByLibrary.simpleMessage("旋绕比 C"),
     "Spring_Rate_K": MessageLookupByLibrary.simpleMessage("刚度 k"),
     "Spur_Gear_Geometry": MessageLookupByLibrary.simpleMessage("直齿圆柱齿轮几何"),
+    "Stackup_Adds": MessageLookupByLibrary.simpleMessage("增大"),
+    "Stackup_Clearance": MessageLookupByLibrary.simpleMessage("始终有间隙"),
+    "Stackup_Contributions": MessageLookupByLibrary.simpleMessage("变动的比例"),
+    "Stackup_Dimension_N": m8,
+    "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage("尺寸链"),
+    "Stackup_Dominant": MessageLookupByLibrary.simpleMessage("比例最大的尺寸"),
+    "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
+      "极值法是简单的加总：若极值法通过，装配一定能装上。RSS 假定各尺寸独立变动、位于公差带中心且近似正态分布，对五件这样的小批量作用不大；工序偏移或供应厂长期接近公差带一侧制造时，结果会低估变动。按极值法定尺寸，按 RSS 的指向分配公差。",
+    ),
+    "Stackup_Interference": MessageLookupByLibrary.simpleMessage("可能过盈"),
+    "Stackup_Line_To_Line": MessageLookupByLibrary.simpleMessage("间隙为零"),
+    "Stackup_Maximum": MessageLookupByLibrary.simpleMessage("最大"),
+    "Stackup_Mean": MessageLookupByLibrary.simpleMessage("平均"),
+    "Stackup_Minimum": MessageLookupByLibrary.simpleMessage("最小"),
+    "Stackup_Outcome": MessageLookupByLibrary.simpleMessage("极值法结果"),
+    "Stackup_RSS": MessageLookupByLibrary.simpleMessage("统计法(RSS)"),
+    "Stackup_RSS_Saving": MessageLookupByLibrary.simpleMessage("RSS 使公差带缩小"),
+    "Stackup_Spread": MessageLookupByLibrary.simpleMessage("总变动"),
+    "Stackup_Subtracts": MessageLookupByLibrary.simpleMessage("缩小"),
+    "Stackup_Worst_Case": MessageLookupByLibrary.simpleMessage("极值法"),
     "Standard_Sections": MessageLookupByLibrary.simpleMessage("标准型钢截面"),
     "Static_Deflection_Delta": MessageLookupByLibrary.simpleMessage("静挠度, δst"),
     "Stiffness_Matrix_C": MessageLookupByLibrary.simpleMessage("刚度矩阵 C"),
@@ -872,6 +910,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Thread": MessageLookupByLibrary.simpleMessage("螺纹"),
     "Tightening_Torque_T": MessageLookupByLibrary.simpleMessage("拧紧力矩 T"),
     "Tip_Temperature": MessageLookupByLibrary.simpleMessage("肋端温度"),
+    "Tolerance_Stackup": MessageLookupByLibrary.simpleMessage("尺寸链分析"),
     "Torsion_formula_of_bar": MessageLookupByLibrary.simpleMessage("杆的扭力公式"),
     "Torsional_Footnote": MessageLookupByLibrary.simpleMessage(
       "已忽略轴自身的转动惯量。若其与转子相当，请改用完整的多质量（霍尔泽）分析。",
@@ -920,7 +959,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("喝水吧"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("弱轴 (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("腹板厚度"),
-    "What_If": m8,
+    "What_If": m9,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("簧丝直径 d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage("极简天气"),
     "Wrap_Angle_Large_Pulley": MessageLookupByLibrary.simpleMessage("大带轮包角"),

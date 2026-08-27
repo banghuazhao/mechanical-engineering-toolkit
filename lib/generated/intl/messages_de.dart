@@ -37,7 +37,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(tool) => "${tool} aus Favoriten entfernen";
 
-  static String m8(label) => "Was wäre wenn: ${label}";
+  static String m8(n) => "Maß ${n}";
+
+  static String m9(label) => "Was wäre wenn: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -48,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_Custom_Material": MessageLookupByLibrary.simpleMessage(
       "Eigenes Material hinzufügen",
     ),
+    "Add_Dimension": MessageLookupByLibrary.simpleMessage("Maß hinzufügen"),
     "Add_Force": MessageLookupByLibrary.simpleMessage("Kraft hinzufügen"),
     "Add_Joint": MessageLookupByLibrary.simpleMessage("Knoten hinzufügen"),
     "Add_Layer": MessageLookupByLibrary.simpleMessage("Schicht hinzufügen"),
@@ -185,6 +188,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Durchgangsloch weit",
     ),
     "Clearance_um": MessageLookupByLibrary.simpleMessage("Spiel (µm)"),
+    "Closing_Gap": MessageLookupByLibrary.simpleMessage("Schließmaß"),
     "Cold_Inlet": MessageLookupByLibrary.simpleMessage("Kalteintritt"),
     "Cold_Outlet": MessageLookupByLibrary.simpleMessage("Kaltaustritt"),
     "Cold_Stream_Range": MessageLookupByLibrary.simpleMessage(
@@ -315,6 +319,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Veröffentlichte Abmessungen und Querschnittswerte gebräuchlicher Normprofile. Widerstandsmoment und Trägheitsradius werden aus der angegebenen Fläche und dem Flächenträgheitsmoment abgeleitet und bleiben dadurch mit diesen konsistent.",
+    ),
+    "Desc_Tolerance_Stackup": MessageLookupByLibrary.simpleMessage(
+      "Eindimensionale Toleranzkette aus mehreren tolerierten Maßen, sowohl nach dem Worst-Case- als auch nach dem statistischen (RSS-)Verfahren. Ausgegeben werden die Grenzen des Schließmaßes, ob es negativ werden kann, und welches Maß den größten Teil der Streuung verursacht.",
     ),
     "Desc_Torsional_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
       "Torsionsgrundfrequenz einer runden Welle, mit einem Läufer gegen ein eingespanntes Ende oder mit zwei Läufern auf freier Welle.",
@@ -519,6 +526,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Speed_Positive": MessageLookupByLibrary.simpleMessage(
       "Die Drehzahl muss positiv sein.",
+    ),
+    "Err_Stackup_Dimension": MessageLookupByLibrary.simpleMessage(
+      "Für jedes Maß Nennmaß und beide Abmaße eingeben.",
+    ),
+    "Err_Stackup_Two_Rows": MessageLookupByLibrary.simpleMessage(
+      "Eine Toleranzkette braucht mindestens zwei Maße.",
     ),
     "Err_Target_FoS_Positive": MessageLookupByLibrary.simpleMessage(
       "Der geforderte Sicherheitsfaktor muss positiv sein.",
@@ -815,6 +828,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("Einzelverluste, ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
+    "Minus_Tolerance": MessageLookupByLibrary.simpleMessage("Unteres Abmaß, −"),
     "Mode_Number": m3,
     "Module_M": MessageLookupByLibrary.simpleMessage("Modul, m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("Elastizitätsmodul, E"),
@@ -878,6 +892,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Nenndurchmesser, d",
     ),
+    "Nominal_Gap": MessageLookupByLibrary.simpleMessage("Nennschließmaß"),
+    "Nominal_Size": MessageLookupByLibrary.simpleMessage("Nennmaß"),
     "Nominal_Size_mm": MessageLookupByLibrary.simpleMessage("Größe (mm)"),
     "None": MessageLookupByLibrary.simpleMessage("Keine"),
     "Not_a_number": MessageLookupByLibrary.simpleMessage("Keine Zahl"),
@@ -958,6 +974,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Plane_stresses_transformation": MessageLookupByLibrary.simpleMessage(
       "Transformation ebener Spannungen",
     ),
+    "Plus_Tolerance": MessageLookupByLibrary.simpleMessage("Oberes Abmaß, +"),
     "Point_Load": MessageLookupByLibrary.simpleMessage("Einzellast"),
     "Point_Load_P": MessageLookupByLibrary.simpleMessage("Einzellast, P"),
     "Point_Position_A": MessageLookupByLibrary.simpleMessage(
@@ -1046,6 +1063,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "Entfernt dauerhaft alle Werbung aus dieser App.",
     ),
+    "Remove_Dimension": MessageLookupByLibrary.simpleMessage("Entfernen"),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("Schicht entfernen"),
     "Remove_Tool_from_Favorites": m7,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
@@ -1262,6 +1280,34 @@ class MessageLookup extends MessageLookupByLibrary {
     "Spur_Gear_Geometry": MessageLookupByLibrary.simpleMessage(
       "Stirnradgeometrie",
     ),
+    "Stackup_Adds": MessageLookupByLibrary.simpleMessage("Addiert"),
+    "Stackup_Clearance": MessageLookupByLibrary.simpleMessage("Immer Spiel"),
+    "Stackup_Contributions": MessageLookupByLibrary.simpleMessage(
+      "Anteil an der Streuung",
+    ),
+    "Stackup_Dimension_N": m8,
+    "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage("Maßkette"),
+    "Stackup_Dominant": MessageLookupByLibrary.simpleMessage("Größter Anteil"),
+    "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Der Worst Case ist reine Arithmetik: geht er auf, passt die Baugruppe immer. RSS setzt voraus, dass die Maße unabhängig streuen, mittig im Toleranzfeld liegen und annähernd normalverteilt sind — für eine Losgröße von fünf sagt es nichts aus, und bei driftendem Prozess oder einem Lieferanten am Feldrand unterschätzt es die Streuung. Auslegen nach Worst Case; Toleranz dort vergeben, wohin RSS zeigt.",
+    ),
+    "Stackup_Interference": MessageLookupByLibrary.simpleMessage(
+      "Übermaß möglich",
+    ),
+    "Stackup_Line_To_Line": MessageLookupByLibrary.simpleMessage("Spielfrei"),
+    "Stackup_Maximum": MessageLookupByLibrary.simpleMessage("Maximum"),
+    "Stackup_Mean": MessageLookupByLibrary.simpleMessage("Mittelwert"),
+    "Stackup_Minimum": MessageLookupByLibrary.simpleMessage("Minimum"),
+    "Stackup_Outcome": MessageLookupByLibrary.simpleMessage(
+      "Worst-Case-Ergebnis",
+    ),
+    "Stackup_RSS": MessageLookupByLibrary.simpleMessage("Statistisch (RSS)"),
+    "Stackup_RSS_Saving": MessageLookupByLibrary.simpleMessage(
+      "RSS verringert das Band um",
+    ),
+    "Stackup_Spread": MessageLookupByLibrary.simpleMessage("Gesamtstreuung"),
+    "Stackup_Subtracts": MessageLookupByLibrary.simpleMessage("Subtrahiert"),
+    "Stackup_Worst_Case": MessageLookupByLibrary.simpleMessage("Worst Case"),
     "Standard_Sections": MessageLookupByLibrary.simpleMessage("Normprofile"),
     "Static_Deflection_Delta": MessageLookupByLibrary.simpleMessage(
       "Statische Durchbiegung, δst",
@@ -1353,6 +1399,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Tip_Temperature": MessageLookupByLibrary.simpleMessage(
       "Spitzentemperatur",
     ),
+    "Tolerance_Stackup": MessageLookupByLibrary.simpleMessage("Toleranzkette"),
     "Torsion_formula_of_bar": MessageLookupByLibrary.simpleMessage(
       "Torsionsformel eines Stabs",
     ),
@@ -1423,7 +1470,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Schwache Achse (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Stegdicke"),
-    "What_If": m8,
+    "What_If": m9,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Drahtdurchmesser, d",
     ),

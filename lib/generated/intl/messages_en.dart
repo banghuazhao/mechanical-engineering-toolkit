@@ -37,7 +37,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m7(tool) => "Remove ${tool} from favorites";
 
-  static String m8(label) => "What if: ${label}";
+  static String m8(n) => "Dimension ${n}";
+
+  static String m9(label) => "What if: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -46,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_Custom_Material": MessageLookupByLibrary.simpleMessage(
       "Add custom material",
     ),
+    "Add_Dimension": MessageLookupByLibrary.simpleMessage("Add dimension"),
     "Add_Force": MessageLookupByLibrary.simpleMessage("Add Force"),
     "Add_Joint": MessageLookupByLibrary.simpleMessage("Add Joint"),
     "Add_Layer": MessageLookupByLibrary.simpleMessage("Add layer"),
@@ -181,6 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Clearance_Close": MessageLookupByLibrary.simpleMessage("Clearance close"),
     "Clearance_Free": MessageLookupByLibrary.simpleMessage("Clearance free"),
     "Clearance_um": MessageLookupByLibrary.simpleMessage("Clearance (µm)"),
+    "Closing_Gap": MessageLookupByLibrary.simpleMessage("Closing gap"),
     "Cold_Inlet": MessageLookupByLibrary.simpleMessage("Cold inlet"),
     "Cold_Outlet": MessageLookupByLibrary.simpleMessage("Cold outlet"),
     "Cold_Stream_Range": MessageLookupByLibrary.simpleMessage(
@@ -309,6 +313,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Published dimensions and section properties for standard structural shapes. Section modulus and radius of gyration are derived from the listed area and second moment, so they stay consistent with them.",
+    ),
+    "Desc_Tolerance_Stackup": MessageLookupByLibrary.simpleMessage(
+      "One-dimensional stack-up of a chain of toleranced dimensions, by both the worst-case and the statistical (RSS) method. Reports the closing gap\'s limits, whether it can go negative, and which dimension is responsible for most of the variation.",
     ),
     "Desc_Torsional_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
       "Fundamental torsional natural frequency of a round shaft, carrying either one rotor against a fixed end or two rotors on a free shaft.",
@@ -505,6 +512,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Speed_Positive": MessageLookupByLibrary.simpleMessage(
       "Speed must be positive.",
+    ),
+    "Err_Stackup_Dimension": MessageLookupByLibrary.simpleMessage(
+      "Enter a nominal and both tolerances for every dimension.",
+    ),
+    "Err_Stackup_Two_Rows": MessageLookupByLibrary.simpleMessage(
+      "A stack-up needs at least two dimensions.",
     ),
     "Err_Target_FoS_Positive": MessageLookupByLibrary.simpleMessage(
       "Target factor of safety must be positive.",
@@ -779,6 +792,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minor_Head_Loss": MessageLookupByLibrary.simpleMessage("Minor head loss"),
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("Minor losses, ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
+    "Minus_Tolerance": MessageLookupByLibrary.simpleMessage("Lower, −"),
     "Mode_Number": m3,
     "Module_M": MessageLookupByLibrary.simpleMessage("Module, m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("Modulus, E"),
@@ -836,6 +850,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Nominal_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Nominal diameter, d",
     ),
+    "Nominal_Gap": MessageLookupByLibrary.simpleMessage("Nominal gap"),
+    "Nominal_Size": MessageLookupByLibrary.simpleMessage("Nominal"),
     "Nominal_Size_mm": MessageLookupByLibrary.simpleMessage("Size (mm)"),
     "None": MessageLookupByLibrary.simpleMessage("None"),
     "Not_a_number": MessageLookupByLibrary.simpleMessage("Not a number"),
@@ -912,6 +928,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Plane_stresses_transformation": MessageLookupByLibrary.simpleMessage(
       "Plane stresses transformation",
     ),
+    "Plus_Tolerance": MessageLookupByLibrary.simpleMessage("Upper, +"),
     "Point_Load": MessageLookupByLibrary.simpleMessage("Point Load"),
     "Point_Load_P": MessageLookupByLibrary.simpleMessage("Point load, P"),
     "Point_Position_A": MessageLookupByLibrary.simpleMessage(
@@ -992,6 +1009,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Ads_Description": MessageLookupByLibrary.simpleMessage(
       "Remove ads permanently from this app.",
     ),
+    "Remove_Dimension": MessageLookupByLibrary.simpleMessage("Remove"),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("Remove layer"),
     "Remove_Tool_from_Favorites": m7,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
@@ -1192,6 +1210,40 @@ class MessageLookup extends MessageLookupByLibrary {
     "Spur_Gear_Geometry": MessageLookupByLibrary.simpleMessage(
       "Spur Gear Geometry",
     ),
+    "Stackup_Adds": MessageLookupByLibrary.simpleMessage("Adds"),
+    "Stackup_Clearance": MessageLookupByLibrary.simpleMessage("Always clears"),
+    "Stackup_Contributions": MessageLookupByLibrary.simpleMessage(
+      "Share of the variation",
+    ),
+    "Stackup_Dimension_N": m8,
+    "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage(
+      "Dimension chain",
+    ),
+    "Stackup_Dominant": MessageLookupByLibrary.simpleMessage(
+      "Largest contributor",
+    ),
+    "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Worst case is arithmetic: if it clears, the assembly always goes together. RSS assumes the dimensions vary independently, sit centred in their bands and are roughly normal — it says nothing about a lot of five parts, and understates the spread when a process drifts or a supplier runs to one edge. Size on the worst case; spend tolerance where RSS points.",
+    ),
+    "Stackup_Interference": MessageLookupByLibrary.simpleMessage(
+      "Can interfere",
+    ),
+    "Stackup_Line_To_Line": MessageLookupByLibrary.simpleMessage(
+      "Line-to-line",
+    ),
+    "Stackup_Maximum": MessageLookupByLibrary.simpleMessage("Maximum"),
+    "Stackup_Mean": MessageLookupByLibrary.simpleMessage("Mean"),
+    "Stackup_Minimum": MessageLookupByLibrary.simpleMessage("Minimum"),
+    "Stackup_Outcome": MessageLookupByLibrary.simpleMessage(
+      "Worst-case outcome",
+    ),
+    "Stackup_RSS": MessageLookupByLibrary.simpleMessage("Statistical (RSS)"),
+    "Stackup_RSS_Saving": MessageLookupByLibrary.simpleMessage(
+      "RSS narrows the band by",
+    ),
+    "Stackup_Spread": MessageLookupByLibrary.simpleMessage("Total spread"),
+    "Stackup_Subtracts": MessageLookupByLibrary.simpleMessage("Subtracts"),
+    "Stackup_Worst_Case": MessageLookupByLibrary.simpleMessage("Worst case"),
     "Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Standard Sections",
     ),
@@ -1279,6 +1331,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Tightening torque, T",
     ),
     "Tip_Temperature": MessageLookupByLibrary.simpleMessage("Tip temperature"),
+    "Tolerance_Stackup": MessageLookupByLibrary.simpleMessage(
+      "Tolerance Stack-Up",
+    ),
     "Torsion_formula_of_bar": MessageLookupByLibrary.simpleMessage(
       "Torsion formula of bar",
     ),
@@ -1349,7 +1404,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Weak axis (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Web thickness"),
-    "What_If": m8,
+    "What_If": m9,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("Wire diameter, d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",
