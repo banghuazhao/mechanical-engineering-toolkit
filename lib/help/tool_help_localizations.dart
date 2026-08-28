@@ -5,6 +5,7 @@ import 'package:mechanical_engineering_toolkit/help/tool_help_content_de.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_content_fr.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_content_ja.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_content_zh.dart';
+import 'package:mechanical_engineering_toolkit/help/tool_help_content_zh_hk.dart';
 
 /// Localized tool explanations, keyed by locale tag then by tool id.
 ///
@@ -21,6 +22,7 @@ const Map<String, Map<int, ToolHelp>> localizedToolHelp = {
   'fr': toolHelpFr,
   'ja': toolHelpJa,
   'zh': toolHelpZh,
+  'zh_HK': toolHelpZhHk,
 };
 
 /// The tag [localizedToolHelp] is keyed by.
@@ -37,9 +39,9 @@ String helpLocaleTag(Locale locale) {
 
 /// Tags to try, in order, for [locale].
 ///
-/// Traditional Chinese falls back to Simplified before English: the two are
-/// not interchangeable, but a reader of one can follow the other, and that is
-/// a good deal closer than English.
+/// Traditional Chinese falls back to Simplified before English. Both are
+/// filled in now, so the chain is dormant — it stays because it is the right
+/// order should either drift out of step with the other.
 List<String> _fallbackChain(Locale locale) {
   final tag = helpLocaleTag(locale);
   return tag == 'zh_HK' ? const ['zh_HK', 'zh'] : [tag];

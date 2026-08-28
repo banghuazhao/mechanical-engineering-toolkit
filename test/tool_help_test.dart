@@ -6,6 +6,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_content.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_content_zh.dart';
+import 'package:mechanical_engineering_toolkit/help/tool_help_content_zh_hk.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_localizations.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_sheet.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
@@ -157,7 +158,7 @@ void main() {
     test('a fully translated language covers every tool', () {
       // Partial languages are allowed — helpFor falls back per tool — but a
       // language that claims to be done should not be quietly missing one.
-      for (final tag in ['de', 'fr', 'ja', 'zh']) {
+      for (final tag in ['de', 'fr', 'ja', 'zh', 'zh_HK']) {
         expect(localizedToolHelp[tag]!.keys.toSet(), toolHelp.keys.toSet(),
             reason: '$tag is incomplete');
       }
@@ -166,9 +167,7 @@ void main() {
     test('resolves the reader language, and falls back sensibly', () {
       const id = 100;
       expect(helpFor(id, const Locale('zh')), toolHelpZh[id]);
-      // Traditional has no text of its own yet, so it takes Simplified rather
-      // than English.
-      expect(helpFor(id, const Locale('zh', 'HK')), toolHelpZh[id]);
+      expect(helpFor(id, const Locale('zh', 'HK')), toolHelpZhHk[id]);
       // A language with no translation falls back to English. Spanish is
       // used deliberately: the app ships no Spanish, so this stays true as
       // more of the shipped languages get translated.
