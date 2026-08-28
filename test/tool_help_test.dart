@@ -157,7 +157,7 @@ void main() {
     test('a fully translated language covers every tool', () {
       // Partial languages are allowed — helpFor falls back per tool — but a
       // language that claims to be done should not be quietly missing one.
-      for (final tag in ['de', 'ja', 'zh']) {
+      for (final tag in ['de', 'fr', 'ja', 'zh']) {
         expect(localizedToolHelp[tag]!.keys.toSet(), toolHelp.keys.toSet(),
             reason: '$tag is incomplete');
       }

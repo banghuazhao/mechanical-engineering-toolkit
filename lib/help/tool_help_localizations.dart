@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_content.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_content_de.dart';
+import 'package:mechanical_engineering_toolkit/help/tool_help_content_fr.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_content_ja.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_content_zh.dart';
 
@@ -17,6 +18,7 @@ import 'package:mechanical_engineering_toolkit/help/tool_help_content_zh.dart';
 /// glyph-coverage limit that constrains the bundled `.arb` wording.
 const Map<String, Map<int, ToolHelp>> localizedToolHelp = {
   'de': toolHelpDe,
+  'fr': toolHelpFr,
   'ja': toolHelpJa,
   'zh': toolHelpZh,
 };
