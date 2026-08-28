@@ -20,7 +20,7 @@ import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Widget _wrap(Widget child) => MultiProvider(
+Widget _wrap(Widget child, {Locale? locale}) => MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => NumberPrecisionHelper()),
         ChangeNotifierProvider(create: (_) => UnitSystemPreference()),
@@ -36,6 +36,7 @@ Widget _wrap(Widget child) => MultiProvider(
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: S.delegate.supportedLocales,
+        locale: locale,
         home: child,
       ),
     );
@@ -272,6 +273,44 @@ void main() {
         await tester.drag(find.byType(ListView), const Offset(0, -4000));
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull, reason: 'tool $id, scrolled');
+      }
+    });
+
+    testWidgets('every translation lays out on a small phone too',
+        (tester) async {
+      // The English pass above cannot catch what translation breaks: German
+      // compounds are far longer than their English source, and a CJK symbol
+      // meaning wraps at different points. Every language gets the same
+      // check.
+      tester.view.physicalSize = const Size(360, 640);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
+      const locales = {
+        'de': Locale('de'),
+        'fr': Locale('fr'),
+        'ja': Locale('ja'),
+        'zh': Locale('zh'),
+        'zh_HK': Locale('zh', 'HK'),
+      };
+
+      for (final entry in locales.entries) {
+        for (final id in localizedToolHelp[entry.key]!.keys) {
+          await tester.pumpWidget(_wrap(
+            Scaffold(
+              body: ToolHelpView(toolId: id, toolTitle: 'Un Nom Assez Long'),
+            ),
+            locale: entry.value,
+          ));
+          await tester.pumpAndSettle();
+          expect(tester.takeException(), isNull,
+              reason: '${entry.key}/$id');
+
+          await tester.drag(find.byType(ListView), const Offset(0, -6000));
+          await tester.pumpAndSettle();
+          expect(tester.takeException(), isNull,
+              reason: '${entry.key}/$id, scrolled');
+        }
       }
     });
 
