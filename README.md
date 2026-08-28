@@ -25,8 +25,11 @@ result you can export or share.
   converts in place.
 - **Configurable precision.** Auto, scientific, decimal, or engineering notation,
   with adjustable significant figures.
-- **Projects.** Save any calculation's inputs under a name and reopen it later.
+- **Projects.** Collect calculations under one name, reopen them, and export the
+  whole set as a single PDF report.
 - **Export and share.** Any result as text, image, CSV, or PDF report.
+- **An explanation behind every tool.** The governing equations, what each symbol
+  means, what the model assumes, and where to read more.
 - **Material and section libraries.** Isotropic materials, fluid properties,
   thermal materials, and standard steel sections.
 - **Discovery.** Full-text search, favourites, history, and recommendations by
@@ -46,7 +49,7 @@ result you can export or share.
 | Composite Material | 7 | Lamina and laminate stress/strain, lamina engineering constants, laminate plane and 3D properties, rule of mixtures, Tsai-Hill and Tsai-Wu failure criteria |
 | Statics | 3 | Resultant of forces (2D), centroid of composite area, truss analysis by method of joints |
 | Theory of Elasticity | 2 | Constitutive relation and stress/strain of linear elastic material |
-| Reference & Utilities | 4 | Unit converter, drill and tap chart, ISO 286 fits and tolerances, standard sections (AISC W, IPE, HEB) |
+| Reference & Utilities | 6 | Unit converter, drill and tap chart, ISO 286 fits and tolerances, standard sections (AISC W, IPE, HEB), ASME B36.10M pipe schedules, 1D tolerance stack-up (worst case and RSS) |
 
 [`lib/home/tool_model.dart`](lib/home/tool_model.dart) is the authoritative registry.
 
