@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.11.0 - 2026-08-28
+
+- Added an explanation for every tool behind a "?" in its app bar, covering what the tool computes, the formula it uses, and how to read the result — translated into German, French, Japanese, Simplified Chinese and Traditional Chinese.
+- Added Tolerance Stack-Up analysis over a dimension chain of any length, by both the worst-case and RSS methods, reporting the closing gap's limits and which dimension owns most of the variation.
+- Added standard pipe schedules (ASME B36.10M, NPS 1/8 to 24, schedules 10/40/80/160) as a browsable reference, with a picker that fills Reynolds Number and Pipe Pressure Drop from the real bore.
+- Projects now hold several calculations instead of one tool's inputs, and export as a single PDF report with a contents list.
+- Fixed the bore quoted against the name for NPS 1 pipe in the tool explanations.
+- Fixed a saved stack-up being summarised as raw JSON instead of its dimensions.
+- Fixed the stack-up result showing each contribution share twice.
+
 ## 1.10.0 - 2026-08-20
 
 - Added three vibration tools under Machine Design: shaft critical speed (Dunkerley), beam natural frequency across five end conditions, and torsional natural frequency for one or two rotors.
