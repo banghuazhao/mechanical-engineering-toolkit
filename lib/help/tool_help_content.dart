@@ -2294,7 +2294,7 @@ const Map<int, ToolHelp> toolHelp = {
           'outside diameter; only from NPS 14 up does the number equal the OD '
           'in inches.',
       'Use the bore, not the nominal size, for any flow calculation. At NPS 1 '
-          'the difference is about 20%, and it goes as the fourth power in a '
+          'the difference is about 5%, and it goes as the fourth power in a '
           'pressure-drop calculation.',
       'STD and XS track Sch 40 and Sch 80 only up to NPS 10 and NPS 8 '
           'respectively; above that the weight classes stop thickening.',

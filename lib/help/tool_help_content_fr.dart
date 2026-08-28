@@ -2404,7 +2404,7 @@ const Map<int, ToolHelp> toolHelpFr = {
           '2 pouces de diamètre extérieur ; ce n\'est qu\'à partir de NPS 14 '
           'que le nombre égale le diamètre extérieur en pouces.',
       'Utiliser l\'alésage, non la taille nominale, pour tout calcul '
-          'd\'écoulement. À NPS 1 l\'écart atteint environ 20%, et il '
+          'd\'écoulement. À NPS 1 l\'écart atteint environ 5%, et il '
           'intervient à la puissance quatre dans un calcul de perte de charge.',
       'STD et XS ne suivent Sch 40 et Sch 80 que jusqu\'à NPS 10 et NPS 8 '
           'respectivement ; au-delà, les classes de poids cessent de '

@@ -2388,7 +2388,7 @@ const Map<int, ToolHelp> toolHelpDe = {
           'Zoll Außendurchmesser; erst ab NPS 14 entspricht die Zahl dem '
           'Außendurchmesser in Zoll.',
       'Für jede Strömungsrechnung die lichte Weite verwenden, nicht die '
-          'Nennweite. Bei NPS 1 beträgt der Unterschied etwa 20%, und in eine '
+          'Nennweite. Bei NPS 1 beträgt der Unterschied etwa 5%, und in eine '
           'Druckverlustrechnung geht er in der vierten Potenz ein.',
       'STD und XS folgen Sch 40 und Sch 80 nur bis NPS 10 beziehungsweise '
           'NPS 8; darüber nehmen die Gewichtsklassen nicht weiter zu.',
