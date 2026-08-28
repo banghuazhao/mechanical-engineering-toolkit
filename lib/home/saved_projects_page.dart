@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/saved_projects.dart';
+import 'package:mechanical_engineering_toolkit/home/recorded_inputs.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/pdf_export.dart';
@@ -153,7 +154,9 @@ class SavedProjectsPage extends StatelessWidget {
               l10n.Result,
           sections: entry.snapshot?.sections ?? const [],
           formulaSteps: entry.snapshot?.formulaSteps ?? const [],
-          inputs: entry.inputs,
+          // The inputs as a reader should see them, not as they are stored:
+          // an entry with no snapshot has nothing but these to show.
+          inputs: displayInputs(context, entry.inputs),
           capturedAt: entry.snapshot?.capturedAt ?? entry.addedAt,
         ),
     ];
@@ -290,9 +293,7 @@ class _ProjectCard extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: context.tokens.space1),
                 child: Text(
-                  project.inputs.entries
-                      .map((item) => '${item.key}: ${item.value}')
-                      .join(', '),
+                  describeInputs(context, project.inputs),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodySmall

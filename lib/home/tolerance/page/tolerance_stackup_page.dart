@@ -21,6 +21,57 @@ import 'package:provider/provider.dart';
 /// expected three.
 const stackupChainKey = 'chain';
 
+/// The stored chain as one readable line, e.g. `bore 25 +0.1/−0.05, −12 ±0.02`.
+///
+/// History and saved projects summarise a calculation as its `label: value`
+/// inputs, which reads well for the tools that record one number per field.
+/// This tool has no fixed number of fields, so it records the whole chain as
+/// JSON under [stackupChainKey] — and printed raw that is a wall of braces.
+/// This is the same chain written the way a drawing writes it instead.
+///
+/// A dimension that subtracts is prefixed with a minus, matching the direction
+/// the user chose. Returns null for a value that is not a chain this build can
+/// read, so a caller can fall back rather than show nothing.
+String? describeStackupChain(String raw) {
+  final List<dynamic> decoded;
+  try {
+    final parsed = jsonDecode(raw);
+    if (parsed is! List) return null;
+    decoded = parsed;
+  } catch (_) {
+    return null;
+  }
+
+  final parts = <String>[];
+  for (final entry in decoded) {
+    if (entry is! Map) continue;
+    final nominal = (entry['nominal'] as num?)?.toDouble();
+    // A row with no size describes nothing; skip it rather than print a gap.
+    if (nominal == null) continue;
+    final plus = (entry['plus'] as num?)?.toDouble() ?? 0;
+    final minus = (entry['minus'] as num?)?.toDouble() ?? 0;
+    final label = '${entry['label'] ?? ''}'.trim();
+
+    final buffer = StringBuffer();
+    if (label.isNotEmpty) buffer.write('$label ');
+    if (entry['subtracts'] == true) buffer.write('−');
+    buffer.write(_trimmed(nominal));
+    buffer.write(plus == minus
+        ? ' ±${_trimmed(plus)}'
+        : ' +${_trimmed(plus)}/−${_trimmed(minus)}');
+    parts.add(buffer.toString());
+  }
+  return parts.isEmpty ? null : parts.join(', ');
+}
+
+/// A stored millimetre value without the trailing zeros a fixed number of
+/// decimals would leave — `25`, not `25.000`.
+String _trimmed(double value) {
+  final text = value.toStringAsFixed(3);
+  if (!text.contains('.')) return text;
+  return text.replaceFirst(RegExp(r'\.?0+$'), '');
+}
+
 /// A dimension being edited. Mutable and identified, unlike the immutable
 /// [StackupContributor] the calculator takes: rows are reordered and deleted,
 /// and a [UnitField]'s state has to follow its row rather than its position.

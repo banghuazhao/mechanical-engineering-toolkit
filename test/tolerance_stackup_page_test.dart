@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/home/recorded_inputs.dart';
 import 'package:mechanical_engineering_toolkit/home/tolerance/page/tolerance_stackup_page.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
 import 'package:mechanical_engineering_toolkit/home/tolerance/page/tolerance_stackup_result_page.dart';
@@ -207,5 +208,58 @@ void main() {
 
     // Degrades to an empty tool rather than throwing on open.
     expect(find.byType(UnitField), findsNWidgets(6));
+  });
+
+  group('describeStackupChain', () {
+    test('writes the chain the way a drawing writes it', () {
+      final chain = jsonEncode([
+        {'label': 'bore', 'nominal': 25.0, 'plus': 0.1, 'minus': 0.05,
+         'subtracts': false},
+        {'label': '', 'nominal': 12.0, 'plus': 0.02, 'minus': 0.02,
+         'subtracts': true},
+      ]);
+
+      // Trailing zeros trimmed, a symmetric band written as ±, and the
+      // direction carried by the sign — the raw JSON reaches no reader.
+      expect(describeStackupChain(chain), 'bore 25 +0.1/−0.05, −12 ±0.02');
+    });
+
+    test('is null for a value that is not a chain', () {
+      expect(describeStackupChain('not json'), isNull);
+      expect(describeStackupChain('{}'), isNull);
+      expect(describeStackupChain('[]'), isNull);
+      // A row with no size describes nothing, so it is skipped.
+      expect(describeStackupChain(jsonEncode([{'plus': 0.1}])), isNull);
+    });
+  });
+
+  testWidgets('a recorded chain reads as dimensions, not as JSON',
+      (tester) async {
+    final chain = jsonEncode([
+      {'label': '', 'nominal': 25.0, 'plus': 0.05, 'minus': 0.05,
+       'subtracts': false},
+    ]);
+    late String summary;
+    await tester.pumpWidget(_wrap(Builder(builder: (context) {
+      summary = describeInputs(context, {stackupChainKey: chain});
+      return const SizedBox.shrink();
+    })));
+    await tester.pumpAndSettle();
+
+    // Keyed by the tool's own label for the chain, not by the storage key,
+    // and carrying the dimensions rather than the JSON they are stored as.
+    expect(summary, 'Dimension chain: 25 ±0.05');
+  });
+
+  testWidgets('inputs a tool records normally are passed through untouched',
+      (tester) async {
+    late Map<String, String> shown;
+    await tester.pumpWidget(_wrap(Builder(builder: (context) {
+      shown = displayInputs(context, {'Torque, T': '120'});
+      return const SizedBox.shrink();
+    })));
+    await tester.pumpAndSettle();
+
+    expect(shown, {'Torque, T': '120'});
   });
 }
