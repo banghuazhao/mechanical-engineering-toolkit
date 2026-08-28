@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_content.dart';
+import 'package:mechanical_engineering_toolkit/help/tool_help_content_de.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_content_ja.dart';
 import 'package:mechanical_engineering_toolkit/help/tool_help_content_zh.dart';
 
@@ -15,6 +16,7 @@ import 'package:mechanical_engineering_toolkit/help/tool_help_content_zh.dart';
 /// its share action hands plain text to the system — so they are free of the
 /// glyph-coverage limit that constrains the bundled `.arb` wording.
 const Map<String, Map<int, ToolHelp>> localizedToolHelp = {
+  'de': toolHelpDe,
   'ja': toolHelpJa,
   'zh': toolHelpZh,
 };

@@ -157,7 +157,7 @@ void main() {
     test('a fully translated language covers every tool', () {
       // Partial languages are allowed — helpFor falls back per tool — but a
       // language that claims to be done should not be quietly missing one.
-      for (final tag in ['ja', 'zh']) {
+      for (final tag in ['de', 'ja', 'zh']) {
         expect(localizedToolHelp[tag]!.keys.toSet(), toolHelp.keys.toSet(),
             reason: '$tag is incomplete');
       }
@@ -169,8 +169,10 @@ void main() {
       // Traditional has no text of its own yet, so it takes Simplified rather
       // than English.
       expect(helpFor(id, const Locale('zh', 'HK')), toolHelpZh[id]);
-      // An untranslated language falls back to English.
-      expect(helpFor(id, const Locale('de')), toolHelp[id]);
+      // A language with no translation falls back to English. Spanish is
+      // used deliberately: the app ships no Spanish, so this stays true as
+      // more of the shipped languages get translated.
+      expect(helpFor(id, const Locale('es')), toolHelp[id]);
       expect(helpFor(-1, const Locale('zh')), isNull);
     });
 
