@@ -62,10 +62,22 @@ class ResultValue {
 /// A titled group of [ResultValue]s — one card on screen, one block in an
 /// export.
 class ResultSection {
-  const ResultSection({required this.title, required this.values});
+  const ResultSection({
+    required this.title,
+    required this.values,
+    this.exportOnly = false,
+  });
 
   final String title;
   final List<ResultValue> values;
+
+  /// Keeps the section out of the on-screen cards while still exporting it.
+  ///
+  /// For a page that draws these numbers its own way — as a bar chart, say —
+  /// and would otherwise show them twice under the same heading. The values
+  /// still reach the share text, the CSV, the PDF and a saved project, which
+  /// is the point: a section is dropped from the layout, never from the data.
+  final bool exportOnly;
 }
 
 /// Renders [sections] as the plain-text body used by the share action.

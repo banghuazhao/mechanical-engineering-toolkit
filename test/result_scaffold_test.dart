@@ -241,6 +241,42 @@ void main() {
       expect(find.byKey(const Key('shareFormatPdf')), findsOneWidget);
     });
 
+    testWidgets('keeps an export-only section out of the cards but in the share',
+        (tester) async {
+      await tester.pumpWidget(_wrap(const ResultScaffold(
+        toolName: 'Widget Test Tool',
+        results: [
+          ...sections,
+          ResultSection(
+            title: 'Share of the variation',
+            exportOnly: true,
+            values: [ResultValue(label: 'Dimension 1', value: '93%')],
+          ),
+        ],
+        children: [AppSectionCard(title: 'Bars', child: Text('drawn here'))],
+      )));
+      await tester.pumpAndSettle();
+
+      // The page draws these numbers its own way, so the card is suppressed.
+      expect(find.text('SPRING'), findsOneWidget);
+      expect(find.text('SHARE OF THE VARIATION'), findsNothing);
+      expect(find.text('93%'), findsNothing);
+
+      // Suppressed from the layout, never from the data.
+      final lines = resultShareLines(
+        const [
+          ResultSection(
+            title: 'Share of the variation',
+            exportOnly: true,
+            values: [ResultValue(label: 'Dimension 1', value: '93%')],
+          ),
+        ],
+        NumberPrecisionHelper(),
+        UnitSystem.si,
+      );
+      expect(lines, contains('Dimension 1: 93%'));
+    });
+
     testWidgets('renders declared results above hand-built children',
         (tester) async {
       await tester.pumpWidget(_wrap(const ResultScaffold(

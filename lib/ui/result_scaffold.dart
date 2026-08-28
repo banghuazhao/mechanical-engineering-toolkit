@@ -264,21 +264,24 @@ class _ResultScaffoldState extends State<ResultScaffold> {
   Widget _buildList(BuildContext context, AppTokens tokens) {
     final cards = <Widget>[
       ...widget.leading,
+      // An export-only section is data, not layout: the page draws those
+      // numbers its own way and would otherwise show them twice.
       for (final section in widget.results ?? const <ResultSection>[])
-        AppSectionCard(
-          title: section.title,
-          child: Column(
-            children: [
-              for (final value in section.values)
-                AppCopyableValue(
-                  label: value.label,
-                  value: value.value,
-                  valueSI: value.valueSI,
-                  category: value.category,
-                ),
-            ],
+        if (!section.exportOnly)
+          AppSectionCard(
+            title: section.title,
+            child: Column(
+              children: [
+                for (final value in section.values)
+                  AppCopyableValue(
+                    label: value.label,
+                    value: value.value,
+                    valueSI: value.valueSI,
+                    category: value.category,
+                  ),
+              ],
+            ),
           ),
-        ),
       ...?widget.children,
     ];
 

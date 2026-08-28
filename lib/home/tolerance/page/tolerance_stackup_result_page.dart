@@ -91,6 +91,10 @@ class ToleranceStackupResultPage extends StatelessWidget {
         ),
         ResultSection(
           title: l10n.Stackup_Contributions,
+          // Declared so the shares reach the share text, the CSV, the PDF and
+          // a saved project, but drawn by [_ContributionsCard] rather than as
+          // a second card of the same percentages under the same heading.
+          exportOnly: true,
           values: [
             ResultValue(
               label: l10n.Stackup_Dominant,
