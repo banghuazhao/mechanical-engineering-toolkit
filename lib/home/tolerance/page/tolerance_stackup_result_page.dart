@@ -142,13 +142,16 @@ class ToleranceStackupResultPage extends StatelessWidget {
     UnitSystem system,
     NumberPrecisionHelper precs,
   ) {
+    final l10n = S.of(context);
     String len(double v) => precs.formatSI(v, UnitCategory.length, system);
     return [
-      'Worst case: gap = Σ ±dᵢ, each dimension at the limit that hurts most',
-      'min = ${len(result.worstCaseMin)}, max = ${len(result.worstCaseMax)}',
-      'RSS: T = √(Σ tᵢ²) = ${len(result.rssTolerance)}',
-      'mean = ${len(result.rssMean)}, '
-          'min = ${len(result.rssMin)}, max = ${len(result.rssMax)}',
+      '${l10n.Stackup_Worst_Case}: gap = Σ ±dᵢ',
+      '${l10n.Stackup_Minimum} = ${len(result.worstCaseMin)}, '
+          '${l10n.Stackup_Maximum} = ${len(result.worstCaseMax)}',
+      '${l10n.Stackup_RSS}: T = √(Σ tᵢ²) = ${len(result.rssTolerance)}',
+      '${l10n.Stackup_Mean} = ${len(result.rssMean)}, '
+          '${l10n.Stackup_Minimum} = ${len(result.rssMin)}, '
+          '${l10n.Stackup_Maximum} = ${len(result.rssMax)}',
     ];
   }
 }
