@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.12.0 - 2026-09-07
 
 - Beam Load Analysis now solves any of six support arrangements — simply supported, cantilever fixed at either end, overhang on inset supports, propped cantilever and fixed at both ends — carrying any number of point loads, uniform, triangular or trapezoidal distributed loads, and applied couples. The three indeterminate cases are solved by the direct stiffness method, and the result separates the sagging and hogging peaks and adds the bending stress when a section depth is given.
 - Added a bolt grades and torque reference: ISO 898-1 metric property classes and SAE J429 inch grades, with tensile stress area, proof strength, clamp load and tightening torque for every size and grade.
