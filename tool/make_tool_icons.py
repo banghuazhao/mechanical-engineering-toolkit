@@ -390,6 +390,32 @@ def torsional_frequency():
     c.save("icon_torsional_frequency.png")
 
 
+def power_screw():
+    """A screw jack: load pressing down on the nut, torque turning the screw."""
+    c = Canvas()
+    axis, top, base = 150, 92, 246
+    # Base plate the screw stands on, hatched like a fixed support.
+    c.rect((58, base, 242, base + 14), fill=GREY, w=LW)
+    c.hatch((58, base + 14, 242, base + 34))
+    # The screw column.
+    c.rect((axis - 23, top, axis + 23, base), fill=TAN, w=LW)
+    # The thread, drawn as the helix crossing the column rather than as a
+    # zigzag on its edges: the lead angle is what the whole calculation turns
+    # on, so it is what the icon should show.
+    y = top + 14
+    while y < base - 6:
+        c.line((axis - 23, y + 9), (axis + 23, y - 9), BLACK, 3.5)
+        y += 20
+    # The load riding on the nut, and the force it puts down the screw.
+    c.rect((94, top - 30, 206, top), fill=GREY, w=LW)
+    c.arrow((axis, 18), (axis, top - 36), RED, 6, head=20)
+    c.text((axis + 26, 34), "F", 46, RED)
+    # The torque that raises it, swept about the screw axis at the collar.
+    c.arc((axis, base - 4), 62, 200, 340, RED, 5.5, head=18)
+    c.text_sub((axis + 92, base - 40), "T", "R", 44, RED)
+    c.save("icon_power_screw.png")
+
+
 def main() -> None:
     print("writing icons:")
     reynolds()
@@ -402,6 +428,7 @@ def main() -> None:
     shaft_critical_speed()
     beam_natural_frequency()
     torsional_frequency()
+    power_screw()
 
 
 if __name__ == "__main__":

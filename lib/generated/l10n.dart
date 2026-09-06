@@ -2399,6 +2399,341 @@ class S {
     );
   }
 
+  /// `Beam & supports`
+  String get Beam_And_Supports {
+    return Intl.message(
+      'Beam & supports',
+      name: 'Beam_And_Supports',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Support arrangement`
+  String get Support_Arrangement {
+    return Intl.message(
+      'Support arrangement',
+      name: 'Support_Arrangement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Simply supported`
+  String get Support_Simply_Supported {
+    return Intl.message(
+      'Simply supported',
+      name: 'Support_Simply_Supported',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cantilever, fixed at left`
+  String get Support_Cantilever_Left {
+    return Intl.message(
+      'Cantilever, fixed at left',
+      name: 'Support_Cantilever_Left',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cantilever, fixed at right`
+  String get Support_Cantilever_Right {
+    return Intl.message(
+      'Cantilever, fixed at right',
+      name: 'Support_Cantilever_Right',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Overhang`
+  String get Support_Overhang {
+    return Intl.message(
+      'Overhang',
+      name: 'Support_Overhang',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Propped cantilever`
+  String get Support_Propped_Cantilever {
+    return Intl.message(
+      'Propped cantilever',
+      name: 'Support_Propped_Cantilever',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fixed at both ends`
+  String get Support_Fixed_Fixed {
+    return Intl.message(
+      'Fixed at both ends',
+      name: 'Support_Fixed_Fixed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Left support at`
+  String get Left_Support_Position {
+    return Intl.message(
+      'Left support at',
+      name: 'Left_Support_Position',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Right support at`
+  String get Right_Support_Position {
+    return Intl.message(
+      'Right support at',
+      name: 'Right_Support_Position',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Extreme fibre, c`
+  String get Extreme_Fibre_C {
+    return Intl.message(
+      'Extreme fibre, c',
+      name: 'Extreme_Fibre_C',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Optional — supply c and the result carries the bending stress as well.`
+  String get Extreme_Fibre_Hint {
+    return Intl.message(
+      'Optional — supply c and the result carries the bending stress as well.',
+      name: 'Extreme_Fibre_Hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loads`
+  String get Beam_Loads {
+    return Intl.message('Loads', name: 'Beam_Loads', desc: '', args: []);
+  }
+
+  /// `Load {n}`
+  String Beam_Load_N(Object n) {
+    return Intl.message('Load $n', name: 'Beam_Load_N', desc: '', args: [n]);
+  }
+
+  /// `Add load`
+  String get Add_Load {
+    return Intl.message('Add load', name: 'Add_Load', desc: '', args: []);
+  }
+
+  /// `Remove load`
+  String get Remove_Load {
+    return Intl.message('Remove load', name: 'Remove_Load', desc: '', args: []);
+  }
+
+  /// `Point`
+  String get Load_Type_Point {
+    return Intl.message('Point', name: 'Load_Type_Point', desc: '', args: []);
+  }
+
+  /// `Distributed`
+  String get Load_Type_Distributed {
+    return Intl.message(
+      'Distributed',
+      name: 'Load_Type_Distributed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Couple`
+  String get Load_Type_Couple {
+    return Intl.message('Couple', name: 'Load_Type_Couple', desc: '', args: []);
+  }
+
+  /// `Position, x`
+  String get Load_Position_X {
+    return Intl.message(
+      'Position, x',
+      name: 'Load_Position_X',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Magnitude, P (down +)`
+  String get Load_Magnitude_P {
+    return Intl.message(
+      'Magnitude, P (down +)',
+      name: 'Load_Magnitude_P',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Starts at`
+  String get Load_Starts_At {
+    return Intl.message(
+      'Starts at',
+      name: 'Load_Starts_At',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ends at`
+  String get Load_Ends_At {
+    return Intl.message('Ends at', name: 'Load_Ends_At', desc: '', args: []);
+  }
+
+  /// `Intensity at start`
+  String get Load_Intensity_Start {
+    return Intl.message(
+      'Intensity at start',
+      name: 'Load_Intensity_Start',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Intensity at end`
+  String get Load_Intensity_End {
+    return Intl.message(
+      'Intensity at end',
+      name: 'Load_Intensity_End',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Couple, M (ccw +)`
+  String get Load_Couple_M {
+    return Intl.message(
+      'Couple, M (ccw +)',
+      name: 'Load_Couple_M',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Support Reactions`
+  String get Support_Reactions {
+    return Intl.message(
+      'Support Reactions',
+      name: 'Support_Reactions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reaction at x = {x}`
+  String Reaction_At_X(Object x) {
+    return Intl.message(
+      'Reaction at x = $x',
+      name: 'Reaction_At_X',
+      desc: '',
+      args: [x],
+    );
+  }
+
+  /// `Fixing moment at x = {x}`
+  String Fixing_Moment_At_X(Object x) {
+    return Intl.message(
+      'Fixing moment at x = $x',
+      name: 'Fixing_Moment_At_X',
+      desc: '',
+      args: [x],
+    );
+  }
+
+  /// `Maximum shear`
+  String get Maximum_Shear {
+    return Intl.message(
+      'Maximum shear',
+      name: 'Maximum_Shear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Maximum sagging moment`
+  String get Maximum_Sagging_Moment {
+    return Intl.message(
+      'Maximum sagging moment',
+      name: 'Maximum_Sagging_Moment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Maximum hogging moment`
+  String get Maximum_Hogging_Moment {
+    return Intl.message(
+      'Maximum hogging moment',
+      name: 'Maximum_Hogging_Moment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bending stress at Mmax`
+  String get Bending_Stress_At_Mmax {
+    return Intl.message(
+      'Bending stress at Mmax',
+      name: 'Bending_Stress_At_Mmax',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statically indeterminate: the reactions depend on EI, so the section and the material change them, not only the deflection.`
+  String get Beam_Indeterminate_Note {
+    return Intl.message(
+      'Statically indeterminate: the reactions depend on EI, so the section and the material change them, not only the deflection.',
+      name: 'Beam_Indeterminate_Note',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Statically determinate: the reactions follow from equilibrium alone.`
+  String get Beam_Determinate_Note {
+    return Intl.message(
+      'Statically determinate: the reactions follow from equilibrium alone.',
+      name: 'Beam_Determinate_Note',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fill in every field of each load, or remove the load.`
+  String get Err_Beam_Load_Incomplete {
+    return Intl.message(
+      'Fill in every field of each load, or remove the load.',
+      name: 'Err_Beam_Load_Incomplete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Linear-elastic Euler–Bernoulli analysis on a 120-element mesh. Self-weight is excluded unless entered as a distributed load, and shear deformation is neglected — which understates deflection on a beam shorter than about ten times its depth.`
+  String get Beam_Model_Note {
+    return Intl.message(
+      'Linear-elastic Euler–Bernoulli analysis on a 120-element mesh. Self-weight is excluded unless entered as a distributed load, and shear deformation is neglected — which understates deflection on a beam shorter than about ten times its depth.',
+      name: 'Beam_Model_Note',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Cross-section`
   String get Cross_Section {
     return Intl.message(
@@ -2684,16 +3019,6 @@ class S {
     );
   }
 
-  /// `Support Reactions`
-  String get Support_Reactions {
-    return Intl.message(
-      'Support Reactions',
-      name: 'Support_Reactions',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Swap`
   String get Swap {
     return Intl.message('Swap', name: 'Swap', desc: '', args: []);
@@ -2814,20 +3139,20 @@ class S {
     );
   }
 
-  /// `Pin support at the left, roller support at the right. Combine one downward point load with a full-span uniformly distributed load.`
+  /// `Choose how the beam is held, then add the loads it carries. Point loads, uniform, triangular or trapezoidal distributed loads, and applied couples can be combined freely.`
   String get Desc_Beam_Supports {
     return Intl.message(
-      'Pin support at the left, roller support at the right. Combine one downward point load with a full-span uniformly distributed load.',
+      'Choose how the beam is held, then add the loads it carries. Point loads, uniform, triangular or trapezoidal distributed loads, and applied couples can be combined freely.',
       name: 'Desc_Beam_Supports',
       desc: '',
       args: [],
     );
   }
 
-  /// `Uses static equilibrium and Euler–Bernoulli beam theory for a simply supported beam. A downward point load and a full-span uniformly distributed load may be used separately or together.`
+  /// `Solved by the direct stiffness method with Euler–Bernoulli elements. That covers the propped cantilever, the fixed-ended beam and an overhang on inset supports — none of which equilibrium alone can settle — alongside the determinate cases.`
   String get Desc_Beam_Analysis {
     return Intl.message(
-      'Uses static equilibrium and Euler–Bernoulli beam theory for a simply supported beam. A downward point load and a full-span uniformly distributed load may be used separately or together.',
+      'Solved by the direct stiffness method with Euler–Bernoulli elements. That covers the propped cantilever, the fixed-ended beam and an overhang on inset supports — none of which equilibrium alone can settle — alongside the determinate cases.',
       name: 'Desc_Beam_Analysis',
       desc: '',
       args: [],
@@ -5649,6 +5974,356 @@ class S {
     return Intl.message(
       'ASME B36.10M welded and seamless wrought steel pipe. NPS and DN are names, not measured sizes: only from NPS 14 up does the number equal the outside diameter in inches. STD and XS are marked only over the range where they coincide with Sch 40 and Sch 80.',
       name: 'Pipes_Footnote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bolt Grades & Torque`
+  String get Bolt_Grades_Torque {
+    return Intl.message(
+      'Bolt Grades & Torque',
+      name: 'Bolt_Grades_Torque',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Proof, yield and tensile strength for ISO 898-1 metric property classes and SAE J429 inch grades, with the clamp load and tightening torque each size and grade implies. Clamp load and torque are derived from the tabulated strengths, so they cannot disagree with them.`
+  String get Desc_Bolt_Grades {
+    return Intl.message(
+      'Proof, yield and tensile strength for ISO 898-1 metric property classes and SAE J429 inch grades, with the clamp load and tightening torque each size and grade implies. Clamp load and torque are derived from the tabulated strengths, so they cannot disagree with them.',
+      name: 'Desc_Bolt_Grades',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search a size or grade`
+  String get Search_Bolt_Size_Grade {
+    return Intl.message(
+      'Search a size or grade',
+      name: 'Search_Bolt_Size_Grade',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clamp load is 75% of proof strength on the tensile stress area; torque follows from T = K·F·d with K = 0.2, a plain unlubricated thread. K carries the whole friction problem in one number — plating, wax or anti-seize move it between about 0.10 and 0.25, and the torque with it. Where the preload matters, measure it rather than trusting a torque wrench. Tap a row to copy it.`
+  String get Bolt_Grades_Footnote {
+    return Intl.message(
+      'Clamp load is 75% of proof strength on the tensile stress area; torque follows from T = K·F·d with K = 0.2, a plain unlubricated thread. K carries the whole friction problem in one number — plating, wax or anti-seize move it between about 0.10 and 0.25, and the torque with it. Where the preload matters, measure it rather than trusting a torque wrench. Tap a row to copy it.',
+      name: 'Bolt_Grades_Footnote',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Size`
+  String get Bolt_Size {
+    return Intl.message('Size', name: 'Bolt_Size', desc: '', args: []);
+  }
+
+  /// `Grade`
+  String get Grade_Class {
+    return Intl.message('Grade', name: 'Grade_Class', desc: '', args: []);
+  }
+
+  /// `Stress area`
+  String get Stress_Area_As {
+    return Intl.message(
+      'Stress area',
+      name: 'Stress_Area_As',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Proof Sp`
+  String get Proof_Strength_Sp {
+    return Intl.message(
+      'Proof Sp',
+      name: 'Proof_Strength_Sp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clamp load Fi`
+  String get Clamp_Load_Fi {
+    return Intl.message(
+      'Clamp load Fi',
+      name: 'Clamp_Load_Fi',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Torque T`
+  String get Torque_T {
+    return Intl.message('Torque T', name: 'Torque_T', desc: '', args: []);
+  }
+
+  /// `Power Screw / Lead Screw`
+  String get Power_Screw {
+    return Intl.message(
+      'Power Screw / Lead Screw',
+      name: 'Power_Screw',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Torque to raise and lower a load on a power screw, its efficiency, and whether it holds the load without a brake. Covers a jack, a vice, a clamp, or the lead screw on a machine slide.`
+  String get Desc_Power_Screw {
+    return Intl.message(
+      'Torque to raise and lower a load on a power screw, its efficiency, and whether it holds the load without a brake. Covers a jack, a vice, a clamp, or the lead screw on a machine slide.',
+      name: 'Desc_Power_Screw',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thread form`
+  String get Thread_Form {
+    return Intl.message('Thread form', name: 'Thread_Form', desc: '', args: []);
+  }
+
+  /// `Square`
+  String get Thread_Form_Square {
+    return Intl.message(
+      'Square',
+      name: 'Thread_Form_Square',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ACME 29°`
+  String get Thread_Form_ACME {
+    return Intl.message(
+      'ACME 29°',
+      name: 'Thread_Form_ACME',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Trapez. 30°`
+  String get Thread_Form_Trapezoidal {
+    return Intl.message(
+      'Trapez. 30°',
+      name: 'Thread_Form_Trapezoidal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Major diameter, d`
+  String get Major_Diameter_D {
+    return Intl.message(
+      'Major diameter, d',
+      name: 'Major_Diameter_D',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pitch, p`
+  String get Screw_Pitch_P {
+    return Intl.message('Pitch, p', name: 'Screw_Pitch_P', desc: '', args: []);
+  }
+
+  /// `Thread starts`
+  String get Thread_Starts {
+    return Intl.message(
+      'Thread starts',
+      name: 'Thread_Starts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Axial load, F`
+  String get Axial_Load_F {
+    return Intl.message(
+      'Axial load, F',
+      name: 'Axial_Load_F',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thread friction, μ`
+  String get Thread_Friction_Mu {
+    return Intl.message(
+      'Thread friction, μ',
+      name: 'Thread_Friction_Mu',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Collar friction, μc`
+  String get Collar_Friction_Muc {
+    return Intl.message(
+      'Collar friction, μc',
+      name: 'Collar_Friction_Muc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Collar mean diameter, dc`
+  String get Collar_Diameter_Dc {
+    return Intl.message(
+      'Collar mean diameter, dc',
+      name: 'Collar_Diameter_Dc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Leave the collar diameter at zero for a screw running on a thrust bearing, whose friction is negligible beside a plain collar's.`
+  String get Collar_Hint {
+    return Intl.message(
+      'Leave the collar diameter at zero for a screw running on a thrust bearing, whose friction is negligible beside a plain collar\'s.',
+      name: 'Collar_Hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mean diameter, dm`
+  String get Mean_Diameter_Dm {
+    return Intl.message(
+      'Mean diameter, dm',
+      name: 'Mean_Diameter_Dm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lead`
+  String get Lead_L {
+    return Intl.message('Lead', name: 'Lead_L', desc: '', args: []);
+  }
+
+  /// `Lead angle, λ`
+  String get Lead_Angle_Lambda {
+    return Intl.message(
+      'Lead angle, λ',
+      name: 'Lead_Angle_Lambda',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Torque to raise`
+  String get Torque_To_Raise {
+    return Intl.message(
+      'Torque to raise',
+      name: 'Torque_To_Raise',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Torque to lower`
+  String get Torque_To_Lower {
+    return Intl.message(
+      'Torque to lower',
+      name: 'Torque_To_Lower',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thread torque, raising`
+  String get Thread_Torque_Raise {
+    return Intl.message(
+      'Thread torque, raising',
+      name: 'Thread_Torque_Raise',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thread torque, lowering`
+  String get Thread_Torque_Lower {
+    return Intl.message(
+      'Thread torque, lowering',
+      name: 'Thread_Torque_Lower',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Collar torque`
+  String get Collar_Torque {
+    return Intl.message(
+      'Collar torque',
+      name: 'Collar_Torque',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Efficiency`
+  String get Screw_Efficiency {
+    return Intl.message(
+      'Efficiency',
+      name: 'Screw_Efficiency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Self-locking on the thread`
+  String get Self_Locking_Thread {
+    return Intl.message(
+      'Self-locking on the thread',
+      name: 'Self_Locking_Thread',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Holds with collar friction`
+  String get Holds_With_Collar {
+    return Intl.message(
+      'Holds with collar friction',
+      name: 'Holds_With_Collar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get Answer_Yes {
+    return Intl.message('Yes', name: 'Answer_Yes', desc: '', args: []);
+  }
+
+  /// `No`
+  String get Answer_No {
+    return Intl.message('No', name: 'Answer_No', desc: '', args: []);
+  }
+
+  /// `Enter the major diameter, the pitch and the axial load.`
+  String get Err_Power_Screw_Inputs {
+    return Intl.message(
+      'Enter the major diameter, the pitch and the axial load.',
+      name: 'Err_Power_Screw_Inputs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coulomb friction at a single mean radius, as Shigley's derivation assumes. A real coefficient depends on the pair of materials, the lubricant and how worn the thread is, and 0.10–0.20 covers most steel-on-bronze screws — which is a wider band than most of the numbers above.`
+  String get Power_Screw_Note {
+    return Intl.message(
+      'Coulomb friction at a single mean radius, as Shigley\'s derivation assumes. A real coefficient depends on the pair of materials, the lubricant and how worn the thread is, and 0.10–0.20 covers most steel-on-bronze screws — which is a wider band than most of the numbers above.',
+      name: 'Power_Screw_Note',
       desc: '',
       args: [],
     );

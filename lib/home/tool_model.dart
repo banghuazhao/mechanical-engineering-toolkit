@@ -13,6 +13,7 @@ import 'package:mechanical_engineering_toolkit/home/fluids_thermal/page/pump_pow
 import 'package:mechanical_engineering_toolkit/home/fluids_thermal/page/reynolds_number_page.dart';
 import 'package:mechanical_engineering_toolkit/home/reference/drill_tap_chart_page.dart';
 import 'package:mechanical_engineering_toolkit/home/reference/fits_tolerances_page.dart';
+import 'package:mechanical_engineering_toolkit/home/reference/fastener_grades_page.dart';
 import 'package:mechanical_engineering_toolkit/home/reference/standard_sections_page.dart';
 import 'package:mechanical_engineering_toolkit/home/reference/pipe_schedules_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tolerance/page/tolerance_stackup_page.dart';
@@ -43,6 +44,7 @@ import 'machine_design/page/bearing_life_page.dart';
 import 'machine_design/page/belt_drive_page.dart';
 import 'machine_design/page/bolt_preload_page.dart';
 import 'machine_design/page/fillet_weld_page.dart';
+import 'machine_design/page/power_screw_page.dart';
 import 'machine_design/page/press_fit_page.dart';
 import 'machine_design/page/shaft_fatigue_page.dart';
 import 'machine_design/page/spring_design_page.dart';
@@ -579,7 +581,16 @@ class ToolLibrary {
             'shear diagram',
             'moment diagram',
             'reactions',
-            'deflection'
+            'deflection',
+            'cantilever',
+            'overhang',
+            'propped cantilever',
+            'fixed ended',
+            'built in',
+            'continuous beam',
+            'udl',
+            'distributed load',
+            'indeterminate'
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
@@ -742,6 +753,38 @@ class ToolLibrary {
               context,
               MaterialPageRoute(
                   builder: (context) => ToleranceStackupPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 506,
+          // A spanner, not the gear a generic "settings" glyph would give:
+          // the sibling reference tables all take a Material glyph, and this
+          // one is about tightening a fastener.
+          icon: Icons.build_rounded,
+          title: S.of(context).Bolt_Grades_Torque,
+          type: ToolType.utilities,
+          keywords: const [
+            'bolt',
+            'screw',
+            'fastener',
+            'grade',
+            'property class',
+            'iso 898',
+            'sae j429',
+            '8.8',
+            '10.9',
+            '12.9',
+            'proof strength',
+            'clamp load',
+            'preload',
+            'tightening torque',
+            'tensile stress area'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => FastenerGradesPage(
                       title: title,
                       toolId: toolId,
                       initialInputs: initialInputs)))),
@@ -935,6 +978,34 @@ class ToolLibrary {
               context,
               MaterialPageRoute(
                   builder: (context) => TorsionalFrequencyPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 712,
+          image: AssetImage("images/icons/icon_power_screw.png"),
+          title: S.of(context).Power_Screw,
+          type: ToolType.machineDesign,
+          keywords: const [
+            'power screw',
+            'lead screw',
+            'jack',
+            'screw jack',
+            'acme',
+            'square thread',
+            'trapezoidal',
+            'self locking',
+            'back drive',
+            'efficiency',
+            'lead angle',
+            'vice',
+            'clamp',
+            'actuator'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PowerScrewPage(
                       title: title,
                       toolId: toolId,
                       initialInputs: initialInputs)))),

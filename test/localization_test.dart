@@ -57,6 +57,9 @@ void main() {
       // beneath them in the share picker carry the translated explanation.
       'Share_Format_CSV',
       'Share_Format_PDF',
+      // ACME is the thread's name, not a word. Chinese drawings call it
+      // ACME too, and the segmented button has no room for a gloss.
+      'Thread_Form_ACME',
     };
 
     for (final name in ['zh', 'zh_HK']) {

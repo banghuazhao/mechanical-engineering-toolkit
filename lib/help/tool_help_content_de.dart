@@ -930,48 +930,69 @@ const Map<int, ToolHelp> toolHelpDe = {
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
   401: ToolHelp(
-    summary: 'Auflagerkräfte, Querkraft und Biegemoment eines Einfeldträgers '
-        'unter Einzellast, Gleichlast oder beidem. Querkraft- und '
-        'Momentenverlauf sagen, wo der Querschnitt zu prüfen ist und mit '
-        'welchem M das zu geschehen hat.',
+    summary: 'Auflagerreaktionen, Querkraft, Biegemoment und Durchbiegung eines '
+        'Trägers in einer von sechs Lagerungsarten und mit beliebig vielen '
+        'Lasten. Einzellasten, gleichmäßige, dreieckige oder trapezförmige '
+        'Streckenlasten und eingeprägte Momente überlagern sich frei. Querkraft- '
+        'und Momentenverlauf zeigen, wo der Querschnitt nachzuweisen ist und mit '
+        'welchem M.',
     formulas: [
       HelpFormula(
         tex: r'\sum F_y = 0, \quad \sum M = 0',
-        plain: 'ΣFy = 0, ΣM = 0',
-        caption: 'Gleichgewicht, damit liegen die beiden Auflagerkräfte fest',
+        plain: 'ΣFy = 0,   ΣM = 0',
+        caption: 'Gleichgewicht, das die statisch bestimmten Fälle allein löst',
       ),
       HelpFormula(
-        tex: r'V(x) = R_A - \int_0^x w\,dx, \quad M(x) = \int_0^x V\,dx',
-        plain: 'V(x) = RA − ∫w dx, M(x) = ∫V dx',
+        tex: r'\mathbf{K}\mathbf{d} = \mathbf{F}',
+        plain: 'K·d = F',
+        caption: 'Das Weggrößenverfahren, das die übrigen löst',
+      ),
+      HelpFormula(
+        tex: r'\frac{dV}{dx} = -w(x), \quad \frac{dM}{dx} = V(x)',
+        plain: 'dV/dx = −w(x),   dM/dx = V(x)',
         caption: 'Querkraft und Moment über die Länge',
       ),
       HelpFormula(
-        tex: r'M_{\max} = \frac{wL^2}{8} \;\text{(UDL)}, \quad '
-            r'\frac{PL}{4} \;\text{(central point load)}',
-        plain: 'Mmax = w·L²/8 (Gleichlast), P·L/4 (Einzellast in Feldmitte)',
+        tex: r'EI\frac{d^2v}{dx^2} = M(x), \quad \sigma = \frac{Mc}{I}',
+        plain: 'EI·d²v/dx² = M(x),   σ = M·c/I',
+        caption: 'Durchbiegung und die Spannung, die das Moment erzeugt',
       ),
     ],
     symbols: [
-      HelpSymbol('RA, RB', 'Auflagerkräfte', 'N'),
+      HelpSymbol('R', 'Auflagerkraft, nach oben positiv', 'N'),
       HelpSymbol('V', 'Querkraft', 'N'),
-      HelpSymbol('M', 'Biegemoment', 'N·mm'),
-      HelpSymbol('w', 'Gleichstreckenlast', 'N/mm'),
-      HelpSymbol('L', 'Stützweite', 'mm'),
+      HelpSymbol('M', 'Biegemoment, positiv bei Zug an der Unterseite', 'N·m'),
+      HelpSymbol('w', 'Streckenlast, nach unten positiv', 'N/m'),
+      HelpSymbol('L', 'Stützweite', 'm'),
+      HelpSymbol('EI', 'Biegesteifigkeit', 'N·m²'),
+      HelpSymbol('v', 'Durchbiegung, nach unten positiv', 'mm'),
+      HelpSymbol('c', 'Abstand der Randfaser von der neutralen Faser', 'mm'),
     ],
     notes: [
-      'Nur statisch bestimmt: ein gelenkiges und ein verschiebliches '
-          'Auflager. Ein Träger mit drittem Auflager oder eingespannten Enden '
-          'ist unbestimmt und braucht neben dem Gleichgewicht auch '
-          'Verträglichkeitsbedingungen.',
-      'Das Moment ist dort am größten, wo die Querkraft null durchläuft. Das '
-          'ist der zu bemessende Schnitt, und bei außermittiger Last liegt er '
-          'nicht in Feldmitte.',
-      'Das Eigengewicht ist nicht enthalten, solange man es nicht zur '
-          'Streckenlast hinzunimmt.',
+      'Drei der sechs Lagerungsarten sind statisch unbestimmt: der gestützte '
+          'Kragträger, der beidseitig eingespannte Träger und der Träger mit '
+          'eingerückten Lagern. Ihre Auflagerreaktionen hängen von EI ab, ein '
+          'falsches E oder I verschiebt also die Reaktionen und nicht nur die '
+          'Durchbiegung.',
+      'Festlager und Loslager sind hier dasselbe. Das Modell kennt nur Biegung '
+          'und keinen Längsfreiheitsgrad, sie halten also beide genau dasselbe.',
+      'Das Moment ist dort am größten, wo die Querkraft durch null geht. Dort '
+          'ist zu bemessen, und außer bei symmetrischen Lastfällen liegt diese '
+          'Stelle nicht in Feldmitte.',
+      'Feld- und Stützmoment werden getrennt ausgegeben, weil sie '
+          'unterschiedliche Fasern auf Zug beanspruchen. Beim durchlaufenden oder '
+          'eingespannten Träger ist das Stützmoment meist das größere.',
+      'Das Eigengewicht ist nicht enthalten, sofern es nicht als Streckenlast '
+          'eingegeben wird.',
+      'Die Schubverformung wird wie in der Euler-Bernoulli-Theorie '
+          'vernachlässigt. Bei einem gedrungenen Träger — Stützweite kleiner als '
+          'etwa das Zehnfache der Höhe — ist die wirkliche Durchbiegung größer als '
+          'hier ausgewiesen.',
     ],
     references: [
-      'Hibbeler, Structural Analysis, ch. 4',
-      'Gere & Goodno, Mechanics of Materials, ch. 4',
+      'Hibbeler, Structural Analysis, ch. 4 and 11',
+      'Gere & Goodno, Mechanics of Materials, ch. 4 and 9',
+      'Cook et al., Concepts and Applications of Finite Element Analysis, ch. 2',
     ],
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
@@ -2444,5 +2465,146 @@ const Map<int, ToolHelp> toolHelpDe = {
       'ASME Y14.5, Dimensioning and Tolerancing',
       'Fischer, Mechanical Tolerance Stackup and Analysis',
     ],
+  ),
+  506: ToolHelp(
+    summary: 'Festigkeitsklassen für Schraubenverbindungen und was sie für die Montage '
+        'bedeuten. Die metrischen Festigkeitsklassen stammen aus ISO 898-1, die '
+        'Zollklassen aus SAE J429; Klemmkraft und Anziehdrehmoment jeder Zeile '
+        'werden aus der tabellierten Prüfspannung berechnet, sodass Klasse und '
+        'Drehmoment nie auseinanderlaufen können. Damit lässt sich eine Schraube '
+        'auslegen, eine bereits verbaute anhand ihrer Kopfkennzeichnung '
+        'identifizieren oder ein Drehmomentschlüssel einstellen.',
+    formulas: [
+      HelpFormula(
+        tex: r'A_s = \frac{\pi}{4}\left(d - 0.9382\,p\right)^2',
+        plain: 'As = (π/4)(d − 0.9382·p)²',
+        caption: 'Spannungsquerschnitt, metrisches Regelgewinde',
+      ),
+      HelpFormula(
+        tex: r'F_i = 0.75\,A_s S_p',
+        plain: 'Fi = 0.75·As·Sp',
+        caption: 'Empfohlene Klemmkraft, lösbare Verbindung',
+      ),
+      HelpFormula(
+        tex: r'T = K F_i d',
+        plain: 'T = K·Fi·d',
+        caption: 'Anziehdrehmoment, vereinfachte Drehmoment-Vorspannkraft-Beziehung',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('As', 'Spannungsquerschnitt des Gewindes', 'mm²'),
+      HelpSymbol('d', 'Nenndurchmesser (Außendurchmesser) des Gewindes', 'mm'),
+      HelpSymbol('p', 'Gewindesteigung', 'mm'),
+      HelpSymbol('Sp', 'Prüfspannung der Festigkeitsklasse', 'MPa'),
+      HelpSymbol('Fi', 'Klemmkraft (Vorspannkraft)', 'N'),
+      HelpSymbol('T', 'Anziehdrehmoment', 'N·m'),
+      HelpSymbol('K', 'Reibungszahl, hier 0,2'),
+    ],
+    notes: [
+      'Eine Vorspannung wird gegen die Prüfspannung ausgelegt, nicht gegen die '
+          'Streckgrenze. Sie ist die Spannung, die die Schraube ohne messbare '
+          'bleibende Verformung erträgt, und liegt etwas unter dem Streckgrenzenwert '
+          'derselben Zeile.',
+      'Der Faktor 0,75 ist Praxis, keine Norm. 75 % der Prüfspannung ist der '
+          'übliche Wert für eine wieder lösbare Verbindung, 90 % für eine einmalig '
+          'angezogene, dauerhafte; streckgrenzgesteuerte Schrauben werden bewusst '
+          'darüber hinaus angezogen und danach verworfen.',
+      'K = 0,2 gilt für ein blankes, unbeschichtetes, ungeschmiertes Gewinde. '
+          'Verzinkung, Wachs oder Montagepaste bringen es eher auf 0,10 bis 0,15, was '
+          'bei gleichem Drehmoment die Vorspannkraft bis auf das Doppelte treibt — '
+          'genug, um die Schraube zu sprengen. Wo die Vorspannung zählt, ist sie über '
+          'den Drehwinkel, die Schraubendehnung oder eine Kraftmessdose zu führen, '
+          'nicht über das Drehmoment.',
+      'ISO 898-1 setzt die Klasse 8.8 oberhalb M16 herab, SAE J429 die Klasse 2 '
+          'oberhalb 3/4 Zoll, weil ein dickerer Querschnitt nicht mehr durchgehärtet '
+          'werden kann. Die Tabelle wendet für jeden Durchmesser bereits das richtige '
+          'Band an.',
+      'Der Spannungsquerschnitt ist kleiner als die Schaftfläche, die der '
+          'Nenndurchmesser nahelegt — bei M12 sind es 84,3 mm² gegenüber 113 mm². '
+          'Eine Auslegung über πd²/4 überschätzt die Tragfähigkeit um ein Viertel.',
+      'Das sind statische Zugwerte. Eine schwellend belastete Schraube versagt '
+          'durch Ermüdung im ersten tragenden Gewindegang, weit unterhalb der hier '
+          'genannten Zugfestigkeit; dafür sind die Ermüdungswerkzeuge zuständig.',
+    ],
+    references: [
+      'ISO 898-1, Mechanical properties of fasteners — bolts, screws and studs',
+      'SAE J429, Mechanical and Material Requirements for Externally Threaded '
+          'Fasteners',
+      "Shigley's Mechanical Engineering Design, ch. 8",
+    ],
+  ),
+  712: ToolHelp(
+    summary: 'Moment zum Heben und zum Senken einer Last an einer Bewegungsschraube, '
+        'der zugehörige Wirkungsgrad und die Frage, ob die Schraube die Last von '
+        'selbst hält. Das ist die Rechnung hinter Wagenheber, Schraubstock, '
+        'Kniehebelspanner und der Leitspindel eines Maschinenschlittens — überall '
+        'dort, wo eine Drehung in eine große Axialkraft umgesetzt wird.',
+    formulas: [
+      HelpFormula(
+        tex: r'T_R = \frac{F d_m}{2}\left(\frac{l + \pi \mu d_m \sec\alpha}{\pi d_m - \mu l \sec\alpha}\right) + \frac{F \mu_c d_c}{2}',
+        plain: 'TR = (F·dm/2)·(l + π·μ·dm·secα)/(π·dm − μ·l·secα) + F·μc·dc/2',
+        caption: 'Moment zum Heben, Gewinde plus Bund',
+      ),
+      HelpFormula(
+        tex: r'T_L = \frac{F d_m}{2}\left(\frac{\pi \mu d_m \sec\alpha - l}{\pi d_m + \mu l \sec\alpha}\right) + \frac{F \mu_c d_c}{2}',
+        plain: 'TL = (F·dm/2)·(π·μ·dm·secα − l)/(π·dm + μ·l·secα) + F·μc·dc/2',
+        caption: 'Moment zum Senken; negativ heißt, die Last läuft weg',
+      ),
+      HelpFormula(
+        tex: r'e = \frac{F l}{2\pi T_R}',
+        plain: 'e = F·l / (2π·TR)',
+        caption: 'Wirkungsgrad: abgegebene je aufgewendete Arbeit, pro Umdrehung',
+      ),
+      HelpFormula(
+        tex: r'\mu \sec\alpha > \tan\lambda = \frac{l}{\pi d_m}',
+        plain: 'μ·secα > tanλ = l / (π·dm)',
+        caption: 'Bedingung für Selbsthemmung',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('F', 'Axialkraft', 'N'),
+      HelpSymbol('dm', 'Flankendurchmesser, d − p/2', 'mm'),
+      HelpSymbol('l', 'Steigungshöhe, Weg je Umdrehung: p × Gangzahl', 'mm'),
+      HelpSymbol('p', 'Steigung, Abstand benachbarter Gewindegänge', 'mm'),
+      HelpSymbol('λ', 'Steigungswinkel, atan(l / π·dm)', 'deg'),
+      HelpSymbol('α', 'Flankenwinkel: 0 Flachgewinde, 14,5° ACME, 15° Trapezgewinde', 'deg'),
+      HelpSymbol('μ', 'Reibungszahl am Gewinde'),
+      HelpSymbol('μc', 'Reibungszahl am Bund'),
+      HelpSymbol('dc', 'Mittlerer Bunddurchmesser', 'mm'),
+      HelpSymbol('T', 'Moment', 'N·m'),
+      HelpSymbol('e', 'Wirkungsgrad, 0 bis 1'),
+    ],
+    notes: [
+      'Steigungshöhe ist nicht Steigung. Ein zweigängiges Gewinde hat die '
+          'doppelte Steigungshöhe, legt je Umdrehung den doppelten Weg zurück und '
+          'ist deutlich wirkungsvoller — und deutlich seltener selbsthemmend. Die '
+          'beiden zu verwechseln ist hier der klassische Fehler.',
+      'Selbsthemmung ist eine Eigenschaft des Gewindes, nicht der Baugruppe. '
+          'Eine Schraube kann die Bedingung μ·secα > tanλ verfehlen und die Last '
+          'dennoch halten, weil der Bund den Rest übernimmt. Das ist eine weit '
+          'schwächere Sicherheit: der Bund ist das, was verschleißt und was '
+          'irgendwann jemand ölt.',
+      'Wo eine fallende Last jemanden verletzen könnte, darf niemals allein auf '
+          'Selbsthemmung vertraut werden. Schwingungen bauen die Haftreibung ab, '
+          'und die angenommene Reibungszahl ist nicht die, die im Betrieb vorliegt.',
+      'Das Flachgewinde ist das wirkungsvolle: Der Flankenwinkel von ACME- und '
+          'Trapezgewinde verkeilt die Last zwischen den Flanken und vervielfacht '
+          'die Gewindereibung mit sec α. ACME wird trotzdem verwendet, weil es '
+          'leichter zu fertigen ist und sein Verschleiß mit einer geteilten Mutter '
+          'nachgestellt werden kann.',
+      'Bei einer selbsthemmenden Schraube liegt der Wirkungsgrad selten über 50 '
+          '%, oft eher bei 20 %. Das liegt am Prinzip und nicht an einer schlechten '
+          'Auslegung — dieselbe Reibung, die die Arbeit verzehrt, hält auch die '
+          'Last.',
+      'Berechnet wird das Moment an der Schraube. Über Knicken einer langen '
+          'Schraube unter Druck, die Flächenpressung im Gewinde oder das Abscheren '
+          'der Muttergewindegänge sagt es nichts; das ist gesondert zu prüfen, '
+          'bevor allein hiernach bemessen wird.',
+    ],
+    references: [
+      "Shigley's Mechanical Engineering Design, ch. 8",
+      'Norton, Machine Design: An Integrated Approach, ch. 15',
+    ],
+    diagram: 'images/icons/icon_power_screw.png',
   ),
 };

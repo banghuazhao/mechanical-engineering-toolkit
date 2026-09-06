@@ -899,45 +899,66 @@ const Map<int, ToolHelp> toolHelp = {
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
   401: ToolHelp(
-    summary: 'Support reactions, shear force and bending moment along a simply '
-        'supported beam carrying a point load, a uniformly distributed load, '
-        'or both. The shear and moment diagrams are what tell you where to '
-        'check the section, and what M to use when you get there.',
+    summary: 'Support reactions, shear, bending moment and deflection along a beam '
+        'held in any of six ways and carrying any number of loads. Point loads, '
+        'uniform, triangular or trapezoidal distributed loads and applied couples '
+        'superpose freely. The shear and moment diagrams are what tell you where '
+        'to check the section, and what M to use when you get there.',
     formulas: [
       HelpFormula(
         tex: r'\sum F_y = 0, \quad \sum M = 0',
         plain: 'ΣFy = 0,   ΣM = 0',
-        caption: 'Statics, which fixes the two reactions',
+        caption: 'Equilibrium, which settles the determinate cases on its own',
       ),
       HelpFormula(
-        tex: r'V(x) = R_A - \int_0^x w\,dx, \quad M(x) = \int_0^x V\,dx',
-        plain: 'V(x) = RA − ∫w dx,   M(x) = ∫V dx',
+        tex: r'\mathbf{K}\mathbf{d} = \mathbf{F}',
+        plain: 'K·d = F',
+        caption: 'The stiffness solve, which settles the rest',
+      ),
+      HelpFormula(
+        tex: r'\frac{dV}{dx} = -w(x), \quad \frac{dM}{dx} = V(x)',
+        plain: 'dV/dx = −w(x),   dM/dx = V(x)',
         caption: 'Shear and moment along the span',
       ),
       HelpFormula(
-        tex: r'M_{\max} = \frac{wL^2}{8} \;\text{(UDL)}, \quad '
-            r'\frac{PL}{4} \;\text{(central point load)}',
-        plain: 'Mmax = w·L²/8 (UDL),   P·L/4 (central point load)',
+        tex: r'EI\frac{d^2v}{dx^2} = M(x), \quad \sigma = \frac{Mc}{I}',
+        plain: 'EI·d²v/dx² = M(x),   σ = M·c/I',
+        caption: 'Deflection, and the stress the moment causes',
       ),
     ],
     symbols: [
-      HelpSymbol('RA, RB', 'Support reactions', 'N'),
+      HelpSymbol('R', 'Support reaction, upward positive', 'N'),
       HelpSymbol('V', 'Shear force', 'N'),
-      HelpSymbol('M', 'Bending moment', 'N·mm'),
-      HelpSymbol('w', 'Uniformly distributed load', 'N/mm'),
-      HelpSymbol('L', 'Span', 'mm'),
+      HelpSymbol('M', 'Bending moment, sagging positive', 'N·m'),
+      HelpSymbol('w', 'Distributed load intensity, downward positive', 'N/m'),
+      HelpSymbol('L', 'Span', 'm'),
+      HelpSymbol('EI', 'Flexural rigidity', 'N·m²'),
+      HelpSymbol('v', 'Deflection, downward positive', 'mm'),
+      HelpSymbol('c', 'Neutral axis to the extreme fibre', 'mm'),
     ],
     notes: [
-      'Statically determinate only: a pin at one end and a roller at the '
-          'other. A beam with a third support, or fixed ends, is '
-          'indeterminate and needs compatibility as well as equilibrium.',
-      'The moment is maximum where the shear passes through zero. That is the '
-          'section to design, and it is not at midspan for an off-centre load.',
-      'Self-weight is not included unless you add it to the distributed load.',
+      'Three of the six arrangements are statically indeterminate — the propped '
+          'cantilever, the fixed-ended beam, and an overhang whose supports are set '
+          'in from the ends. Their reactions depend on EI, so an E or an I that is '
+          'wrong moves the reactions, not just the deflection.',
+      'A pin and a roller are the same support here. This is a bending model '
+          'with no axial degree of freedom, so neither restrains anything the other '
+          'does not.',
+      'The moment is largest where the shear passes through zero. That is the '
+          'section to design, and it is not at midspan for anything but a symmetric '
+          'load case.',
+      'Sagging and hogging peaks are reported separately because they put '
+          'different fibres in tension. On a continuous or fixed-ended beam the '
+          'hogging peak over the support is usually the larger of the two.',
+      'Self-weight is not included unless you enter it as a distributed load.',
+      'Shear deformation is neglected, as Euler–Bernoulli theory does. On a '
+          'deep beam — span less than about ten times the depth — the real '
+          'deflection is larger than this reports.',
     ],
     references: [
-      'Hibbeler, Structural Analysis, ch. 4',
-      'Gere & Goodno, Mechanics of Materials, ch. 4',
+      'Hibbeler, Structural Analysis, ch. 4 and 11',
+      'Gere & Goodno, Mechanics of Materials, ch. 4 and 9',
+      'Cook et al., Concepts and Applications of Finite Element Analysis, ch. 2',
     ],
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
@@ -2349,5 +2370,139 @@ const Map<int, ToolHelp> toolHelp = {
       'ASME Y14.5, Dimensioning and Tolerancing',
       'Fischer, Mechanical Tolerance Stackup and Analysis',
     ],
+  ),
+  506: ToolHelp(
+    summary: 'Strength grades for threaded fasteners, and what they mean for '
+        'assembly. Metric property classes come from ISO 898-1 and inch grades '
+        'from SAE J429; the clamp load and tightening torque on each row are '
+        'derived from the tabulated proof strength, so a grade and its torque '
+        'can never drift apart. Use it to size a bolt, to identify one already '
+        'in a joint from its head marking, or to set a torque wrench.',
+    formulas: [
+      HelpFormula(
+        tex: r'A_s = \frac{\pi}{4}\left(d - 0.9382\,p\right)^2',
+        plain: 'As = (π/4)(d − 0.9382·p)²',
+        caption: 'Tensile stress area, metric coarse thread',
+      ),
+      HelpFormula(
+        tex: r'F_i = 0.75\,A_s S_p',
+        plain: 'Fi = 0.75·As·Sp',
+        caption: 'Recommended clamp load, reusable connection',
+      ),
+      HelpFormula(
+        tex: r'T = K F_i d',
+        plain: 'T = K·Fi·d',
+        caption: 'Tightening torque, short-form torque-tension relation',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('As', 'Tensile stress area of the thread', 'mm²'),
+      HelpSymbol('d', 'Nominal (major) thread diameter', 'mm'),
+      HelpSymbol('p', 'Thread pitch', 'mm'),
+      HelpSymbol('Sp', 'Proof strength of the grade', 'MPa'),
+      HelpSymbol('Fi', 'Clamp load (preload)', 'N'),
+      HelpSymbol('T', 'Tightening torque', 'N·m'),
+      HelpSymbol('K', 'Nut factor, 0.2 here'),
+    ],
+    notes: [
+      'Proof strength, not yield, is what a preload is set against. It is the '
+          'stress the fastener carries with no measurable permanent set, and '
+          'it sits a little below the yield figure in the same row.',
+      'The 0.75 factor is practice, not a standard. 75% of proof is the usual '
+          'figure for a joint that will be taken apart; 90% is common for a '
+          'permanent one tightened once, and torque-to-yield fasteners are '
+          'deliberately taken past it and then thrown away.',
+      'K = 0.2 assumes a plain, unplated, unlubricated thread. Zinc plating, '
+          'wax or anti-seize put it nearer 0.10–0.15, which for the same '
+          'torque raises the preload by up to a factor of two — enough to snap '
+          'the bolt. Where the preload matters, control it by angle, by bolt '
+          'stretch, or with a load cell rather than by torque.',
+      'ISO 898-1 derates class 8.8 above M16, and SAE J429 derates grade 2 '
+          'above 3/4 in, because a thicker section cannot be hardened through. '
+          'The table already applies the right band for each diameter.',
+      'The stress area is smaller than the shank area the nominal diameter '
+          'suggests — for M12 it is 84.3 mm² against 113 mm². Sizing a bolt on '
+          'πd²/4 overstates its capacity by a quarter.',
+      'These are static tension figures. A bolt under fluctuating load fails '
+          'in fatigue at the first engaged thread, far below the tensile '
+          'strength here; check the fatigue tools for that.',
+    ],
+    references: [
+      'ISO 898-1, Mechanical properties of fasteners — bolts, screws and studs',
+      'SAE J429, Mechanical and Material Requirements for Externally Threaded '
+          'Fasteners',
+      "Shigley's Mechanical Engineering Design, ch. 8",
+    ],
+  ),
+  712: ToolHelp(
+    summary: 'Torque to raise and to lower a load on a power screw, the efficiency '
+        'that goes with it, and whether the screw holds the load on its own. This '
+        'is the calculation behind a screw jack, a vice, a toggle clamp and the '
+        'lead screw on a machine slide — anywhere rotation is turned into a large '
+        'axial force.',
+    formulas: [
+      HelpFormula(
+        tex: r'T_R = \frac{F d_m}{2}\left(\frac{l + \pi \mu d_m \sec\alpha}{\pi d_m - \mu l \sec\alpha}\right) + \frac{F \mu_c d_c}{2}',
+        plain: 'TR = (F·dm/2)·(l + π·μ·dm·secα)/(π·dm − μ·l·secα) + F·μc·dc/2',
+        caption: 'Torque to raise the load, thread plus collar',
+      ),
+      HelpFormula(
+        tex: r'T_L = \frac{F d_m}{2}\left(\frac{\pi \mu d_m \sec\alpha - l}{\pi d_m + \mu l \sec\alpha}\right) + \frac{F \mu_c d_c}{2}',
+        plain: 'TL = (F·dm/2)·(π·μ·dm·secα − l)/(π·dm + μ·l·secα) + F·μc·dc/2',
+        caption: 'Torque to lower it; negative means it runs away',
+      ),
+      HelpFormula(
+        tex: r'e = \frac{F l}{2\pi T_R}',
+        plain: 'e = F·l / (2π·TR)',
+        caption: 'Efficiency: work out over work in, per turn',
+      ),
+      HelpFormula(
+        tex: r'\mu \sec\alpha > \tan\lambda = \frac{l}{\pi d_m}',
+        plain: 'μ·secα > tanλ = l / (π·dm)',
+        caption: 'Self-locking condition',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('F', 'Axial load', 'N'),
+      HelpSymbol('dm', 'Mean (pitch) diameter, d − p/2', 'mm'),
+      HelpSymbol('l', 'Lead, the travel per turn: p × number of starts', 'mm'),
+      HelpSymbol('p', 'Pitch, the distance between adjacent threads', 'mm'),
+      HelpSymbol('λ', 'Lead angle, atan(l / π·dm)', 'deg'),
+      HelpSymbol('α', 'Thread flank angle: 0 square, 14.5° ACME, 15° trapezoidal', 'deg'),
+      HelpSymbol('μ', 'Coefficient of friction at the thread'),
+      HelpSymbol('μc', 'Coefficient of friction at the thrust collar'),
+      HelpSymbol('dc', 'Mean collar diameter', 'mm'),
+      HelpSymbol('T', 'Torque', 'N·m'),
+      HelpSymbol('e', 'Efficiency, 0 to 1'),
+    ],
+    notes: [
+      'Lead is not pitch. A double-start thread has twice the lead of its '
+          'pitch, travels twice as far per turn, and is markedly more efficient — '
+          'and markedly less likely to be self-locking. Getting the two confused is '
+          'the classic error here.',
+      'Self-locking is a property of the thread, not of the assembly. A screw '
+          'can fail the μ·secα > tanλ test and still hold the load because the '
+          'collar makes up the difference, which is a far weaker guarantee: the '
+          'collar is what wears, and what somebody eventually oils.',
+      'Never rely on self-locking alone where a falling load would hurt '
+          'someone. Vibration breaks static friction down, and the coefficient you '
+          'assumed is not the one you will have in service.',
+      'A square thread is the efficient one: the flank angle in ACME and '
+          'trapezoidal threads wedges the load between the flanks and multiplies '
+          'thread friction by sec α. ACME is used anyway because it is easier to '
+          'cut and its wear can be taken up with a split nut.',
+      'Efficiency rarely passes 50% for a self-locking screw, and it is often '
+          'nearer 20%. That is inherent to the mechanism, not a sign of a bad '
+          'design — the friction that wastes the work is the same friction that '
+          'holds the load.',
+      'This is the torque at the screw. It says nothing about buckling of a '
+          'long screw in compression, thread bearing pressure, or the nut\'s thread '
+          'shear — check those separately before sizing on this alone.',
+    ],
+    references: [
+      "Shigley's Mechanical Engineering Design, ch. 8",
+      'Norton, Machine Design: An Integrated Approach, ch. 15',
+    ],
+    diagram: 'images/icons/icon_power_screw.png',
   ),
 };

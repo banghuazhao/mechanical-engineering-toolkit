@@ -780,41 +780,53 @@ const Map<int, ToolHelp> toolHelpZh = {
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
   401: ToolHelp(
-    summary: '简支梁在集中力、全跨均布载荷或两者共同作用下的支座反力、剪力和弯矩。'
-        '剪力图和弯矩图告诉你该在哪个截面校核，以及校核时该用多大的 M。',
+    summary: '计算在六种支承方式之一下、承受任意数量荷载的梁的支座反力、剪力、弯矩与挠度。集中荷载，均布、三角形或梯形分布荷载，以及集中力偶，均可自由叠加。剪力图与弯矩图告诉你应在哪个截面、用多大的 '
+        'M 进行验算。',
     formulas: [
       HelpFormula(
         tex: r'\sum F_y = 0, \quad \sum M = 0',
-        plain: 'ΣFy = 0，ΣM = 0',
-        caption: '静力平衡，由此确定两个支反力',
+        plain: 'ΣFy = 0,   ΣM = 0',
+        caption: '平衡条件，静定情形仅凭它即可求解',
       ),
       HelpFormula(
-        tex: r'V(x) = R_A - \int_0^x w\,dx, \quad M(x) = \int_0^x V\,dx',
-        plain: 'V(x) = RA − ∫w dx，M(x) = ∫V dx',
+        tex: r'\mathbf{K}\mathbf{d} = \mathbf{F}',
+        plain: 'K·d = F',
+        caption: '刚度方程，其余情形由它求解',
+      ),
+      HelpFormula(
+        tex: r'\frac{dV}{dx} = -w(x), \quad \frac{dM}{dx} = V(x)',
+        plain: 'dV/dx = −w(x),   dM/dx = V(x)',
         caption: '沿跨度的剪力与弯矩',
       ),
       HelpFormula(
-        tex: r'M_{\max} = \frac{wL^2}{8} \;\text{(UDL)}, \quad '
-            r'\frac{PL}{4} \;\text{(central point load)}',
-        plain: 'Mmax = w·L²/8（均布），P·L/4（跨中集中力）',
+        tex: r'EI\frac{d^2v}{dx^2} = M(x), \quad \sigma = \frac{Mc}{I}',
+        plain: 'EI·d²v/dx² = M(x),   σ = M·c/I',
+        caption: '挠度，以及弯矩所引起的应力',
       ),
     ],
     symbols: [
-      HelpSymbol('RA, RB', '支座反力', 'N'),
+      HelpSymbol('R', '支座反力，向上为正', 'N'),
       HelpSymbol('V', '剪力', 'N'),
-      HelpSymbol('M', '弯矩', 'N·mm'),
-      HelpSymbol('w', '均布载荷', 'N/mm'),
-      HelpSymbol('L', '跨度', 'mm'),
+      HelpSymbol('M', '弯矩，下缘受拉为正', 'N·m'),
+      HelpSymbol('w', '分布荷载集度，向下为正', 'N/m'),
+      HelpSymbol('L', '跨度', 'm'),
+      HelpSymbol('EI', '抗弯刚度', 'N·m²'),
+      HelpSymbol('v', '挠度，向下为正', 'mm'),
+      HelpSymbol('c', '中性轴到边缘的距离', 'mm'),
     ],
     notes: [
-      '仅限静定情况：一端铰支、一端滚动支承。'
-          '增加第三个支座或固定端后即为超静定，除平衡条件外还需变形协调条件。',
-      '弯矩在剪力过零处取极值。那才是应当设计的截面，而对偏心载荷它并不在跨中。',
-      '不计自重，除非把它计入分布载荷中。',
+      '六种支承方式中有三种是超静定的：一端固定一端简支的梁、两端固定的梁，以及支座内移的外伸梁。它们的反力与 EI 有关，因此 E 或 I '
+          '取错会改变反力本身，而不只是挠度。',
+      '这里铰支座与滚动支座是同一回事。本模型只考虑弯曲、不含轴向自由度，两者所约束的完全相同。',
+      '弯矩在剪力过零处最大，那才是应当设计的截面；除对称荷载外，它并不在跨中。',
+      '正弯矩与负弯矩的峰值分开给出，因为它们使不同一侧的纤维受拉。对连续梁或固端梁而言，支座处的负弯矩通常更大。',
+      '自重不计入，除非以分布荷载方式输入。',
+      '与欧拉—伯努利理论一致，剪切变形被忽略。对于跨度小于梁高约十倍的深梁，实际挠度会大于此处给出的值。',
     ],
     references: [
-      'Hibbeler, Structural Analysis, ch. 4',
-      'Gere & Goodno, Mechanics of Materials, ch. 4',
+      'Hibbeler, Structural Analysis, ch. 4 and 11',
+      'Gere & Goodno, Mechanics of Materials, ch. 4 and 9',
+      'Cook et al., Concepts and Applications of Finite Element Analysis, ch. 2',
     ],
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
@@ -2041,5 +2053,105 @@ const Map<int, ToolHelp> toolHelpZh = {
       'ASME Y14.5, Dimensioning and Tolerancing',
       'Fischer, Mechanical Tolerance Stackup and Analysis',
     ],
+  ),
+  506: ToolHelp(
+    summary: '螺纹紧固件的强度等级，以及它们对装配意味着什么。公制性能等级来自 ISO 898-1，英制等级来自 SAE '
+        'J429；每一行的夹紧力和拧紧扭矩都由表中的保证应力推算而得，因此等级与扭矩绝不会各说各话。可用于选定螺栓、依据头部标记识别已装配的螺栓，或设定扭矩扳手。',
+    formulas: [
+      HelpFormula(
+        tex: r'A_s = \frac{\pi}{4}\left(d - 0.9382\,p\right)^2',
+        plain: 'As = (π/4)(d − 0.9382·p)²',
+        caption: '应力截面积，公制粗牙螺纹',
+      ),
+      HelpFormula(
+        tex: r'F_i = 0.75\,A_s S_p',
+        plain: 'Fi = 0.75·As·Sp',
+        caption: '推荐夹紧力，可拆卸连接',
+      ),
+      HelpFormula(
+        tex: r'T = K F_i d',
+        plain: 'T = K·Fi·d',
+        caption: '拧紧扭矩，简化的扭矩—轴力关系',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('As', '螺纹的应力截面积', 'mm²'),
+      HelpSymbol('d', '螺纹公称直径（大径）', 'mm'),
+      HelpSymbol('p', '螺距', 'mm'),
+      HelpSymbol('Sp', '该等级的保证应力', 'MPa'),
+      HelpSymbol('Fi', '夹紧力（预紧力）', 'N'),
+      HelpSymbol('T', '拧紧扭矩', 'N·m'),
+      HelpSymbol('K', '扭矩系数，此处取 0.2'),
+    ],
+    notes: [
+      '预紧力对标的是保证应力而非屈服强度。它是螺栓在不产生可测残余变形的前提下所能承受的应力，略低于同一行的屈服值。',
+      '0.75 这个系数是惯例而非标准。对于会拆开的连接，通常取保证应力的 75%；对于一次拧紧的永久连接，90% '
+          '也很常见；而屈服点法拧紧的螺栓则被有意拧过这一界限，且不再重复使用。',
+      'K = 0.2 对应未镀覆、未处理、未润滑的螺纹。镀锌、上蜡或涂防咬合剂会把它降到 '
+          '0.10～0.15，同样的扭矩下预紧力最多翻一倍——足以拉断螺栓。预紧力关键时，应以转角法、螺栓伸长量或测力传感器控制，而不是靠扭矩。',
+      'ISO 898-1 对 M16 以上的 8.8 级降级，SAE J429 对 3/4 英寸以上的 2 '
+          '级降级，因为更厚的截面无法淬透。本表已按直径自动选用正确的区段。',
+      '应力截面积小于公称直径所暗示的杆部面积——M12 为 84.3 mm²，而非 113 mm²。按 πd²/4 选型会把承载能力高估约四分之一。',
+      '这些是静态拉伸数据。承受交变载荷的螺栓会在第一圈啮合螺纹处发生疲劳破坏，远低于此处的抗拉强度；那种情况请使用疲劳相关工具。',
+    ],
+    references: [
+      'ISO 898-1, Mechanical properties of fasteners — bolts, screws and studs',
+      'SAE J429, Mechanical and Material Requirements for Externally Threaded '
+          'Fasteners',
+      "Shigley's Mechanical Engineering Design, ch. 8",
+    ],
+  ),
+  712: ToolHelp(
+    summary: '计算传动螺旋提升和下降荷载所需的扭矩、相应的效率，以及螺旋能否独自保持荷载。这是螺旋千斤顶、台虎钳、肘节夹具和机床丝杠背后的计算——凡是把旋转变成很大轴向力的场合都适用。',
+    formulas: [
+      HelpFormula(
+        tex: r'T_R = \frac{F d_m}{2}\left(\frac{l + \pi \mu d_m \sec\alpha}{\pi d_m - \mu l \sec\alpha}\right) + \frac{F \mu_c d_c}{2}',
+        plain: 'TR = (F·dm/2)·(l + π·μ·dm·secα)/(π·dm − μ·l·secα) + F·μc·dc/2',
+        caption: '提升扭矩，螺纹与轴环之和',
+      ),
+      HelpFormula(
+        tex: r'T_L = \frac{F d_m}{2}\left(\frac{\pi \mu d_m \sec\alpha - l}{\pi d_m + \mu l \sec\alpha}\right) + \frac{F \mu_c d_c}{2}',
+        plain: 'TL = (F·dm/2)·(π·μ·dm·secα − l)/(π·dm + μ·l·secα) + F·μc·dc/2',
+        caption: '下降扭矩；为负说明荷载会自行下滑',
+      ),
+      HelpFormula(
+        tex: r'e = \frac{F l}{2\pi T_R}',
+        plain: 'e = F·l / (2π·TR)',
+        caption: '效率：每转的输出功除以输入功',
+      ),
+      HelpFormula(
+        tex: r'\mu \sec\alpha > \tan\lambda = \frac{l}{\pi d_m}',
+        plain: 'μ·secα > tanλ = l / (π·dm)',
+        caption: '自锁条件',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('F', '轴向荷载', 'N'),
+      HelpSymbol('dm', '中径，d − p/2', 'mm'),
+      HelpSymbol('l', '导程，每转前进的距离：p × 线数', 'mm'),
+      HelpSymbol('p', '螺距，相邻牙之间的距离', 'mm'),
+      HelpSymbol('λ', '升角，atan(l / π·dm)', 'deg'),
+      HelpSymbol('α', '牙侧半角：矩形 0，ACME 14.5°，梯形 15°', 'deg'),
+      HelpSymbol('μ', '螺纹面摩擦系数'),
+      HelpSymbol('μc', '轴环摩擦系数'),
+      HelpSymbol('dc', '轴环平均直径', 'mm'),
+      HelpSymbol('T', '扭矩', 'N·m'),
+      HelpSymbol('e', '效率，0 至 1'),
+    ],
+    notes: [
+      '导程不是螺距。双线螺纹的导程是螺距的两倍，每转前进一倍距离，效率明显更高——同时也明显更难自锁。把两者弄混，是这里最典型的错误。',
+      '自锁是螺纹的性质，不是整个部件的性质。有的螺旋通不过 μ·secα > tanλ '
+          '这一判据，却因轴环摩擦补足而仍能保持荷载；这是弱得多的保证——磨损的是轴环，早晚会有人给它加油的也是轴环。',
+      '凡是荷载坠落会伤人的场合，绝不可只依赖自锁。振动会瓦解静摩擦，而你假定的摩擦系数并不是实际工况下的那个。',
+      '矩形螺纹效率最高：ACME 和梯形螺纹的牙侧角把荷载楔在牙侧之间，使螺纹摩擦乘以 sec α。人们仍然使用 '
+          'ACME，是因为它更易加工，且磨损可用开合螺母补偿。',
+      '自锁螺旋的效率很少超过 50%，常常只有 20% 左右。这是机构本身决定的，而不是设计不良的表现——消耗功的摩擦，正是保持荷载的那份摩擦。',
+      '这里给出的只是螺杆上的扭矩，并不涉及长螺杆受压的失稳、螺纹面的接触压强，或螺母牙的剪切。仅凭本结果定尺寸之前，请另行校核这些内容。',
+    ],
+    references: [
+      "Shigley's Mechanical Engineering Design, ch. 8",
+      'Norton, Machine Design: An Integrated Approach, ch. 15',
+    ],
+    diagram: 'images/icons/icon_power_screw.png',
   ),
 };

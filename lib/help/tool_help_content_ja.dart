@@ -835,43 +835,55 @@ const Map<int, ToolHelp> toolHelpJa = {
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
   401: ToolHelp(
-    summary: '集中荷重、全長等分布荷重、またはその両方を受ける単純支持はりの'
-        '支点反力、せん断力、曲げモーメント。せん断力図と曲げモーメント図は、'
-        'どの断面を確認すべきか、そしてそのとき使う M がいくらかを教えてくれます。',
+    summary: '6 '
+        '種類の支持条件のいずれかで支持され、任意の数の荷重を受けるはりについて、支点反力・せん断力・曲げモーメント・たわみを求めます。集中荷重、等分布・三角形・台形の分布荷重、集中モーメントは自由に重ね合わせられます。せん断力図と曲げモーメント図は、どの断面をどの '
+        'M で検討すべきかを示します。',
     formulas: [
       HelpFormula(
         tex: r'\sum F_y = 0, \quad \sum M = 0',
-        plain: 'ΣFy = 0、ΣM = 0',
-        caption: 'つり合い条件、これで 2 つの反力が決まる',
+        plain: 'ΣFy = 0,   ΣM = 0',
+        caption: 'つり合い。静定の場合はこれだけで解ける',
       ),
       HelpFormula(
-        tex: r'V(x) = R_A - \int_0^x w\,dx, \quad M(x) = \int_0^x V\,dx',
-        plain: 'V(x) = RA − ∫w dx、M(x) = ∫V dx',
-        caption: 'スパンに沿ったせん断力とモーメント',
+        tex: r'\mathbf{K}\mathbf{d} = \mathbf{F}',
+        plain: 'K·d = F',
+        caption: '剛性方程式。残りの場合はこれで解く',
       ),
       HelpFormula(
-        tex: r'M_{\max} = \frac{wL^2}{8} \;\text{(UDL)}, \quad '
-            r'\frac{PL}{4} \;\text{(central point load)}',
-        plain: 'Mmax = w·L²/8（等分布）、P·L/4（中央集中荷重）',
+        tex: r'\frac{dV}{dx} = -w(x), \quad \frac{dM}{dx} = V(x)',
+        plain: 'dV/dx = −w(x),   dM/dx = V(x)',
+        caption: 'スパンに沿ったせん断力と曲げモーメント',
+      ),
+      HelpFormula(
+        tex: r'EI\frac{d^2v}{dx^2} = M(x), \quad \sigma = \frac{Mc}{I}',
+        plain: 'EI·d²v/dx² = M(x),   σ = M·c/I',
+        caption: 'たわみと、曲げモーメントが生じさせる応力',
       ),
     ],
     symbols: [
-      HelpSymbol('RA, RB', '支点反力', 'N'),
+      HelpSymbol('R', '支点反力、上向きを正', 'N'),
       HelpSymbol('V', 'せん断力', 'N'),
-      HelpSymbol('M', '曲げモーメント', 'N·mm'),
-      HelpSymbol('w', '等分布荷重', 'N/mm'),
-      HelpSymbol('L', 'スパン', 'mm'),
+      HelpSymbol('M', '曲げモーメント、下側引張を正', 'N·m'),
+      HelpSymbol('w', '分布荷重の強さ、下向きを正', 'N/m'),
+      HelpSymbol('L', 'スパン', 'm'),
+      HelpSymbol('EI', '曲げ剛性', 'N·m²'),
+      HelpSymbol('v', 'たわみ、下向きを正', 'mm'),
+      HelpSymbol('c', '中立軸から縁までの距離', 'mm'),
     ],
     notes: [
-      '静定の場合のみ：一端ピン、他端ローラです。支点が 3 つある場合や'
-          '両端固定の場合は不静定となり、つり合いに加えて適合条件が必要です。',
-      'モーメントはせん断力が零を横切る位置で最大になります。'
-          'そこが設計すべき断面で、荷重が中央から外れていればスパン中央ではありません。',
-      '自重は分布荷重に加えないかぎり含まれません。',
+      '6 種類のうち 3 つ、すなわち一端固定・他端支持のはり、両端固定のはり、支点を内側に寄せた張り出しはりは不静定です。反力が EI '
+          'に依存するため、E や I を誤るとたわみだけでなく反力そのものがずれます。',
+      'ここではピン支持とローラー支持は同じものです。このモデルは曲げだけを扱い軸方向の自由度を持たないため、両者が拘束するものに違いはありません。',
+      '曲げモーメントはせん断力がゼロを横切る位置で最大になります。設計すべきはその断面であり、対称な荷重でない限りスパン中央ではありません。',
+      '正曲げと負曲げのピークは、引張になる側が違うため別々に出力しています。連続ばりや固定ばりでは、支点上の負曲げのほうが大きいことが多くあります。',
+      '自重は分布荷重として入力しない限り含まれません。',
+      'オイラー・ベルヌーイ理論と同じくせん断変形は無視しています。スパンがはりの高さの約 10 '
+          '倍より短い場合、実際のたわみはここに示す値より大きくなります。',
     ],
     references: [
-      'Hibbeler, Structural Analysis, ch. 4',
-      'Gere & Goodno, Mechanics of Materials, ch. 4',
+      'Hibbeler, Structural Analysis, ch. 4 and 11',
+      'Gere & Goodno, Mechanics of Materials, ch. 4 and 9',
+      'Cook et al., Concepts and Applications of Finite Element Analysis, ch. 2',
     ],
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
@@ -2186,5 +2198,110 @@ const Map<int, ToolHelp> toolHelpJa = {
       'ASME Y14.5, Dimensioning and Tolerancing',
       'Fischer, Mechanical Tolerance Stackup and Analysis',
     ],
+  ),
+  506: ToolHelp(
+    summary: 'ねじ部品の強度区分と、それが締結にとって何を意味するかをまとめた表です。メートルねじの強度区分は ISO 898-1、インチねじの区分は SAE '
+        'J429 '
+        'によります。各行の締付軸力と締付トルクは表中の保証応力から計算しているため、区分とトルクが食い違うことはありません。ボルトを選定するとき、すでに組み付けられたボルトを頭部の刻印から見分けるとき、トルクレンチを設定するときに使えます。',
+    formulas: [
+      HelpFormula(
+        tex: r'A_s = \frac{\pi}{4}\left(d - 0.9382\,p\right)^2',
+        plain: 'As = (π/4)(d − 0.9382·p)²',
+        caption: '有効断面積、メートル並目ねじ',
+      ),
+      HelpFormula(
+        tex: r'F_i = 0.75\,A_s S_p',
+        plain: 'Fi = 0.75·As·Sp',
+        caption: '推奨締付軸力、再使用する締結部',
+      ),
+      HelpFormula(
+        tex: r'T = K F_i d',
+        plain: 'T = K·Fi·d',
+        caption: '締付トルク、簡易トルク係数式',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('As', 'ねじの有効断面積', 'mm²'),
+      HelpSymbol('d', 'ねじの呼び径（外径）', 'mm'),
+      HelpSymbol('p', 'ねじのピッチ', 'mm'),
+      HelpSymbol('Sp', '強度区分の保証応力', 'MPa'),
+      HelpSymbol('Fi', '締付軸力（初期締付力）', 'N'),
+      HelpSymbol('T', '締付トルク', 'N·m'),
+      HelpSymbol('K', 'トルク係数、ここでは 0.2'),
+    ],
+    notes: [
+      '締付軸力の基準となるのは降伏点ではなく保証応力です。測定できる永久変形を生じずにボルトが負担できる応力であり、同じ行の降伏強さよりわずかに低い値になります。',
+      '0.75 という係数は規格ではなく慣行です。分解する可能性のある締結部では保証応力の 75 %、一度だけ締める恒久的な締結部では 90 % '
+          'が一般的で、塑性域締付ボルトは意図的にそれを超えて締め、再使用しません。',
+      'K = 0.2 は無処理・無めっき・無潤滑のねじを前提としています。亜鉛めっき、ワックス、焼付き防止剤では 0.10〜0.15 '
+          '程度まで下がり、同じトルクでも軸力が最大 2 '
+          '倍になります。ボルトが折損しうる差です。軸力が重要な場合はトルクではなく、回転角、ボルト伸び、ロードセルで管理してください。',
+      'ISO 898-1 は M16 を超える 8.8 を、SAE J429 は 3/4 インチを超えるグレード 2 '
+          'を低減しています。断面が厚くなると芯部まで焼きが入らないためです。表は各径に対して正しい区分をすでに適用しています。',
+      '有効断面積は呼び径から想像される軸部断面積より小さく、M12 では 113 mm² に対して 84.3 mm² です。πd²/4 で選定すると耐力を '
+          '4 分の 1 ほど過大評価します。',
+      'ここに示すのは静的な引張値です。変動荷重を受けるボルトは、最初のかみ合いねじ山で、ここに示す引張強さよりはるかに低い応力で疲労破壊します。それには疲労のツールを使ってください。',
+    ],
+    references: [
+      'ISO 898-1, Mechanical properties of fasteners — bolts, screws and studs',
+      'SAE J429, Mechanical and Material Requirements for Externally Threaded '
+          'Fasteners',
+      "Shigley's Mechanical Engineering Design, ch. 8",
+    ],
+  ),
+  712: ToolHelp(
+    summary: '送りねじで荷重を上げるとき・下げるときのトルク、そのときの効率、そしてねじだけで荷重を保持できるかどうかを求めます。ねじジャッキ、万力、トグルクランプ、工作機械の送りねじなど、回転を大きな軸方向力に変えるあらゆる場面で使う計算です。',
+    formulas: [
+      HelpFormula(
+        tex: r'T_R = \frac{F d_m}{2}\left(\frac{l + \pi \mu d_m \sec\alpha}{\pi d_m - \mu l \sec\alpha}\right) + \frac{F \mu_c d_c}{2}',
+        plain: 'TR = (F·dm/2)·(l + π·μ·dm·secα)/(π·dm − μ·l·secα) + F·μc·dc/2',
+        caption: '上昇トルク、ねじ面とつばの合計',
+      ),
+      HelpFormula(
+        tex: r'T_L = \frac{F d_m}{2}\left(\frac{\pi \mu d_m \sec\alpha - l}{\pi d_m + \mu l \sec\alpha}\right) + \frac{F \mu_c d_c}{2}',
+        plain: 'TL = (F·dm/2)·(π·μ·dm·secα − l)/(π·dm + μ·l·secα) + F·μc·dc/2',
+        caption: '下降トルク。負なら荷重が自走して落ちる',
+      ),
+      HelpFormula(
+        tex: r'e = \frac{F l}{2\pi T_R}',
+        plain: 'e = F·l / (2π·TR)',
+        caption: '効率。1 回転あたりの出力仕事を入力仕事で割った値',
+      ),
+      HelpFormula(
+        tex: r'\mu \sec\alpha > \tan\lambda = \frac{l}{\pi d_m}',
+        plain: 'μ·secα > tanλ = l / (π·dm)',
+        caption: '自立（セルフロック）条件',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('F', '軸方向荷重', 'N'),
+      HelpSymbol('dm', '有効径、d − p/2', 'mm'),
+      HelpSymbol('l', 'リード。1 回転あたりの進み量、p × 条数', 'mm'),
+      HelpSymbol('p', 'ピッチ。隣り合うねじ山の間隔', 'mm'),
+      HelpSymbol('λ', 'リード角、atan(l / π·dm)', 'deg'),
+      HelpSymbol('α', 'ねじ山の半角。角ねじ 0、ACME 14.5°、台形 15°', 'deg'),
+      HelpSymbol('μ', 'ねじ面の摩擦係数'),
+      HelpSymbol('μc', 'つばの摩擦係数'),
+      HelpSymbol('dc', 'つばの平均直径', 'mm'),
+      HelpSymbol('T', 'トルク', 'N·m'),
+      HelpSymbol('e', '効率、0〜1'),
+    ],
+    notes: [
+      'リードとピッチは別物です。2 条ねじのリードはピッチの 2 倍で、1 回転あたり 2 '
+          '倍進み、効率も明らかに高くなります。そのぶん自立しにくくもなります。この 2 つの取り違えが、ここでの典型的な誤りです。',
+      '自立するかどうかはねじ山の性質であって、組立体の性質ではありません。μ·secα > tanλ '
+          'を満たさないねじでも、つばの摩擦が不足分を補って荷重を保持することがありますが、これははるかに弱い保証です。摩耗するのはつばであり、いずれ誰かが油を差すのもつばです。',
+      '落下すれば人を傷つけるような荷重に対して、自立だけに頼ってはいけません。振動は静摩擦を崩し、想定した摩擦係数は実使用時の値とは違います。',
+      '効率が高いのは角ねじです。ACME や台形ねじの半角は荷重をねじ山の斜面に食い込ませ、ねじ面の摩擦を sec α 倍にします。それでも ACME '
+          'が使われるのは、加工が容易で、割りナットで摩耗を詰められるからです。',
+      '自立するねじの効率が 50 % を超えることはまれで、20 % '
+          '程度のことも珍しくありません。これは機構に固有のもので設計の良し悪しではありません。仕事を食う摩擦こそが荷重を保持している摩擦だからです。',
+      'ここで求まるのはねじ軸のトルクだけです。長いねじの圧縮座屈、ねじ面の面圧、ナットのねじ山せん断については何も述べていません。これだけで寸法を決める前に、別途確認してください。',
+    ],
+    references: [
+      "Shigley's Mechanical Engineering Design, ch. 8",
+      'Norton, Machine Design: An Integrated Approach, ch. 15',
+    ],
+    diagram: 'images/icons/icon_power_screw.png',
   ),
 };

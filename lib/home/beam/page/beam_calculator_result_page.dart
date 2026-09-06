@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
-import 'package:mechanical_engineering_toolkit/home/beam/model/simply_supported_beam_calculator.dart';
+import 'package:mechanical_engineering_toolkit/home/beam/model/beam_solver.dart';
+import 'package:mechanical_engineering_toolkit/home/beam/page/beam_calculator_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/xy_diagram_card.dart';
+import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -18,87 +20,142 @@ class BeamCalculatorResultPage extends StatelessWidget {
     required this.title,
     required this.input,
     required this.result,
+    required this.supportCase,
   });
 
   final int toolId;
   final String title;
-  final BeamAnalysisInput input;
-  final BeamAnalysisResult result;
+  final BeamInput input;
+  final BeamResult result;
+  final BeamSupportCase supportCase;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context);
     final system = context.watch<UnitSystemPreference>().system;
+    final precs = context.watch<NumberPrecisionHelper>();
     final tool = ToolLibrary.shared.item(toolId, context);
-    final reactionSteps = _reactionSteps(system);
-    final responseSteps = _responseSteps(system);
+    final steps = _steps(context, system, precs);
 
     return ResultScaffold(
       toolName: title,
-      formulaSteps: [...reactionSteps, '', ...responseSteps],
+      formulaSteps: steps,
       leading: [ToolResultHeader(tool: tool)],
       results: [
+        ResultSection(
+          title: l10n.Support_Reactions,
+          values: [
+            for (final reaction in result.reactions) ...[
+              ResultValue(
+                label: l10n.Reaction_At_X(
+                    _position(reaction.position, system, precs)),
+                valueSI: reaction.force,
+                category: UnitCategory.forceStructural,
+              ),
+              // A simple support carries no couple, and a row of zeroes in a
+              // report is worse than no row at all.
+              if (reaction.type == BeamSupportType.fixed)
+                ResultValue(
+                  label: l10n.Fixing_Moment_At_X(
+                      _position(reaction.position, system, precs)),
+                  valueSI: reaction.moment,
+                  category: UnitCategory.momentStructural,
+                ),
+            ],
+          ],
+        ),
         ResultSection(
           title: title,
           values: [
             ResultValue(
-              label: S.of(context).Left_Reaction_RA,
-              valueSI: result.leftReaction,
+              label: l10n.Maximum_Shear,
+              valueSI: result.maximumShear.value,
               category: UnitCategory.forceStructural,
             ),
             ResultValue(
-              label: S.of(context).Right_Reaction_RB,
-              valueSI: result.rightReaction,
-              category: UnitCategory.forceStructural,
+              label: '${l10n.Maximum_Shear} @ x',
+              valueSI: result.maximumShear.position,
+              category: UnitCategory.span,
             ),
             // Magnitude and its location are separate rows: a spreadsheet
             // cannot split "12 kN·m at x = 2 m" back into two numbers.
             ResultValue(
-              label: S.of(context).Maximum_Bending_Moment,
-              valueSI: result.maximumMoment,
+              label: l10n.Maximum_Sagging_Moment,
+              valueSI: result.maximumSaggingMoment.value,
               category: UnitCategory.momentStructural,
             ),
             ResultValue(
-              label: '${S.of(context).Maximum_Bending_Moment} @ x',
-              valueSI: result.maximumMomentPosition,
+              label: '${l10n.Maximum_Sagging_Moment} @ x',
+              valueSI: result.maximumSaggingMoment.position,
+              category: UnitCategory.span,
+            ),
+            // Kept even when zero: on a simple span its absence is the
+            // answer, and a reader scanning for it should see that rather
+            // than wonder whether the tool looked.
+            ResultValue(
+              label: l10n.Maximum_Hogging_Moment,
+              valueSI: result.maximumHoggingMoment.value,
+              category: UnitCategory.momentStructural,
+            ),
+            ResultValue(
+              label: '${l10n.Maximum_Hogging_Moment} @ x',
+              valueSI: result.maximumHoggingMoment.position,
               category: UnitCategory.span,
             ),
             ResultValue(
-              label: S.of(context).Maximum_Downward_Deflection,
-              valueSI: result.maximumDeflection,
+              label: l10n.Maximum_Downward_Deflection,
+              valueSI: result.maximumDeflection.value,
               category: UnitCategory.length,
             ),
             ResultValue(
-              label: '${S.of(context).Maximum_Downward_Deflection} @ x',
-              valueSI: result.maximumDeflectionPosition,
+              label: '${l10n.Maximum_Downward_Deflection} @ x',
+              valueSI: result.maximumDeflection.position,
               category: UnitCategory.span,
             ),
+            if (result.bendingStress != null)
+              ResultValue(
+                label: l10n.Bending_Stress_At_Mmax,
+                valueSI: result.bendingStress,
+                category: UnitCategory.stress,
+              ),
           ],
         ),
       ],
       children: [
-        CalculationCard(steps: reactionSteps),
-        CalculationCard(steps: responseSteps),
+        CalculationCard(steps: steps),
         XYDiagramCard(
-          title: S.of(context).Shear_Force_Diagram,
+          title: l10n.Shear_Force_Diagram,
           xUnitLabel: unitLabel(UnitCategory.span, system),
           yUnitLabel: unitLabel(UnitCategory.forceStructural, system),
-          points: result.shear.map((p) => DiagramPoint(p.x, p.value)).toList(),
+          points: [
+            for (final point in result.shear)
+              DiagramPoint(fromSI(point.x, UnitCategory.span, system),
+                  fromSI(point.value, UnitCategory.forceStructural, system)),
+          ],
         ),
         XYDiagramCard(
-          title: S.of(context).Bending_Moment_Diagram,
+          title: l10n.Bending_Moment_Diagram,
           xUnitLabel: unitLabel(UnitCategory.span, system),
           yUnitLabel: unitLabel(UnitCategory.momentStructural, system),
-          points: result.moment.map((p) => DiagramPoint(p.x, p.value)).toList(),
+          points: [
+            for (final point in result.moment)
+              DiagramPoint(fromSI(point.x, UnitCategory.span, system),
+                  fromSI(point.value, UnitCategory.momentStructural, system)),
+          ],
         ),
         XYDiagramCard(
-          title: S.of(context).Elastic_Deflection,
+          title: l10n.Elastic_Deflection,
           xUnitLabel: unitLabel(UnitCategory.span, system),
-          yUnitLabel: '${unitLabel(UnitCategory.length, system)} downward',
-          points:
-              result.deflection.map((p) => DiagramPoint(p.x, p.value)).toList(),
+          yUnitLabel: unitLabel(UnitCategory.length, system),
+          points: [
+            for (final point in result.deflection)
+              DiagramPoint(fromSI(point.x, UnitCategory.span, system),
+                  fromSI(point.value, UnitCategory.length, system)),
+          ],
         ),
         Text(
-          'Linear-elastic Euler\u2013Bernoulli analysis. Self-weight and shear deformation are excluded unless entered as part of the UDL. Diagram extrema are evaluated at 200 intervals.',
+          '${result.isDeterminate ? l10n.Beam_Determinate_Note : l10n.Beam_Indeterminate_Note}\n\n'
+          '${l10n.Beam_Model_Note}',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
@@ -107,32 +164,81 @@ class BeamCalculatorResultPage extends StatelessWidget {
     );
   }
 
-  List<String> _reactionSteps(UnitSystem system) => [
-        'Support reactions from static equilibrium',
-        'RA = P(L−a)/L + wL/2',
-        '= ${_fv(input.pointLoad, UnitCategory.forceStructural, system)}(${_fv(input.span, UnitCategory.span, system)}−${_fv(input.pointPosition, UnitCategory.span, system)})/${_fv(input.span, UnitCategory.span, system)} + ${_fv(input.distributedLoad, UnitCategory.distributedLoadStructural, system)}×${_fv(input.span, UnitCategory.span, system)}/2',
-        '= ${_fv(result.leftReaction, UnitCategory.forceStructural, system)}',
-        'RB = Pa/L + wL/2',
-        '= ${_fv(input.pointLoad, UnitCategory.forceStructural, system)}×${_fv(input.pointPosition, UnitCategory.span, system)}/${_fv(input.span, UnitCategory.span, system)} + ${_fv(input.distributedLoad, UnitCategory.distributedLoadStructural, system)}×${_fv(input.span, UnitCategory.span, system)}/2',
-        '= ${_fv(result.rightReaction, UnitCategory.forceStructural, system)}',
-        'Check: RA + RB = ${_fv(result.leftReaction + result.rightReaction, UnitCategory.forceStructural, system)} = P + wL',
-      ];
+  /// A position rendered for use inside a label, e.g. `2 m`.
+  String _position(
+          double valueSI, UnitSystem system, NumberPrecisionHelper precs) =>
+      '${precs.formatValue(fromSI(valueSI, UnitCategory.span, system))} '
+      '${unitLabel(UnitCategory.span, system)}';
 
-  List<String> _responseSteps(UnitSystem system) => [
-        'Internal actions and elastic deflection',
-        'V(x) = RA − wx − P·H(x−a)',
-        'M(x) = RA·x − wx²/2 − P(x−a)·H(x−a)',
-        'Mmax = ${_fv(result.maximumMoment, UnitCategory.momentStructural, system)} at x = ${_fv(result.maximumMomentPosition, UnitCategory.span, system)}',
-        'EI = (${_fv(input.elasticModulus, UnitCategory.modulus, system)})(${_fv(input.secondMoment, UnitCategory.momentOfInertia, system)})',
-        'UDL: v(x) = wx(L³−2Lx²+x³)/(24EI)',
-        'Point load, x≤a: v(x) = Pb·x(L²−b²−x²)/(6LEI)',
-        'Point load, x≥a: v(x) = Pa(L−x)[L²−a²−(L−x)²]/(6LEI)',
-        'vmax = ${_fv(result.maximumDeflection, UnitCategory.length, system)} downward at x = ${_fv(result.maximumDeflectionPosition, UnitCategory.span, system)}',
-      ];
+  /// The worked calculation, in the reader's language and units.
+  ///
+  /// A stiffness solve has no substituted algebra to show — the answer comes
+  /// out of a matrix, not out of a formula anyone would write by hand. What is
+  /// worth setting down instead is the model it solved and the equilibrium
+  /// check on the answer, which is what a reader would verify by hand anyway.
+  List<String> _steps(BuildContext context, UnitSystem system,
+      NumberPrecisionHelper precs) {
+    final l10n = S.of(context);
+    String value(double valueSI, UnitCategory category) =>
+        '${precs.formatValue(fromSI(valueSI, category, system))} '
+        '${unitLabel(category, system)}';
 
-  String _f(double value) =>
-      value.toStringAsFixed(3).replaceFirst(RegExp(r'\.?0+$'), '');
+    final steps = <String>[
+      '${l10n.Support_Arrangement}: ${supportCaseLabel(context, supportCase)}',
+      '${l10n.Span_L} = ${value(input.span, UnitCategory.span)}',
+      'EI = ${value(input.elasticModulus, UnitCategory.modulus)} × '
+          '${value(input.secondMoment, UnitCategory.momentOfInertia)}',
+      '',
+      l10n.Beam_Loads,
+    ];
 
-  String _fv(double valueSI, UnitCategory category, UnitSystem system) =>
-      '${_f(fromSI(valueSI, category, system))} ${unitLabel(category, system)}';
+    for (final load in input.loads) {
+      switch (load) {
+        case BeamPointLoad():
+          steps.add('· ${value(load.magnitude, UnitCategory.forceStructural)} '
+              '@ x = ${value(load.position, UnitCategory.span)}');
+        case BeamDistributedLoad():
+          final intensity = load.isUniform
+              ? value(load.startIntensity,
+                  UnitCategory.distributedLoadStructural)
+              : '${value(load.startIntensity, UnitCategory.distributedLoadStructural)} → '
+                  '${value(load.endIntensity, UnitCategory.distributedLoadStructural)}';
+          steps.add('· $intensity, '
+              'x = ${value(load.start, UnitCategory.span)} → '
+              '${value(load.end, UnitCategory.span)}');
+        case BeamAppliedMoment():
+          steps.add('· ${value(load.magnitude, UnitCategory.momentStructural)} '
+              '@ x = ${value(load.position, UnitCategory.span)}');
+      }
+    }
+
+    steps
+      ..add('')
+      ..add(l10n.Support_Reactions);
+    for (final reaction in result.reactions) {
+      steps.add('· x = ${value(reaction.position, UnitCategory.span)}: '
+          '${value(reaction.force, UnitCategory.forceStructural)}'
+          '${reaction.type == BeamSupportType.fixed ? ', ${value(reaction.moment, UnitCategory.momentStructural)}' : ''}');
+    }
+
+    // The vertical equilibrium check: the reactions have to add up to the
+    // load, whatever the matrix did. It is the one line of this report a
+    // reader can verify without redoing the analysis.
+    final totalReaction =
+        result.reactions.fold<double>(0, (sum, r) => sum + r.force);
+    steps
+      ..add('ΣR = ${value(totalReaction, UnitCategory.forceStructural)} '
+          '= ΣF')
+      ..add('')
+      ..add('Mmax = ${value(result.maximumMoment.value, UnitCategory.momentStructural)} '
+          '@ x = ${value(result.maximumMoment.position, UnitCategory.span)}')
+      ..add('vmax = ${value(result.maximumDeflection.value, UnitCategory.length)} '
+          '@ x = ${value(result.maximumDeflection.position, UnitCategory.span)}');
+
+    final stress = result.bendingStress;
+    if (stress != null) {
+      steps.add('σ = Mc/I = ${value(stress, UnitCategory.stress)}');
+    }
+    return steps;
+  }
 }

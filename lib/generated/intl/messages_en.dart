@@ -22,28 +22,34 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(name) => "Added to “${name}”";
 
-  static String m1(label) => "Copied ${label}";
+  static String m1(n) => "Load ${n}";
 
-  static String m2(label) =>
+  static String m2(label) => "Copied ${label}";
+
+  static String m3(label) =>
       "Drag along the line to explore other values of ${label}.";
 
-  static String m3(index) => "Layer ${index}";
+  static String m4(x) => "Fixing moment at x = ${x}";
 
-  static String m4(index) => "Mode ${index}";
+  static String m5(index) => "Layer ${index}";
 
-  static String m5(value) => "Preview: ${value}";
+  static String m6(index) => "Mode ${index}";
 
-  static String m6(count) => "${count} calculations";
+  static String m7(value) => "Preview: ${value}";
 
-  static String m7(name) => "Saved “${name}”";
+  static String m8(count) => "${count} calculations";
 
-  static String m8(name) => "Renamed to “${name}”";
+  static String m9(name) => "Saved “${name}”";
 
-  static String m9(tool) => "Remove ${tool} from favorites";
+  static String m10(name) => "Renamed to “${name}”";
 
-  static String m10(n) => "Dimension ${n}";
+  static String m11(x) => "Reaction at x = ${x}";
 
-  static String m11(label) => "What if: ${label}";
+  static String m12(tool) => "Remove ${tool} from favorites";
+
+  static String m13(n) => "Dimension ${n}";
+
+  static String m14(label) => "What if: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -57,6 +63,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_Force": MessageLookupByLibrary.simpleMessage("Add Force"),
     "Add_Joint": MessageLookupByLibrary.simpleMessage("Add Joint"),
     "Add_Layer": MessageLookupByLibrary.simpleMessage("Add layer"),
+    "Add_Load": MessageLookupByLibrary.simpleMessage("Add load"),
     "Add_Member": MessageLookupByLibrary.simpleMessage("Add Member"),
     "Add_Shape": MessageLookupByLibrary.simpleMessage("Add Shape"),
     "Add_to_Favorites": MessageLookupByLibrary.simpleMessage(
@@ -94,19 +101,28 @@ class MessageLookup extends MessageLookupByLibrary {
     "Anisotropic_material": MessageLookupByLibrary.simpleMessage(
       "Anisotropic material",
     ),
+    "Answer_No": MessageLookupByLibrary.simpleMessage("No"),
+    "Answer_Yes": MessageLookupByLibrary.simpleMessage("Yes"),
     "Appearance": MessageLookupByLibrary.simpleMessage("APPEARANCE"),
     "Applied_Force_F": MessageLookupByLibrary.simpleMessage("Applied force, F"),
     "Area": MessageLookupByLibrary.simpleMessage("Area"),
     "Area_A": MessageLookupByLibrary.simpleMessage("Area, A"),
+    "Axial_Load_F": MessageLookupByLibrary.simpleMessage("Axial load, F"),
     "Ball_Bearing": MessageLookupByLibrary.simpleMessage(
       "Ball bearing (p = 3)",
     ),
     "Base_Temperature": MessageLookupByLibrary.simpleMessage(
       "Base temperature",
     ),
+    "Beam_And_Supports": MessageLookupByLibrary.simpleMessage(
+      "Beam & supports",
+    ),
     "Beam_Cantilever": MessageLookupByLibrary.simpleMessage("Cantilever"),
     "Beam_Configuration": MessageLookupByLibrary.simpleMessage(
       "Beam Configuration",
+    ),
+    "Beam_Determinate_Note": MessageLookupByLibrary.simpleMessage(
+      "Statically determinate: the reactions follow from equilibrium alone.",
     ),
     "Beam_Engineering": MessageLookupByLibrary.simpleMessage(
       "Beam Engineering",
@@ -117,12 +133,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "Beam_Frequency_Footnote": MessageLookupByLibrary.simpleMessage(
       "Euler–Bernoulli theory: shear deformation and rotary inertia are ignored, so the frequencies run high for a stubby beam (L/d under about 10) and for the higher modes.",
     ),
+    "Beam_Indeterminate_Note": MessageLookupByLibrary.simpleMessage(
+      "Statically indeterminate: the reactions depend on EI, so the section and the material change them, not only the deflection.",
+    ),
     "Beam_Length_L": MessageLookupByLibrary.simpleMessage("Beam length, L"),
     "Beam_Load_Analysis": MessageLookupByLibrary.simpleMessage(
       "Beam Load Analysis",
     ),
+    "Beam_Load_N": m1,
+    "Beam_Loads": MessageLookupByLibrary.simpleMessage("Loads"),
     "Beam_Mode_Constant": MessageLookupByLibrary.simpleMessage(
       "Mode constant, βL",
+    ),
+    "Beam_Model_Note": MessageLookupByLibrary.simpleMessage(
+      "Linear-elastic Euler–Bernoulli analysis on a 120-element mesh. Self-weight is excluded unless entered as a distributed load, and shear deformation is neglected — which understates deflection on a beam shorter than about ten times its depth.",
     ),
     "Beam_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
       "Beam Natural Frequency",
@@ -145,12 +169,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "Bending_Moment_Diagram": MessageLookupByLibrary.simpleMessage(
       "Bending-moment diagram",
     ),
+    "Bending_Stress_At_Mmax": MessageLookupByLibrary.simpleMessage(
+      "Bending stress at Mmax",
+    ),
     "Bending_Stress_Pinion": MessageLookupByLibrary.simpleMessage(
       "Bending stress, σ (pinion)",
+    ),
+    "Bolt_Grades_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Clamp load is 75% of proof strength on the tensile stress area; torque follows from T = K·F·d with K = 0.2, a plain unlubricated thread. K carries the whole friction problem in one number — plating, wax or anti-seize move it between about 0.10 and 0.25, and the torque with it. Where the preload matters, measure it rather than trusting a torque wrench. Tap a row to copy it.",
+    ),
+    "Bolt_Grades_Torque": MessageLookupByLibrary.simpleMessage(
+      "Bolt Grades & Torque",
     ),
     "Bolt_Preload_Torque_Tension": MessageLookupByLibrary.simpleMessage(
       "Bolt Preload / Torque-Tension",
     ),
+    "Bolt_Size": MessageLookupByLibrary.simpleMessage("Size"),
     "Bolted_Riveted_Joint": MessageLookupByLibrary.simpleMessage(
       "Bolted / Riveted Joint",
     ),
@@ -179,6 +213,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Civil_Structural_Engineering": MessageLookupByLibrary.simpleMessage(
       "Civil / Structural Engineering",
     ),
+    "Clamp_Load_Fi": MessageLookupByLibrary.simpleMessage("Clamp load Fi"),
     "Clear": MessageLookupByLibrary.simpleMessage("Clear"),
     "Clear_History": MessageLookupByLibrary.simpleMessage("Clear history"),
     "Clear_History_Description": MessageLookupByLibrary.simpleMessage(
@@ -197,6 +232,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "Cold_Stream_Range": MessageLookupByLibrary.simpleMessage(
       "Cold stream range",
     ),
+    "Collar_Diameter_Dc": MessageLookupByLibrary.simpleMessage(
+      "Collar mean diameter, dc",
+    ),
+    "Collar_Friction_Muc": MessageLookupByLibrary.simpleMessage(
+      "Collar friction, μc",
+    ),
+    "Collar_Hint": MessageLookupByLibrary.simpleMessage(
+      "Leave the collar diameter at zero for a screw running on a thrust bearing, whose friction is negligible beside a plain collar\'s.",
+    ),
+    "Collar_Torque": MessageLookupByLibrary.simpleMessage("Collar torque"),
     "Combined_Loading_at_a_Point": MessageLookupByLibrary.simpleMessage(
       "Combined Loading at a Point",
     ),
@@ -227,7 +272,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Contributing frequencies",
     ),
     "Copied": MessageLookupByLibrary.simpleMessage("Copied"),
-    "Copied_Value": m1,
+    "Copied_Value": m2,
     "Copy": MessageLookupByLibrary.simpleMessage("Copy"),
     "Copy_Result": MessageLookupByLibrary.simpleMessage("Copy result"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage(
@@ -261,19 +306,22 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Density": MessageLookupByLibrary.simpleMessage("Density"),
     "Desc_Beam_Analysis": MessageLookupByLibrary.simpleMessage(
-      "Uses static equilibrium and Euler–Bernoulli beam theory for a simply supported beam. A downward point load and a full-span uniformly distributed load may be used separately or together.",
+      "Solved by the direct stiffness method with Euler–Bernoulli elements. That covers the propped cantilever, the fixed-ended beam and an overhang on inset supports — none of which equilibrium alone can settle — alongside the determinate cases.",
     ),
     "Desc_Beam_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
       "Transverse natural frequencies of a uniform prismatic beam, from its section, length and material. The first three bending modes, across five end conditions.",
     ),
     "Desc_Beam_Supports": MessageLookupByLibrary.simpleMessage(
-      "Pin support at the left, roller support at the right. Combine one downward point load with a full-span uniformly distributed load.",
+      "Choose how the beam is held, then add the loads it carries. Point loads, uniform, triangular or trapezoidal distributed loads, and applied couples can be combined freely.",
     ),
     "Desc_Bearing_Life": MessageLookupByLibrary.simpleMessage(
       "Basic rating life from catalog dynamic load rating C, equivalent applied load P, and speed n: L10 = (C/P)^p.",
     ),
     "Desc_Belt_Drive": MessageLookupByLibrary.simpleMessage(
       "Open-belt (or roller-chain, using pitch diameters) drive geometry: speed ratio, approximate belt length, and pulley wrap angles.",
+    ),
+    "Desc_Bolt_Grades": MessageLookupByLibrary.simpleMessage(
+      "Proof, yield and tensile strength for ISO 898-1 metric property classes and SAE J429 inch grades, with the clamp load and tightening torque each size and grade implies. Clamp load and torque are derived from the tabulated strengths, so they cannot disagree with them.",
     ),
     "Desc_Bolt_Preload": MessageLookupByLibrary.simpleMessage(
       "Estimates the tightening torque needed to reach a target bolt preload, using the short-form torque-tension equation.",
@@ -295,6 +343,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Pipe_Schedules": MessageLookupByLibrary.simpleMessage(
       "Outside diameter, wall thickness and bore for ASME B36.10M steel pipe, NPS 1/8 to 24, in schedules 10, 40, 80 and 160. Inside diameter and flow area are computed from the listed OD and wall, so they cannot disagree with them.",
+    ),
+    "Desc_Power_Screw": MessageLookupByLibrary.simpleMessage(
+      "Torque to raise and lower a load on a power screw, its efficiency, and whether it holds the load without a brake. Covers a jack, a vice, a clamp, or the lead screw on a machine slide.",
     ),
     "Desc_Press_Fit": MessageLookupByLibrary.simpleMessage(
       "Contact pressure and hoop stress for a solid shaft pressed into a hub, same material assumed for both parts (a standard simplified case — Poisson\\\'s ratio cancels out).",
@@ -343,7 +394,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Displacement": MessageLookupByLibrary.simpleMessage("Displacement"),
     "Display_Format": MessageLookupByLibrary.simpleMessage("DISPLAY FORMAT"),
     "Double_Shear": MessageLookupByLibrary.simpleMessage("Double shear"),
-    "Drag_Along_Line": m2,
+    "Drag_Along_Line": m3,
     "Drill_Tap_Chart": MessageLookupByLibrary.simpleMessage(
       "Drill & Tap Chart",
     ),
@@ -400,6 +451,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Add_One_Member": MessageLookupByLibrary.simpleMessage(
       "Add at least one member.",
+    ),
+    "Err_Beam_Load_Incomplete": MessageLookupByLibrary.simpleMessage(
+      "Fill in every field of each load, or remove the load.",
     ),
     "Err_C_Positive": MessageLookupByLibrary.simpleMessage(
       "Dynamic load rating C must be positive.",
@@ -501,6 +555,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_P_Positive": MessageLookupByLibrary.simpleMessage(
       "Equivalent load P must be positive.",
     ),
+    "Err_Power_Screw_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Enter the major diameter, the pitch and the axial load.",
+    ),
     "Err_Pulley_Positive": MessageLookupByLibrary.simpleMessage(
       "Pulley diameters must be positive.",
     ),
@@ -548,6 +605,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Export_Report": MessageLookupByLibrary.simpleMessage("Export report"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("Express Scan"),
+    "Extreme_Fibre_C": MessageLookupByLibrary.simpleMessage("Extreme fibre, c"),
+    "Extreme_Fibre_Hint": MessageLookupByLibrary.simpleMessage(
+      "Optional — supply c and the result carries the bending stress as well.",
+    ),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage("Face width, F"),
     "Factor_of_Safety": MessageLookupByLibrary.simpleMessage(
       "Factor of safety",
@@ -601,6 +662,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Fits_Tolerances": MessageLookupByLibrary.simpleMessage(
       "Fits & Tolerances (ISO 286)",
     ),
+    "Fixing_Moment_At_X": m4,
     "Flange_Thickness": MessageLookupByLibrary.simpleMessage(
       "Flange thickness",
     ),
@@ -654,6 +716,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "General_stress_calculation": MessageLookupByLibrary.simpleMessage(
       "General stress calculation",
     ),
+    "Grade_Class": MessageLookupByLibrary.simpleMessage("Grade"),
     "Grid_View": MessageLookupByLibrary.simpleMessage("Grid view"),
     "Group_Building": MessageLookupByLibrary.simpleMessage(
       "Building materials",
@@ -679,6 +742,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "No detailed notes for this tool yet.",
     ),
     "History": MessageLookupByLibrary.simpleMessage("History"),
+    "Holds_With_Collar": MessageLookupByLibrary.simpleMessage(
+      "Holds with collar friction",
+    ),
     "Hole_um": MessageLookupByLibrary.simpleMessage("Hole (µm)"),
     "Hot_Inlet": MessageLookupByLibrary.simpleMessage("Hot inlet"),
     "Hot_Outlet": MessageLookupByLibrary.simpleMessage("Hot outlet"),
@@ -751,15 +817,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "Large_Pulley_Diameter_D2": MessageLookupByLibrary.simpleMessage(
       "Large pulley diameter, d2",
     ),
-    "Layer_Number": m3,
+    "Layer_Number": m5,
     "Layer_Resistances": MessageLookupByLibrary.simpleMessage(
       "Layer resistances",
     ),
     "Layer_Thickness": MessageLookupByLibrary.simpleMessage("Layer Thickness"),
     "Layup_Angle": MessageLookupByLibrary.simpleMessage("Layup Angle"),
     "Layup_Sequence": MessageLookupByLibrary.simpleMessage("Layup Sequence"),
+    "Lead_Angle_Lambda": MessageLookupByLibrary.simpleMessage("Lead angle, λ"),
+    "Lead_L": MessageLookupByLibrary.simpleMessage("Lead"),
     "Left_Reaction_RA": MessageLookupByLibrary.simpleMessage(
       "Left reaction, RA",
+    ),
+    "Left_Support_Position": MessageLookupByLibrary.simpleMessage(
+      "Left support at",
     ),
     "Leg_Size_W": MessageLookupByLibrary.simpleMessage("Leg size, w"),
     "Lewis_Form_Factor_Y": MessageLookupByLibrary.simpleMessage(
@@ -767,12 +838,33 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "List_View": MessageLookupByLibrary.simpleMessage("List view"),
     "Load_Case": MessageLookupByLibrary.simpleMessage("Load case"),
+    "Load_Couple_M": MessageLookupByLibrary.simpleMessage("Couple, M (ccw +)"),
+    "Load_Ends_At": MessageLookupByLibrary.simpleMessage("Ends at"),
     "Load_Fx": MessageLookupByLibrary.simpleMessage("Load Fx"),
     "Load_Fy": MessageLookupByLibrary.simpleMessage("Load Fy"),
+    "Load_Intensity_End": MessageLookupByLibrary.simpleMessage(
+      "Intensity at end",
+    ),
+    "Load_Intensity_Start": MessageLookupByLibrary.simpleMessage(
+      "Intensity at start",
+    ),
+    "Load_Magnitude_P": MessageLookupByLibrary.simpleMessage(
+      "Magnitude, P (down +)",
+    ),
+    "Load_Position_X": MessageLookupByLibrary.simpleMessage("Position, x"),
+    "Load_Starts_At": MessageLookupByLibrary.simpleMessage("Starts at"),
     "Load_Type": MessageLookupByLibrary.simpleMessage("Load Type"),
+    "Load_Type_Couple": MessageLookupByLibrary.simpleMessage("Couple"),
+    "Load_Type_Distributed": MessageLookupByLibrary.simpleMessage(
+      "Distributed",
+    ),
+    "Load_Type_Point": MessageLookupByLibrary.simpleMessage("Point"),
     "Log_Mean_Delta_T": MessageLookupByLibrary.simpleMessage("Log mean ΔT"),
     "ME_Toolkit": MessageLookupByLibrary.simpleMessage("ME Toolkit"),
     "Machine_Design": MessageLookupByLibrary.simpleMessage("Machine Design"),
+    "Major_Diameter_D": MessageLookupByLibrary.simpleMessage(
+      "Major diameter, d",
+    ),
     "Mass_Per_Length": MessageLookupByLibrary.simpleMessage(
       "Mass per length, ρA",
     ),
@@ -791,8 +883,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "Maximum_Downward_Deflection": MessageLookupByLibrary.simpleMessage(
       "Maximum downward deflection",
     ),
+    "Maximum_Hogging_Moment": MessageLookupByLibrary.simpleMessage(
+      "Maximum hogging moment",
+    ),
+    "Maximum_Sagging_Moment": MessageLookupByLibrary.simpleMessage(
+      "Maximum sagging moment",
+    ),
+    "Maximum_Shear": MessageLookupByLibrary.simpleMessage("Maximum shear"),
     "Mean_Coil_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Mean coil diameter, D",
+    ),
+    "Mean_Diameter_Dm": MessageLookupByLibrary.simpleMessage(
+      "Mean diameter, dm",
     ),
     "Mean_Moment_Mm": MessageLookupByLibrary.simpleMessage("Mean moment, Mm"),
     "Mean_Torque_Tm": MessageLookupByLibrary.simpleMessage("Mean torque, Tm"),
@@ -814,7 +916,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("Minor losses, ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
     "Minus_Tolerance": MessageLookupByLibrary.simpleMessage("Lower, −"),
-    "Mode_Number": m4,
+    "Mode_Number": m6,
     "Module_M": MessageLookupByLibrary.simpleMessage("Module, m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("Modulus, E"),
     "Mohrs_Circle_for_Plane_Stress": MessageLookupByLibrary.simpleMessage(
@@ -964,13 +1066,19 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Power_Lost": MessageLookupByLibrary.simpleMessage("Power lost"),
     "Power_Optional": MessageLookupByLibrary.simpleMessage("Power (optional)"),
+    "Power_Screw": MessageLookupByLibrary.simpleMessage(
+      "Power Screw / Lead Screw",
+    ),
+    "Power_Screw_Note": MessageLookupByLibrary.simpleMessage(
+      "Coulomb friction at a single mean radius, as Shigley\'s derivation assumes. A real coefficient depends on the pair of materials, the lubricant and how worn the thread is, and 0.10–0.20 covers most steel-on-bronze screws — which is a wider band than most of the numbers above.",
+    ),
     "Precision": MessageLookupByLibrary.simpleMessage("PRECISION"),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Press / Shrink-Fit Interference",
     ),
     "Pressure_Drop": MessageLookupByLibrary.simpleMessage("Pressure drop, Δp"),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("Pressure rise, Δp"),
-    "Preview_Value": m5,
+    "Preview_Value": m7,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Principal stresses and plane",
     ),
@@ -986,7 +1094,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Remove Ads is not available from the App Store yet.",
     ),
-    "Project_Calculations": m6,
+    "Project_Calculations": m8,
     "Project_Entry_No_Result": MessageLookupByLibrary.simpleMessage(
       "Inputs only",
     ),
@@ -1000,8 +1108,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Report_Empty": MessageLookupByLibrary.simpleMessage(
       "This project has no saved results yet. Open a calculation and use Save to project to add one.",
     ),
-    "Project_Saved": m7,
-    "Project_Updated": m8,
+    "Project_Saved": m9,
+    "Project_Updated": m10,
+    "Proof_Strength_Sp": MessageLookupByLibrary.simpleMessage("Proof Sp"),
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage("Pump & Fan Power"),
     "Pump_Head": MessageLookupByLibrary.simpleMessage("Head, H"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
@@ -1027,6 +1136,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Radius of gyration, ry",
     ),
     "RatethisApp": MessageLookupByLibrary.simpleMessage("Rate this App"),
+    "Reaction_At_X": m11,
     "Recommended_by_Major": MessageLookupByLibrary.simpleMessage(
       "Recommended by Major",
     ),
@@ -1043,7 +1153,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Remove from project",
     ),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("Remove layer"),
-    "Remove_Tool_from_Favorites": m9,
+    "Remove_Load": MessageLookupByLibrary.simpleMessage("Remove load"),
+    "Remove_Tool_from_Favorites": m12,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Remove from favorites",
     ),
@@ -1084,6 +1195,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Right_Reaction_RB": MessageLookupByLibrary.simpleMessage(
       "Right reaction, RB",
     ),
+    "Right_Support_Position": MessageLookupByLibrary.simpleMessage(
+      "Right support at",
+    ),
     "Roller_Bearing": MessageLookupByLibrary.simpleMessage(
       "Roller bearing (p = 10/3)",
     ),
@@ -1113,7 +1227,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Save_To_Project": MessageLookupByLibrary.simpleMessage("Save to project"),
     "Save_as_Project": MessageLookupByLibrary.simpleMessage("Save as project"),
     "Saved_Projects": MessageLookupByLibrary.simpleMessage("Saved Projects"),
+    "Screw_Efficiency": MessageLookupByLibrary.simpleMessage("Efficiency"),
+    "Screw_Pitch_P": MessageLookupByLibrary.simpleMessage("Pitch, p"),
     "Search": MessageLookupByLibrary.simpleMessage("Search"),
+    "Search_Bolt_Size_Grade": MessageLookupByLibrary.simpleMessage(
+      "Search a size or grade",
+    ),
     "Search_Fluids": MessageLookupByLibrary.simpleMessage("Search fluids"),
     "Search_Materials": MessageLookupByLibrary.simpleMessage(
       "Search materials",
@@ -1155,6 +1274,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Section_Width_b": MessageLookupByLibrary.simpleMessage("Width, b"),
     "Sections_Footnote": MessageLookupByLibrary.simpleMessage(
       "Nominal published values for the listed shapes. Section modulus and radius of gyration are computed from the listed A and I. Check a current mill or standard table before detailing.",
+    ),
+    "Self_Locking_Thread": MessageLookupByLibrary.simpleMessage(
+      "Self-locking on the thread",
     ),
     "Settings": MessageLookupByLibrary.simpleMessage("Settings"),
     "Shaft_Alone_Frequency": MessageLookupByLibrary.simpleMessage(
@@ -1248,7 +1370,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage(
       "Share of the variation",
     ),
-    "Stackup_Dimension_N": m10,
+    "Stackup_Dimension_N": m13,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage(
       "Dimension chain",
     ),
@@ -1291,6 +1413,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Strain": MessageLookupByLibrary.simpleMessage("Strain"),
     "Stress": MessageLookupByLibrary.simpleMessage("Stress"),
+    "Stress_Area_As": MessageLookupByLibrary.simpleMessage("Stress area"),
     "Stress_Concentration_Defaults": MessageLookupByLibrary.simpleMessage(
       "Stress-concentration factors (defaults: profiled keyway) and target safety factor",
     ),
@@ -1311,8 +1434,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "Subtract": MessageLookupByLibrary.simpleMessage("Subtract"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("Sudoku Lover"),
     "Support": MessageLookupByLibrary.simpleMessage("Support"),
+    "Support_Arrangement": MessageLookupByLibrary.simpleMessage(
+      "Support arrangement",
+    ),
+    "Support_Cantilever_Left": MessageLookupByLibrary.simpleMessage(
+      "Cantilever, fixed at left",
+    ),
+    "Support_Cantilever_Right": MessageLookupByLibrary.simpleMessage(
+      "Cantilever, fixed at right",
+    ),
+    "Support_Fixed_Fixed": MessageLookupByLibrary.simpleMessage(
+      "Fixed at both ends",
+    ),
+    "Support_Overhang": MessageLookupByLibrary.simpleMessage("Overhang"),
+    "Support_Propped_Cantilever": MessageLookupByLibrary.simpleMessage(
+      "Propped cantilever",
+    ),
     "Support_Reactions": MessageLookupByLibrary.simpleMessage(
       "Support Reactions",
+    ),
+    "Support_Simply_Supported": MessageLookupByLibrary.simpleMessage(
+      "Simply supported",
     ),
     "Swap": MessageLookupByLibrary.simpleMessage("Swap"),
     "SwiftComp": MessageLookupByLibrary.simpleMessage(
@@ -1360,6 +1502,22 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Thickness_t": MessageLookupByLibrary.simpleMessage("Thickness, t"),
     "Thread": MessageLookupByLibrary.simpleMessage("Thread"),
+    "Thread_Form": MessageLookupByLibrary.simpleMessage("Thread form"),
+    "Thread_Form_ACME": MessageLookupByLibrary.simpleMessage("ACME 29°"),
+    "Thread_Form_Square": MessageLookupByLibrary.simpleMessage("Square"),
+    "Thread_Form_Trapezoidal": MessageLookupByLibrary.simpleMessage(
+      "Trapez. 30°",
+    ),
+    "Thread_Friction_Mu": MessageLookupByLibrary.simpleMessage(
+      "Thread friction, μ",
+    ),
+    "Thread_Starts": MessageLookupByLibrary.simpleMessage("Thread starts"),
+    "Thread_Torque_Lower": MessageLookupByLibrary.simpleMessage(
+      "Thread torque, lowering",
+    ),
+    "Thread_Torque_Raise": MessageLookupByLibrary.simpleMessage(
+      "Thread torque, raising",
+    ),
     "Tightening_Torque_T": MessageLookupByLibrary.simpleMessage(
       "Tightening torque, T",
     ),
@@ -1367,6 +1525,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Tolerance_Stackup": MessageLookupByLibrary.simpleMessage(
       "Tolerance Stack-Up",
     ),
+    "Torque_T": MessageLookupByLibrary.simpleMessage("Torque T"),
+    "Torque_To_Lower": MessageLookupByLibrary.simpleMessage("Torque to lower"),
+    "Torque_To_Raise": MessageLookupByLibrary.simpleMessage("Torque to raise"),
     "Torsion_formula_of_bar": MessageLookupByLibrary.simpleMessage(
       "Torsion formula of bar",
     ),
@@ -1437,7 +1598,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Weak axis (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Web thickness"),
-    "What_If": m11,
+    "What_If": m14,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("Wire diameter, d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

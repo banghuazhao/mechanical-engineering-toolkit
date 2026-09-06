@@ -938,47 +938,69 @@ const Map<int, ToolHelp> toolHelpFr = {
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
   401: ToolHelp(
-    summary: 'Réactions d\'appui, effort tranchant et moment de flexion le '
-        'long d\'une poutre sur deux appuis simples portant une charge '
-        'ponctuelle, une charge répartie, ou les deux. Les diagrammes '
-        'indiquent où vérifier la section et avec quel M le faire.',
+    summary: 'Réactions d\'appui, effort tranchant, moment fléchissant et flèche d\'une '
+        'poutre selon six types d\'appuis et portant un nombre quelconque de '
+        'charges. Charges ponctuelles, charges réparties uniformes, triangulaires '
+        'ou trapézoïdales et moments appliqués se superposent librement. Les '
+        'diagrammes d\'effort tranchant et de moment indiquent où vérifier la '
+        'section, et avec quel M.',
     formulas: [
       HelpFormula(
         tex: r'\sum F_y = 0, \quad \sum M = 0',
-        plain: 'ΣFy = 0, ΣM = 0',
-        caption: 'Statique, ce qui fixe les deux réactions',
+        plain: 'ΣFy = 0,   ΣM = 0',
+        caption: 'L\'équilibre, qui suffit aux cas isostatiques',
       ),
       HelpFormula(
-        tex: r'V(x) = R_A - \int_0^x w\,dx, \quad M(x) = \int_0^x V\,dx',
-        plain: 'V(x) = RA − ∫w dx, M(x) = ∫V dx',
+        tex: r'\mathbf{K}\mathbf{d} = \mathbf{F}',
+        plain: 'K·d = F',
+        caption: 'La méthode des déplacements, qui résout les autres',
+      ),
+      HelpFormula(
+        tex: r'\frac{dV}{dx} = -w(x), \quad \frac{dM}{dx} = V(x)',
+        plain: 'dV/dx = −w(x),   dM/dx = V(x)',
         caption: 'Effort tranchant et moment le long de la portée',
       ),
       HelpFormula(
-        tex: r'M_{\max} = \frac{wL^2}{8} \;\text{(UDL)}, \quad '
-            r'\frac{PL}{4} \;\text{(central point load)}',
-        plain: 'Mmax = w·L²/8 (répartie), P·L/4 (ponctuelle à mi-portée)',
+        tex: r'EI\frac{d^2v}{dx^2} = M(x), \quad \sigma = \frac{Mc}{I}',
+        plain: 'EI·d²v/dx² = M(x),   σ = M·c/I',
+        caption: 'La flèche, et la contrainte due au moment',
       ),
     ],
     symbols: [
-      HelpSymbol('RA, RB', 'Réactions d\'appui', 'N'),
+      HelpSymbol('R', 'Réaction d\'appui, positive vers le haut', 'N'),
       HelpSymbol('V', 'Effort tranchant', 'N'),
-      HelpSymbol('M', 'Moment de flexion', 'N·mm'),
-      HelpSymbol('w', 'Charge uniformément répartie', 'N/mm'),
-      HelpSymbol('L', 'Portée', 'mm'),
+      HelpSymbol('M', 'Moment fléchissant, positif en flexion vers le bas', 'N·m'),
+      HelpSymbol('w', 'Intensité de la charge répartie, positive vers le bas', 'N/m'),
+      HelpSymbol('L', 'Portée', 'm'),
+      HelpSymbol('EI', 'Rigidité de flexion', 'N·m²'),
+      HelpSymbol('v', 'Flèche, positive vers le bas', 'mm'),
+      HelpSymbol('c', 'Distance de l\'axe neutre à la fibre extrême', 'mm'),
     ],
     notes: [
-      'Isostatique uniquement : un appui articulé d\'un côté, glissant de '
-          'l\'autre. Une poutre à trois appuis, ou encastrée, est '
-          'hyperstatique et demande la compatibilité en plus de l\'équilibre.',
-      'Le moment est maximal là où l\'effort tranchant passe par zéro. C\'est '
-          'la section à dimensionner, et ce n\'est pas à mi-portée pour une '
-          'charge excentrée.',
-      'Le poids propre n\'est pas inclus tant qu\'on ne l\'ajoute pas à la '
+      'Trois des six configurations sont hyperstatiques : la console appuyée, '
+          'la poutre bi-encastrée et la poutre sur appuis en retrait. Leurs '
+          'réactions dépendent de EI ; un E ou un I erroné déplace donc les '
+          'réactions, et pas seulement la flèche.',
+      'Une articulation et un appui simple sont ici la même chose. Le modèle ne '
+          'traite que la flexion, sans degré de liberté axial : ni l\'un ni l\'autre '
+          'ne bloque quoi que ce soit de plus.',
+      'Le moment est maximal là où l\'effort tranchant s\'annule. C\'est la '
+          'section à dimensionner, et hors cas de charge symétrique elle n\'est pas '
+          'à mi-portée.',
+      'Les moments en travée et sur appui sont donnés séparément car ils '
+          'tendent des fibres différentes. Sur une poutre continue ou encastrée, le '
+          'moment sur appui est généralement le plus grand des deux.',
+      'Le poids propre n\'est pas pris en compte s\'il n\'est pas saisi comme '
           'charge répartie.',
+      'La déformation d\'effort tranchant est négligée, comme le fait la théorie '
+          'd\'Euler–Bernoulli. Sur une poutre courte — portée inférieure à environ '
+          'dix fois la hauteur — la flèche réelle est plus grande que celle '
+          'indiquée ici.',
     ],
     references: [
-      'Hibbeler, Structural Analysis, ch. 4',
-      'Gere & Goodno, Mechanics of Materials, ch. 4',
+      'Hibbeler, Structural Analysis, ch. 4 and 11',
+      'Gere & Goodno, Mechanics of Materials, ch. 4 and 9',
+      'Cook et al., Concepts and Applications of Finite Element Analysis, ch. 2',
     ],
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
@@ -2462,5 +2484,146 @@ const Map<int, ToolHelp> toolHelpFr = {
       'ASME Y14.5, Dimensioning and Tolerancing',
       'Fischer, Mechanical Tolerance Stackup and Analysis',
     ],
+  ),
+  506: ToolHelp(
+    summary: 'Classes de résistance des fixations filetées, et ce qu\'elles impliquent au '
+        'montage. Les classes de qualité métriques viennent de l\'ISO 898-1 et les '
+        'grades en pouces de la SAE J429 ; la précharge et le couple de serrage de '
+        'chaque ligne sont calculés à partir de la contrainte d\'épreuve tabulée, si '
+        'bien qu\'une classe et son couple ne peuvent pas diverger. À utiliser pour '
+        'dimensionner une vis, pour identifier une vis déjà en place d\'après le '
+        'marquage de sa tête, ou pour régler une clé dynamométrique.',
+    formulas: [
+      HelpFormula(
+        tex: r'A_s = \frac{\pi}{4}\left(d - 0.9382\,p\right)^2',
+        plain: 'As = (π/4)(d − 0.9382·p)²',
+        caption: 'Section résistante, filetage métrique à pas gros',
+      ),
+      HelpFormula(
+        tex: r'F_i = 0.75\,A_s S_p',
+        plain: 'Fi = 0.75·As·Sp',
+        caption: 'Précharge recommandée, assemblage démontable',
+      ),
+      HelpFormula(
+        tex: r'T = K F_i d',
+        plain: 'T = K·Fi·d',
+        caption: 'Couple de serrage, relation couple-tension simplifiée',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('As', 'Section résistante du filetage', 'mm²'),
+      HelpSymbol('d', 'Diamètre nominal (extérieur) du filetage', 'mm'),
+      HelpSymbol('p', 'Pas du filetage', 'mm'),
+      HelpSymbol('Sp', 'Contrainte d\'épreuve de la classe', 'MPa'),
+      HelpSymbol('Fi', 'Précharge (effort de serrage)', 'N'),
+      HelpSymbol('T', 'Couple de serrage', 'N·m'),
+      HelpSymbol('K', 'Facteur de frottement, ici 0,2'),
+    ],
+    notes: [
+      'C\'est la contrainte d\'épreuve, et non la limite d\'élasticité, qui sert de '
+          'référence à une précharge. Elle correspond à la contrainte que la vis '
+          'supporte sans déformation permanente mesurable et se situe un peu en '
+          'dessous de la limite d\'élasticité de la même ligne.',
+      'Le facteur 0,75 relève de la pratique, pas d\'une norme. 75 % de la '
+          'contrainte d\'épreuve est la valeur usuelle pour un assemblage démontable, '
+          '90 % pour un assemblage permanent serré une seule fois ; les vis serrées '
+          'au-delà de la limite élastique dépassent volontairement ce seuil et sont '
+          'ensuite mises au rebut.',
+      'K = 0,2 suppose un filetage brut, non revêtu et non lubrifié. Zingage, '
+          'cire ou pâte antigrippante l\'amènent plutôt entre 0,10 et 0,15, ce qui, à '
+          'couple égal, double presque la précharge — de quoi rompre la vis. Lorsque '
+          'la précharge compte, il faut la maîtriser par l\'angle, par l\'allongement '
+          'de la vis ou avec un capteur d\'effort, pas par le couple.',
+      'L\'ISO 898-1 déclasse la classe 8.8 au-delà de M16, et la SAE J429 le grade '
+          '2 au-delà de 3/4 de pouce, car une section plus épaisse ne peut plus être '
+          'trempée à cœur. Le tableau applique déjà la bonne plage à chaque diamètre.',
+      'La section résistante est plus petite que la section de tige suggérée par '
+          'le diamètre nominal — pour M12, 84,3 mm² contre 113 mm². Dimensionner une '
+          'vis sur πd²/4 surestime sa capacité d\'un quart.',
+      'Ce sont des valeurs statiques en traction. Une vis soumise à une charge '
+          'variable rompt en fatigue au premier filet en prise, bien en dessous de la '
+          'résistance à la traction indiquée ici ; utilisez pour cela les outils de '
+          'fatigue.',
+    ],
+    references: [
+      'ISO 898-1, Mechanical properties of fasteners — bolts, screws and studs',
+      'SAE J429, Mechanical and Material Requirements for Externally Threaded '
+          'Fasteners',
+      "Shigley's Mechanical Engineering Design, ch. 8",
+    ],
+  ),
+  712: ToolHelp(
+    summary: 'Couple de montée et de descente d\'une charge sur une vis de '
+        'transmission, le rendement correspondant, et la question de savoir si la '
+        'vis retient la charge d\'elle-même. C\'est le calcul derrière un cric à '
+        'vis, un étau, un serre-joint à genouillère et la vis mère d\'un chariot '
+        'de machine — partout où une rotation devient un grand effort axial.',
+    formulas: [
+      HelpFormula(
+        tex: r'T_R = \frac{F d_m}{2}\left(\frac{l + \pi \mu d_m \sec\alpha}{\pi d_m - \mu l \sec\alpha}\right) + \frac{F \mu_c d_c}{2}',
+        plain: 'TR = (F·dm/2)·(l + π·μ·dm·secα)/(π·dm − μ·l·secα) + F·μc·dc/2',
+        caption: 'Couple de montée, filet plus collet',
+      ),
+      HelpFormula(
+        tex: r'T_L = \frac{F d_m}{2}\left(\frac{\pi \mu d_m \sec\alpha - l}{\pi d_m + \mu l \sec\alpha}\right) + \frac{F \mu_c d_c}{2}',
+        plain: 'TL = (F·dm/2)·(π·μ·dm·secα − l)/(π·dm + μ·l·secα) + F·μc·dc/2',
+        caption: 'Couple de descente ; négatif, la charge s\'échappe',
+      ),
+      HelpFormula(
+        tex: r'e = \frac{F l}{2\pi T_R}',
+        plain: 'e = F·l / (2π·TR)',
+        caption: 'Rendement : travail utile sur travail fourni, par tour',
+      ),
+      HelpFormula(
+        tex: r'\mu \sec\alpha > \tan\lambda = \frac{l}{\pi d_m}',
+        plain: 'μ·secα > tanλ = l / (π·dm)',
+        caption: 'Condition d\'irréversibilité',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('F', 'Charge axiale', 'N'),
+      HelpSymbol('dm', 'Diamètre moyen (sur flancs), d − p/2', 'mm'),
+      HelpSymbol('l', 'Pas hélicoïdal, course par tour : p × nombre de filets', 'mm'),
+      HelpSymbol('p', 'Pas, distance entre deux filets voisins', 'mm'),
+      HelpSymbol('λ', 'Angle d\'hélice, atan(l / π·dm)', 'deg'),
+      HelpSymbol('α', 'Demi-angle au sommet : 0 carré, 14,5° ACME, 15° trapézoïdal', 'deg'),
+      HelpSymbol('μ', 'Coefficient de frottement au filet'),
+      HelpSymbol('μc', 'Coefficient de frottement au collet'),
+      HelpSymbol('dc', 'Diamètre moyen du collet', 'mm'),
+      HelpSymbol('T', 'Couple', 'N·m'),
+      HelpSymbol('e', 'Rendement, 0 à 1'),
+    ],
+    notes: [
+      'Le pas hélicoïdal n\'est pas le pas. Un filet à deux entrées a un pas '
+          'hélicoïdal double, avance deux fois plus par tour et présente un bien '
+          'meilleur rendement — tout en étant bien moins souvent irréversible. '
+          'Confondre les deux est l\'erreur classique ici.',
+      'L\'irréversibilité est une propriété du filet, pas de l\'ensemble. Une vis '
+          'peut échouer au test μ·secα > tanλ et retenir quand même la charge parce '
+          'que le collet compense, ce qui est une garantie bien plus faible : c\'est '
+          'le collet qui s\'use, et que quelqu\'un finit par graisser.',
+      'Ne jamais compter sur la seule irréversibilité là où une charge qui '
+          'tombe pourrait blesser. Les vibrations détruisent le frottement '
+          'statique, et le coefficient supposé n\'est pas celui que l\'on aura en '
+          'service.',
+      'Le filet carré est le plus efficace : l\'angle de flanc des filets ACME '
+          'et trapézoïdaux coince la charge entre les flancs et multiplie le '
+          'frottement du filet par sec α. L\'ACME est employé malgré tout parce '
+          'qu\'il s\'usine plus facilement et que son usure se rattrape avec un écrou '
+          'fendu.',
+      'Le rendement dépasse rarement 50 % pour une vis irréversible, et se '
+          'situe souvent plutôt vers 20 %. C\'est inhérent au mécanisme et non le '
+          'signe d\'une mauvaise conception — le frottement qui dissipe le travail '
+          'est celui-là même qui retient la charge.',
+      'Il s\'agit du couple à la vis. Cela ne dit rien du flambement d\'une vis '
+          'longue en compression, de la pression de contact dans le filet, ni du '
+          'cisaillement des filets de l\'écrou : à vérifier séparément avant de '
+          'dimensionner sur cette seule base.',
+    ],
+    references: [
+      "Shigley's Mechanical Engineering Design, ch. 8",
+      'Norton, Machine Design: An Integrated Approach, ch. 15',
+    ],
+    diagram: 'images/icons/icon_power_screw.png',
   ),
 };

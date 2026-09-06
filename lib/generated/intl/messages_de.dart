@@ -22,28 +22,34 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(name) => "Zu „${name}“ hinzugefügt";
 
-  static String m1(label) => "${label} kopiert";
+  static String m1(n) => "Last ${n}";
 
-  static String m2(label) =>
+  static String m2(label) => "${label} kopiert";
+
+  static String m3(label) =>
       "Entlang der Linie ziehen, um andere Werte von ${label} zu erkunden.";
 
-  static String m3(index) => "Schicht ${index}";
+  static String m4(x) => "Einspannmoment bei x = ${x}";
 
-  static String m4(index) => "Eigenform ${index}";
+  static String m5(index) => "Schicht ${index}";
 
-  static String m5(value) => "Vorschau: ${value}";
+  static String m6(index) => "Eigenform ${index}";
 
-  static String m6(count) => "${count} Berechnungen";
+  static String m7(value) => "Vorschau: ${value}";
 
-  static String m7(name) => "„${name}“ gespeichert";
+  static String m8(count) => "${count} Berechnungen";
 
-  static String m8(name) => "In „${name}“ umbenannt";
+  static String m9(name) => "„${name}“ gespeichert";
 
-  static String m9(tool) => "${tool} aus Favoriten entfernen";
+  static String m10(name) => "In „${name}“ umbenannt";
 
-  static String m10(n) => "Maß ${n}";
+  static String m11(x) => "Auflagerkraft bei x = ${x}";
 
-  static String m11(label) => "Was wäre wenn: ${label}";
+  static String m12(tool) => "${tool} aus Favoriten entfernen";
+
+  static String m13(n) => "Maß ${n}";
+
+  static String m14(label) => "Was wäre wenn: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -61,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_Force": MessageLookupByLibrary.simpleMessage("Kraft hinzufügen"),
     "Add_Joint": MessageLookupByLibrary.simpleMessage("Knoten hinzufügen"),
     "Add_Layer": MessageLookupByLibrary.simpleMessage("Schicht hinzufügen"),
+    "Add_Load": MessageLookupByLibrary.simpleMessage("Last hinzufügen"),
     "Add_Member": MessageLookupByLibrary.simpleMessage("Stab hinzufügen"),
     "Add_Shape": MessageLookupByLibrary.simpleMessage("Form hinzufügen"),
     "Add_to_Favorites": MessageLookupByLibrary.simpleMessage(
@@ -96,17 +103,26 @@ class MessageLookup extends MessageLookupByLibrary {
     "Anisotropic_material": MessageLookupByLibrary.simpleMessage(
       "Anisotropes Material",
     ),
+    "Answer_No": MessageLookupByLibrary.simpleMessage("Nein"),
+    "Answer_Yes": MessageLookupByLibrary.simpleMessage("Ja"),
     "Appearance": MessageLookupByLibrary.simpleMessage("DARSTELLUNG"),
     "Applied_Force_F": MessageLookupByLibrary.simpleMessage(
       "Angreifende Kraft, F",
     ),
     "Area": MessageLookupByLibrary.simpleMessage("Fläche"),
     "Area_A": MessageLookupByLibrary.simpleMessage("Fläche, A"),
+    "Axial_Load_F": MessageLookupByLibrary.simpleMessage("Axialkraft, F"),
     "Ball_Bearing": MessageLookupByLibrary.simpleMessage("Kugellager (p = 3)"),
     "Base_Temperature": MessageLookupByLibrary.simpleMessage("Fußtemperatur"),
+    "Beam_And_Supports": MessageLookupByLibrary.simpleMessage(
+      "Träger & Lagerung",
+    ),
     "Beam_Cantilever": MessageLookupByLibrary.simpleMessage("Kragbalken"),
     "Beam_Configuration": MessageLookupByLibrary.simpleMessage(
       "Balkenkonfiguration",
+    ),
+    "Beam_Determinate_Note": MessageLookupByLibrary.simpleMessage(
+      "Statisch bestimmt: Die Auflagerreaktionen folgen allein aus dem Gleichgewicht.",
     ),
     "Beam_Engineering": MessageLookupByLibrary.simpleMessage(
       "Balkenberechnung",
@@ -121,12 +137,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "Beam_Frequency_Footnote": MessageLookupByLibrary.simpleMessage(
       "Euler-Bernoulli-Theorie: Schubverformung und Drehträgheit bleiben unberücksichtigt, daher fallen die Frequenzen bei gedrungenen Balken (L/d unter etwa 10) und bei höheren Eigenformen zu hoch aus.",
     ),
+    "Beam_Indeterminate_Note": MessageLookupByLibrary.simpleMessage(
+      "Statisch unbestimmt: Die Auflagerreaktionen hängen von EI ab, Querschnitt und Werkstoff verändern also nicht nur die Durchbiegung, sondern auch sie.",
+    ),
     "Beam_Length_L": MessageLookupByLibrary.simpleMessage("Balkenlänge, L"),
     "Beam_Load_Analysis": MessageLookupByLibrary.simpleMessage(
       "Balken-Lastanalyse",
     ),
+    "Beam_Load_N": m1,
+    "Beam_Loads": MessageLookupByLibrary.simpleMessage("Lasten"),
     "Beam_Mode_Constant": MessageLookupByLibrary.simpleMessage(
       "Modenkonstante, βL",
+    ),
+    "Beam_Model_Note": MessageLookupByLibrary.simpleMessage(
+      "Linear-elastische Euler-Bernoulli-Berechnung auf einem Netz aus 120 Elementen. Das Eigengewicht ist nicht enthalten, sofern es nicht als Streckenlast eingegeben wird, und die Schubverformung wird vernachlässigt — bei einem Träger, der kürzer als etwa das Zehnfache seiner Höhe ist, fällt die Durchbiegung damit zu klein aus.",
     ),
     "Beam_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
       "Eigenfrequenz eines Balkens",
@@ -149,12 +173,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "Bending_Moment_Diagram": MessageLookupByLibrary.simpleMessage(
       "Biegemomentenverlauf",
     ),
+    "Bending_Stress_At_Mmax": MessageLookupByLibrary.simpleMessage(
+      "Biegespannung bei Mmax",
+    ),
     "Bending_Stress_Pinion": MessageLookupByLibrary.simpleMessage(
       "Biegespannung, σ (Ritzel)",
+    ),
+    "Bolt_Grades_Footnote": MessageLookupByLibrary.simpleMessage(
+      "Die Klemmkraft beträgt 75 % der Prüfspannung im Spannungsquerschnitt; das Drehmoment folgt aus T = K·F·d mit K = 0,2 für ein blankes, ungeschmiertes Gewinde. K fasst die gesamte Reibung in einer Zahl zusammen — Beschichtung, Wachs oder Montagepaste verschieben sie zwischen etwa 0,10 und 0,25, und das Drehmoment mit ihr. Wo die Vorspannung zählt, sollte sie gemessen statt über den Drehmomentschlüssel geschätzt werden. Zum Kopieren auf eine Zeile tippen.",
+    ),
+    "Bolt_Grades_Torque": MessageLookupByLibrary.simpleMessage(
+      "Schraubenklassen & Drehmoment",
     ),
     "Bolt_Preload_Torque_Tension": MessageLookupByLibrary.simpleMessage(
       "Schraubenvorspannung / Anzugsmoment",
     ),
+    "Bolt_Size": MessageLookupByLibrary.simpleMessage("Größe"),
     "Bolted_Riveted_Joint": MessageLookupByLibrary.simpleMessage(
       "Schraub-/Nietverbindung",
     ),
@@ -181,6 +215,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Civil_Structural_Engineering": MessageLookupByLibrary.simpleMessage(
       "Bauwesen / Tragwerksplanung",
     ),
+    "Clamp_Load_Fi": MessageLookupByLibrary.simpleMessage("Klemmkraft Fi"),
     "Clear": MessageLookupByLibrary.simpleMessage("Löschen"),
     "Clear_History": MessageLookupByLibrary.simpleMessage("Verlauf löschen"),
     "Clear_History_Description": MessageLookupByLibrary.simpleMessage(
@@ -203,6 +238,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "Cold_Stream_Range": MessageLookupByLibrary.simpleMessage(
       "Temperaturspanne kalt",
     ),
+    "Collar_Diameter_Dc": MessageLookupByLibrary.simpleMessage(
+      "Mittlerer Bunddurchmesser, dc",
+    ),
+    "Collar_Friction_Muc": MessageLookupByLibrary.simpleMessage(
+      "Bundreibung, μc",
+    ),
+    "Collar_Hint": MessageLookupByLibrary.simpleMessage(
+      "Bunddurchmesser auf null lassen, wenn die Schraube gegen ein Axiallager läuft — dessen Reibung ist gegenüber einem Gleitbund vernachlässigbar.",
+    ),
+    "Collar_Torque": MessageLookupByLibrary.simpleMessage("Bundmoment"),
     "Combined_Loading_at_a_Point": MessageLookupByLibrary.simpleMessage(
       "Kombinierte Belastung an einem Punkt",
     ),
@@ -235,7 +280,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Beitragende Frequenzen",
     ),
     "Copied": MessageLookupByLibrary.simpleMessage("Kopiert"),
-    "Copied_Value": m1,
+    "Copied_Value": m2,
     "Copy": MessageLookupByLibrary.simpleMessage("Kopieren"),
     "Copy_Result": MessageLookupByLibrary.simpleMessage("Ergebnis kopieren"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage(
@@ -269,19 +314,22 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Density": MessageLookupByLibrary.simpleMessage("Dichte"),
     "Desc_Beam_Analysis": MessageLookupByLibrary.simpleMessage(
-      "Verwendet statisches Gleichgewicht und die Euler-Bernoulli-Balkentheorie für einen einfach gelagerten Balken. Eine nach unten gerichtete Einzellast und eine gleichmäßige Streckenlast über die volle Spannweite können einzeln oder gemeinsam verwendet werden.",
+      "Gelöst mit dem Weggrößenverfahren und Euler-Bernoulli-Elementen. Damit sind neben den statisch bestimmten Fällen auch der gestützte Kragträger, der beidseitig eingespannte Träger und der Träger mit eingerückten Lagern erfasst — Fälle, die das Gleichgewicht allein nicht löst.",
     ),
     "Desc_Beam_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
       "Biegeeigenfrequenzen eines prismatischen Balkens aus Querschnitt, Länge und Werkstoff. Die ersten drei Biegeeigenformen für fünf Randbedingungen.",
     ),
     "Desc_Beam_Supports": MessageLookupByLibrary.simpleMessage(
-      "Festlager links, Loslager rechts. Kombiniert eine nach unten gerichtete Einzellast mit einer gleichmäßigen Streckenlast über die volle Spannweite.",
+      "Zuerst die Lagerung wählen, dann die Lasten eintragen. Einzellasten, gleichmäßige, dreieckige oder trapezförmige Streckenlasten und eingeprägte Momente lassen sich beliebig kombinieren.",
     ),
     "Desc_Bearing_Life": MessageLookupByLibrary.simpleMessage(
       "Nominelle Lebensdauer aus der katalogisierten dynamischen Tragzahl C, der äquivalenten Belastung P und der Drehzahl n: L10 = (C/P)^p.",
     ),
     "Desc_Belt_Drive": MessageLookupByLibrary.simpleMessage(
       "Geometrie eines offenen Riementriebs (oder Kettentriebs mit Teilkreisdurchmessern): Übersetzungsverhältnis, ungefähre Riemenlänge und Umschlingungswinkel der Scheiben.",
+    ),
+    "Desc_Bolt_Grades": MessageLookupByLibrary.simpleMessage(
+      "Prüfspannung, Streckgrenze und Zugfestigkeit für metrische Festigkeitsklassen nach ISO 898-1 und Zollklassen nach SAE J429, mit der Klemmkraft und dem Anziehdrehmoment, die sich für jede Größe und Klasse ergeben. Klemmkraft und Drehmoment werden aus den tabellierten Festigkeiten berechnet und können ihnen daher nicht widersprechen.",
     ),
     "Desc_Bolt_Preload": MessageLookupByLibrary.simpleMessage(
       "Schätzt das erforderliche Anzugsmoment für eine geforderte Schraubenvorspannung anhand der vereinfachten Kurzform der Anzugsmomenten-Gleichung.",
@@ -303,6 +351,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Pipe_Schedules": MessageLookupByLibrary.simpleMessage(
       "Außendurchmesser, Wanddicke und lichte Weite für Stahlrohre nach ASME B36.10M, NPS 1/8 bis 24, in den Schedules 10, 40, 80 und 160. Innendurchmesser und Strömungsquerschnitt werden aus dem angegebenen Außendurchmesser und der Wanddicke berechnet.",
+    ),
+    "Desc_Power_Screw": MessageLookupByLibrary.simpleMessage(
+      "Anzugs- und Absenkmoment einer Bewegungsschraube unter Last, ihr Wirkungsgrad und ob sie die Last ohne Bremse hält. Gilt für Wagenheber, Schraubstock, Spanner oder die Leitspindel eines Maschinenschlittens.",
     ),
     "Desc_Press_Fit": MessageLookupByLibrary.simpleMessage(
       "Kontaktdruck und Tangentialspannung für eine massive Welle, die in eine Nabe gepresst wird, wobei für beide Teile dasselbe Material angenommen wird (übliche Vereinfachung — die Poissonzahl hebt sich weg).",
@@ -351,7 +402,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Displacement": MessageLookupByLibrary.simpleMessage("Verschiebung"),
     "Display_Format": MessageLookupByLibrary.simpleMessage("ANZEIGEFORMAT"),
     "Double_Shear": MessageLookupByLibrary.simpleMessage("Zweischnittig"),
-    "Drag_Along_Line": m2,
+    "Drag_Along_Line": m3,
     "Drill_Tap_Chart": MessageLookupByLibrary.simpleMessage(
       "Bohrer- & Gewindetabelle",
     ),
@@ -414,6 +465,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Add_One_Member": MessageLookupByLibrary.simpleMessage(
       "Fügen Sie mindestens einen Stab hinzu.",
+    ),
+    "Err_Beam_Load_Incomplete": MessageLookupByLibrary.simpleMessage(
+      "Jede Last vollständig ausfüllen oder entfernen.",
     ),
     "Err_C_Positive": MessageLookupByLibrary.simpleMessage(
       "Die dynamische Tragzahl C muss positiv sein.",
@@ -517,6 +571,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_P_Positive": MessageLookupByLibrary.simpleMessage(
       "Die äquivalente Belastung P muss positiv sein.",
     ),
+    "Err_Power_Screw_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Außendurchmesser, Steigung und Axialkraft eingeben.",
+    ),
     "Err_Pulley_Positive": MessageLookupByLibrary.simpleMessage(
       "Die Riemenscheibendurchmesser müssen positiv sein.",
     ),
@@ -566,6 +623,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Bericht exportieren",
     ),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("Express Scan"),
+    "Extreme_Fibre_C": MessageLookupByLibrary.simpleMessage(
+      "Randfaserabstand, c",
+    ),
+    "Extreme_Fibre_Hint": MessageLookupByLibrary.simpleMessage(
+      "Optional — mit c wird zusätzlich die Biegespannung ausgegeben.",
+    ),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage("Zahnbreite, F"),
     "Factor_of_Safety": MessageLookupByLibrary.simpleMessage(
       "Sicherheitsfaktor",
@@ -623,6 +686,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Fits_Tolerances": MessageLookupByLibrary.simpleMessage(
       "Passungen & Toleranzen (ISO 286)",
     ),
+    "Fixing_Moment_At_X": m4,
     "Flange_Thickness": MessageLookupByLibrary.simpleMessage("Flanschdicke"),
     "Flexural_Rigidity_EI": MessageLookupByLibrary.simpleMessage(
       "Biegesteifigkeit, EI",
@@ -680,6 +744,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "General_stress_calculation": MessageLookupByLibrary.simpleMessage(
       "Allgemeine Spannungsberechnung",
     ),
+    "Grade_Class": MessageLookupByLibrary.simpleMessage("Klasse"),
     "Grid_View": MessageLookupByLibrary.simpleMessage("Rasteransicht"),
     "Group_Building": MessageLookupByLibrary.simpleMessage("Baustoffe"),
     "Group_Insulation": MessageLookupByLibrary.simpleMessage("Dämmstoffe"),
@@ -703,6 +768,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Für dieses Werkzeug gibt es noch keine ausführlichen Hinweise.",
     ),
     "History": MessageLookupByLibrary.simpleMessage("Verlauf"),
+    "Holds_With_Collar": MessageLookupByLibrary.simpleMessage(
+      "Hält mit Bundreibung",
+    ),
     "Hole_um": MessageLookupByLibrary.simpleMessage("Bohrung (µm)"),
     "Hot_Inlet": MessageLookupByLibrary.simpleMessage("Heißeintritt"),
     "Hot_Outlet": MessageLookupByLibrary.simpleMessage("Heißaustritt"),
@@ -781,15 +849,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "Large_Pulley_Diameter_D2": MessageLookupByLibrary.simpleMessage(
       "Großer Riemenscheibendurchmesser, d2",
     ),
-    "Layer_Number": m3,
+    "Layer_Number": m5,
     "Layer_Resistances": MessageLookupByLibrary.simpleMessage(
       "Schichtwiderstände",
     ),
     "Layer_Thickness": MessageLookupByLibrary.simpleMessage("Schichtdicke"),
     "Layup_Angle": MessageLookupByLibrary.simpleMessage("Faserwinkel"),
     "Layup_Sequence": MessageLookupByLibrary.simpleMessage("Schichtaufbau"),
+    "Lead_Angle_Lambda": MessageLookupByLibrary.simpleMessage(
+      "Steigungswinkel, λ",
+    ),
+    "Lead_L": MessageLookupByLibrary.simpleMessage("Steigungshöhe"),
     "Left_Reaction_RA": MessageLookupByLibrary.simpleMessage(
       "Linke Auflagerreaktion, RA",
+    ),
+    "Left_Support_Position": MessageLookupByLibrary.simpleMessage(
+      "Linkes Lager bei",
     ),
     "Leg_Size_W": MessageLookupByLibrary.simpleMessage("Nahtdicke, w"),
     "Lewis_Form_Factor_Y": MessageLookupByLibrary.simpleMessage(
@@ -797,15 +872,38 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "List_View": MessageLookupByLibrary.simpleMessage("Listenansicht"),
     "Load_Case": MessageLookupByLibrary.simpleMessage("Lastfall"),
+    "Load_Couple_M": MessageLookupByLibrary.simpleMessage(
+      "Moment, M (linksdrehend +)",
+    ),
+    "Load_Ends_At": MessageLookupByLibrary.simpleMessage("Endet bei"),
     "Load_Fx": MessageLookupByLibrary.simpleMessage("Last Fx"),
     "Load_Fy": MessageLookupByLibrary.simpleMessage("Last Fy"),
+    "Load_Intensity_End": MessageLookupByLibrary.simpleMessage(
+      "Intensität am Ende",
+    ),
+    "Load_Intensity_Start": MessageLookupByLibrary.simpleMessage(
+      "Intensität am Anfang",
+    ),
+    "Load_Magnitude_P": MessageLookupByLibrary.simpleMessage(
+      "Betrag, P (nach unten +)",
+    ),
+    "Load_Position_X": MessageLookupByLibrary.simpleMessage("Position, x"),
+    "Load_Starts_At": MessageLookupByLibrary.simpleMessage("Beginnt bei"),
     "Load_Type": MessageLookupByLibrary.simpleMessage("Lasttyp"),
+    "Load_Type_Couple": MessageLookupByLibrary.simpleMessage("Moment"),
+    "Load_Type_Distributed": MessageLookupByLibrary.simpleMessage(
+      "Streckenlast",
+    ),
+    "Load_Type_Point": MessageLookupByLibrary.simpleMessage("Einzellast"),
     "Log_Mean_Delta_T": MessageLookupByLibrary.simpleMessage(
       "Mittlere log. Temperaturdifferenz",
     ),
     "ME_Toolkit": MessageLookupByLibrary.simpleMessage("ME Toolkit"),
     "Machine_Design": MessageLookupByLibrary.simpleMessage(
       "Maschinenkonstruktion",
+    ),
+    "Major_Diameter_D": MessageLookupByLibrary.simpleMessage(
+      "Außendurchmesser, d",
     ),
     "Mass_Per_Length": MessageLookupByLibrary.simpleMessage(
       "Masse pro Länge, ρA",
@@ -825,8 +923,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "Maximum_Downward_Deflection": MessageLookupByLibrary.simpleMessage(
       "Maximale Durchbiegung nach unten",
     ),
+    "Maximum_Hogging_Moment": MessageLookupByLibrary.simpleMessage(
+      "Größtes Stützmoment",
+    ),
+    "Maximum_Sagging_Moment": MessageLookupByLibrary.simpleMessage(
+      "Größtes Feldmoment",
+    ),
+    "Maximum_Shear": MessageLookupByLibrary.simpleMessage("Größte Querkraft"),
     "Mean_Coil_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Mittlerer Wicklungsdurchmesser, D",
+    ),
+    "Mean_Diameter_Dm": MessageLookupByLibrary.simpleMessage(
+      "Flankendurchmesser, dm",
     ),
     "Mean_Moment_Mm": MessageLookupByLibrary.simpleMessage(
       "Mittleres Moment, Mm",
@@ -854,7 +962,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("Einzelverluste, ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
     "Minus_Tolerance": MessageLookupByLibrary.simpleMessage("Unteres Abmaß, −"),
-    "Mode_Number": m4,
+    "Mode_Number": m6,
     "Module_M": MessageLookupByLibrary.simpleMessage("Modul, m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("Elastizitätsmodul, E"),
     "Mohrs_Circle_for_Plane_Stress": MessageLookupByLibrary.simpleMessage(
@@ -1016,13 +1124,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "Power_Optional": MessageLookupByLibrary.simpleMessage(
       "Leistung (optional)",
     ),
+    "Power_Screw": MessageLookupByLibrary.simpleMessage("Bewegungsschraube"),
+    "Power_Screw_Note": MessageLookupByLibrary.simpleMessage(
+      "Coulombsche Reibung an einem einzigen mittleren Radius, wie es die Herleitung nach Shigley voraussetzt. Der wirkliche Reibwert hängt von der Werkstoffpaarung, dem Schmierstoff und dem Verschleiß des Gewindes ab; 0,10 bis 0,20 deckt die meisten Stahl-Bronze-Paarungen ab — eine größere Bandbreite als die meisten Zahlen oben.",
+    ),
     "Precision": MessageLookupByLibrary.simpleMessage("GENAUIGKEIT"),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Übermaß bei Press-/Schrumpfsitz",
     ),
     "Pressure_Drop": MessageLookupByLibrary.simpleMessage("Druckverlust, Δp"),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("Druckerhöhung, Δp"),
-    "Preview_Value": m5,
+    "Preview_Value": m7,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Hauptspannungen und Hauptebene",
     ),
@@ -1042,7 +1154,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "„Werbung entfernen“ ist im App Store noch nicht verfügbar.",
     ),
-    "Project_Calculations": m6,
+    "Project_Calculations": m8,
     "Project_Entry_No_Result": MessageLookupByLibrary.simpleMessage(
       "Nur Eingaben",
     ),
@@ -1056,8 +1168,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Report_Empty": MessageLookupByLibrary.simpleMessage(
       "Dieses Projekt enthält noch keine gespeicherten Ergebnisse. Öffne eine Berechnung und speichere sie im Projekt.",
     ),
-    "Project_Saved": m7,
-    "Project_Updated": m8,
+    "Project_Saved": m9,
+    "Project_Updated": m10,
+    "Proof_Strength_Sp": MessageLookupByLibrary.simpleMessage(
+      "Prüfspannung Sp",
+    ),
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage(
       "Pumpen- & Ventilatorleistung",
     ),
@@ -1085,6 +1200,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Trägheitsradius, ry",
     ),
     "RatethisApp": MessageLookupByLibrary.simpleMessage("App bewerten"),
+    "Reaction_At_X": m11,
     "Recommended_by_Major": MessageLookupByLibrary.simpleMessage(
       "Nach Fachrichtung empfohlen",
     ),
@@ -1101,7 +1217,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Aus Projekt entfernen",
     ),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("Schicht entfernen"),
-    "Remove_Tool_from_Favorites": m9,
+    "Remove_Load": MessageLookupByLibrary.simpleMessage("Last entfernen"),
+    "Remove_Tool_from_Favorites": m12,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Aus Favoriten entfernen",
     ),
@@ -1148,6 +1265,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Right_Reaction_RB": MessageLookupByLibrary.simpleMessage(
       "Rechte Auflagerreaktion, RB",
     ),
+    "Right_Support_Position": MessageLookupByLibrary.simpleMessage(
+      "Rechtes Lager bei",
+    ),
     "Roller_Bearing": MessageLookupByLibrary.simpleMessage(
       "Rollenlager (p = 10/3)",
     ),
@@ -1181,7 +1301,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Saved_Projects": MessageLookupByLibrary.simpleMessage(
       "Gespeicherte Projekte",
     ),
+    "Screw_Efficiency": MessageLookupByLibrary.simpleMessage("Wirkungsgrad"),
+    "Screw_Pitch_P": MessageLookupByLibrary.simpleMessage("Steigung, p"),
     "Search": MessageLookupByLibrary.simpleMessage("Suche"),
+    "Search_Bolt_Size_Grade": MessageLookupByLibrary.simpleMessage(
+      "Größe oder Klasse suchen",
+    ),
     "Search_Fluids": MessageLookupByLibrary.simpleMessage("Fluide suchen"),
     "Search_Materials": MessageLookupByLibrary.simpleMessage(
       "Materialien durchsuchen",
@@ -1227,6 +1352,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Section_Width_b": MessageLookupByLibrary.simpleMessage("Breite, b"),
     "Sections_Footnote": MessageLookupByLibrary.simpleMessage(
       "Nennwerte der aufgeführten Profile. Widerstandsmoment und Trägheitsradius werden aus den angegebenen A und I berechnet. Prüfen Sie vor der Ausführungsplanung eine aktuelle Werks- oder Normtabelle.",
+    ),
+    "Self_Locking_Thread": MessageLookupByLibrary.simpleMessage(
+      "Selbsthemmend im Gewinde",
     ),
     "Settings": MessageLookupByLibrary.simpleMessage("Einstellungen"),
     "Shaft_Alone_Frequency": MessageLookupByLibrary.simpleMessage(
@@ -1324,7 +1452,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage(
       "Anteil an der Streuung",
     ),
-    "Stackup_Dimension_N": m10,
+    "Stackup_Dimension_N": m13,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage("Maßkette"),
     "Stackup_Dominant": MessageLookupByLibrary.simpleMessage("Größter Anteil"),
     "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
@@ -1359,6 +1487,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Strain": MessageLookupByLibrary.simpleMessage("Dehnung"),
     "Stress": MessageLookupByLibrary.simpleMessage("Spannung"),
+    "Stress_Area_As": MessageLookupByLibrary.simpleMessage(
+      "Spannungsquerschnitt",
+    ),
     "Stress_Concentration_Defaults": MessageLookupByLibrary.simpleMessage(
       "Kerbwirkungszahlen (Standard: profilierte Passfedernut) und geforderter Sicherheitsfaktor",
     ),
@@ -1381,8 +1512,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "Subtract": MessageLookupByLibrary.simpleMessage("Subtrahieren"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("Sudoku Lover"),
     "Support": MessageLookupByLibrary.simpleMessage("Lager"),
+    "Support_Arrangement": MessageLookupByLibrary.simpleMessage("Lagerungsart"),
+    "Support_Cantilever_Left": MessageLookupByLibrary.simpleMessage(
+      "Kragträger, links eingespannt",
+    ),
+    "Support_Cantilever_Right": MessageLookupByLibrary.simpleMessage(
+      "Kragträger, rechts eingespannt",
+    ),
+    "Support_Fixed_Fixed": MessageLookupByLibrary.simpleMessage(
+      "Beidseitig eingespannt",
+    ),
+    "Support_Overhang": MessageLookupByLibrary.simpleMessage(
+      "Kragarme beidseitig",
+    ),
+    "Support_Propped_Cantilever": MessageLookupByLibrary.simpleMessage(
+      "Eingespannt und gestützt",
+    ),
     "Support_Reactions": MessageLookupByLibrary.simpleMessage(
       "Auflagerreaktionen",
+    ),
+    "Support_Simply_Supported": MessageLookupByLibrary.simpleMessage(
+      "Gelenkig gelagert",
     ),
     "Swap": MessageLookupByLibrary.simpleMessage("Tauschen"),
     "SwiftComp": MessageLookupByLibrary.simpleMessage(
@@ -1432,6 +1582,22 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Thickness_t": MessageLookupByLibrary.simpleMessage("Dicke, t"),
     "Thread": MessageLookupByLibrary.simpleMessage("Gewinde"),
+    "Thread_Form": MessageLookupByLibrary.simpleMessage("Gewindeform"),
+    "Thread_Form_ACME": MessageLookupByLibrary.simpleMessage("ACME 29°"),
+    "Thread_Form_Square": MessageLookupByLibrary.simpleMessage("Flach"),
+    "Thread_Form_Trapezoidal": MessageLookupByLibrary.simpleMessage(
+      "Trapez 30°",
+    ),
+    "Thread_Friction_Mu": MessageLookupByLibrary.simpleMessage(
+      "Gewindereibung, μ",
+    ),
+    "Thread_Starts": MessageLookupByLibrary.simpleMessage("Gangzahl"),
+    "Thread_Torque_Lower": MessageLookupByLibrary.simpleMessage(
+      "Gewindemoment, Senken",
+    ),
+    "Thread_Torque_Raise": MessageLookupByLibrary.simpleMessage(
+      "Gewindemoment, Heben",
+    ),
     "Tightening_Torque_T": MessageLookupByLibrary.simpleMessage(
       "Anzugsmoment, T",
     ),
@@ -1439,6 +1605,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Spitzentemperatur",
     ),
     "Tolerance_Stackup": MessageLookupByLibrary.simpleMessage("Toleranzkette"),
+    "Torque_T": MessageLookupByLibrary.simpleMessage("Drehmoment T"),
+    "Torque_To_Lower": MessageLookupByLibrary.simpleMessage(
+      "Moment zum Senken",
+    ),
+    "Torque_To_Raise": MessageLookupByLibrary.simpleMessage("Moment zum Heben"),
     "Torsion_formula_of_bar": MessageLookupByLibrary.simpleMessage(
       "Torsionsformel eines Stabs",
     ),
@@ -1509,7 +1680,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Schwache Achse (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Stegdicke"),
-    "What_If": m11,
+    "What_If": m14,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Drahtdurchmesser, d",
     ),

@@ -22,27 +22,33 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(name) => "已添加到“${name}”";
 
-  static String m1(label) => "已复制 ${label}";
+  static String m1(n) => "荷载 ${n}";
 
-  static String m2(label) => "沿曲线拖动可查看 ${label} 的其他取值。";
+  static String m2(label) => "已复制 ${label}";
 
-  static String m3(index) => "第 ${index} 层";
+  static String m3(label) => "沿曲线拖动可查看 ${label} 的其他取值。";
 
-  static String m4(index) => "第 ${index} 阶模态";
+  static String m4(x) => "x = ${x} 处固端弯矩";
 
-  static String m5(value) => "预览：${value}";
+  static String m5(index) => "第 ${index} 层";
 
-  static String m6(count) => "${count} 个计算";
+  static String m6(index) => "第 ${index} 阶模态";
 
-  static String m7(name) => "已保存“${name}”";
+  static String m7(value) => "预览：${value}";
 
-  static String m8(name) => "已重命名为“${name}”";
+  static String m8(count) => "${count} 个计算";
 
-  static String m9(tool) => "将${tool}从收藏中移除";
+  static String m9(name) => "已保存“${name}”";
 
-  static String m10(n) => "尺寸 ${n}";
+  static String m10(name) => "已重命名为“${name}”";
 
-  static String m11(label) => "假设分析：${label}";
+  static String m11(x) => "x = ${x} 处反力";
+
+  static String m12(tool) => "将${tool}从收藏中移除";
+
+  static String m13(n) => "尺寸 ${n}";
+
+  static String m14(label) => "假设分析：${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -54,6 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Add_Force": MessageLookupByLibrary.simpleMessage("添加力"),
     "Add_Joint": MessageLookupByLibrary.simpleMessage("添加节点"),
     "Add_Layer": MessageLookupByLibrary.simpleMessage("添加层"),
+    "Add_Load": MessageLookupByLibrary.simpleMessage("添加荷载"),
     "Add_Member": MessageLookupByLibrary.simpleMessage("添加杆件"),
     "Add_Shape": MessageLookupByLibrary.simpleMessage("添加形状"),
     "Add_to_Favorites": MessageLookupByLibrary.simpleMessage("添加到收藏"),
@@ -75,14 +82,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "Angle_of_Rotation": MessageLookupByLibrary.simpleMessage("旋转角度"),
     "Angle_of_twist": MessageLookupByLibrary.simpleMessage("扭转角"),
     "Anisotropic_material": MessageLookupByLibrary.simpleMessage("各向异性材料"),
+    "Answer_No": MessageLookupByLibrary.simpleMessage("否"),
+    "Answer_Yes": MessageLookupByLibrary.simpleMessage("是"),
     "Appearance": MessageLookupByLibrary.simpleMessage("外观"),
     "Applied_Force_F": MessageLookupByLibrary.simpleMessage("作用力 F"),
     "Area": MessageLookupByLibrary.simpleMessage("面积"),
     "Area_A": MessageLookupByLibrary.simpleMessage("面积 A"),
+    "Axial_Load_F": MessageLookupByLibrary.simpleMessage("轴向荷载 F"),
     "Ball_Bearing": MessageLookupByLibrary.simpleMessage("球轴承（p = 3）"),
     "Base_Temperature": MessageLookupByLibrary.simpleMessage("肋基温度"),
+    "Beam_And_Supports": MessageLookupByLibrary.simpleMessage("梁与支承"),
     "Beam_Cantilever": MessageLookupByLibrary.simpleMessage("悬臂"),
     "Beam_Configuration": MessageLookupByLibrary.simpleMessage("梁的形式"),
+    "Beam_Determinate_Note": MessageLookupByLibrary.simpleMessage(
+      "静定：反力仅由平衡条件即可确定。",
+    ),
     "Beam_Engineering": MessageLookupByLibrary.simpleMessage("梁工程"),
     "Beam_Fixed_Fixed": MessageLookupByLibrary.simpleMessage("两端固定"),
     "Beam_Fixed_Pinned": MessageLookupByLibrary.simpleMessage("固定–铰支"),
@@ -90,9 +104,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "Beam_Frequency_Footnote": MessageLookupByLibrary.simpleMessage(
       "采用欧拉–伯努利理论，忽略剪切变形与转动惯性；因此对短粗梁（L/d 小于约 10）和高阶模态，频率会偏高。",
     ),
+    "Beam_Indeterminate_Note": MessageLookupByLibrary.simpleMessage(
+      "超静定：反力与 EI 有关，因此截面和材料改变的不只是挠度，还有反力本身。",
+    ),
     "Beam_Length_L": MessageLookupByLibrary.simpleMessage("梁长, L"),
     "Beam_Load_Analysis": MessageLookupByLibrary.simpleMessage("梁载荷分析"),
+    "Beam_Load_N": m1,
+    "Beam_Loads": MessageLookupByLibrary.simpleMessage("荷载"),
     "Beam_Mode_Constant": MessageLookupByLibrary.simpleMessage("模态常数, βL"),
+    "Beam_Model_Note": MessageLookupByLibrary.simpleMessage(
+      "线弹性欧拉—伯努利梁分析，划分为 120 个单元。自重不计入，除非以分布荷载方式输入；剪切变形亦被忽略——当跨度小于梁高的约十倍时，挠度会因此偏小。",
+    ),
     "Beam_Natural_Frequency": MessageLookupByLibrary.simpleMessage("梁的固有频率"),
     "Beam_Properties": MessageLookupByLibrary.simpleMessage("梁的参数"),
     "Beam_Section_Properties": MessageLookupByLibrary.simpleMessage("梁截面特性"),
@@ -102,12 +124,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "Belt_Length_L": MessageLookupByLibrary.simpleMessage("带长 L"),
     "Belt_Pull_Ft": MessageLookupByLibrary.simpleMessage("带的圆周力 Ft"),
     "Bending_Moment_Diagram": MessageLookupByLibrary.simpleMessage("弯矩图"),
+    "Bending_Stress_At_Mmax": MessageLookupByLibrary.simpleMessage(
+      "Mmax 处弯曲应力",
+    ),
     "Bending_Stress_Pinion": MessageLookupByLibrary.simpleMessage(
       "弯曲应力 σ（小齿轮）",
     ),
+    "Bolt_Grades_Footnote": MessageLookupByLibrary.simpleMessage(
+      "夹紧力取应力截面积上保证应力的 75%；扭矩由 T = K·F·d 求得，K = 0.2，对应未镀覆、未润滑的螺纹。K 把全部摩擦压缩成一个数字——镀层、蜡或防咬合剂会使其在约 0.10 至 0.25 之间变化，扭矩也随之变化。预紧力关键时应实测，而不要只依赖扭矩扳手。点按一行即可复制。",
+    ),
+    "Bolt_Grades_Torque": MessageLookupByLibrary.simpleMessage("螺栓等级与扭矩"),
     "Bolt_Preload_Torque_Tension": MessageLookupByLibrary.simpleMessage(
       "螺栓预紧力 / 扭矩-拉力",
     ),
+    "Bolt_Size": MessageLookupByLibrary.simpleMessage("规格"),
     "Bolted_Riveted_Joint": MessageLookupByLibrary.simpleMessage("螺栓 / 铆钉连接"),
     "Both": MessageLookupByLibrary.simpleMessage("两者"),
     "Buckling_Load": MessageLookupByLibrary.simpleMessage("屈曲载荷"),
@@ -126,6 +156,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Civil_Structural_Engineering": MessageLookupByLibrary.simpleMessage(
       "土木 / 结构工程",
     ),
+    "Clamp_Load_Fi": MessageLookupByLibrary.simpleMessage("夹紧力 Fi"),
     "Clear": MessageLookupByLibrary.simpleMessage("清除"),
     "Clear_History": MessageLookupByLibrary.simpleMessage("清除历史记录"),
     "Clear_History_Description": MessageLookupByLibrary.simpleMessage(
@@ -140,6 +171,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Cold_Inlet": MessageLookupByLibrary.simpleMessage("冷流体进口"),
     "Cold_Outlet": MessageLookupByLibrary.simpleMessage("冷流体出口"),
     "Cold_Stream_Range": MessageLookupByLibrary.simpleMessage("冷流体温升"),
+    "Collar_Diameter_Dc": MessageLookupByLibrary.simpleMessage("轴环平均直径 dc"),
+    "Collar_Friction_Muc": MessageLookupByLibrary.simpleMessage("轴环摩擦系数 μc"),
+    "Collar_Hint": MessageLookupByLibrary.simpleMessage(
+      "若由推力轴承承载，轴环直径保持为零——其摩擦相对于平面轴环可以忽略。",
+    ),
+    "Collar_Torque": MessageLookupByLibrary.simpleMessage("轴环扭矩"),
     "Combined_Loading_at_a_Point": MessageLookupByLibrary.simpleMessage(
       "一点处的组合载荷",
     ),
@@ -156,7 +193,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Contact_Stress_Est": MessageLookupByLibrary.simpleMessage("接触应力 σc（估算）"),
     "Contributing_Frequencies": MessageLookupByLibrary.simpleMessage("各分量频率"),
     "Copied": MessageLookupByLibrary.simpleMessage("已复制"),
-    "Copied_Value": m1,
+    "Copied_Value": m2,
     "Copy": MessageLookupByLibrary.simpleMessage("复制"),
     "Copy_Result": MessageLookupByLibrary.simpleMessage("复制结果"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage("修正长度 Lc"),
@@ -180,19 +217,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "Delete_Project_Question": MessageLookupByLibrary.simpleMessage("删除此项目？"),
     "Density": MessageLookupByLibrary.simpleMessage("密度"),
     "Desc_Beam_Analysis": MessageLookupByLibrary.simpleMessage(
-      "基于静力平衡与 Euler–Bernoulli 梁理论分析简支梁。向下的集中载荷与满跨均布载荷可单独或同时使用。",
+      "采用欧拉—伯努利单元的直接刚度法求解。除静定情形外，一端固定一端简支的梁、两端固定的梁以及支座内移的外伸梁——这些仅凭平衡条件无法确定的情形——同样可以处理。",
     ),
     "Desc_Beam_Natural_Frequency": MessageLookupByLibrary.simpleMessage(
       "由截面、长度与材料求等截面梁的弯曲固有频率。给出五种支承条件下的前三阶模态。",
     ),
     "Desc_Beam_Supports": MessageLookupByLibrary.simpleMessage(
-      "左端为铰支座，右端为滚轴支座。可将一个向下的集中载荷与满跨均布载荷组合使用。",
+      "先选择支承方式，再输入梁所承受的荷载。集中荷载，均布、三角形或梯形分布荷载，以及集中力偶，均可自由组合。",
     ),
     "Desc_Bearing_Life": MessageLookupByLibrary.simpleMessage(
       "由样本额定动载荷 C、当量作用载荷 P 与转速 n 求基本额定寿命：L10 = (C/P)^p。",
     ),
     "Desc_Belt_Drive": MessageLookupByLibrary.simpleMessage(
       "开口带传动（或按节圆直径计算的滚子链传动）的几何关系：传动比、近似带长与带轮包角。",
+    ),
+    "Desc_Bolt_Grades": MessageLookupByLibrary.simpleMessage(
+      "ISO 898-1 公制性能等级与 SAE J429 英制等级的保证应力、屈服强度和抗拉强度，并给出每种规格与等级对应的夹紧力和拧紧扭矩。夹紧力与扭矩由表中强度推算而得，因此不会与之相互矛盾。",
     ),
     "Desc_Bolt_Preload": MessageLookupByLibrary.simpleMessage(
       "采用简化的扭矩-拉力公式，估算达到目标螺栓预紧力所需的拧紧力矩。",
@@ -214,6 +254,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Pipe_Schedules": MessageLookupByLibrary.simpleMessage(
       "ASME B36.10M 钢管的外径、壁厚和内径，NPS 1/8 至 24，包括 Sch 10、40、80 和 160。内径和流通面积由所列外径与壁厚计算得出。",
+    ),
+    "Desc_Power_Screw": MessageLookupByLibrary.simpleMessage(
+      "计算传动螺旋提升和下降荷载所需的扭矩、效率，以及不加制动器时能否自锁保持荷载。适用于千斤顶、台虎钳、夹具，或机床拖板的丝杠。",
     ),
     "Desc_Press_Fit": MessageLookupByLibrary.simpleMessage(
       "实心轴压入轮毂时的接触压力与周向应力，假定两零件材料相同（标准简化情形 — 泊松比可约去）。",
@@ -258,7 +301,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Displacement": MessageLookupByLibrary.simpleMessage("位移"),
     "Display_Format": MessageLookupByLibrary.simpleMessage("显示格式"),
     "Double_Shear": MessageLookupByLibrary.simpleMessage("双剪"),
-    "Drag_Along_Line": m2,
+    "Drag_Along_Line": m3,
     "Drill_Tap_Chart": MessageLookupByLibrary.simpleMessage("钻孔与攻丝对照表"),
     "Drill_Tap_Footnote": MessageLookupByLibrary.simpleMessage(
       "直径单位为 mm；英制钻头显示规格代号，下方为对应毫米值。底孔钻头按钢件约 75% 牙深选取，公制过孔依据 ISO 273（紧配与松配系列）。点按任意行可复制。",
@@ -290,6 +333,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "有效圈数必须为正值。",
     ),
     "Err_Add_One_Member": MessageLookupByLibrary.simpleMessage("请至少添加一根杆件。"),
+    "Err_Beam_Load_Incomplete": MessageLookupByLibrary.simpleMessage(
+      "请填写每个荷载的全部数据，或删除该荷载。",
+    ),
     "Err_C_Positive": MessageLookupByLibrary.simpleMessage("额定动载荷 C 必须为正值。"),
     "Err_Center_Distance_Positive": MessageLookupByLibrary.simpleMessage(
       "中心距必须为正值。",
@@ -366,6 +412,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "螺母系数 K 必须为正值。",
     ),
     "Err_P_Positive": MessageLookupByLibrary.simpleMessage("当量载荷 P 必须为正值。"),
+    "Err_Power_Screw_Inputs": MessageLookupByLibrary.simpleMessage(
+      "请输入大径、螺距和轴向荷载。",
+    ),
     "Err_Pulley_Positive": MessageLookupByLibrary.simpleMessage("带轮直径必须为正值。"),
     "Err_Result_Not_Savable": MessageLookupByLibrary.simpleMessage(
       "该结果没有对应的工具，因此不能保存。",
@@ -405,6 +454,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Export_Report": MessageLookupByLibrary.simpleMessage("导出报告"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("飞速扫描"),
+    "Extreme_Fibre_C": MessageLookupByLibrary.simpleMessage("中性轴到边缘距离 c"),
+    "Extreme_Fibre_Hint": MessageLookupByLibrary.simpleMessage(
+      "可选 — 填入 c 后结果会一并给出弯曲应力。",
+    ),
     "Face_Width_F": MessageLookupByLibrary.simpleMessage("齿宽 F"),
     "Factor_of_Safety": MessageLookupByLibrary.simpleMessage("安全系数"),
     "Failure_criteria_von_Mises_Tresca": MessageLookupByLibrary.simpleMessage(
@@ -444,6 +497,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "基孔制配合，适用 1–500 mm。每格上为上偏差、下为下偏差，单位为相对公称尺寸的 µm；间隙为负表示过盈。尺寸段为大于下限、小于等于上限。c、s、u 轴的偏差按更细的尺寸段划分，故未列入。",
     ),
     "Fits_Tolerances": MessageLookupByLibrary.simpleMessage("配合与公差（ISO 286）"),
+    "Fixing_Moment_At_X": m4,
     "Flange_Thickness": MessageLookupByLibrary.simpleMessage("翼缘厚度"),
     "Flexural_Rigidity_EI": MessageLookupByLibrary.simpleMessage("抗弯刚度, EI"),
     "Flexure_formula_of_beam": MessageLookupByLibrary.simpleMessage("梁的弯曲公式"),
@@ -479,6 +533,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Gear_Ratio": MessageLookupByLibrary.simpleMessage("齿数比"),
     "Gear_Teeth_N2": MessageLookupByLibrary.simpleMessage("大齿轮齿数 N2"),
     "General_stress_calculation": MessageLookupByLibrary.simpleMessage("应力计算"),
+    "Grade_Class": MessageLookupByLibrary.simpleMessage("等级"),
     "Grid_View": MessageLookupByLibrary.simpleMessage("网格视图"),
     "Group_Building": MessageLookupByLibrary.simpleMessage("建筑材料"),
     "Group_Insulation": MessageLookupByLibrary.simpleMessage("保温材料"),
@@ -496,6 +551,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Help_Symbols": MessageLookupByLibrary.simpleMessage("符号"),
     "Help_Unavailable": MessageLookupByLibrary.simpleMessage("此工具尚无说明。"),
     "History": MessageLookupByLibrary.simpleMessage("历史记录"),
+    "Holds_With_Collar": MessageLookupByLibrary.simpleMessage("计入轴环摩擦后可保持"),
     "Hole_um": MessageLookupByLibrary.simpleMessage("孔（µm）"),
     "Hot_Inlet": MessageLookupByLibrary.simpleMessage("热流体进口"),
     "Hot_Outlet": MessageLookupByLibrary.simpleMessage("热流体出口"),
@@ -540,24 +596,38 @@ class MessageLookup extends MessageLookupByLibrary {
     "Large_Pulley_Diameter_D2": MessageLookupByLibrary.simpleMessage(
       "大带轮直径 d2",
     ),
-    "Layer_Number": m3,
+    "Layer_Number": m5,
     "Layer_Resistances": MessageLookupByLibrary.simpleMessage("各层热阻"),
     "Layer_Thickness": MessageLookupByLibrary.simpleMessage("单层厚度"),
     "Layup_Angle": MessageLookupByLibrary.simpleMessage("铺层角"),
     "Layup_Sequence": MessageLookupByLibrary.simpleMessage("铺层次序"),
+    "Lead_Angle_Lambda": MessageLookupByLibrary.simpleMessage("升角 λ"),
+    "Lead_L": MessageLookupByLibrary.simpleMessage("导程"),
     "Left_Reaction_RA": MessageLookupByLibrary.simpleMessage("左支座反力 RA"),
+    "Left_Support_Position": MessageLookupByLibrary.simpleMessage("左支座位置"),
     "Leg_Size_W": MessageLookupByLibrary.simpleMessage("焊脚尺寸 w"),
     "Lewis_Form_Factor_Y": MessageLookupByLibrary.simpleMessage(
       "Lewis 齿形系数 Y（小齿轮）",
     ),
     "List_View": MessageLookupByLibrary.simpleMessage("列表视图"),
     "Load_Case": MessageLookupByLibrary.simpleMessage("载荷工况"),
+    "Load_Couple_M": MessageLookupByLibrary.simpleMessage("力偶 M（逆时针为正）"),
+    "Load_Ends_At": MessageLookupByLibrary.simpleMessage("终点"),
     "Load_Fx": MessageLookupByLibrary.simpleMessage("载荷 Fx"),
     "Load_Fy": MessageLookupByLibrary.simpleMessage("载荷 Fy"),
+    "Load_Intensity_End": MessageLookupByLibrary.simpleMessage("终点集度"),
+    "Load_Intensity_Start": MessageLookupByLibrary.simpleMessage("起点集度"),
+    "Load_Magnitude_P": MessageLookupByLibrary.simpleMessage("大小 P（向下为正）"),
+    "Load_Position_X": MessageLookupByLibrary.simpleMessage("位置 x"),
+    "Load_Starts_At": MessageLookupByLibrary.simpleMessage("起点"),
     "Load_Type": MessageLookupByLibrary.simpleMessage("载荷类型"),
+    "Load_Type_Couple": MessageLookupByLibrary.simpleMessage("力偶"),
+    "Load_Type_Distributed": MessageLookupByLibrary.simpleMessage("分布"),
+    "Load_Type_Point": MessageLookupByLibrary.simpleMessage("集中"),
     "Log_Mean_Delta_T": MessageLookupByLibrary.simpleMessage("对数平均温差"),
     "ME_Toolkit": MessageLookupByLibrary.simpleMessage("工程工具箱"),
     "Machine_Design": MessageLookupByLibrary.simpleMessage("机械设计"),
+    "Major_Diameter_D": MessageLookupByLibrary.simpleMessage("大径 d"),
     "Mass_Per_Length": MessageLookupByLibrary.simpleMessage("线密度, ρA"),
     "Material_Density_Default_Steel": MessageLookupByLibrary.simpleMessage(
       "材料密度（默认钢）",
@@ -570,7 +640,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "Maximum_Downward_Deflection": MessageLookupByLibrary.simpleMessage(
       "最大挠度（向下）",
     ),
+    "Maximum_Hogging_Moment": MessageLookupByLibrary.simpleMessage("最大负弯矩"),
+    "Maximum_Sagging_Moment": MessageLookupByLibrary.simpleMessage("最大正弯矩"),
+    "Maximum_Shear": MessageLookupByLibrary.simpleMessage("最大剪力"),
     "Mean_Coil_Diameter_D": MessageLookupByLibrary.simpleMessage("弹簧中径 D"),
+    "Mean_Diameter_Dm": MessageLookupByLibrary.simpleMessage("中径 dm"),
     "Mean_Moment_Mm": MessageLookupByLibrary.simpleMessage("平均弯矩 Mm"),
     "Mean_Torque_Tm": MessageLookupByLibrary.simpleMessage("平均扭矩 Tm"),
     "Mechanical_Engineering": MessageLookupByLibrary.simpleMessage("机械工程"),
@@ -585,7 +659,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("局部损失系数 ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("薄荷翻译"),
     "Minus_Tolerance": MessageLookupByLibrary.simpleMessage("下偏差, −"),
-    "Mode_Number": m4,
+    "Mode_Number": m6,
     "Module_M": MessageLookupByLibrary.simpleMessage("模数 m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("弹性模量 E"),
     "Mohrs_Circle_for_Plane_Stress": MessageLookupByLibrary.simpleMessage(
@@ -693,13 +767,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "Polar_Moment_Jp": MessageLookupByLibrary.simpleMessage("截面极惯性矩, Jp"),
     "Power_Lost": MessageLookupByLibrary.simpleMessage("损失功率"),
     "Power_Optional": MessageLookupByLibrary.simpleMessage("功率（可选）"),
+    "Power_Screw": MessageLookupByLibrary.simpleMessage("传动螺旋（丝杠）"),
+    "Power_Screw_Note": MessageLookupByLibrary.simpleMessage(
+      "与 Shigley 的推导一致，假定摩擦为作用在单一平均半径上的库仑摩擦。实际摩擦系数取决于材料配对、润滑和螺纹磨损程度；钢对青铜大多在 0.10 至 0.20 之间——这个区间比上面多数数值的精度还要宽。",
+    ),
     "Precision": MessageLookupByLibrary.simpleMessage("精度"),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "压装 / 热装过盈配合",
     ),
     "Pressure_Drop": MessageLookupByLibrary.simpleMessage("压降 Δp"),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("压升 Δp"),
-    "Preview_Value": m5,
+    "Preview_Value": m7,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "主应力和平面",
     ),
@@ -715,7 +793,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "App Store 暂未提供移除广告项目。",
     ),
-    "Project_Calculations": m6,
+    "Project_Calculations": m8,
     "Project_Entry_No_Result": MessageLookupByLibrary.simpleMessage("仅输入"),
     "Project_Name": MessageLookupByLibrary.simpleMessage("项目名称"),
     "Project_Name_Hint": MessageLookupByLibrary.simpleMessage("例如：气门弹簧 — C 版"),
@@ -723,8 +801,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Report_Empty": MessageLookupByLibrary.simpleMessage(
       "该项目还没有保存的结果。打开一个计算并使用“保存到项目”即可添加。",
     ),
-    "Project_Saved": m7,
-    "Project_Updated": m8,
+    "Project_Saved": m9,
+    "Project_Updated": m10,
+    "Proof_Strength_Sp": MessageLookupByLibrary.simpleMessage("保证应力 Sp"),
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage("泵与风机功率"),
     "Pump_Head": MessageLookupByLibrary.simpleMessage("扬程 H"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage("购买已取消，未作任何更改。"),
@@ -736,6 +815,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Radius_Gyration_rx": MessageLookupByLibrary.simpleMessage("回转半径 rx"),
     "Radius_Gyration_ry": MessageLookupByLibrary.simpleMessage("回转半径 ry"),
     "RatethisApp": MessageLookupByLibrary.simpleMessage("给应用评分"),
+    "Reaction_At_X": m11,
     "Recommended_by_Major": MessageLookupByLibrary.simpleMessage("按专业推荐"),
     "Relative_Roughness": MessageLookupByLibrary.simpleMessage("相对粗糙度 ε/D"),
     "Relaxing_Up": MessageLookupByLibrary.simpleMessage("冥想Up"),
@@ -746,7 +826,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_Dimension": MessageLookupByLibrary.simpleMessage("删除"),
     "Remove_From_Project": MessageLookupByLibrary.simpleMessage("从项目中移除"),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("删除该层"),
-    "Remove_Tool_from_Favorites": m9,
+    "Remove_Load": MessageLookupByLibrary.simpleMessage("删除荷载"),
+    "Remove_Tool_from_Favorites": m12,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage("从收藏中移除"),
     "Removed_from_Favorites": MessageLookupByLibrary.simpleMessage("已从收藏中移除"),
     "Rename_Project": MessageLookupByLibrary.simpleMessage("重命名项目"),
@@ -765,6 +846,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Reynolds_Number": MessageLookupByLibrary.simpleMessage("雷诺数与流态"),
     "Reynolds_Number_Re": MessageLookupByLibrary.simpleMessage("雷诺数 Re"),
     "Right_Reaction_RB": MessageLookupByLibrary.simpleMessage("右支座反力 RB"),
+    "Right_Support_Position": MessageLookupByLibrary.simpleMessage("右支座位置"),
     "Roller_Bearing": MessageLookupByLibrary.simpleMessage("滚子轴承（p = 10/3）"),
     "Roller_Horizontal": MessageLookupByLibrary.simpleMessage("滚轴支座（水平反力）"),
     "Roller_Vertical": MessageLookupByLibrary.simpleMessage("滚轴支座（竖向反力）"),
@@ -778,7 +860,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Save_To_Project": MessageLookupByLibrary.simpleMessage("保存到项目"),
     "Save_as_Project": MessageLookupByLibrary.simpleMessage("保存为项目"),
     "Saved_Projects": MessageLookupByLibrary.simpleMessage("已保存的项目"),
+    "Screw_Efficiency": MessageLookupByLibrary.simpleMessage("效率"),
+    "Screw_Pitch_P": MessageLookupByLibrary.simpleMessage("螺距 p"),
     "Search": MessageLookupByLibrary.simpleMessage("搜索"),
+    "Search_Bolt_Size_Grade": MessageLookupByLibrary.simpleMessage("搜索规格或等级"),
     "Search_Fluids": MessageLookupByLibrary.simpleMessage("搜索流体"),
     "Search_Materials": MessageLookupByLibrary.simpleMessage("搜索材料"),
     "Search_Pipe_Size": MessageLookupByLibrary.simpleMessage("搜索 NPS、DN 或壁厚系列"),
@@ -803,6 +888,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Sections_Footnote": MessageLookupByLibrary.simpleMessage(
       "所列型钢的公称值。截面模数与回转半径由所列 A 和 I 计算得到。出图前请核对现行钢厂样本或标准表格。",
     ),
+    "Self_Locking_Thread": MessageLookupByLibrary.simpleMessage("螺纹自锁"),
     "Settings": MessageLookupByLibrary.simpleMessage("设置"),
     "Shaft_Alone_Frequency": MessageLookupByLibrary.simpleMessage("仅轴质量"),
     "Shaft_And_Rotor": MessageLookupByLibrary.simpleMessage("轴与转子"),
@@ -867,7 +953,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Adds": MessageLookupByLibrary.simpleMessage("增大"),
     "Stackup_Clearance": MessageLookupByLibrary.simpleMessage("始终有间隙"),
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage("变动的比例"),
-    "Stackup_Dimension_N": m10,
+    "Stackup_Dimension_N": m13,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage("尺寸链"),
     "Stackup_Dominant": MessageLookupByLibrary.simpleMessage("比例最大的尺寸"),
     "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
@@ -890,6 +976,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stiffness_Matrix_Q": MessageLookupByLibrary.simpleMessage("刚度矩阵 Q"),
     "Strain": MessageLookupByLibrary.simpleMessage("应变"),
     "Stress": MessageLookupByLibrary.simpleMessage("应力"),
+    "Stress_Area_As": MessageLookupByLibrary.simpleMessage("应力截面积"),
     "Stress_Concentration_Defaults": MessageLookupByLibrary.simpleMessage(
       "应力集中系数（默认值：轮廓键槽）与目标安全系数",
     ),
@@ -904,7 +991,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "Subtract": MessageLookupByLibrary.simpleMessage("扣除"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("数独迷"),
     "Support": MessageLookupByLibrary.simpleMessage("支座"),
+    "Support_Arrangement": MessageLookupByLibrary.simpleMessage("支承方式"),
+    "Support_Cantilever_Left": MessageLookupByLibrary.simpleMessage("悬臂，左端固定"),
+    "Support_Cantilever_Right": MessageLookupByLibrary.simpleMessage("悬臂，右端固定"),
+    "Support_Fixed_Fixed": MessageLookupByLibrary.simpleMessage("两端固定"),
+    "Support_Overhang": MessageLookupByLibrary.simpleMessage("外伸梁"),
+    "Support_Propped_Cantilever": MessageLookupByLibrary.simpleMessage(
+      "一端固定一端简支",
+    ),
     "Support_Reactions": MessageLookupByLibrary.simpleMessage("支座反力"),
+    "Support_Simply_Supported": MessageLookupByLibrary.simpleMessage("简支"),
     "Swap": MessageLookupByLibrary.simpleMessage("互换"),
     "SwiftComp": MessageLookupByLibrary.simpleMessage("SwiftComp:复合材料仿真建模分析工具"),
     "System_Default": MessageLookupByLibrary.simpleMessage("跟随系统"),
@@ -933,9 +1029,20 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Thickness_t": MessageLookupByLibrary.simpleMessage("厚度 t"),
     "Thread": MessageLookupByLibrary.simpleMessage("螺纹"),
+    "Thread_Form": MessageLookupByLibrary.simpleMessage("螺纹牙型"),
+    "Thread_Form_ACME": MessageLookupByLibrary.simpleMessage("ACME 29°"),
+    "Thread_Form_Square": MessageLookupByLibrary.simpleMessage("矩形"),
+    "Thread_Form_Trapezoidal": MessageLookupByLibrary.simpleMessage("梯形 30°"),
+    "Thread_Friction_Mu": MessageLookupByLibrary.simpleMessage("螺纹摩擦系数 μ"),
+    "Thread_Starts": MessageLookupByLibrary.simpleMessage("线数"),
+    "Thread_Torque_Lower": MessageLookupByLibrary.simpleMessage("螺纹扭矩（下降）"),
+    "Thread_Torque_Raise": MessageLookupByLibrary.simpleMessage("螺纹扭矩（提升）"),
     "Tightening_Torque_T": MessageLookupByLibrary.simpleMessage("拧紧力矩 T"),
     "Tip_Temperature": MessageLookupByLibrary.simpleMessage("肋端温度"),
     "Tolerance_Stackup": MessageLookupByLibrary.simpleMessage("尺寸链分析"),
+    "Torque_T": MessageLookupByLibrary.simpleMessage("扭矩 T"),
+    "Torque_To_Lower": MessageLookupByLibrary.simpleMessage("下降扭矩"),
+    "Torque_To_Raise": MessageLookupByLibrary.simpleMessage("提升扭矩"),
     "Torsion_formula_of_bar": MessageLookupByLibrary.simpleMessage("杆的扭力公式"),
     "Torsional_Footnote": MessageLookupByLibrary.simpleMessage(
       "已忽略轴自身的转动惯量。若其与转子相当，请改用完整的多质量（霍尔泽）分析。",
@@ -984,7 +1091,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("喝水吧"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("弱轴 (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("腹板厚度"),
-    "What_If": m11,
+    "What_If": m14,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("簧丝直径 d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage("极简天气"),
     "Wrap_Angle_Large_Pulley": MessageLookupByLibrary.simpleMessage("大带轮包角"),
