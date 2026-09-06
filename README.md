@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 A cross-platform engineering calculator for students, researchers, and practising
-engineers. Over 50 tools spanning mechanics of materials, beam analysis, statics,
+engineers. Sixty tools spanning mechanics of materials, beam analysis, statics,
 machine design and vibration, fluids and heat transfer, elasticity, and composites
 — each one showing the governing formula, the substituted calculation steps, and a
 result you can export or share.
@@ -43,13 +43,13 @@ result you can export or share.
 | Category | Tools | Coverage |
 |---|---:|---|
 | Mechanics of Material | 16 | General stress, bar force–displacement, torsion and angle of twist, plane-stress transformation, principal stresses, Mohr's circle, spherical shell, thin-walled cylindrical pressure vessel, column buckling, thermal deformation, shaft power and torque, Von Mises / Tresca, fatigue safety factor (Modified Goodman), bolted and riveted joints, combined loading |
-| Beam Engineering | 7 | Moments of inertia, flexure formula, cantilever and simple-beam deflections and slopes, transverse shear stress, beam section properties, beam load analysis |
-| Machine Design | 11 | Helical compression springs, spur gear geometry, shaft fatigue design (DE-Goodman), bearing L10 life, belt and chain drives, bolt preload / torque-tension, fillet weld strength, press / shrink-fit interference, shaft critical speed (Dunkerley), beam natural frequency (first three modes, five end conditions), torsional natural frequency (one or two rotors) |
+| Beam Engineering | 7 | Moments of inertia, flexure formula, cantilever and simple-beam deflections and slopes, transverse shear stress, beam section properties, general beam analysis (six support arrangements, any number of point, distributed and couple loads, solved by the stiffness method) |
+| Machine Design | 12 | Helical compression springs, spur gear geometry and Lewis bending stress, shaft fatigue design (DE-Goodman), bearing L10 life, belt and chain drives, bolt preload / torque-tension, fillet weld strength, press / shrink-fit interference, power screws (torque, efficiency, self-locking), shaft critical speed (Dunkerley), beam natural frequency (first three modes, five end conditions), torsional natural frequency (one or two rotors) |
 | Fluids & Thermal | 6 | Reynolds number and flow regime, pipe pressure drop (Darcy–Weisbach with Colebrook), pump and fan power, composite wall conduction, fin efficiency, heat exchanger sizing by LMTD |
 | Composite Material | 7 | Lamina and laminate stress/strain, lamina engineering constants, laminate plane and 3D properties, rule of mixtures, Tsai-Hill and Tsai-Wu failure criteria |
 | Statics | 3 | Resultant of forces (2D), centroid of composite area, truss analysis by method of joints |
 | Theory of Elasticity | 2 | Constitutive relation and stress/strain of linear elastic material |
-| Reference & Utilities | 6 | Unit converter, drill and tap chart, ISO 286 fits and tolerances, standard sections (AISC W, IPE, HEB), ASME B36.10M pipe schedules, 1D tolerance stack-up (worst case and RSS) |
+| Reference & Utilities | 7 | Unit converter, drill and tap chart, ISO 286 fits and tolerances, standard sections (AISC W, IPE, HEB), ASME B36.10M pipe schedules, 1D tolerance stack-up (worst case and RSS), bolt grades and tightening torque (ISO 898-1 and SAE J429) |
 
 [`lib/home/tool_model.dart`](lib/home/tool_model.dart) is the authoritative registry.
 

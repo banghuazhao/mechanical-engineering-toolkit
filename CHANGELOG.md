@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Beam Load Analysis now solves any of six support arrangements — simply supported, cantilever fixed at either end, overhang on inset supports, propped cantilever and fixed at both ends — carrying any number of point loads, uniform, triangular or trapezoidal distributed loads, and applied couples. The three indeterminate cases are solved by the direct stiffness method, and the result separates the sagging and hogging peaks and adds the bending stress when a section depth is given.
+- Added a bolt grades and torque reference: ISO 898-1 metric property classes and SAE J429 inch grades, with tensile stress area, proof strength, clamp load and tightening torque for every size and grade.
+- Added a Power Screw calculator under Machine Design: torque to raise and lower, efficiency, and whether the screw is self-locking, for square, ACME and trapezoidal threads.
+- Saved beam calculations from before this release still reopen, with their point load and UDL carried across.
+- Removed two superseded beam files that were no longer reachable from the app: a beam-reactions page dead since 1.4.0, and the single-case simply-supported calculator the new solver replaces.
+- Rebuilt the PDF export's CJK font subsets, which had not been regenerated since 1.10.0 and were missing characters added since. They no longer carry the help-sheet prose, which never reaches a report, so they stay near their previous size despite covering more.
+
 ## 1.11.0 - 2026-08-28
 
 - Added an explanation for every tool behind a "?" in its app bar, covering what the tool computes, the formula it uses, and how to read the result — translated into German, French, Japanese, Simplified Chinese and Traditional Chinese.
