@@ -73,13 +73,23 @@ def chars_in_sources() -> set[str]:
     over-collects a little -- comments and identifiers come along too -- which
     costs a few glyphs and guarantees nothing is missed.
 
-    `lib/generated/intl/messages_*.dart` is skipped: it is compiled from the
-    .arb files, so scanning it would fold every locale's characters into every
-    subset and leave the two faces identical.
+    Two things are skipped:
+
+    `lib/generated/intl/messages_*.dart` is compiled from the .arb files, so
+    scanning it would fold every locale's characters into every subset and
+    leave the two faces identical.
+
+    `lib/help/tool_help_content*.dart` is several thousand words of translated
+    prose per language that never reaches a report -- the help sheet is
+    on-screen only, and its share action hands plain text to the system. It
+    accounts for roughly 1500 of the 1600 CJK characters in `lib/`, which is
+    half a megabyte of glyphs in every build for text no PDF can contain.
     """
     found: set[str] = set()
     for dart in (REPO / "lib").rglob("*.dart"):
         if dart.match("generated/intl/messages_*.dart"):
+            continue
+        if dart.name.startswith("tool_help_content"):
             continue
         found.update(c for c in dart.read_text(encoding="utf-8") if ord(c) > 0x7F)
     return found
