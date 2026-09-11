@@ -9,16 +9,20 @@ import 'package:mechanical_engineering_toolkit/home/language_picker.dart';
 import 'package:mechanical_engineering_toolkit/home/major_list_page.dart';
 import 'package:mechanical_engineering_toolkit/home/saved_projects_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_favorites.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_launcher.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
 import 'package:mechanical_engineering_toolkit/more/more_app_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/more/more_row.dart';
+import 'package:mechanical_engineering_toolkit/purchase/premium.dart';
+import 'package:mechanical_engineering_toolkit/purchase/premium_upsell.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_page.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
+import 'package:mechanical_engineering_toolkit/util/app_platform.dart';
 import 'package:mechanical_engineering_toolkit/util/language.dart';
 import 'package:mechanical_engineering_toolkit/util/others.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -194,7 +198,8 @@ class _ToolPageState extends State<ToolPage> {
   }
 
   void _configureAppOpenAds() {
-    if (_appOpenAdManager != null ||
+    if (!AppPlatform.current.supportsAds ||
+        _appOpenAdManager != null ||
         context.read<RemoveAdsService>().isAdsRemoved) {
       return;
     }
@@ -309,11 +314,23 @@ class _ToolPageState extends State<ToolPage> {
             Consumer<RemoveAdsService>(
               builder: (context, purchases, _) {
                 if (!purchases.isSupported) return const SizedBox.shrink();
+                // The same destination under two names: the purchase stops
+                // ads where there are ads, and unlocks the gated tools where
+                // there are none.
+                final gate = PremiumGate.watch(context);
                 return MoreRow(
-                  title: S.of(context).Remove_Ads,
-                  leadingIcon: purchases.isAdsRemoved
-                      ? Icons.verified_rounded
-                      : Icons.block_rounded,
+                  title: gate.gatesFeatures
+                      ? (gate.isEntitled
+                          ? S.of(context).Premium
+                          : S.of(context).Unlock_Premium)
+                      : S.of(context).Remove_Ads,
+                  leadingIcon: gate.gatesFeatures
+                      ? (gate.isEntitled
+                          ? Icons.verified_rounded
+                          : Icons.workspace_premium_rounded)
+                      : (purchases.isAdsRemoved
+                          ? Icons.verified_rounded
+                          : Icons.block_rounded),
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -343,6 +360,12 @@ class _ToolPageState extends State<ToolPage> {
                   IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
                   device = iosInfo.model;
                   systemVersion = iosInfo.systemVersion;
+                } else if (Platform.isMacOS) {
+                  MacOsDeviceInfo macInfo = await deviceInfo.macOsInfo;
+                  // `model` is the marketing identifier (MacBookPro18,3);
+                  // osRelease is the macOS version string.
+                  device = macInfo.model;
+                  systemVersion = macInfo.osRelease;
                 } else {
                   device = "";
                   systemVersion = "";
@@ -383,7 +406,11 @@ class _ToolPageState extends State<ToolPage> {
               leadingIcon: Icons.share_rounded,
               onTap: () async {
                 final Size size = MediaQuery.of(context).size;
-                if (Platform.isIOS) {
+                // macOS is the same App Store listing as iOS — one record,
+                // two platforms — so it shares the same link, and share_plus
+                // wants the anchor rect on desktop for the same reason iPad
+                // does: the sheet is a popover.
+                if (Platform.isIOS || Platform.isMacOS) {
                   await SharePlus.instance.share(ShareParams(
                     text: 'https://apps.apple.com/app/id1601099443',
                     sharePositionOrigin:
@@ -429,6 +456,7 @@ class _ToolPageState extends State<ToolPage> {
   }
 
   Widget buildContents(BuildContext context) {
+    final gate = PremiumGate.watch(context);
     final visibleSections = _searchTerms.isEmpty
         ? sections
         : sections
@@ -471,6 +499,19 @@ class _ToolPageState extends State<ToolPage> {
                 ),
               ),
             ),
+            if (gate.showsLocks)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                  child: _FreeTierNotice(
+                    freeCount: kFreeToolIds.length,
+                    totalCount: sections.fold(
+                      0,
+                      (sum, section) => sum + section.tools.length,
+                    ),
+                  ),
+                ),
+              ),
             for (var section in visibleSections) ...[
               SliverToBoxAdapter(
                 child: Padding(
@@ -571,9 +612,9 @@ class ToolRowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final favoritesList = context.watch<Favorites>();
     int itemNo = model.id;
-    String title = model.title;
     final isFavorite = favoritesList.items.contains(itemNo);
     final primary = Theme.of(context).colorScheme.primary;
+    final isLocked = PremiumGate.watch(context).isToolLocked(itemNo);
     return Card(
       color: Theme.of(context).colorScheme.surfaceContainerLow,
       shape: RoundedRectangleBorder(
@@ -583,9 +624,7 @@ class ToolRowWidget extends StatelessWidget {
         ),
       ),
       child: InkWell(
-        onTap: () {
-          model.action(context, title, itemNo);
-        },
+        onTap: () => launchTool(context, model),
         borderRadius: BorderRadius.circular(context.tokens.radiusLarge),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(14, 12, 8, 12),
@@ -621,6 +660,10 @@ class ToolRowWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
+            if (isLocked) ...[
+              const PremiumLockBadge(),
+              const SizedBox(width: 4),
+            ],
             IconButton(
               tooltip: isFavorite
                   ? S.of(context).Remove_from_Favorites
@@ -662,9 +705,9 @@ class ToolGridTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final favoritesList = context.watch<Favorites>();
     int itemNo = model.id;
-    String title = model.title;
     final isFavorite = favoritesList.items.contains(itemNo);
     final primary = Theme.of(context).colorScheme.primary;
+    final isLocked = PremiumGate.watch(context).isToolLocked(itemNo);
     return Card(
       color: Theme.of(context).colorScheme.surfaceContainerLow,
       shape: RoundedRectangleBorder(
@@ -674,9 +717,7 @@ class ToolGridTile extends StatelessWidget {
         ),
       ),
       child: InkWell(
-        onTap: () {
-          model.action(context, title, itemNo);
-        },
+        onTap: () => launchTool(context, model),
         borderRadius: BorderRadius.circular(context.tokens.radiusLarge),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8, 8, 8, 10),
@@ -708,6 +749,12 @@ class ToolGridTile extends StatelessWidget {
                             ),
                     ),
                   ),
+                  if (isLocked)
+                    const Positioned(
+                      top: -2,
+                      left: -2,
+                      child: PremiumLockBadge(compact: true),
+                    ),
                   Positioned(
                     top: -6,
                     right: -6,
@@ -751,6 +798,58 @@ class ToolGridTile extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Explains the free tier at the top of the library, once, in one line.
+///
+/// Shown only where something is actually locked, and phrased as a count
+/// rather than a nag: an engineer deciding whether this app is worth buying is
+/// better served by "18 of 60 are free" than by a padlock they have to tap to
+/// understand.
+class _FreeTierNotice extends StatelessWidget {
+  const _FreeTierNotice({required this.freeCount, required this.totalCount});
+
+  final int freeCount;
+  final int totalCount;
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = S.of(context);
+    final theme = Theme.of(context);
+    return Card(
+      margin: EdgeInsets.zero,
+      color: theme.colorScheme.secondaryContainer,
+      elevation: 0,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 4, 6, 4),
+        child: Row(
+          children: [
+            Icon(
+              Icons.workspace_premium_rounded,
+              size: 20,
+              color: theme.colorScheme.onSecondaryContainer,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                strings.Premium_Free_Tools_Note(freeCount, totalCount),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSecondaryContainer,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () => showPremiumUpsell(
+                context,
+                reason: strings.Unlock_Premium,
+              ),
+              child: Text(strings.See_Premium),
+            ),
+          ],
         ),
       ),
     );

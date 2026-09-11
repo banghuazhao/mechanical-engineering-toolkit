@@ -58,3 +58,40 @@ ios/fastlane/report.xml
 
 # Store-release and listing scripts are kept local only.
 /scripts/
+
+# Credentials and signing material.
+#
+# Nothing matching these is in the repository, and the release tooling reads
+# every secret from ~/Development/secret at run time (see scripts/README.md),
+# so these are a backstop rather than a description of what is here: a key or
+# a profile dropped into the tree by Xcode, fastlane, or a hurried hand should
+# never become a commit.
+*.p8
+*.p12
+*.pfx
+*.cer
+*.certSigningRequest
+*.mobileprovision
+*.provisionprofile
+*.keystore
+*.jks
+.env
+.env.*
+*.env
+google-services.json
+GoogleService-Info.plist
+
+# Xcode export configuration. Carries the team id and the names of the
+# provisioning profiles a build is signed with; the macOS one this project
+# actually uses lives in the ignored /scripts/ directory.
+ExportOptions.plist
+
+# Build output that is signed, or that embeds absolute paths from this
+# machine. /build/ already covers the usual location — these catch the copies
+# that get left beside the project.
+*.xcarchive/
+*.dSYM/
+*.ipa
+*.pkg
+*.aab
+*.apk

@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
+import 'package:mechanical_engineering_toolkit/purchase/premium.dart';
+import 'package:mechanical_engineering_toolkit/purchase/premium_upsell.dart';
 import 'package:provider/provider.dart';
 
 import '../util/number.dart';
@@ -60,6 +62,13 @@ class _ParameterSweepCardState extends State<ParameterSweepCard> {
 
   @override
   Widget build(BuildContext context) {
+    // Checked before any sampling: computing thirty points of a chart that is
+    // not going to be drawn is pure waste on every result page that has one.
+    if (PremiumGate.watch(context)
+        .isFeatureLocked(PremiumFeature.parameterSweep)) {
+      return _LockedSweepCard(variableLabel: widget.variableLabel);
+    }
+
     final system = context.watch<UnitSystemPreference>().system;
     final precs = context.watch<NumberPrecisionHelper>();
 
@@ -179,6 +188,50 @@ class _ParameterSweepCardState extends State<ParameterSweepCard> {
             S.of(context).Drag_Along_Line(widget.variableLabel),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Stands in for the what-if chart where the build does not include it.
+///
+/// Keeps the card and its heading so the result page still says which input
+/// could be explored — the offer is much easier to judge when you can see
+/// what it would have plotted.
+class _LockedSweepCard extends StatelessWidget {
+  const _LockedSweepCard({required this.variableLabel});
+
+  final String variableLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = S.of(context);
+    final theme = Theme.of(context);
+    return AppSectionCard(
+      title: strings.What_If(variableLabel),
+      child: Row(
+        children: [
+          Icon(
+            Icons.show_chart_rounded,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+          SizedBox(width: context.tokens.space3),
+          Expanded(
+            child: Text(
+              strings.Premium_Locked_Sweep,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () => showLockedFeatureUpsell(
+              context,
+              PremiumFeature.parameterSweep,
+            ),
+            child: Text(strings.See_Premium),
           ),
         ],
       ),

@@ -5,6 +5,33 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:open_store/open_store.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+/// Opens another of our apps on the store, whichever store this is.
+///
+/// `open_store` handles iOS and Android and throws `PlatformException` on
+/// anything else, which on macOS would turn every row here into a crash. The
+/// Mac build therefore opens the App Store listing itself: these are the same
+/// iOS app ids, and apps.apple.com resolves them on macOS too, handing off to
+/// the App Store app where the listing has a Mac version.
+Future<void> _openStorePage({
+  required String appStoreId,
+  // Nullable and passed straight through, so the iOS and Android paths behave
+  // exactly as they did when these call sites reached OpenStore directly —
+  // including the one row that names no Android bundle at all.
+  String? androidAppBundleId,
+}) async {
+  if (Platform.isMacOS) {
+    final uri = Uri.parse('https://apps.apple.com/app/id$appStoreId');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+    return;
+  }
+  await OpenStore.instance.open(
+    appStoreId: appStoreId,
+    androidAppBundleId: androidAppBundleId,
+  );
+}
+
 class MoreAppPage extends StatelessWidget {
   const MoreAppPage({Key? key}) : super(key: key);
 
@@ -14,70 +41,62 @@ class MoreAppPage extends StatelessWidget {
 
     var Relaxing_Up =
         MoreAppItem(Image.asset("images/app_icons/relaxing_up.png"), S.of(context).Relaxing_Up, () {
-      OpenStore.instance
-          .open(appStoreId: "1618712178", androidAppBundleId: "com.appsbay.relaxing_up");
+      _openStorePage(appStoreId: "1618712178", androidAppBundleId: "com.appsbay.relaxing_up");
     });
 
     var Yes_Habit =
         MoreAppItem(Image.asset("images/app_icons/yes_habit.png"), S.of(context).Yes_Habit, () {
-      OpenStore.instance.open(appStoreId: "1637643734", androidAppBundleId: "");
+      _openStorePage(appStoreId: "1637643734", androidAppBundleId: "");
     });
 
     var Metronome_Go = MoreAppItem(
         Image.asset("images/app_icons/metronome_go.png"), S.of(context).Metronome_Go, () {
-      OpenStore.instance
-          .open(appStoreId: "1635462172", androidAppBundleId: "com.appsbay.metronome_go");
+      _openStorePage(appStoreId: "1635462172", androidAppBundleId: "com.appsbay.metronome_go");
     });
 
     var Simple_Calculator = MoreAppItem(
         Image.asset("images/app_icons/simple_calculator.png"), S.of(context).Simple_Calculator, () {
-      OpenStore.instance
-          .open(appStoreId: "1610829871", androidAppBundleId: "com.appsbay.simple_calculator");
+      _openStorePage(appStoreId: "1610829871", androidAppBundleId: "com.appsbay.simple_calculator");
     });
 
     var Onlynote =
         MoreAppItem(Image.asset("images/app_icons/onlynote.png"), S.of(context).Onlynote, () {
-      OpenStore.instance.open(appStoreId: "1616516732", androidAppBundleId: "com.appsbay.onlynote");
+      _openStorePage(appStoreId: "1616516732", androidAppBundleId: "com.appsbay.onlynote");
     });
 
     var World_Weather_Live = MoreAppItem(
         Image.asset("images/app_icons/world_weather_live.png"), S.of(context).World_Weather_Live,
         () {
-      OpenStore.instance
-          .open(appStoreId: "1612773646", androidAppBundleId: "com.appsbay.world_weather_live");
+      _openStorePage(appStoreId: "1612773646", androidAppBundleId: "com.appsbay.world_weather_live");
     });
 
     var Shows = MoreAppItem(Image.asset("images/app_icons/shows.png"), S.of(context).Shows, () {
-      OpenStore.instance.open(appStoreId: "1624910011", androidAppBundleId: "com.appsbay.shows");
+      _openStorePage(appStoreId: "1624910011", androidAppBundleId: "com.appsbay.shows");
     });
 
     var Sudoku_Lover = MoreAppItem(
         Image.asset("images/app_icons/sudoku_lover.png"), S.of(context).Sudoku_Lover, () {
-      OpenStore.instance
-          .open(appStoreId: "1620749798", androidAppBundleId: "com.appsbay.sudoku_lovers");
+      _openStorePage(appStoreId: "1620749798", androidAppBundleId: "com.appsbay.sudoku_lovers");
     });
 
     var Express_Scan = MoreAppItem(
         Image.asset("images/app_icons/express_scan.png"), S.of(context).Express_Scan, () {
-      OpenStore.instance
-          .open(appStoreId: "1625121991", androidAppBundleId: "com.appsbay.express_scan");
+      _openStorePage(appStoreId: "1625121991", androidAppBundleId: "com.appsbay.express_scan");
     });
 
     var money_tracker = MoreAppItem(
         Image.asset("images/app_icons/money_tracker.png"), S.of(context).MoneyTracker, () {
-      OpenStore.instance.open(appStoreId: "1534244892");
+      _openStorePage(appStoreId: "1534244892");
     });
 
     var novels_hub =
         MoreAppItem(Image.asset("images/app_icons/novels_hub.png"), S.of(context).NovelsHub, () {
-      OpenStore.instance
-          .open(appStoreId: "1528820845", androidAppBundleId: "com.appsbay.novelshub");
+      _openStorePage(appStoreId: "1528820845", androidAppBundleId: "com.appsbay.novelshub");
     });
 
     var nasa_lover =
         MoreAppItem(Image.asset("images/app_icons/nasa_lover.png"), S.of(context).NASALover, () {
-      OpenStore.instance
-          .open(appStoreId: "1595232677", androidAppBundleId: "com.AppsBay.nasa_lover");
+      _openStorePage(appStoreId: "1595232677", androidAppBundleId: "com.AppsBay.nasa_lover");
     });
 
     if (Platform.isIOS) {

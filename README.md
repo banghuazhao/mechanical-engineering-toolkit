@@ -37,6 +37,8 @@ result you can export or share.
 - **Six languages.** English, German, French, Japanese, Simplified Chinese, and
   Traditional Chinese.
 - **Light, dark, or system appearance.**
+- **iPhone, iPad, Android and Mac.** The Mac app is a second platform on the same
+  App Store record, so its unlock is shared with iOS — see below.
 
 ## Tool catalogue
 
@@ -61,9 +63,10 @@ result you can export or share.
 | Dart | `>=3.0.0 <4.0.0` |
 | iOS | 15.0+ |
 | Android | 7.0+ (API 24) |
+| macOS | 12.0+ |
 
-iOS plugins are managed by **Swift Package Manager**, not CocoaPods — there is no
-`Podfile` and no `ios/Pods` directory.
+Apple plugins are managed by **Swift Package Manager**, not CocoaPods — there is
+no `Podfile` and no `ios/Pods` directory.
 
 ## Getting started
 
@@ -95,7 +98,39 @@ build's `Info.plist`.
 ```bash
 flutter build appbundle --release   # Android App Bundle
 flutter build ipa --release         # iOS App Store package
+flutter build macos --release       # macOS app bundle
 ```
+
+The macOS target needs no AdMob configuration: it serves no ads, and
+`lib/util/secrets.dart` is never read there.
+
+## How the app is paid for
+
+Two models, one purchase.
+
+**iOS and Android** ship every tool for free and carry a banner and app-open ad.
+The `Remove Ads` in-app purchase suppresses both.
+
+**macOS** carries no ads at all — `google_mobile_ads` has no macOS
+implementation, and the Mac app is sold as a one-off unlock instead. A free Mac
+build includes the tools listed in
+[`kFreeToolIds`](lib/purchase/premium.dart) — every reference table plus at least
+one working calculator in each of the eight categories — and shares results as
+text. **Premium** adds the rest of the library, PDF/CSV/image export, saved
+projects, the full calculation history, and the what-if sweep charts.
+
+The two are the *same* App Store Connect product
+(`…mechanicalEngineeringToolkit.remove_ads`): macOS is a second platform on one
+app record, which makes it a Universal Purchase keyed off the shared bundle
+identifier, so a customer who buys on either side gets the other for free when
+StoreKit restores.
+
+Everything that decides what is locked lives in
+[`lib/purchase/premium.dart`](lib/purchase/premium.dart) (`PremiumGate`), and
+every calculator is opened through
+[`launchTool`](lib/home/tool_launcher.dart), so a locked tool cannot be reached
+by finding another route to it. `PremiumGate.gatesFeatures` is false off macOS,
+which is what keeps the mobile apps untouched by any of this.
 
 ## Adding a new calculator
 

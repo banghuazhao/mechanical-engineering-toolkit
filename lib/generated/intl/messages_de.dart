@@ -35,21 +35,32 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m6(index) => "Eigenform ${index}";
 
-  static String m7(value) => "Vorschau: ${value}";
+  static String m7(total) =>
+      "Alle ${total} Werkzeuge — Maschinenbau, Verbundwerkstoffe, Strömung und Wärme, Schwingungen und mehr";
 
-  static String m8(count) => "${count} Berechnungen";
+  static String m8(count, total) =>
+      "${count} von ${total} Werkzeugen sind kostenlos. Premium schaltet die übrigen frei.";
 
-  static String m9(name) => "„${name}“ gespeichert";
+  static String m9(count) =>
+      "Die ${count} neuesten werden angezeigt. Premium zeigt alle.";
 
-  static String m10(name) => "In „${name}“ umbenannt";
+  static String m10(tool) => "${tool} ist ein Premium-Werkzeug";
 
-  static String m11(x) => "Auflagerkraft bei x = ${x}";
+  static String m11(value) => "Vorschau: ${value}";
 
-  static String m12(tool) => "${tool} aus Favoriten entfernen";
+  static String m12(count) => "${count} Berechnungen";
 
-  static String m13(n) => "Maß ${n}";
+  static String m13(name) => "„${name}“ gespeichert";
 
-  static String m14(label) => "Was wäre wenn: ${label}";
+  static String m14(name) => "In „${name}“ umbenannt";
+
+  static String m15(x) => "Auflagerkraft bei x = ${x}";
+
+  static String m16(tool) => "${tool} aus Favoriten entfernen";
+
+  static String m17(n) => "Maß ${n}";
+
+  static String m18(label) => "Was wäre wenn: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -930,6 +941,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Größtes Feldmoment",
     ),
     "Maximum_Shear": MessageLookupByLibrary.simpleMessage("Größte Querkraft"),
+    "Maybe_Later": MessageLookupByLibrary.simpleMessage("Vielleicht später"),
     "Mean_Coil_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Mittlerer Wicklungsdurchmesser, D",
     ),
@@ -1129,12 +1141,66 @@ class MessageLookup extends MessageLookupByLibrary {
       "Coulombsche Reibung an einem einzigen mittleren Radius, wie es die Herleitung nach Shigley voraussetzt. Der wirkliche Reibwert hängt von der Werkstoffpaarung, dem Schmierstoff und dem Verschleiß des Gewindes ab; 0,10 bis 0,20 deckt die meisten Stahl-Bronze-Paarungen ab — eine größere Bandbreite als die meisten Zahlen oben.",
     ),
     "Precision": MessageLookupByLibrary.simpleMessage("GENAUIGKEIT"),
+    "Premium": MessageLookupByLibrary.simpleMessage("Premium"),
+    "Premium_Badge": MessageLookupByLibrary.simpleMessage("Premium"),
+    "Premium_Benefit_Export": MessageLookupByLibrary.simpleMessage(
+      "PDF-Berichte, CSV-Export und Ergebnisbilder",
+    ),
+    "Premium_Benefit_History": MessageLookupByLibrary.simpleMessage(
+      "Ihr vollständiger Berechnungsverlauf",
+    ),
+    "Premium_Benefit_Projects": MessageLookupByLibrary.simpleMessage(
+      "Gespeicherte Projekte und zusammengefasste Projektberichte",
+    ),
+    "Premium_Benefit_Sweep": MessageLookupByLibrary.simpleMessage(
+      "Was-wäre-wenn-Parameterdiagramme",
+    ),
+    "Premium_Benefit_Tools": m7,
+    "Premium_Benefit_Universal": MessageLookupByLibrary.simpleMessage(
+      "Ohne Aufpreis auch auf iPhone und iPad enthalten",
+    ),
+    "Premium_Description": MessageLookupByLibrary.simpleMessage(
+      "Einmal kaufen, dauerhaft freigeschaltet — auf diesem Mac und auf Ihrem iPhone und iPad.",
+    ),
+    "Premium_Free_Tools_Note": m8,
+    "Premium_History_Limited": m9,
+    "Premium_Locked_Export": MessageLookupByLibrary.simpleMessage(
+      "PDF-, CSV- und Bildexport gehören zu Premium.",
+    ),
+    "Premium_Locked_History": MessageLookupByLibrary.simpleMessage(
+      "Premium zeigt Ihren vollständigen Berechnungsverlauf.",
+    ),
+    "Premium_Locked_Projects": MessageLookupByLibrary.simpleMessage(
+      "Gespeicherte Projekte gehören zu Premium.",
+    ),
+    "Premium_Locked_Sweep": MessageLookupByLibrary.simpleMessage(
+      "Was-wäre-wenn-Diagramme gehören zu Premium.",
+    ),
+    "Premium_Locked_Tool": m10,
+    "Premium_Not_Found": MessageLookupByLibrary.simpleMessage(
+      "Premium ist im App Store noch nicht verfügbar.",
+    ),
+    "Premium_Purchase_Success": MessageLookupByLibrary.simpleMessage(
+      "Premium freigeschaltet. Alle Werkzeuge und Exporte sind jetzt verfügbar.",
+    ),
+    "Premium_Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
+      "Es wurde kein früherer Kauf gefunden.",
+    ),
+    "Premium_Restore_Success": MessageLookupByLibrary.simpleMessage(
+      "Ihr Premium-Kauf wurde wiederhergestellt.",
+    ),
+    "Premium_Unlocked": MessageLookupByLibrary.simpleMessage(
+      "Premium freigeschaltet",
+    ),
+    "Premium_Unlocked_Description": MessageLookupByLibrary.simpleMessage(
+      "Danke, dass Sie ME Toolkit unterstützen. Alle Werkzeuge und Exporte stehen Ihnen zur Verfügung.",
+    ),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Übermaß bei Press-/Schrumpfsitz",
     ),
     "Pressure_Drop": MessageLookupByLibrary.simpleMessage("Druckverlust, Δp"),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("Druckerhöhung, Δp"),
-    "Preview_Value": m7,
+    "Preview_Value": m11,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Hauptspannungen und Hauptebene",
     ),
@@ -1154,7 +1220,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "„Werbung entfernen“ ist im App Store noch nicht verfügbar.",
     ),
-    "Project_Calculations": m8,
+    "Project_Calculations": m12,
     "Project_Entry_No_Result": MessageLookupByLibrary.simpleMessage(
       "Nur Eingaben",
     ),
@@ -1168,8 +1234,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Report_Empty": MessageLookupByLibrary.simpleMessage(
       "Dieses Projekt enthält noch keine gespeicherten Ergebnisse. Öffne eine Berechnung und speichere sie im Projekt.",
     ),
-    "Project_Saved": m9,
-    "Project_Updated": m10,
+    "Project_Saved": m13,
+    "Project_Updated": m14,
     "Proof_Strength_Sp": MessageLookupByLibrary.simpleMessage(
       "Prüfspannung Sp",
     ),
@@ -1200,7 +1266,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Trägheitsradius, ry",
     ),
     "RatethisApp": MessageLookupByLibrary.simpleMessage("App bewerten"),
-    "Reaction_At_X": m11,
+    "Reaction_At_X": m15,
     "Recommended_by_Major": MessageLookupByLibrary.simpleMessage(
       "Nach Fachrichtung empfohlen",
     ),
@@ -1218,7 +1284,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("Schicht entfernen"),
     "Remove_Load": MessageLookupByLibrary.simpleMessage("Last entfernen"),
-    "Remove_Tool_from_Favorites": m12,
+    "Remove_Tool_from_Favorites": m16,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Aus Favoriten entfernen",
     ),
@@ -1353,6 +1419,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Sections_Footnote": MessageLookupByLibrary.simpleMessage(
       "Nennwerte der aufgeführten Profile. Widerstandsmoment und Trägheitsradius werden aus den angegebenen A und I berechnet. Prüfen Sie vor der Ausführungsplanung eine aktuelle Werks- oder Normtabelle.",
     ),
+    "See_Premium": MessageLookupByLibrary.simpleMessage("Premium ansehen"),
     "Self_Locking_Thread": MessageLookupByLibrary.simpleMessage(
       "Selbsthemmend im Gewinde",
     ),
@@ -1452,7 +1519,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage(
       "Anteil an der Streuung",
     ),
-    "Stackup_Dimension_N": m13,
+    "Stackup_Dimension_N": m17,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage("Maßkette"),
     "Stackup_Dominant": MessageLookupByLibrary.simpleMessage("Größter Anteil"),
     "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
@@ -1661,6 +1728,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Einheitenumrechner",
     ),
     "Unit_System": MessageLookupByLibrary.simpleMessage("EINHEITENSYSTEM"),
+    "Unlock_Premium": MessageLookupByLibrary.simpleMessage(
+      "Premium freischalten",
+    ),
     "Utilities": MessageLookupByLibrary.simpleMessage("Werkzeuge"),
     "Velocity_Head": MessageLookupByLibrary.simpleMessage(
       "Geschwindigkeitshöhe, V²/2g",
@@ -1680,7 +1750,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Schwache Achse (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Stegdicke"),
-    "What_If": m14,
+    "What_If": m18,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Drahtdurchmesser, d",
     ),

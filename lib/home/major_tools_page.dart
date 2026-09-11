@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/major_recommendation.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_launcher.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
@@ -63,7 +64,7 @@ class _MajorToolCard extends StatelessWidget {
         ),
         title: Text(tool.title),
         trailing: const Icon(Icons.chevron_right_rounded),
-        onTap: () => tool.action(context, tool.title, tool.id),
+        onTap: () => launchTool(context, tool),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/favorites.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_launcher.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
@@ -89,7 +90,7 @@ class _FavoriteToolCard extends StatelessWidget {
             );
           },
         ),
-        onTap: () => tool.action(context, tool.title, tool.id),
+        onTap: () => launchTool(context, tool),
       ),
     );
   }

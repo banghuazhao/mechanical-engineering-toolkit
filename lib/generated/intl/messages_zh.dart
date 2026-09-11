@@ -34,21 +34,29 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m6(index) => "第 ${index} 阶模态";
 
-  static String m7(value) => "预览：${value}";
+  static String m7(total) => "全部 ${total} 个工具——机械设计、复合材料、流体与传热、振动等";
 
-  static String m8(count) => "${count} 个计算";
+  static String m8(count, total) => "${total} 个工具中有 ${count} 个免费，高级版解锁其余工具。";
 
-  static String m9(name) => "已保存“${name}”";
+  static String m9(count) => "仅显示最近 ${count} 条，高级版可显示全部。";
 
-  static String m10(name) => "已重命名为“${name}”";
+  static String m10(tool) => "“${tool}”属于高级版工具";
 
-  static String m11(x) => "x = ${x} 处反力";
+  static String m11(value) => "预览：${value}";
 
-  static String m12(tool) => "将${tool}从收藏中移除";
+  static String m12(count) => "${count} 个计算";
 
-  static String m13(n) => "尺寸 ${n}";
+  static String m13(name) => "已保存“${name}”";
 
-  static String m14(label) => "假设分析：${label}";
+  static String m14(name) => "已重命名为“${name}”";
+
+  static String m15(x) => "x = ${x} 处反力";
+
+  static String m16(tool) => "将${tool}从收藏中移除";
+
+  static String m17(n) => "尺寸 ${n}";
+
+  static String m18(label) => "假设分析：${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -643,6 +651,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Maximum_Hogging_Moment": MessageLookupByLibrary.simpleMessage("最大负弯矩"),
     "Maximum_Sagging_Moment": MessageLookupByLibrary.simpleMessage("最大正弯矩"),
     "Maximum_Shear": MessageLookupByLibrary.simpleMessage("最大剪力"),
+    "Maybe_Later": MessageLookupByLibrary.simpleMessage("以后再说"),
     "Mean_Coil_Diameter_D": MessageLookupByLibrary.simpleMessage("弹簧中径 D"),
     "Mean_Diameter_Dm": MessageLookupByLibrary.simpleMessage("中径 dm"),
     "Mean_Moment_Mm": MessageLookupByLibrary.simpleMessage("平均弯矩 Mm"),
@@ -772,12 +781,60 @@ class MessageLookup extends MessageLookupByLibrary {
       "与 Shigley 的推导一致，假定摩擦为作用在单一平均半径上的库仑摩擦。实际摩擦系数取决于材料配对、润滑和螺纹磨损程度；钢对青铜大多在 0.10 至 0.20 之间——这个区间比上面多数数值的精度还要宽。",
     ),
     "Precision": MessageLookupByLibrary.simpleMessage("精度"),
+    "Premium": MessageLookupByLibrary.simpleMessage("高级版"),
+    "Premium_Badge": MessageLookupByLibrary.simpleMessage("高级版"),
+    "Premium_Benefit_Export": MessageLookupByLibrary.simpleMessage(
+      "PDF 报告、CSV 导出与结果图片",
+    ),
+    "Premium_Benefit_History": MessageLookupByLibrary.simpleMessage("完整的计算历史"),
+    "Premium_Benefit_Projects": MessageLookupByLibrary.simpleMessage(
+      "保存的项目与项目汇总报告",
+    ),
+    "Premium_Benefit_Sweep": MessageLookupByLibrary.simpleMessage("参数扫描分析图"),
+    "Premium_Benefit_Tools": m7,
+    "Premium_Benefit_Universal": MessageLookupByLibrary.simpleMessage(
+      "iPhone 与 iPad 同样包含，无需额外付费",
+    ),
+    "Premium_Description": MessageLookupByLibrary.simpleMessage(
+      "一次购买，永久解锁——本机 Mac 与您的 iPhone、iPad 均可使用。",
+    ),
+    "Premium_Free_Tools_Note": m8,
+    "Premium_History_Limited": m9,
+    "Premium_Locked_Export": MessageLookupByLibrary.simpleMessage(
+      "PDF、CSV 与图片导出属于高级版功能。",
+    ),
+    "Premium_Locked_History": MessageLookupByLibrary.simpleMessage(
+      "高级版可显示完整的计算历史。",
+    ),
+    "Premium_Locked_Projects": MessageLookupByLibrary.simpleMessage(
+      "保存的项目属于高级版功能。",
+    ),
+    "Premium_Locked_Sweep": MessageLookupByLibrary.simpleMessage(
+      "参数分析图属于高级版功能。",
+    ),
+    "Premium_Locked_Tool": m10,
+    "Premium_Not_Found": MessageLookupByLibrary.simpleMessage(
+      "高级版尚未在 App Store 上架。",
+    ),
+    "Premium_Purchase_Success": MessageLookupByLibrary.simpleMessage(
+      "已解锁高级版，全部工具与导出功能现已开放。",
+    ),
+    "Premium_Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
+      "未找到此前的购买记录。",
+    ),
+    "Premium_Restore_Success": MessageLookupByLibrary.simpleMessage(
+      "已恢复您的高级版购买。",
+    ),
+    "Premium_Unlocked": MessageLookupByLibrary.simpleMessage("已解锁高级版"),
+    "Premium_Unlocked_Description": MessageLookupByLibrary.simpleMessage(
+      "感谢您支持 ME Toolkit。全部工具与导出功能均已开放。",
+    ),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "压装 / 热装过盈配合",
     ),
     "Pressure_Drop": MessageLookupByLibrary.simpleMessage("压降 Δp"),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("压升 Δp"),
-    "Preview_Value": m7,
+    "Preview_Value": m11,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "主应力和平面",
     ),
@@ -793,7 +850,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "App Store 暂未提供移除广告项目。",
     ),
-    "Project_Calculations": m8,
+    "Project_Calculations": m12,
     "Project_Entry_No_Result": MessageLookupByLibrary.simpleMessage("仅输入"),
     "Project_Name": MessageLookupByLibrary.simpleMessage("项目名称"),
     "Project_Name_Hint": MessageLookupByLibrary.simpleMessage("例如：气门弹簧 — C 版"),
@@ -801,8 +858,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Report_Empty": MessageLookupByLibrary.simpleMessage(
       "该项目还没有保存的结果。打开一个计算并使用“保存到项目”即可添加。",
     ),
-    "Project_Saved": m9,
-    "Project_Updated": m10,
+    "Project_Saved": m13,
+    "Project_Updated": m14,
     "Proof_Strength_Sp": MessageLookupByLibrary.simpleMessage("保证应力 Sp"),
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage("泵与风机功率"),
     "Pump_Head": MessageLookupByLibrary.simpleMessage("扬程 H"),
@@ -815,7 +872,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Radius_Gyration_rx": MessageLookupByLibrary.simpleMessage("回转半径 rx"),
     "Radius_Gyration_ry": MessageLookupByLibrary.simpleMessage("回转半径 ry"),
     "RatethisApp": MessageLookupByLibrary.simpleMessage("给应用评分"),
-    "Reaction_At_X": m11,
+    "Reaction_At_X": m15,
     "Recommended_by_Major": MessageLookupByLibrary.simpleMessage("按专业推荐"),
     "Relative_Roughness": MessageLookupByLibrary.simpleMessage("相对粗糙度 ε/D"),
     "Relaxing_Up": MessageLookupByLibrary.simpleMessage("冥想Up"),
@@ -827,7 +884,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_From_Project": MessageLookupByLibrary.simpleMessage("从项目中移除"),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("删除该层"),
     "Remove_Load": MessageLookupByLibrary.simpleMessage("删除荷载"),
-    "Remove_Tool_from_Favorites": m12,
+    "Remove_Tool_from_Favorites": m16,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage("从收藏中移除"),
     "Removed_from_Favorites": MessageLookupByLibrary.simpleMessage("已从收藏中移除"),
     "Rename_Project": MessageLookupByLibrary.simpleMessage("重命名项目"),
@@ -888,6 +945,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Sections_Footnote": MessageLookupByLibrary.simpleMessage(
       "所列型钢的公称值。截面模数与回转半径由所列 A 和 I 计算得到。出图前请核对现行钢厂样本或标准表格。",
     ),
+    "See_Premium": MessageLookupByLibrary.simpleMessage("了解高级版"),
     "Self_Locking_Thread": MessageLookupByLibrary.simpleMessage("螺纹自锁"),
     "Settings": MessageLookupByLibrary.simpleMessage("设置"),
     "Shaft_Alone_Frequency": MessageLookupByLibrary.simpleMessage("仅轴质量"),
@@ -953,7 +1011,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Adds": MessageLookupByLibrary.simpleMessage("增大"),
     "Stackup_Clearance": MessageLookupByLibrary.simpleMessage("始终有间隙"),
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage("变动的比例"),
-    "Stackup_Dimension_N": m13,
+    "Stackup_Dimension_N": m17,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage("尺寸链"),
     "Stackup_Dominant": MessageLookupByLibrary.simpleMessage("比例最大的尺寸"),
     "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
@@ -1076,6 +1134,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Unit_Converter": MessageLookupByLibrary.simpleMessage("单位换算"),
     "Unit_System": MessageLookupByLibrary.simpleMessage("单位制"),
+    "Unlock_Premium": MessageLookupByLibrary.simpleMessage("解锁高级版"),
     "Utilities": MessageLookupByLibrary.simpleMessage("常用工具"),
     "Velocity_Head": MessageLookupByLibrary.simpleMessage("速度水头 V²/2g"),
     "Vibration_Modes": MessageLookupByLibrary.simpleMessage("固有频率"),
@@ -1091,7 +1150,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("喝水吧"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("弱轴 (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("腹板厚度"),
-    "What_If": m14,
+    "What_If": m18,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("簧丝直径 d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage("极简天气"),
     "Wrap_Angle_Large_Pulley": MessageLookupByLibrary.simpleMessage("大带轮包角"),

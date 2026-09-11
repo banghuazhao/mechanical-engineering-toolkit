@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Added a macOS app. It is a second platform on the existing App Store record — a Universal Purchase sharing the iOS bundle identifier — so it carries no ads, opens at a sensible desktop window size, and reports its Mac model in feedback mail.
+- The Mac app ships a free tier and a Premium unlock. Free covers every reference table and at least one calculator in each of the eight categories, results on screen, copying values, and sharing as text. Premium adds the rest of the sixty tools, PDF, CSV and image export, saved projects, the full calculation history, and the what-if sweep charts.
+- Premium is the *same* in-app purchase as Remove Ads on iOS, so buying on either an iPhone, an iPad or a Mac unlocks all of them. Nothing is gated on iOS or Android, where the tools stay free and ad-supported.
+- Locked tools stay visible in the library behind a "Premium" badge rather than being hidden, and every locked action explains what it is before offering the upgrade.
+- Fixed the Mac window forgetting its size and position: it was applying the default size on every launch instead of restoring the saved frame.
+
 ## 1.12.0 - 2026-09-07
 
 - Beam Load Analysis now solves any of six support arrangements — simply supported, cantilever fixed at either end, overhang on inset supports, propped cantilever and fixed at both ends — carrying any number of point loads, uniform, triangular or trapezoidal distributed loads, and applied couples. The three indeterminate cases are solved by the direct stiffness method, and the result separates the sagging and hogging peaks and adds the bending stress when a section depth is given.

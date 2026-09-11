@@ -5,6 +5,7 @@ import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:mechanical_engineering_toolkit/util/app_platform.dart';
 import 'package:mechanical_engineering_toolkit/util/secrets.dart';
 
 class AdsManager {
@@ -33,12 +34,20 @@ class AdsManager {
 
   /// Updates UMP consent on every app launch and only enables ads after all
   /// required consent messages have been handled.
+  ///
+  /// The platform check comes first and is what keeps the whole ad stack out
+  /// of the macOS build: `google_mobile_ads` ships no macOS implementation, so
+  /// every call past this point would fail on a missing plugin. Every entry
+  /// point into the SDK runs through here.
   static Future<bool> canRequestAds() {
-    if (_adsRemoved) return Future.value(false);
+    if (!AppPlatform.current.supportsAds || _adsRemoved) {
+      return Future.value(false);
+    }
     return _consentFuture ??= _requestConsent();
   }
 
   static Future<bool> isPrivacyOptionsRequired() async {
+    if (!AppPlatform.current.supportsAds) return false;
     await canRequestAds();
     return await ConsentInformation.instance
             .getPrivacyOptionsRequirementStatus() ==
@@ -227,7 +236,8 @@ class AdsManager {
   }
 
   static void debugPrintID() {
-    if (kDebugMode) {
+    // The getters below throw on a platform with no ad units configured.
+    if (kDebugMode && AppPlatform.current.supportsAds) {
       debugPrint("bannerAdUnitId: ${AdsManager.bannerAdUnitId}");
       debugPrint("openAdUnitID: ${AdsManager.openAdUnitID}");
     }

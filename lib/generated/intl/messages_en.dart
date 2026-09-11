@@ -35,21 +35,32 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m6(index) => "Mode ${index}";
 
-  static String m7(value) => "Preview: ${value}";
+  static String m7(total) =>
+      "All ${total} tools — machine design, composites, fluids and thermal, vibration, and more";
 
-  static String m8(count) => "${count} calculations";
+  static String m8(count, total) =>
+      "${count} of ${total} tools are free. Premium unlocks the rest.";
 
-  static String m9(name) => "Saved “${name}”";
+  static String m9(count) =>
+      "Showing the ${count} most recent. Premium shows them all.";
 
-  static String m10(name) => "Renamed to “${name}”";
+  static String m10(tool) => "${tool} is a Premium tool";
 
-  static String m11(x) => "Reaction at x = ${x}";
+  static String m11(value) => "Preview: ${value}";
 
-  static String m12(tool) => "Remove ${tool} from favorites";
+  static String m12(count) => "${count} calculations";
 
-  static String m13(n) => "Dimension ${n}";
+  static String m13(name) => "Saved “${name}”";
 
-  static String m14(label) => "What if: ${label}";
+  static String m14(name) => "Renamed to “${name}”";
+
+  static String m15(x) => "Reaction at x = ${x}";
+
+  static String m16(tool) => "Remove ${tool} from favorites";
+
+  static String m17(n) => "Dimension ${n}";
+
+  static String m18(label) => "What if: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -890,6 +901,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Maximum sagging moment",
     ),
     "Maximum_Shear": MessageLookupByLibrary.simpleMessage("Maximum shear"),
+    "Maybe_Later": MessageLookupByLibrary.simpleMessage("Maybe later"),
     "Mean_Coil_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Mean coil diameter, D",
     ),
@@ -1073,12 +1085,66 @@ class MessageLookup extends MessageLookupByLibrary {
       "Coulomb friction at a single mean radius, as Shigley\'s derivation assumes. A real coefficient depends on the pair of materials, the lubricant and how worn the thread is, and 0.10–0.20 covers most steel-on-bronze screws — which is a wider band than most of the numbers above.",
     ),
     "Precision": MessageLookupByLibrary.simpleMessage("PRECISION"),
+    "Premium": MessageLookupByLibrary.simpleMessage("Premium"),
+    "Premium_Badge": MessageLookupByLibrary.simpleMessage("Premium"),
+    "Premium_Benefit_Export": MessageLookupByLibrary.simpleMessage(
+      "PDF reports, CSV export and result images",
+    ),
+    "Premium_Benefit_History": MessageLookupByLibrary.simpleMessage(
+      "Your full calculation history",
+    ),
+    "Premium_Benefit_Projects": MessageLookupByLibrary.simpleMessage(
+      "Saved projects and combined project reports",
+    ),
+    "Premium_Benefit_Sweep": MessageLookupByLibrary.simpleMessage(
+      "What-if parameter sweep charts",
+    ),
+    "Premium_Benefit_Tools": m7,
+    "Premium_Benefit_Universal": MessageLookupByLibrary.simpleMessage(
+      "Included on iPhone and iPad too, at no extra cost",
+    ),
+    "Premium_Description": MessageLookupByLibrary.simpleMessage(
+      "One purchase, unlocked forever — on this Mac and on your iPhone and iPad.",
+    ),
+    "Premium_Free_Tools_Note": m8,
+    "Premium_History_Limited": m9,
+    "Premium_Locked_Export": MessageLookupByLibrary.simpleMessage(
+      "PDF, CSV and image export are part of Premium.",
+    ),
+    "Premium_Locked_History": MessageLookupByLibrary.simpleMessage(
+      "Premium shows your full calculation history.",
+    ),
+    "Premium_Locked_Projects": MessageLookupByLibrary.simpleMessage(
+      "Saved projects are part of Premium.",
+    ),
+    "Premium_Locked_Sweep": MessageLookupByLibrary.simpleMessage(
+      "What-if charts are part of Premium.",
+    ),
+    "Premium_Locked_Tool": m10,
+    "Premium_Not_Found": MessageLookupByLibrary.simpleMessage(
+      "Premium is not available from the App Store yet.",
+    ),
+    "Premium_Purchase_Success": MessageLookupByLibrary.simpleMessage(
+      "Premium unlocked. Every tool and export is now available.",
+    ),
+    "Premium_Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
+      "No previous purchase was found.",
+    ),
+    "Premium_Restore_Success": MessageLookupByLibrary.simpleMessage(
+      "Your Premium purchase was restored.",
+    ),
+    "Premium_Unlocked": MessageLookupByLibrary.simpleMessage(
+      "Premium unlocked",
+    ),
+    "Premium_Unlocked_Description": MessageLookupByLibrary.simpleMessage(
+      "Thank you for supporting ME Toolkit. Every tool and every export is yours.",
+    ),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Press / Shrink-Fit Interference",
     ),
     "Pressure_Drop": MessageLookupByLibrary.simpleMessage("Pressure drop, Δp"),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("Pressure rise, Δp"),
-    "Preview_Value": m7,
+    "Preview_Value": m11,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Principal stresses and plane",
     ),
@@ -1094,7 +1160,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Remove Ads is not available from the App Store yet.",
     ),
-    "Project_Calculations": m8,
+    "Project_Calculations": m12,
     "Project_Entry_No_Result": MessageLookupByLibrary.simpleMessage(
       "Inputs only",
     ),
@@ -1108,8 +1174,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Report_Empty": MessageLookupByLibrary.simpleMessage(
       "This project has no saved results yet. Open a calculation and use Save to project to add one.",
     ),
-    "Project_Saved": m9,
-    "Project_Updated": m10,
+    "Project_Saved": m13,
+    "Project_Updated": m14,
     "Proof_Strength_Sp": MessageLookupByLibrary.simpleMessage("Proof Sp"),
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage("Pump & Fan Power"),
     "Pump_Head": MessageLookupByLibrary.simpleMessage("Head, H"),
@@ -1136,7 +1202,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Radius of gyration, ry",
     ),
     "RatethisApp": MessageLookupByLibrary.simpleMessage("Rate this App"),
-    "Reaction_At_X": m11,
+    "Reaction_At_X": m15,
     "Recommended_by_Major": MessageLookupByLibrary.simpleMessage(
       "Recommended by Major",
     ),
@@ -1154,7 +1220,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("Remove layer"),
     "Remove_Load": MessageLookupByLibrary.simpleMessage("Remove load"),
-    "Remove_Tool_from_Favorites": m12,
+    "Remove_Tool_from_Favorites": m16,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Remove from favorites",
     ),
@@ -1275,6 +1341,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Sections_Footnote": MessageLookupByLibrary.simpleMessage(
       "Nominal published values for the listed shapes. Section modulus and radius of gyration are computed from the listed A and I. Check a current mill or standard table before detailing.",
     ),
+    "See_Premium": MessageLookupByLibrary.simpleMessage("See Premium"),
     "Self_Locking_Thread": MessageLookupByLibrary.simpleMessage(
       "Self-locking on the thread",
     ),
@@ -1370,7 +1437,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage(
       "Share of the variation",
     ),
-    "Stackup_Dimension_N": m13,
+    "Stackup_Dimension_N": m17,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage(
       "Dimension chain",
     ),
@@ -1577,6 +1644,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Unit_Converter": MessageLookupByLibrary.simpleMessage("Unit Converter"),
     "Unit_System": MessageLookupByLibrary.simpleMessage("UNIT SYSTEM"),
+    "Unlock_Premium": MessageLookupByLibrary.simpleMessage("Unlock Premium"),
     "Utilities": MessageLookupByLibrary.simpleMessage("Utilities"),
     "Velocity_Head": MessageLookupByLibrary.simpleMessage(
       "Velocity head, V²/2g",
@@ -1598,7 +1666,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Weak axis (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Web thickness"),
-    "What_If": m14,
+    "What_If": m18,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("Wire diameter, d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

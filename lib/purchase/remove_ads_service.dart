@@ -19,9 +19,21 @@ import 'package:mechanical_engineering_toolkit/util/others.dart';
 /// Play and App Store paths on a desktop host.
 enum AppStore {
   appStore('com.appsbay.mechanicalEngineeringToolkit.remove_ads'),
+
+  /// The Mac App Store, which sells the *same* product as [appStore].
+  ///
+  /// macOS is a second platform on one App Store Connect record — a Universal
+  /// Purchase, keyed off the shared bundle identifier — and in-app purchases
+  /// belong to the record rather than to a platform. So there is one product
+  /// to configure, one price, and a customer who buys on either side gets the
+  /// other for free when StoreKit restores. What the purchase *unlocks*
+  /// differs by platform: ads on iOS, the gated tools and exports on macOS
+  /// (see `lib/purchase/premium.dart`).
+  macAppStore('com.appsbay.mechanicalEngineeringToolkit.remove_ads'),
+
   playStore('remove_ads'),
 
-  /// Desktop, web and test hosts, which have no billing backend at all.
+  /// Web and test hosts, which have no billing backend at all.
   none('');
 
   const AppStore(this.removeAdsProductId);
@@ -32,6 +44,7 @@ enum AppStore {
 
   static AppStore get current {
     if (Platform.isIOS) return AppStore.appStore;
+    if (Platform.isMacOS) return AppStore.macAppStore;
     if (Platform.isAndroid) return AppStore.playStore;
     return AppStore.none;
   }
@@ -230,6 +243,16 @@ class RemoveAdsService extends ChangeNotifier {
   int _statusRevision = 0;
 
   bool get isAdsRemoved => _isAdsRemoved;
+
+  /// The same flag as [isAdsRemoved], under the name the macOS build uses.
+  ///
+  /// One purchase, two meanings: it suppresses advertising on iOS and Android,
+  /// and it unlocks the gated tools and exports on macOS. Reading it through
+  /// this name keeps the Mac call sites from looking like they care about ads
+  /// in a build that has none. Prefer [PremiumGate] over touching this
+  /// directly — it also answers whether the platform gates anything.
+  bool get isEntitled => _isAdsRemoved;
+
   StoreProduct? get product => _product;
   String? get localizedPrice => _product?.price;
   RemoveAdsStatus get status => _status;

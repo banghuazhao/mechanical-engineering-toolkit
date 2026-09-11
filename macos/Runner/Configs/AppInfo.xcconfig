@@ -1,0 +1,20 @@
+// Application-level settings for the Runner target.
+//
+// This may be replaced with something auto-generated from metadata (e.g., pubspec.yaml) in the
+// future. If not, the values below would default to using the project name when this becomes a
+// 'flutter create' template.
+
+// The application's name. By default this is also the title of the Flutter window.
+PRODUCT_NAME = ME Toolkit
+
+// The application's bundle identifier.
+//
+// Deliberately identical to the iOS target's. The macOS app is a second
+// platform on the same App Store Connect record — a Universal Purchase — and
+// Apple keys that off a shared bundle identifier. It is also what lets the
+// two platforms share one in-app purchase product, so a customer who unlocks
+// on one gets the other for free. See lib/purchase/remove_ads_service.dart.
+PRODUCT_BUNDLE_IDENTIFIER = com.appsbay.mechanicalEngineeringToolkit
+
+// The copyright displayed in application information
+PRODUCT_COPYRIGHT = Copyright © 2026 Apps Bay Area. All rights reserved.

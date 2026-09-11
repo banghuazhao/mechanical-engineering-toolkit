@@ -4,6 +4,8 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/keep_to_project.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
+import 'package:mechanical_engineering_toolkit/purchase/premium.dart';
+import 'package:mechanical_engineering_toolkit/purchase/premium_upsell.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
@@ -140,7 +142,21 @@ class ResultScaffold extends StatefulWidget {
 
 /// The ways a result can leave the app. Which of these are offered depends on
 /// what the page declared — see [_ResultScaffoldState._showSharePicker].
-enum ShareFormat { text, csv, pdf, image }
+///
+/// [premiumFeature] is what a format costs where the build gates anything. It
+/// is null for [text], which stays free everywhere: a result you can read on
+/// screen should be a result you can paste into an email, and holding that
+/// back would make the free tier feel punitive rather than limited.
+enum ShareFormat {
+  text(null),
+  csv(PremiumFeature.csvExport),
+  pdf(PremiumFeature.pdfExport),
+  image(PremiumFeature.imageExport);
+
+  const ShareFormat(this.premiumFeature);
+
+  final PremiumFeature? premiumFeature;
+}
 
 class _ResultScaffoldState extends State<ResultScaffold> {
   final _exportKey = GlobalKey();
@@ -184,6 +200,7 @@ class _ResultScaffoldState extends State<ResultScaffold> {
     NumberPrecisionHelper precs,
     UnitSystem system,
   ) async {
+    final gate = PremiumGate.read(context);
     final format = await showModalBottomSheet<ShareFormat>(
       context: context,
       showDragHandle: true,
@@ -196,9 +213,18 @@ class _ResultScaffoldState extends State<ResultScaffold> {
           if (results != null) ShareFormat.pdf,
           ShareFormat.image,
         ],
+        gate: gate,
       ),
     );
     if (format == null || !mounted) return;
+
+    // Locked formats stay listed rather than hidden — seeing that a PDF report
+    // exists is the point — so the check happens on the way out of the sheet.
+    final feature = format.premiumFeature;
+    if (feature != null && gate.isFeatureLocked(feature)) {
+      await showLockedFeatureUpsell(context, feature);
+      return;
+    }
     await _share(format, shareLines, results, precs, system);
   }
 
@@ -303,6 +329,8 @@ class _ResultScaffoldState extends State<ResultScaffold> {
     final results = widget.results;
     final precs = context.watch<NumberPrecisionHelper>();
     final system = context.watch<UnitSystemPreference>().system;
+    final projectsLocked =
+        PremiumGate.watch(context).isFeatureLocked(PremiumFeature.savedProjects);
 
     // A page that declares its results as data gets its share text for free;
     // one that has not migrated yet keeps supplying its own.
@@ -323,13 +351,20 @@ class _ResultScaffoldState extends State<ResultScaffold> {
             IconButton(
               key: const Key('keepInProject'),
               tooltip: l10n.Save_To_Project,
-              icon: const Icon(Icons.bookmark_add_outlined),
-              onPressed: () => keepResultInProject(
-                context,
-                toolName: widget.toolName,
-                sections: results,
-                formulaSteps: widget.formulaSteps,
-              ),
+              icon: projectsLocked
+                  ? const PremiumLockedIcon(Icons.bookmark_add_outlined)
+                  : const Icon(Icons.bookmark_add_outlined),
+              onPressed: () => projectsLocked
+                  ? showLockedFeatureUpsell(
+                      context,
+                      PremiumFeature.savedProjects,
+                    )
+                  : keepResultInProject(
+                      context,
+                      toolName: widget.toolName,
+                      sections: results,
+                      formulaSteps: widget.formulaSteps,
+                    ),
             ),
           // One share action for every format. Image is always available —
           // it is a capture of the screen and needs nothing declared.
@@ -369,9 +404,13 @@ class _ResultScaffoldState extends State<ResultScaffold> {
 /// Follows the same shape as the language picker: a title, a divider, then one
 /// tappable row per choice.
 class _SharePicker extends StatelessWidget {
-  const _SharePicker({required this.formats});
+  const _SharePicker({required this.formats, required this.gate});
 
   final List<ShareFormat> formats;
+
+  /// Decides which rows wear a padlock. Locked rows stay tappable — tapping
+  /// one opens the upgrade, which is more useful than a dead row.
+  final PremiumGate gate;
 
   static const _icons = {
     ShareFormat.text: Icons.notes_rounded,
@@ -429,8 +468,10 @@ class _SharePicker extends StatelessWidget {
               ),
             ),
             const Divider(height: 1),
-            ...formats.map(
-              (format) => ListTile(
+            ...formats.map((format) {
+              final feature = format.premiumFeature;
+              final locked = feature != null && gate.isFeatureLocked(feature);
+              return ListTile(
                 key: _keys[format],
                 leading: Icon(
                   _icons[format],
@@ -438,12 +479,13 @@ class _SharePicker extends StatelessWidget {
                 ),
                 title: Text(_label(context, format)),
                 subtitle: Text(_description(context, format)),
+                trailing: locked ? const PremiumLockBadge() : null,
                 onTap: () {
                   HapticFeedback.selectionClick();
                   Navigator.pop(context, format);
                 },
-              ),
-            ),
+              );
+            }),
             const SizedBox(height: 8),
           ],
         ),

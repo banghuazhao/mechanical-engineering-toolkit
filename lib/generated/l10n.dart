@@ -989,6 +989,236 @@ class S {
     return Intl.message('Restoring…', name: 'Restoring', desc: '', args: []);
   }
 
+  /// `Premium`
+  String get Premium {
+    return Intl.message('Premium', name: 'Premium', desc: '', args: []);
+  }
+
+  /// `Unlock Premium`
+  String get Unlock_Premium {
+    return Intl.message(
+      'Unlock Premium',
+      name: 'Unlock_Premium',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `One purchase, unlocked forever — on this Mac and on your iPhone and iPad.`
+  String get Premium_Description {
+    return Intl.message(
+      'One purchase, unlocked forever — on this Mac and on your iPhone and iPad.',
+      name: 'Premium_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Premium unlocked`
+  String get Premium_Unlocked {
+    return Intl.message(
+      'Premium unlocked',
+      name: 'Premium_Unlocked',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thank you for supporting ME Toolkit. Every tool and every export is yours.`
+  String get Premium_Unlocked_Description {
+    return Intl.message(
+      'Thank you for supporting ME Toolkit. Every tool and every export is yours.',
+      name: 'Premium_Unlocked_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Premium is not available from the App Store yet.`
+  String get Premium_Not_Found {
+    return Intl.message(
+      'Premium is not available from the App Store yet.',
+      name: 'Premium_Not_Found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Premium unlocked. Every tool and export is now available.`
+  String get Premium_Purchase_Success {
+    return Intl.message(
+      'Premium unlocked. Every tool and export is now available.',
+      name: 'Premium_Purchase_Success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your Premium purchase was restored.`
+  String get Premium_Restore_Success {
+    return Intl.message(
+      'Your Premium purchase was restored.',
+      name: 'Premium_Restore_Success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No previous purchase was found.`
+  String get Premium_Restore_Not_Found {
+    return Intl.message(
+      'No previous purchase was found.',
+      name: 'Premium_Restore_Not_Found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Premium`
+  String get Premium_Badge {
+    return Intl.message('Premium', name: 'Premium_Badge', desc: '', args: []);
+  }
+
+  /// `{tool} is a Premium tool`
+  String Premium_Locked_Tool(Object tool) {
+    return Intl.message(
+      '$tool is a Premium tool',
+      name: 'Premium_Locked_Tool',
+      desc: '',
+      args: [tool],
+    );
+  }
+
+  /// `{count} of {total} tools are free. Premium unlocks the rest.`
+  String Premium_Free_Tools_Note(Object count, Object total) {
+    return Intl.message(
+      '$count of $total tools are free. Premium unlocks the rest.',
+      name: 'Premium_Free_Tools_Note',
+      desc: '',
+      args: [count, total],
+    );
+  }
+
+  /// `PDF, CSV and image export are part of Premium.`
+  String get Premium_Locked_Export {
+    return Intl.message(
+      'PDF, CSV and image export are part of Premium.',
+      name: 'Premium_Locked_Export',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saved projects are part of Premium.`
+  String get Premium_Locked_Projects {
+    return Intl.message(
+      'Saved projects are part of Premium.',
+      name: 'Premium_Locked_Projects',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Premium shows your full calculation history.`
+  String get Premium_Locked_History {
+    return Intl.message(
+      'Premium shows your full calculation history.',
+      name: 'Premium_Locked_History',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What-if charts are part of Premium.`
+  String get Premium_Locked_Sweep {
+    return Intl.message(
+      'What-if charts are part of Premium.',
+      name: 'Premium_Locked_Sweep',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All {total} tools — machine design, composites, fluids and thermal, vibration, and more`
+  String Premium_Benefit_Tools(Object total) {
+    return Intl.message(
+      'All $total tools — machine design, composites, fluids and thermal, vibration, and more',
+      name: 'Premium_Benefit_Tools',
+      desc: '',
+      args: [total],
+    );
+  }
+
+  /// `PDF reports, CSV export and result images`
+  String get Premium_Benefit_Export {
+    return Intl.message(
+      'PDF reports, CSV export and result images',
+      name: 'Premium_Benefit_Export',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saved projects and combined project reports`
+  String get Premium_Benefit_Projects {
+    return Intl.message(
+      'Saved projects and combined project reports',
+      name: 'Premium_Benefit_Projects',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your full calculation history`
+  String get Premium_Benefit_History {
+    return Intl.message(
+      'Your full calculation history',
+      name: 'Premium_Benefit_History',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `What-if parameter sweep charts`
+  String get Premium_Benefit_Sweep {
+    return Intl.message(
+      'What-if parameter sweep charts',
+      name: 'Premium_Benefit_Sweep',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Included on iPhone and iPad too, at no extra cost`
+  String get Premium_Benefit_Universal {
+    return Intl.message(
+      'Included on iPhone and iPad too, at no extra cost',
+      name: 'Premium_Benefit_Universal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Showing the {count} most recent. Premium shows them all.`
+  String Premium_History_Limited(Object count) {
+    return Intl.message(
+      'Showing the $count most recent. Premium shows them all.',
+      name: 'Premium_History_Limited',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Maybe later`
+  String get Maybe_Later {
+    return Intl.message('Maybe later', name: 'Maybe_Later', desc: '', args: []);
+  }
+
+  /// `See Premium`
+  String get See_Premium {
+    return Intl.message('See Premium', name: 'See_Premium', desc: '', args: []);
+  }
+
   /// `Share results`
   String get Share_Results {
     return Intl.message(

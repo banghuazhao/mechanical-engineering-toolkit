@@ -7,6 +7,9 @@ import 'package:mechanical_engineering_toolkit/home/recorded_inputs.dart';
 import 'package:mechanical_engineering_toolkit/home/saved_projects.dart';
 import 'package:mechanical_engineering_toolkit/home/saved_projects_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_launcher.dart';
+import 'package:mechanical_engineering_toolkit/purchase/premium.dart';
+import 'package:mechanical_engineering_toolkit/purchase/premium_upsell.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -90,8 +93,8 @@ class ToolHistoryPage extends StatelessWidget {
       ),
       body: Consumer<ToolHistory>(
         builder: (context, history, _) {
-          final entries = history.entries;
-          if (entries.isEmpty) {
+          final recorded = history.entries;
+          if (recorded.isEmpty) {
             return AppEmptyState(
               icon: Icons.history_rounded,
               title: S.of(context).No_History_Yet,
@@ -99,14 +102,27 @@ class ToolHistoryPage extends StatelessWidget {
                   'Completed calculations will appear here for quick access.',
             );
           }
+          // A free macOS build shows only the most recent few. The rest stay
+          // recorded — the unlock reveals them rather than starting the
+          // history over — and `entries` is newest-first, so truncating from
+          // the end keeps the visible indices lined up with ToolHistory's
+          // delete-by-index, which counts from the same end.
+          final limit = PremiumGate.watch(context).historyLimit;
+          final entries = limit == null || recorded.length <= limit
+              ? recorded
+              : recorded.take(limit).toList();
+          final hiddenCount = recorded.length - entries.length;
           return AppContent(
             padding: EdgeInsets.symmetric(vertical: context.tokens.space2),
             child: ListView.separated(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              itemCount: entries.length,
+              itemCount: entries.length + (hiddenCount > 0 ? 1 : 0),
               separatorBuilder: (context, index) =>
                   SizedBox(height: context.tokens.space2),
               itemBuilder: (context, index) {
+                if (index == entries.length) {
+                  return _HistoryLimitCard(shown: entries.length);
+                }
                 final entry = entries[index];
                 Tool? tool;
                 try {
@@ -193,10 +209,9 @@ class ToolHistoryPage extends StatelessWidget {
                           const Icon(Icons.chevron_right_rounded),
                         ],
                       ),
-                      onTap: () => resolvedTool.action(
+                      onTap: () => launchTool(
                         context,
-                        resolvedTool.title,
-                        entry.toolId,
+                        resolvedTool,
                         initialInputs: entry.inputs,
                       ),
                     ),
@@ -249,6 +264,40 @@ class _ToolIcon extends StatelessWidget {
                   excludeFromSemantics: true,
                 ),
               ),
+      ),
+    );
+  }
+}
+
+/// Closes a truncated history with what is missing and how to see it.
+///
+/// Sits at the end of the list rather than replacing it: the point is that
+/// the older entries still exist, so the free tier should read as "showing
+/// five of forty", not as though the app forgot.
+class _HistoryLimitCard extends StatelessWidget {
+  const _HistoryLimitCard({required this.shown});
+
+  final int shown;
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = S.of(context);
+    final theme = Theme.of(context);
+    return Card(
+      color: theme.colorScheme.surfaceContainerLow,
+      child: ListTile(
+        leading: Icon(
+          Icons.workspace_premium_rounded,
+          color: theme.colorScheme.primary,
+        ),
+        title: Text(strings.Premium_History_Limited(shown)),
+        trailing: TextButton(
+          onPressed: () => showLockedFeatureUpsell(
+            context,
+            PremiumFeature.fullHistory,
+          ),
+          child: Text(strings.See_Premium),
+        ),
       ),
     );
   }

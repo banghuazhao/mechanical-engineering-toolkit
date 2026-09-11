@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
+import 'package:mechanical_engineering_toolkit/purchase/premium.dart';
+import 'package:mechanical_engineering_toolkit/purchase/premium_upsell.dart';
+import 'package:mechanical_engineering_toolkit/purchase/purchase_feedback.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:provider/provider.dart';
 
+/// The purchase screen, reached from the menu.
+///
+/// One product with two faces. Where nothing is gated — iOS and Android — it
+/// is the Remove Ads screen it has always been. Where features are gated it
+/// becomes the Premium screen instead, listing what the unlock includes; the
+/// transaction underneath is identical, so a customer who bought on either
+/// platform already owns the other.
 class RemoveAdsPage extends StatefulWidget {
   const RemoveAdsPage({super.key});
 
@@ -12,16 +22,6 @@ class RemoveAdsPage extends StatefulWidget {
 }
 
 class _RemoveAdsPageState extends State<RemoveAdsPage> {
-  /// States that are a step on the way somewhere rather than an outcome, and
-  /// so are never announced.
-  static const _transientStatuses = {
-    RemoveAdsStatus.idle,
-    RemoveAdsStatus.loading,
-    RemoveAdsStatus.ready,
-    RemoveAdsStatus.purchasing,
-    RemoveAdsStatus.restoring,
-  };
-
   /// Tracked by revision rather than by status value: two restores that both
   /// come up empty end on the same status, and the user needs to hear about
   /// the second one too.
@@ -48,8 +48,32 @@ class _RemoveAdsPageState extends State<RemoveAdsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = S.of(context);
+    final gate = PremiumGate.watch(context);
+
+    if (gate.gatesFeatures) {
+      // PremiumOffer runs its own status announcements, so this page must not
+      // also announce them — two snackbars for one purchase.
+      return Scaffold(
+        appBar: AppBar(title: Text(strings.Premium)),
+        body: SafeArea(
+          child: AppContent(
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                AppSectionCard(
+                  title: strings.Unlock_Premium,
+                  child: const PremiumOffer(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text(S.of(context).Remove_Ads)),
+      appBar: AppBar(title: Text(strings.Remove_Ads)),
       body: SafeArea(
         child: Consumer<RemoveAdsService>(
           builder: (context, service, _) {
@@ -68,21 +92,11 @@ class _RemoveAdsPageState extends State<RemoveAdsPage> {
     if (_lastNotifiedRevision == service.statusRevision) return;
     _lastNotifiedRevision = service.statusRevision;
 
-    final status = service.status;
-    if (_transientStatuses.contains(status)) return;
-
-    final strings = S.of(context);
-    final message = switch (status) {
-      RemoveAdsStatus.unavailable => strings.Purchase_Unavailable,
-      RemoveAdsStatus.notFound => strings.Product_Not_Found,
-      RemoveAdsStatus.failed => strings.Purchase_Failed,
-      RemoveAdsStatus.cancelled => strings.Purchase_Cancelled,
-      RemoveAdsStatus.pending => strings.Purchase_Pending,
-      RemoveAdsStatus.purchased => strings.Purchase_Success,
-      RemoveAdsStatus.restored => strings.Restore_Success,
-      RemoveAdsStatus.restoreNotFound => strings.Restore_Not_Found,
-      _ => null,
-    };
+    final message = purchaseStatusMessage(
+      S.of(context),
+      service.status,
+      premiumWording: false,
+    );
     if (message == null) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;

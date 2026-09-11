@@ -34,21 +34,30 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m6(index) => "第${index}次モード";
 
-  static String m7(value) => "プレビュー：${value}";
+  static String m7(total) => "${total} 件すべてのツール — 機械設計、複合材料、流体・伝熱、振動ほか";
 
-  static String m8(count) => "計算 ${count} 件";
+  static String m8(count, total) =>
+      "${total} 件のうち ${count} 件のツールを無料で使えます。プレミアムで残りも解除されます。";
 
-  static String m9(name) => "「${name}」を保存しました";
+  static String m9(count) => "最新の ${count} 件を表示しています。プレミアムではすべて表示されます。";
 
-  static String m10(name) => "「${name}」に名前を変更しました";
+  static String m10(tool) => "「${tool}」はプレミアムのツールです";
 
-  static String m11(x) => "x = ${x} の反力";
+  static String m11(value) => "プレビュー：${value}";
 
-  static String m12(tool) => "${tool}をお気に入りから削除";
+  static String m12(count) => "計算 ${count} 件";
 
-  static String m13(n) => "寸法 ${n}";
+  static String m13(name) => "「${name}」を保存しました";
 
-  static String m14(label) => "もし〜なら: ${label}";
+  static String m14(name) => "「${name}」に名前を変更しました";
+
+  static String m15(x) => "x = ${x} の反力";
+
+  static String m16(tool) => "${tool}をお気に入りから削除";
+
+  static String m17(n) => "寸法 ${n}";
+
+  static String m18(label) => "もし〜なら: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -699,6 +708,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "最大正曲げモーメント",
     ),
     "Maximum_Shear": MessageLookupByLibrary.simpleMessage("最大せん断力"),
+    "Maybe_Later": MessageLookupByLibrary.simpleMessage("後で"),
     "Mean_Coil_Diameter_D": MessageLookupByLibrary.simpleMessage("平均コイル径、D"),
     "Mean_Diameter_Dm": MessageLookupByLibrary.simpleMessage("有効径 dm"),
     "Mean_Moment_Mm": MessageLookupByLibrary.simpleMessage("平均曲げモーメント、Mm"),
@@ -834,12 +844,62 @@ class MessageLookup extends MessageLookupByLibrary {
       "Shigley の導出と同じく、単一の平均半径におけるクーロン摩擦を仮定しています。実際の摩擦係数は材料の組合せ、潤滑、ねじの摩耗によって変わり、鋼と青銅の組合せではおおむね 0.10〜0.20 に収まります。これは上の数値の多くよりも広い幅です。",
     ),
     "Precision": MessageLookupByLibrary.simpleMessage("精度"),
+    "Premium": MessageLookupByLibrary.simpleMessage("プレミアム"),
+    "Premium_Badge": MessageLookupByLibrary.simpleMessage("プレミアム"),
+    "Premium_Benefit_Export": MessageLookupByLibrary.simpleMessage(
+      "PDF レポート、CSV 書き出し、結果画像",
+    ),
+    "Premium_Benefit_History": MessageLookupByLibrary.simpleMessage("すべての計算履歴"),
+    "Premium_Benefit_Projects": MessageLookupByLibrary.simpleMessage(
+      "保存プロジェクトとプロジェクト全体のレポート",
+    ),
+    "Premium_Benefit_Sweep": MessageLookupByLibrary.simpleMessage(
+      "パラメータスイープの What-if グラフ",
+    ),
+    "Premium_Benefit_Tools": m7,
+    "Premium_Benefit_Universal": MessageLookupByLibrary.simpleMessage(
+      "iPhone・iPad でも追加料金なしで利用可能",
+    ),
+    "Premium_Description": MessageLookupByLibrary.simpleMessage(
+      "一度の購入で永続的に解除されます。この Mac でも、iPhone や iPad でも使えます。",
+    ),
+    "Premium_Free_Tools_Note": m8,
+    "Premium_History_Limited": m9,
+    "Premium_Locked_Export": MessageLookupByLibrary.simpleMessage(
+      "PDF・CSV・画像の書き出しはプレミアムの機能です。",
+    ),
+    "Premium_Locked_History": MessageLookupByLibrary.simpleMessage(
+      "プレミアムでは計算履歴をすべて表示できます。",
+    ),
+    "Premium_Locked_Projects": MessageLookupByLibrary.simpleMessage(
+      "保存プロジェクトはプレミアムの機能です。",
+    ),
+    "Premium_Locked_Sweep": MessageLookupByLibrary.simpleMessage(
+      "What-if グラフはプレミアムの機能です。",
+    ),
+    "Premium_Locked_Tool": m10,
+    "Premium_Not_Found": MessageLookupByLibrary.simpleMessage(
+      "プレミアムはまだ App Store で提供されていません。",
+    ),
+    "Premium_Purchase_Success": MessageLookupByLibrary.simpleMessage(
+      "プレミアムを解除しました。すべてのツールとエクスポートが利用できます。",
+    ),
+    "Premium_Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
+      "以前の購入は見つかりませんでした。",
+    ),
+    "Premium_Restore_Success": MessageLookupByLibrary.simpleMessage(
+      "プレミアムの購入を復元しました。",
+    ),
+    "Premium_Unlocked": MessageLookupByLibrary.simpleMessage("プレミアム解除済み"),
+    "Premium_Unlocked_Description": MessageLookupByLibrary.simpleMessage(
+      "ME Toolkit をご支援いただきありがとうございます。すべてのツールとエクスポートをご利用いただけます。",
+    ),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "圧入・焼きばめのしめしろ",
     ),
     "Pressure_Drop": MessageLookupByLibrary.simpleMessage("圧力損失 Δp"),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("圧力上昇 Δp"),
-    "Preview_Value": m7,
+    "Preview_Value": m11,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "主応力と主応力面",
     ),
@@ -855,7 +915,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "「広告を削除」はまだApp Storeでご利用いただけません。",
     ),
-    "Project_Calculations": m8,
+    "Project_Calculations": m12,
     "Project_Entry_No_Result": MessageLookupByLibrary.simpleMessage("入力のみ"),
     "Project_Name": MessageLookupByLibrary.simpleMessage("プロジェクト名"),
     "Project_Name_Hint": MessageLookupByLibrary.simpleMessage(
@@ -867,8 +927,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Report_Empty": MessageLookupByLibrary.simpleMessage(
       "このプロジェクトにはまだ保存された結果がありません。計算を開き、プロジェクトに保存してください。",
     ),
-    "Project_Saved": m9,
-    "Project_Updated": m10,
+    "Project_Saved": m13,
+    "Project_Updated": m14,
     "Proof_Strength_Sp": MessageLookupByLibrary.simpleMessage("保証応力 Sp"),
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage("ポンプ・ファン動力"),
     "Pump_Head": MessageLookupByLibrary.simpleMessage("全揚程 H"),
@@ -887,7 +947,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Radius_Gyration_rx": MessageLookupByLibrary.simpleMessage("断面二次半径 rx"),
     "Radius_Gyration_ry": MessageLookupByLibrary.simpleMessage("断面二次半径 ry"),
     "RatethisApp": MessageLookupByLibrary.simpleMessage("このアプリを評価"),
-    "Reaction_At_X": m11,
+    "Reaction_At_X": m15,
     "Recommended_by_Major": MessageLookupByLibrary.simpleMessage("専攻別のおすすめ"),
     "Relative_Roughness": MessageLookupByLibrary.simpleMessage("相対粗さ ε/D"),
     "Relaxing_Up": MessageLookupByLibrary.simpleMessage("Relaxing Up"),
@@ -899,7 +959,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Remove_From_Project": MessageLookupByLibrary.simpleMessage("プロジェクトから削除"),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("層を削除"),
     "Remove_Load": MessageLookupByLibrary.simpleMessage("荷重を削除"),
-    "Remove_Tool_from_Favorites": m12,
+    "Remove_Tool_from_Favorites": m16,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage("お気に入りから削除"),
     "Removed_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "お気に入りから削除しました",
@@ -974,6 +1034,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Sections_Footnote": MessageLookupByLibrary.simpleMessage(
       "掲載形鋼の公称値です。断面係数と断面二次半径は掲載の A と I から算出しています。詳細設計の前に最新のメーカー資料または規格表を確認してください。",
     ),
+    "See_Premium": MessageLookupByLibrary.simpleMessage("プレミアムを見る"),
     "Self_Locking_Thread": MessageLookupByLibrary.simpleMessage("ねじ面で自立する"),
     "Settings": MessageLookupByLibrary.simpleMessage("設定"),
     "Shaft_Alone_Frequency": MessageLookupByLibrary.simpleMessage("軸質量のみ"),
@@ -1043,7 +1104,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Adds": MessageLookupByLibrary.simpleMessage("加える"),
     "Stackup_Clearance": MessageLookupByLibrary.simpleMessage("常にすきまあり"),
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage("ばらつきの寄与"),
-    "Stackup_Dimension_N": m13,
+    "Stackup_Dimension_N": m17,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage("寸法の連なり"),
     "Stackup_Dominant": MessageLookupByLibrary.simpleMessage("最大の寄与"),
     "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
@@ -1180,6 +1241,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Unit_Converter": MessageLookupByLibrary.simpleMessage("単位換算"),
     "Unit_System": MessageLookupByLibrary.simpleMessage("単位系"),
+    "Unlock_Premium": MessageLookupByLibrary.simpleMessage("プレミアムを解除"),
     "Utilities": MessageLookupByLibrary.simpleMessage("ツール"),
     "Velocity_Head": MessageLookupByLibrary.simpleMessage("速度水頭 V²/2g"),
     "Vibration_Modes": MessageLookupByLibrary.simpleMessage("固有振動数"),
@@ -1195,7 +1257,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("弱軸 (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("ウェブ厚"),
-    "What_If": m14,
+    "What_If": m18,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("線径、d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

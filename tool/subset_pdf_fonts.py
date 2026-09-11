@@ -21,6 +21,20 @@ Run it after adding or changing any CJK string, then commit the rebuilt fonts:
 Both source faces are OFL-1.1 (see fonts/OFL.txt) and are downloadable from
 https://fonts.google.com/noto. `pip install fonttools` provides `pyftsubset`,
 which does the actual cutting.
+
+One trap: Google Fonts now ships these as *variable* fonts whose weight axis
+defaults to 100 (Thin), not 400. Subsetting one directly produces hairline CJK
+sitting next to Regular Latin. Pin the axis first:
+
+    from fontTools.ttLib import TTFont
+    from fontTools.varLib import instancer
+    font = TTFont("NotoSansSC[wght].ttf")
+    instancer.instantiateVariableFont(font, {"wght": 400}, inplace=True)
+    font.save("NotoSansSC-Regular.ttf")
+
+A rebuild that got this right leaves the glyphs already in the subset
+byte-identical; `fonts/` growing by a few KB and nothing else changing is the
+signal that only the new characters were added.
 """
 
 from __future__ import annotations

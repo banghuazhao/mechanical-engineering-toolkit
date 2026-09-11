@@ -5,6 +5,9 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/saved_projects.dart';
 import 'package:mechanical_engineering_toolkit/home/recorded_inputs.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/home/tool_launcher.dart';
+import 'package:mechanical_engineering_toolkit/purchase/premium.dart';
+import 'package:mechanical_engineering_toolkit/purchase/premium_upsell.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/pdf_export.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -195,9 +198,18 @@ class SavedProjectsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locked = PremiumGate.watch(context)
+        .isFeatureLocked(PremiumFeature.savedProjects);
     return Scaffold(
       appBar: AppBar(title: Text(S.of(context).Saved_Projects)),
-      body: Consumer<SavedProjects>(
+      // Not the usual "mark what is locked and show the rest": a free build
+      // has never been able to save a project, so there is no list to mark.
+      body: locked
+          ? PremiumLockedView(
+              icon: Icons.bookmark_rounded,
+              reason: S.of(context).Premium_Locked_Projects,
+            )
+          : Consumer<SavedProjects>(
         builder: (context, store, _) {
           final projects = store.projects;
           if (projects.isEmpty) {
@@ -339,10 +351,9 @@ class _ProjectCard extends StatelessWidget {
             ),
           ],
         ),
-        onTap: () => resolvedTool.action(
+        onTap: () => launchTool(
           context,
-          resolvedTool.title,
-          project.toolId,
+          resolvedTool,
           initialInputs: project.inputs,
         ),
       ),

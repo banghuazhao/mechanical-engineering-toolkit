@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
+import 'package:mechanical_engineering_toolkit/util/app_platform.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
 import 'package:provider/provider.dart';
 
@@ -54,6 +55,11 @@ class _AppBannerAdState extends State<AppBannerAd> {
 
   @override
   Widget build(BuildContext context) {
+    // macOS has no ad SDK and no ad slot in the layout at all: not an empty
+    // strip the height of a banner, but nothing. Checked before the ads-removed
+    // branch below so the Mac build never reserves the space.
+    if (!AppPlatform.current.supportsAds) return const SizedBox.shrink();
+
     final adsRemoved = context.watch<RemoveAdsService>().isAdsRemoved;
     if (adsRemoved) {
       if (_ad != null) {
