@@ -6,10 +6,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 A cross-platform engineering calculator for students, researchers, and practising
-engineers. Sixty tools spanning mechanics of materials, beam analysis, statics,
-machine design and vibration, fluids and heat transfer, elasticity, and composites
-— each one showing the governing formula, the substituted calculation steps, and a
-result you can export or share.
+engineers. Sixty-four tools spanning mechanics of materials, beam analysis,
+statics, machine design and vibration, fluids and heat transfer, thermodynamics,
+elasticity, and composites — each one showing the governing formula, the
+substituted calculation steps, and a result you can export or share.
 
 <p align="center">
   <img src="./doc_images/1.webp" alt="Tool library" width="220"/>
@@ -30,13 +30,22 @@ result you can export or share.
 - **Export and share.** Any result as text, image, CSV, or PDF report.
 - **An explanation behind every tool.** The governing equations, what each symbol
   means, what the model assumes, and where to read more.
-- **Material and section libraries.** Isotropic materials, fluid properties,
-  thermal materials, and standard steel sections.
+- **Real steam properties.** The thermodynamics tools compute water and steam
+  from IAPWS-IF97, the formulation behind printed steam tables — not an
+  interpolated table.
+- **Material and section libraries.** Isotropic materials, unidirectional
+  composite laminae, fluid properties, thermal materials, and standard steel
+  sections.
 - **Discovery.** Full-text search, favourites, history, and recommendations by
   engineering major.
 - **Six languages.** English, German, French, Japanese, Simplified Chinese, and
   Traditional Chinese.
 - **Light, dark, or system appearance.**
+- **Built for a desktop, not just scaled up to one.** On a wide window the
+  results open beside the inputs instead of over them, and the library gets a
+  sidebar. The Mac app carries a native menu bar with the shortcuts that go
+  with it: ⌘↩ calculate, ⌘F find a tool, ⌘S save to a project, ⌘E export, ⌘?
+  explain this tool.
 - **iPhone, iPad, Android and Mac.** The Mac app is a second platform on the same
   App Store record, so its unlock is shared with iOS — see below.
 
@@ -48,6 +57,7 @@ result you can export or share.
 | Beam Engineering | 7 | Moments of inertia, flexure formula, cantilever and simple-beam deflections and slopes, transverse shear stress, beam section properties, general beam analysis (six support arrangements, any number of point, distributed and couple loads, solved by the stiffness method) |
 | Machine Design | 12 | Helical compression springs, spur gear geometry and Lewis bending stress, shaft fatigue design (DE-Goodman), bearing L10 life, belt and chain drives, bolt preload / torque-tension, fillet weld strength, press / shrink-fit interference, power screws (torque, efficiency, self-locking), shaft critical speed (Dunkerley), beam natural frequency (first three modes, five end conditions), torsional natural frequency (one or two rotors) |
 | Fluids & Thermal | 6 | Reynolds number and flow regime, pipe pressure drop (Darcy–Weisbach with Colebrook), pump and fan power, composite wall conduction, fin efficiency, heat exchanger sizing by LMTD |
+| Thermodynamics | 4 | Steam tables (IAPWS-IF97: saturation by temperature or pressure, and single states from p–T, p–x, p–h or p–s), ideal gas processes (isothermal, isobaric, isochoric, isentropic, polytropic), air-standard Otto, Diesel and Brayton cycles, Rankine steam cycle with turbine and pump efficiencies |
 | Composite Material | 7 | Lamina and laminate stress/strain, lamina engineering constants, laminate plane and 3D properties, rule of mixtures, Tsai-Hill and Tsai-Wu failure criteria |
 | Statics | 3 | Resultant of forces (2D), centroid of composite area, truss analysis by method of joints |
 | Theory of Elasticity | 2 | Constitutive relation and stress/strain of linear elastic material |
@@ -114,10 +124,11 @@ The `Remove Ads` in-app purchase suppresses both.
 **macOS** carries no ads at all — `google_mobile_ads` has no macOS
 implementation, and the Mac app is sold as a one-off unlock instead. A free Mac
 build includes the tools listed in
-[`kFreeToolIds`](lib/purchase/premium.dart) — every reference table plus at least
-one working calculator in each of the eight categories — and shares results as
-text. **Premium** adds the rest of the library, PDF/CSV/image export, saved
-projects, the full calculation history, and the what-if sweep charts.
+[`kFreeToolIds`](lib/purchase/premium.dart) — every reference table, the steam
+tables, plus at least one working calculator in each of the nine categories —
+and shares results as text. **Premium** adds the rest of the library,
+PDF/CSV/image export, saved projects, the calculation history beyond the last
+five entries, and the what-if sweep charts.
 
 The two are the *same* App Store Connect product
 (`…mechanicalEngineeringToolkit.remove_ads`): macOS is a second platform on one
@@ -152,7 +163,7 @@ for anything new, including in those areas.
   `100s` Mechanics of Material and Beam Engineering · `200s` Theory of
   Elasticity · `300s` Composite Material · `400s` Statics · `500s` Reference and
   Utilities · `700s` Machine Design, vibration included · `800s` Fluids &
-  Thermal.
+  Thermal · `900s` Thermodynamics.
 
 ### Requirements for every new tool
 
@@ -190,37 +201,44 @@ for anything new, including in those areas.
    beam next to it. `icon:` with a Material glyph is reserved for the reference
    tables that have no mechanism to draw, such as the drill and tap chart; a
    generic glyph anywhere else reads as an unfinished placeholder.
-5. **Make results shareable.** Offer both `shareResult(toolName, lines)` and
-   `shareResultImage(exportKey, toolName)` from
-   [`share_helper.dart`](lib/util/share_helper.dart) in `AppBar.actions`. For the
-   image export, wrap the page's `AppContent` in a `RepaintBoundary` keyed by a
-   non-`const` `final _exportKey = GlobalKey();`.
-6. **Wire up the Hero animation.** Make `ToolResultHeader(tool: tool)` the first
+5. **Make results shareable.** Build the result page on
+   [`ResultScaffold`](lib/ui/result_scaffold.dart) and declare the numbers as
+   `results:` — it carries the share/export picker, the save-to-project action
+   and the image capture, and is what puts those actions on ⌘E and ⌘S.
+6. **Use the shared Calculate button and result opener.** The input page's
+   `floatingActionButton` is
+   [`CalculateButton`](lib/ui/tool_commands.dart), and it shows its result with
+   `showToolResult(context, builder)` from
+   [`tool_workspace.dart`](lib/ui/tool_workspace.dart) rather than pushing a
+   route itself. Together they are what make ⌘↩ reach the tool and what lets a
+   wide window put the result beside the inputs. Register the tool with
+   `ToolPageRoute`, as the entries in `tool_model.dart` do.
+7. **Wire up the Hero animation.** Make `ToolResultHeader(tool: tool)` the first
    child of both the input and result lists. It already wraps the icon in a
    `Hero(tag: 'tool_icon_${tool.id}')` matching the list tiles, so the icon flies
    from list to input page to result page with no further code. Skip only for
    tools without a single-result moment, such as the unit converter.
-7. **Illustrate where it helps.** Add a diagram under `images/` when one clarifies
+8. **Illustrate where it helps.** Add a diagram under `images/` when one clarifies
    the setup. For x-versus-y curves use the shared
    [`XYDiagramCard`](lib/ui/xy_diagram_card.dart) rather than a new
    `CustomPainter`.
-8. **Record history.** Call
+9. **Record history.** Call
    `context.read<ToolHistory>().record(widget.toolId, inputs: {…})` on success and
    parse the same keys back out of `widget.initialInputs` in `initState`, so
    History and Favourites re-entry works.
-9. **Use the design system.** Build from `AppContent`, `AppSectionCard`,
+10. **Use the design system.** Build from `AppContent`, `AppSectionCard`,
    `AdaptiveFieldGrid`, `AppCopyableValue`, and `context.tokens` rather than raw
    `Card` / `Padding` with magic numbers. Add the settings action and
    `bottomNavigationBar: const AppBannerAd()` to the result page — the banner
    already no-ops once Remove Ads is purchased.
-10. **Validate inputs.** Throw `FormatException` in `_calculate()` and surface it
+11. **Validate inputs.** Throw `FormatException` in `_calculate()` and surface it
     as a `SnackBar` rather than failing silently.
-11. **Offer presets and sweeps where they fit.** Add a
+12. **Offer presets and sweeps where they fit.** Add a
     [`MaterialPresetButton`](lib/ui/material_preset_picker.dart) for isotropic
     properties (E, G, yield/ultimate strength, density, ν), and a
     [`ParameterSweepCard`](lib/ui/parameter_sweep_card.dart) when the output is a
     single scalar function of the inputs.
-12. **Test and register.** Add a unit test under `test/` when the maths is
+13. **Test and register.** Add a unit test under `test/` when the maths is
     non-trivial, list the tool in this README, and add its id to the relevant
     majors in [`major_recommendation.dart`](lib/home/major_recommendation.dart) —
     nothing fails if you forget, but "Recommended by Major" silently misses it.
