@@ -8,7 +8,10 @@ import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/standard_section_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -36,6 +39,7 @@ class _TransverseShearStressPageState extends State<TransverseShearStressPage> {
   double? _q;
   double? _i;
   double? _t;
+  int _presetGeneration = 0;
 
   @override
   void initState() {
@@ -57,11 +61,7 @@ class _TransverseShearStressPageState extends State<TransverseShearStressPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -101,6 +101,7 @@ class _TransverseShearStressPageState extends State<TransverseShearStressPage> {
                       onChangedSI: (v) => _v = v,
                     ),
                     UnitField(
+                      key: ValueKey('Q$_presetGeneration'),
                       label: 'First moment, Q',
                       category: UnitCategory.sectionModulus,
                       signed: false,
@@ -108,6 +109,7 @@ class _TransverseShearStressPageState extends State<TransverseShearStressPage> {
                       onChangedSI: (v) => _q = v,
                     ),
                     UnitField(
+                      key: ValueKey('I$_presetGeneration'),
                       label: 'Moment of inertia, I',
                       category: UnitCategory.momentOfInertia,
                       signed: false,
@@ -115,6 +117,7 @@ class _TransverseShearStressPageState extends State<TransverseShearStressPage> {
                       onChangedSI: (v) => _i = v,
                     ),
                     UnitField(
+                      key: ValueKey('t$_presetGeneration'),
                       label: 'Width, t',
                       category: UnitCategory.length,
                       signed: false,
@@ -122,6 +125,24 @@ class _TransverseShearStressPageState extends State<TransverseShearStressPage> {
                       onChangedSI: (v) => _t = v,
                     ),
                   ]),
+                  SizedBox(height: context.tokens.space2),
+                  StandardSectionButton(
+                    // At the neutral axis, where the web carries the peak
+                    // shear: Q of the half-section above it, and the web as
+                    // the width the shear flow crosses.
+                    onSelected: (section) => setState(() {
+                      _q = section.firstMomentAtNeutralAxis;
+                      _i = section.ix;
+                      _t = section.webThickness;
+                      _presetGeneration++;
+                    }),
+                  ),
+                  Text(
+                    S.of(context).Section_Fills_Neutral_Axis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
                 ],
               ),
             ),
@@ -153,17 +174,15 @@ class _TransverseShearStressPageState extends State<TransverseShearStressPage> {
         't': '$t',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => _TransverseShearStressResultPage(
-            toolId: widget.toolId,
-            tau: tau,
-            v: v,
-            q: q,
-            i: i,
-            t: t,
-          ),
+        (context) => _TransverseShearStressResultPage(
+          toolId: widget.toolId,
+          tau: tau,
+          v: v,
+          q: q,
+          i: i,
+          t: t,
         ),
       );
     } on FormatException catch (error) {

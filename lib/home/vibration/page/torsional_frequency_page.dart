@@ -8,7 +8,9 @@ import 'package:mechanical_engineering_toolkit/home/vibration/page/torsional_fre
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -75,11 +77,7 @@ class _TorsionalFrequencyPageState extends State<TorsionalFrequencyPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(l10n.Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -234,18 +232,16 @@ class _TorsionalFrequencyPageState extends State<TorsionalFrequencyPage> {
         if (j2 != null) 'J2': '$j2',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => TorsionalFrequencyResultPage(
-            result: result,
-            system: _system,
-            g: g,
-            diameter: diameter,
-            length: length,
-            j1: j1,
-            j2: j2,
-          ),
+        (context) => TorsionalFrequencyResultPage(
+          result: result,
+          system: _system,
+          g: g,
+          diameter: diameter,
+          length: length,
+          j1: j1,
+          j2: j2,
         ),
       );
     } on FormatException catch (error) {

@@ -7,7 +7,9 @@ import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/ui/xy_diagram_card.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
@@ -74,11 +76,7 @@ class _SimpleBeamDeflectionsSlopesPageState
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -277,18 +275,16 @@ class _SimpleBeamDeflectionsSlopesPageState
         'Type': _loadCase,
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => CantileverBeamDeflectionsSlopesResultPage(
-            toolId: widget.toolId,
-            toolTitle: widget.title,
-            deflectionTitles: deflectionTitles,
-            deflectionValues: deflectionValues,
-            slopesTitles: slopeTitles,
-            slopesValues: slopeValues,
-            deflectionCurve: curve,
-          ),
+        (context) => CantileverBeamDeflectionsSlopesResultPage(
+          toolId: widget.toolId,
+          toolTitle: widget.title,
+          deflectionTitles: deflectionTitles,
+          deflectionValues: deflectionValues,
+          slopesTitles: slopeTitles,
+          slopesValues: slopeValues,
+          deflectionCurve: curve,
         ),
       );
     } on FormatException catch (error) {

@@ -24,7 +24,15 @@ class HistoryEntry {
 
 class ToolHistory extends ChangeNotifier {
   static const _key = 'TOOL_HISTORY';
-  static const _maxEntries = 50;
+
+  /// How many calculations are kept before the oldest is evicted.
+  ///
+  /// Public because the Premium copy quotes it: "your full history" was
+  /// untrue while this sat at 50, so the wording now names the number instead
+  /// of promising everything. 500 is a semester of coursework, and at a few
+  /// hundred bytes an entry the whole list is still a small write to
+  /// SharedPreferences on every calculation.
+  static const maxEntries = 500;
 
   List<HistoryEntry> get entries {
     final raw = SharedPreferencesHelper.localStorage.getStringList(_key) ?? [];
@@ -39,7 +47,7 @@ class ToolHistory extends ChangeNotifier {
     final raw = SharedPreferencesHelper.localStorage.getStringList(_key) ?? [];
     final entry = HistoryEntry(toolId: toolId, timestamp: DateTime.now(), inputs: inputs);
     raw.add(jsonEncode(entry.toJson()));
-    if (raw.length > _maxEntries) raw.removeAt(0);
+    if (raw.length > maxEntries) raw.removeRange(0, raw.length - maxEntries);
     SharedPreferencesHelper.localStorage.setStringList(_key, raw);
     notifyListeners();
   }

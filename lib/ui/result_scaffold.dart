@@ -10,6 +10,8 @@ import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/csv_export.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/pdf_export.dart';
@@ -304,6 +306,7 @@ class _ResultScaffoldState extends State<ResultScaffold> {
                     value: value.value,
                     valueSI: value.valueSI,
                     category: value.category,
+                    smallMagnitude: value.smallMagnitude,
                   ),
               ],
             ),
@@ -339,8 +342,24 @@ class _ResultScaffoldState extends State<ResultScaffold> {
             ? null
             : () => resultShareLines(results, precs, system));
 
+    void keep() => projectsLocked
+        ? showLockedFeatureUpsell(context, PremiumFeature.savedProjects)
+        : keepResultInProject(
+            context,
+            toolName: widget.toolName,
+            sections: results!,
+            formulaSteps: widget.formulaSteps,
+          );
+    void share() => _showSharePicker(shareLines, results, precs, system);
+
+    // In a side-by-side pane the implied back arrow would pop the whole
+    // tool, inputs and all; the pane offers a close button instead.
+    final paneClose = resultPaneCloseButton(context);
+
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: paneClose == null,
+        leading: paneClose,
         title: Text(widget.title ?? l10n.Result),
         actions: [
           ...widget.extraActions,
@@ -348,36 +367,34 @@ class _ResultScaffoldState extends State<ResultScaffold> {
           // entry keeps the numbers, and a page that renders its own body
           // without declaring them has none to keep.
           if (results != null)
-            IconButton(
-              key: const Key('keepInProject'),
-              tooltip: l10n.Save_To_Project,
-              icon: projectsLocked
-                  ? const PremiumLockedIcon(Icons.bookmark_add_outlined)
-                  : const Icon(Icons.bookmark_add_outlined),
-              onPressed: () => projectsLocked
-                  ? showLockedFeatureUpsell(
-                      context,
-                      PremiumFeature.savedProjects,
-                    )
-                  : keepResultInProject(
-                      context,
-                      toolName: widget.toolName,
-                      sections: results,
-                      formulaSteps: widget.formulaSteps,
-                    ),
+            AppCommandHandler(
+              command: AppCommand.saveToProject,
+              onInvoke: keep,
+              child: IconButton(
+                key: const Key('keepInProject'),
+                tooltip:
+                    withShortcutHint(l10n.Save_To_Project, AppCommand.saveToProject),
+                icon: projectsLocked
+                    ? const PremiumLockedIcon(Icons.bookmark_add_outlined)
+                    : const Icon(Icons.bookmark_add_outlined),
+                onPressed: keep,
+              ),
             ),
           // One share action for every format. Image is always available —
           // it is a capture of the screen and needs nothing declared.
           // KeyedSubtree adds no layout — it just gives _shareOrigin a handle
           // on the button's box while leaving the test key on the button.
-          KeyedSubtree(
-            key: _shareButtonKey,
-            child: IconButton(
-              key: const Key('shareResults'),
-              tooltip: l10n.Share_Results,
-              icon: const Icon(Icons.share_rounded),
-              onPressed: () =>
-                  _showSharePicker(shareLines, results, precs, system),
+          AppCommandHandler(
+            command: AppCommand.share,
+            onInvoke: share,
+            child: KeyedSubtree(
+              key: _shareButtonKey,
+              child: IconButton(
+                key: const Key('shareResults'),
+                tooltip: withShortcutHint(l10n.Share_Results, AppCommand.share),
+                icon: const Icon(Icons.share_rounded),
+                onPressed: share,
+              ),
             ),
           ),
           IconButton(

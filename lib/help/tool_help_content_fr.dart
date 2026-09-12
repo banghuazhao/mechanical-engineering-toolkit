@@ -2626,4 +2626,274 @@ const Map<int, ToolHelp> toolHelpFr = {
     ],
     diagram: 'images/icons/icon_power_screw.png',
   ),
+  // ---------------------------------------------------------- thermodynamics
+  900: ToolHelp(
+    summary: 'Propriétés de l’eau et de la vapeur — saturation, liquide comprimé, '
+        'vapeur surchauffée et état supercritique — selon IAPWS-IF97, la '
+        'formulation des tables de vapeur modernes et des logiciels de centrales. '
+        'Indiquez le couple de grandeurs que vous connaissez : une température ou '
+        'une pression pour une ligne de saturation, ou la pression avec la '
+        'température, le titre, l’enthalpie ou l’entropie pour un état unique.',
+    formulas: [
+      HelpFormula(
+        tex: r'\frac{g(p,T)}{RT} = \gamma(\pi,\tau), \quad \pi = \frac{p}{p^*}, \quad \tau = \frac{T^*}{T}',
+        plain: 'g(p,T)/(RT) = γ(π, τ), π = p/p*, τ = T*/T',
+        caption: 'Régions 1, 2 et 5 : une enthalpie libre adimensionnelle',
+      ),
+      HelpFormula(
+        tex: r'h = RT\,\tau\,\gamma_\tau, \quad s = R\,(\tau\gamma_\tau - \gamma), \quad v = \frac{RT}{p}\,\pi\,\gamma_\pi',
+        plain: 'h = R·T·τ·γτ, s = R·(τ·γτ − γ), v = (R·T/p)·π·γπ',
+        caption: 'Chaque propriété est une dérivée de cette seule fonction',
+      ),
+      HelpFormula(
+        tex: r'\frac{f(\rho,T)}{RT} = \phi(\delta,\tau), \quad \delta = \frac{\rho}{\rho_c}',
+        plain: 'f(ρ,T)/(RT) = φ(δ, τ), δ = ρ/ρc',
+        caption: 'Région 3, autour du point critique : une énergie libre',
+      ),
+      HelpFormula(
+        tex: r'y = y_f + x\,(y_g - y_f)',
+        plain: 'y = yf + x·(yg − yf)',
+        caption: 'Mélange liquide-vapeur : v, u, h ou s pondérés par le titre',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p', 'Pression', 'kPa'),
+      HelpSymbol('T', 'Température', '°C'),
+      HelpSymbol('x', 'Titre, la fraction massique de vapeur'),
+      HelpSymbol('v', 'Volume massique', 'm³/kg'),
+      HelpSymbol('u', 'Énergie interne massique', 'kJ/kg'),
+      HelpSymbol('h', 'Enthalpie massique', 'kJ/kg'),
+      HelpSymbol('s', 'Entropie massique', 'kJ/(kg·K)'),
+      HelpSymbol('R', 'Constante massique de l’eau, 0,461526', 'kJ/(kg·K)'),
+      HelpSymbol('f, g', 'Indices du liquide saturé et de la vapeur saturée'),
+    ],
+    notes: [
+      'Valable de 0 °C à 800 °C jusqu’à 100 MPa, et jusqu’à 2000 °C à 50 MPa au '
+          'plus. Hors de ce domaine, l’outil refuse le calcul plutôt que '
+          'd’extrapoler.',
+      'Les énergies et l’entropie sont comptées à partir du liquide saturé au '
+          'point triple, 0,01 °C, comme dans toute table de vapeur moderne : les '
+          'valeurs se combinent donc avec une table imprimée. Pas avec une ancienne '
+          'table impériale qui posait h = 0 à 32 °F, dont les enthalpies sont '
+          'décalées.',
+      'Près du point critique, 373,95 °C et 22,064 MPa, les propriétés varient '
+          'très vite avec p et T et cp croît sans limite. Les valeurs y sont '
+          'exactes pour la formulation mais sensibles aux entrées.',
+      'Une pression et une température exactement sur la courbe de saturation ne '
+          'fixent pas l’état : il peut avoir n’importe quel titre. Recherchez-le '
+          'alors par le titre, l’enthalpie ou l’entropie.',
+      'IF97 reproduit la formulation scientifique IAPWS-95 à environ 0,1 % près '
+          'sur le volume massique et à quelques centièmes de pour cent sur '
+          'l’enthalpie — dans l’incertitude de toute mesure à laquelle on la '
+          'comparerait.',
+    ],
+    references: [
+      'IAPWS R7-97(2012), Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam',
+      'Wagner & Kretzschmar, International Steam Tables',
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 3',
+    ],
+    diagram: 'images/icons/icon_steam_tables.png',
+  ),
+  901: ToolHelp(
+    summary: 'Un gaz parfait soumis à l’une des cinq transformations classiques — '
+        'isotherme, isobare, isochore, isentropique, ou polytropique à pvⁿ '
+        'constant. À partir de l’état initial et d’une grandeur de l’état final, '
+        'l’outil détermine le reste de l’état final, puis le travail des forces de '
+        'pression, la chaleur et les variations d’énergie interne, d’enthalpie et '
+        'd’entropie, par kilogramme et pour toute la masse.',
+    formulas: [
+      HelpFormula(
+        tex: r'pv = RT',
+        plain: 'p·v = R·T',
+        caption: 'Équation d’état du gaz parfait',
+      ),
+      HelpFormula(
+        tex: r'W_b = \int_1^2 p\,dV',
+        plain: 'Wb = ∫ p dV',
+        caption: 'Travail des forces de pression : l’aire sous la courbe en diagramme p–v',
+      ),
+      HelpFormula(
+        tex: r'pv^n = \text{const} \;\Rightarrow\; W_b = \frac{mR\,(T_2 - T_1)}{1 - n}',
+        plain: 'p·vⁿ = const ⇒ Wb = m·R·(T2 − T1)/(1 − n)',
+        caption: 'Polytropique : n = k isentropique, n = 1 isotherme, n = 0 isobare',
+      ),
+      HelpFormula(
+        tex: r'Q = \Delta U + W_b, \quad \Delta U = mc_v\,(T_2 - T_1)',
+        plain: 'Q = ΔU + Wb, ΔU = m·cv·(T2 − T1)',
+        caption: 'Premier principe pour un système fermé',
+      ),
+      HelpFormula(
+        tex: r'\Delta S = m\left(c_p\ln\frac{T_2}{T_1} - R\ln\frac{p_2}{p_1}\right)',
+        plain: 'ΔS = m·(cp·ln(T2/T1) − R·ln(p2/p1))',
+        caption: 'Variation d’entropie, quel que soit le chemin',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p', 'Pression', 'kPa'),
+      HelpSymbol('v', 'Volume massique', 'm³/kg'),
+      HelpSymbol('T', 'Température absolue ; saisie en °C puis convertie', 'K'),
+      HelpSymbol('R', 'Constante massique du gaz', 'kJ/(kg·K)'),
+      HelpSymbol('cp, cv', 'Chaleurs massiques à pression et à volume constants', 'kJ/(kg·K)'),
+      HelpSymbol('k', 'Rapport des chaleurs massiques, cp/cv'),
+      HelpSymbol('n', 'Exposant polytropique'),
+      HelpSymbol('m', 'Masse de gaz', 'kg'),
+      HelpSymbol('W, Q', 'Travail fourni par le gaz et chaleur reçue', 'kJ'),
+    ],
+    notes: [
+      'Les chaleurs massiques sont constantes. Pour l’air, l’erreur sur cp est '
+          'd’environ 2 % entre 300 K et 600 K et augmente au-delà ; pour de grands '
+          'écarts de température, utilisez des tables à chaleurs massiques '
+          'variables.',
+      'Chaque transformation est quasi statique : assez lente pour que pression '
+          'et température restent uniformes dans le gaz. Une détente libre atteint '
+          'son état final sans suivre un tel chemin et ne fournit aucun travail.',
+      'Le travail fourni par le gaz et la chaleur qu’il reçoit sont positifs : une '
+          'compression donne donc un travail négatif, un refroidissement une '
+          'chaleur négative.',
+      'Le comportement parfait vaut à basse pression et à des températures bien '
+          'supérieures au point critique. L’eau proche de la saturation en est très '
+          'loin — utilisez les tables de vapeur.',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 4 and 7',
+      'Moran & Shapiro, Fundamentals of Engineering Thermodynamics, ch. 3 and 6',
+    ],
+    diagram: 'images/icons/icon_ideal_gas.png',
+  ),
+  902: ToolHelp(
+    summary: 'Les cycles idéalisés du moteur à essence (Otto), du moteur diesel et '
+        'de la turbine à gaz (Brayton), analysés à air froid standard : de l’air à '
+        'chaleurs massiques constantes, la combustion remplacée par une chaleur '
+        'fournie de l’extérieur et l’échappement par une chaleur cédée. L’outil '
+        'détermine chaque état, la chaleur et le travail, et le rendement '
+        'thermique — la borne supérieure que vise un moteur réel.',
+    formulas: [
+      HelpFormula(
+        tex: r'\eta_{Otto} = 1 - \frac{1}{r^{\,k-1}}',
+        plain: 'η = 1 − 1/r^(k−1)',
+        caption: 'Otto : apport de chaleur à volume constant',
+      ),
+      HelpFormula(
+        tex: r'\eta_{Diesel} = 1 - \frac{1}{r^{\,k-1}}\,\frac{r_c^{\,k} - 1}{k\,(r_c - 1)}',
+        plain: 'η = 1 − (1/r^(k−1))·(rc^k − 1)/(k·(rc − 1))',
+        caption: 'Diesel : apport de chaleur à pression constante',
+      ),
+      HelpFormula(
+        tex: r'\eta_{Brayton} = 1 - \frac{1}{r_p^{\,(k-1)/k}}',
+        plain: 'η = 1 − 1/rp^((k−1)/k)',
+        caption: 'Brayton idéal : chaleur fournie et cédée à pression constante',
+      ),
+      HelpFormula(
+        tex: r'\frac{T_2}{T_1} = r^{\,k-1} = r_p^{\,(k-1)/k}',
+        plain: 'T2/T1 = r^(k−1) = rp^((k−1)/k)',
+        caption: 'Compression isentropique, par rapport volumétrique ou de pression',
+      ),
+      HelpFormula(
+        tex: r'\text{MEP} = \frac{w_{net}}{v_1 - v_2}',
+        plain: 'MEP = w_net/(v1 − v2)',
+        caption: 'Pression moyenne effective d’un cycle à piston',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('r', 'Rapport volumétrique, v1/v2'),
+      HelpSymbol('rc', 'Rapport d’injection, v3/v2'),
+      HelpSymbol('rp', 'Rapport de pression, p2/p1'),
+      HelpSymbol('k', 'Rapport des chaleurs massiques ; 1,4 pour l’air'),
+      HelpSymbol('T', 'Température absolue à chaque état', 'K'),
+      HelpSymbol('q_in, q_out', 'Chaleur fournie et cédée par kilogramme', 'kJ/kg'),
+      HelpSymbol('w_net', 'Travail net par kilogramme', 'kJ/kg'),
+      HelpSymbol('ηc, ηt', 'Rendements isentropiques du compresseur et de la turbine'),
+      HelpSymbol('MEP', 'Pression moyenne effective', 'kPa'),
+    ],
+    notes: [
+      'Le rendement d’Otto ne dépend que du rapport volumétrique. Le cliquetis '
+          'limite un moteur à allumage commandé à environ 8–12 ; un diesel ne '
+          'comprime que de l’air et fonctionne à 14–22 — c’est pourquoi il est plus '
+          'sobre en pratique, bien qu’à r égal le cycle d’Otto soit meilleur.',
+      'Les moteurs réels atteignent environ la moitié de ces valeurs : les '
+          'chaleurs massiques augmentent avec la température, la combustion prend '
+          'du temps, de la chaleur fuit par les parois et le gaz brûlé n’est plus '
+          'de l’air.',
+      'Le rendement de Brayton croît toujours avec le rapport de pression, mais '
+          'le travail net par kilogramme passe par un maximum puis diminue, car le '
+          'travail du compresseur croît plus vite que celui de la turbine. Avec des '
+          'pertes, il existe un rapport de pression au-delà duquel le cycle ne '
+          'produit plus rien.',
+      'Le rendement de Carnot est le maximum qu’une machine puisse atteindre '
+          'entre les mêmes températures extrêmes. L’écart avec le rendement du cycle '
+          'est le prix d’un apport de chaleur étalé sur une plage de températures '
+          'plutôt qu’au maximum.',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 9',
+      'Heywood, Internal Combustion Engine Fundamentals, ch. 5',
+      'Saravanamuttoo et al., Gas Turbine Theory, ch. 2',
+    ],
+    diagram: 'images/icons/icon_air_cycle.png',
+  ),
+  903: ToolHelp(
+    summary: 'Le cycle à vapeur qui produit l’essentiel de l’électricité mondiale : '
+        'une pompe porte le condensat à la pression de la chaudière, la chaudière '
+        'le vaporise, la turbine détend la vapeur en fournissant du travail et le '
+        'condenseur la ramène à l’état liquide. Avec les propriétés IAPWS-IF97, '
+        'l’outil détermine chaque état, le travail et la chaleur de chaque '
+        'composant, le rendement thermique et le titre en sortie de turbine.',
+    formulas: [
+      HelpFormula(
+        tex: r'w_p = \frac{v_1\,(p_2 - p_1)}{\eta_p}',
+        plain: 'wp = v1·(p2 − p1)/ηp',
+        caption: 'Travail de pompe, l’eau étant supposée incompressible',
+      ),
+      HelpFormula(
+        tex: r'h_4 = h_3 - \eta_t\,(h_3 - h_{4s})',
+        plain: 'h4 = h3 − ηt·(h3 − h4s)',
+        caption: 'Sortie de turbine, d’après la détente isentropique jusqu’au condenseur',
+      ),
+      HelpFormula(
+        tex: r'q_{in} = h_3 - h_2, \qquad q_{out} = h_4 - h_1',
+        plain: 'q_in = h3 − h2, q_out = h4 − h1',
+        caption: 'Chaleur reçue dans la chaudière et cédée au condenseur',
+      ),
+      HelpFormula(
+        tex: r'\eta = \frac{w_t - w_p}{q_{in}} = \frac{(h_3 - h_4) - (h_2 - h_1)}{h_3 - h_2}',
+        plain: 'η = (wt − wp)/q_in = ((h3 − h4) − (h2 − h1))/(h3 − h2)',
+        caption: 'Rendement thermique',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p1, p2', 'Pressions du condenseur et de la chaudière', 'kPa'),
+      HelpSymbol('h', 'Enthalpie massique à chaque état', 'kJ/kg'),
+      HelpSymbol('s', 'Entropie massique', 'kJ/(kg·K)'),
+      HelpSymbol('v1', 'Volume massique du liquide saturé en sortie de condenseur', 'm³/kg'),
+      HelpSymbol('x4', 'Titre de la vapeur en sortie de turbine'),
+      HelpSymbol('ηt, ηp', 'Rendements isentropiques de la turbine et de la pompe'),
+      HelpSymbol('ṁ', 'Débit massique de vapeur', 'kg/s'),
+    ],
+    notes: [
+      'L’état 1 est du liquide saturé à la pression du condenseur, si bien que la '
+          'pompe ne voit jamais de vapeur. L’état 3 est de la vapeur surchauffée à '
+          'la température donnée, ou de la vapeur saturée sans indication.',
+      'Abaisser la pression du condenseur augmente le rendement ; c’est pourquoi '
+          'les condenseurs fonctionnent sous un vide de quelques kPa, dont la limite '
+          'est fixée par la température de l’eau de refroidissement.',
+      'La surchauffe et une pression de chaudière plus élevée augmentent toutes '
+          'deux le rendement, mais la pression seule rend l’échappement plus humide. '
+          'En dessous d’environ 88 % de titre, les gouttelettes érodent les aubes '
+          'des derniers étages ; la resurchauffe est le remède habituel, et l’outil '
+          'signale un échappement aussi humide.',
+      'Le rapport de travail inverse est minime — un ou deux pour cent — car pomper '
+          'un liquide demande bien moins de travail que comprimer un gaz. C’est le '
+          'grand avantage du cycle de Rankine sur celui de Brayton.',
+      'Non modélisés : pertes de charge et pertes thermiques dans la chaudière, les '
+          'conduites et le condenseur, réchauffage de l’eau alimentaire et '
+          'resurchauffe. Chacun modifie de quelques points le rendement d’une '
+          'centrale réelle.',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 10',
+      'Moran & Shapiro, Fundamentals of Engineering Thermodynamics, ch. 8',
+      'IAPWS R7-97(2012), Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam',
+    ],
+    diagram: 'images/icons/icon_rankine.png',
+  ),
 };

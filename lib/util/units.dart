@@ -145,6 +145,32 @@ double Btuphft2F2Wpm2K(double v) => v * 5.678263;
 // Heat flow rate: W <-> BTU/h
 double W2Btuph(double v) => v * 3.412142;
 double Btuph2W(double v) => v / 3.412142;
+// Specific energy (enthalpy, internal energy, work or heat per kg):
+// kJ/kg <-> BTU/lb. The International Table BTU makes 1 BTU/lb exactly
+// 2.326 kJ/kg.
+double kJpkg2Btuplb(double v) => v / 2.326;
+double Btuplb2kJpkg(double v) => v * 2.326;
+// Specific entropy and heat capacity: kJ/(kg·K) <-> BTU/(lb·°R), exactly
+// 4.1868 by the same definition.
+double kJpkgK2BtuplbR(double v) => v / 4.1868;
+double BtuplbR2kJpkgK(double v) => v * 4.1868;
+// Specific volume: m³/kg <-> ft³/lb. 1 ft³/lb = 0.028316846592 m³ /
+// 0.45359237 kg.
+double m3pkg2ft3plb(double v) => v / 0.0624279605761;
+double ft3plb2m3pkg(double v) => v * 0.0624279605761;
+// Volume: m³ <-> ft³.
+double m3_2_ft3(double v) => v / 0.028316846592;
+double ft3_2_m3(double v) => v * 0.028316846592;
+// Energy: kJ <-> BTU (International Table).
+double kJ2Btu(double v) => v / 1.05505585262;
+double Btu2kJ(double v) => v * 1.05505585262;
+// Entropy (extensive): kJ/K <-> BTU/°R. 1 BTU/°R = 1.05505585262 kJ per
+// 5/9 K.
+double kJpK2BtupR(double v) => v / 1.899100534716;
+double BtupR2kJpK(double v) => v * 1.899100534716;
+// Mass flow rate: kg/s <-> lb/s.
+double kgps2lbps(double v) => v / 0.45359237;
+double lbps2kgps(double v) => v * 0.45359237;
 // Identity
 double id(double v) => v;
 
@@ -272,6 +298,29 @@ enum UnitCategory {
   /// Separate from [power], whose kW/hp suit shaft work; heat duties are
   /// quoted in W and BTU/h.
   heatFlow,
+
+  /// Energy per unit mass: enthalpy, internal energy, and the work or heat
+  /// of a process per kilogram of working fluid.
+  specificEnergy,
+
+  /// Entropy per unit mass, and the quantities that share its dimensions —
+  /// the specific heats cp and cv and a gas constant R.
+  specificEntropy,
+
+  /// Volume per unit mass, the reciprocal of density; the v of a steam table.
+  specificVolume,
+
+  /// Volume of a quantity of gas.
+  volume,
+
+  /// Energy — the total work or heat of a process on a given mass.
+  energy,
+
+  /// Total entropy change of a given mass.
+  entropy,
+
+  /// Mass flow rate through a cycle.
+  massFlow,
 }
 
 class _UnitPair {
@@ -493,6 +542,48 @@ final Map<UnitCategory, _UnitPair> _pairs = {
     siToImperial: W2Btuph,
     imperialToSi: Btuph2W,
   ),
+  UnitCategory.specificEnergy: _UnitPair(
+    siLabel: 'kJ/kg',
+    imperialLabel: 'BTU/lb',
+    siToImperial: kJpkg2Btuplb,
+    imperialToSi: Btuplb2kJpkg,
+  ),
+  UnitCategory.specificEntropy: _UnitPair(
+    siLabel: 'kJ/(kg·K)',
+    imperialLabel: 'BTU/(lb·°R)',
+    siToImperial: kJpkgK2BtuplbR,
+    imperialToSi: BtuplbR2kJpkgK,
+  ),
+  UnitCategory.specificVolume: _UnitPair(
+    siLabel: 'm³/kg',
+    imperialLabel: 'ft³/lb',
+    siToImperial: m3pkg2ft3plb,
+    imperialToSi: ft3plb2m3pkg,
+  ),
+  UnitCategory.volume: _UnitPair(
+    siLabel: 'm³',
+    imperialLabel: 'ft³',
+    siToImperial: m3_2_ft3,
+    imperialToSi: ft3_2_m3,
+  ),
+  UnitCategory.energy: _UnitPair(
+    siLabel: 'kJ',
+    imperialLabel: 'BTU',
+    siToImperial: kJ2Btu,
+    imperialToSi: Btu2kJ,
+  ),
+  UnitCategory.entropy: _UnitPair(
+    siLabel: 'kJ/K',
+    imperialLabel: 'BTU/°R',
+    siToImperial: kJpK2BtupR,
+    imperialToSi: BtupR2kJpK,
+  ),
+  UnitCategory.massFlow: _UnitPair(
+    siLabel: 'kg/s',
+    imperialLabel: 'lb/s',
+    siToImperial: kgps2lbps,
+    imperialToSi: lbps2kgps,
+  ),
 };
 
 String unitLabel(UnitCategory category, UnitSystem system) {
@@ -569,9 +660,15 @@ extension SIValueFormatting on NumberPrecisionHelper {
     final display =
         category == null ? valueSI : fromSI(valueSI, category, system);
     final unit = category == null ? '' : ' ${unitLabel(category, system)}';
+    return '${formatSmallValue(display)}$unit';
+  }
+
+  /// [formatValue], except that anything under 0.01 is shown in exponential
+  /// form — the number part of [formatSmallSI].
+  String formatSmallValue(double display) {
     if (display != 0 && display.abs() < 0.01) {
-      return '${display.toStringAsExponential(3)}$unit';
+      return display.toStringAsExponential(3);
     }
-    return '${formatValue(display)}$unit';
+    return formatValue(display);
   }
 }

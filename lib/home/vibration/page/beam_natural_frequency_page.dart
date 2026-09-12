@@ -9,7 +9,9 @@ import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
 import 'package:mechanical_engineering_toolkit/ui/standard_section_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -83,11 +85,7 @@ class _BeamNaturalFrequencyPageState extends State<BeamNaturalFrequencyPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(l10n.Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -261,18 +259,16 @@ class _BeamNaturalFrequencyPageState extends State<BeamNaturalFrequencyPage> {
         'rho': '$density',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => BeamNaturalFrequencyResultPage(
-            result: result,
-            endCondition: _endCondition,
-            e: e,
-            i: i,
-            a: a,
-            length: length,
-            density: density,
-          ),
+        (context) => BeamNaturalFrequencyResultPage(
+          result: result,
+          endCondition: _endCondition,
+          e: e,
+          i: i,
+          a: a,
+          length: length,
+          density: density,
         ),
       );
     } on FormatException catch (error) {

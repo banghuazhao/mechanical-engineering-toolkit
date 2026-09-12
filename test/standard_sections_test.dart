@@ -157,6 +157,27 @@ void main() {
     });
   });
 
+  group('first moment at the neutral axis', () {
+    // Twice Q about the neutral axis is the plastic modulus, which the tables
+    // do publish. The rectangles leave out the root fillets, so 2Q falls a
+    // few percent short of the published figure — and never above it.
+    test('W12X40 against its published Zx of 57.0 in³', () {
+      final s = standardSections.firstWhere((s) => s.designation == 'W12X40');
+      final zx = 57.0 * 16387.064; // in³ → mm³
+      final twoQ = 2 * s.firstMomentAtNeutralAxis;
+      expect(twoQ, lessThan(zx));
+      expect(twoQ, greaterThan(zx * 0.95));
+    });
+
+    test('IPE 300 against its published Wpl,y of 628 cm³', () {
+      final s = standardSections.firstWhere((s) => s.designation == 'IPE 300');
+      const wpl = 628.4 * 1000; // cm³ → mm³
+      final twoQ = 2 * s.firstMomentAtNeutralAxis;
+      expect(twoQ, lessThan(wpl));
+      expect(twoQ, greaterThan(wpl * 0.94));
+    });
+  });
+
   group('units', () {
     test('imperial rows converted into the app SI display units', () {
       // W12X40 is published as d = 11.9 in, A = 11.7 in², Ix = 307 in⁴.

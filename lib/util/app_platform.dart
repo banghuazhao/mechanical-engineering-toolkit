@@ -64,6 +64,12 @@ class AppPlatform {
   /// Whether the OS reports device model and OS version through
   /// `device_info_plus` in a form the feedback email uses.
   bool get hasDeviceInfo => true;
+
+  /// Whether the app draws a native menu bar with keyboard shortcuts.
+  ///
+  /// Only macOS has one. It also decides whether tooltips quote shortcuts:
+  /// "Calculate (⌘↩)" is a promise a phone cannot keep.
+  bool get hasMenuBar => false;
 }
 
 class _MobilePlatform extends AppPlatform {
@@ -81,4 +87,7 @@ class _MacOSPlatform extends AppPlatform {
 
   @override
   bool get hasDeviceInfo => false;
+
+  @override
+  bool get hasMenuBar => true;
 }

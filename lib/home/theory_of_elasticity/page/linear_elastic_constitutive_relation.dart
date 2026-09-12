@@ -8,7 +8,9 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/description
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/page/linear_elastic_consitutive_relation_result.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/widget/engineering_constants_input_row.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:provider/provider.dart';
 
 class LinearElasticConstitutiveRelationPage extends StatefulWidget {
@@ -100,15 +102,12 @@ class _LinearElasticConstitutiveRelationPageState
             ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
           ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            setState(() {
-              validate = true;
-            });
+        floatingActionButton: CalculateButton(onPressed: () {
+        setState(() {
+          validate = true;
+        });
             _calculate();
-          },
-          label: Text(S.of(context).Calculate),
-        ),
+          }),
         body: SafeArea(
             child: StaggeredGridView.countBuilder(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
@@ -505,11 +504,11 @@ G_ij = Shear modulus in the i-j plane
       ]);
 
       Matrix C = S_matrix.inverse();
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => LinearElasticConstitutiveResultPage(
-                  toolId: widget.toolId, C: C, S: S_matrix)));
+      showToolResult(
+        context,
+        (context) => LinearElasticConstitutiveResultPage(
+          toolId: widget.toolId, C: C, S: S_matrix),
+      );
     }
   }
 }

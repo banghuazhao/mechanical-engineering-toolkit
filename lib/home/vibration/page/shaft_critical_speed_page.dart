@@ -8,7 +8,9 @@ import 'package:mechanical_engineering_toolkit/home/vibration/page/shaft_critica
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -80,11 +82,7 @@ class _ShaftCriticalSpeedPageState extends State<ShaftCriticalSpeedPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(l10n.Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -279,19 +277,17 @@ class _ShaftCriticalSpeedPageState extends State<ShaftCriticalSpeedPage> {
         if (density != null) 'rho': '$density',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => ShaftCriticalSpeedResultPage(
-            result: result,
-            support: _support,
-            e: e,
-            diameter: diameter,
-            span: span,
-            rotorMass: mass,
-            rotorPosition: position,
-            density: density,
-          ),
+        (context) => ShaftCriticalSpeedResultPage(
+          result: result,
+          support: _support,
+          e: e,
+          diameter: diameter,
+          span: span,
+          rotorMass: mass,
+          rotorPosition: position,
+          density: density,
         ),
       );
     } on FormatException catch (error) {

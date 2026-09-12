@@ -5,6 +5,7 @@ import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/goodman_diagram_card.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -102,6 +103,13 @@ class FatigueSafetyFactorResultPage extends StatelessWidget {
             ),
           ),
         CalculationCard(steps: formulaSteps),
+        GoodmanDiagramCard(
+          alternatingStress: sigmaA,
+          meanStress: sigmaM,
+          enduranceLimit: se,
+          ultimateStrength: su,
+          safetyFactor: safetyFactor,
+        ),
       ],
     );
   }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/tsai_failure_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/page/tsai_failure_result_page.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/preset_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +38,7 @@ class _TsaiFailurePageState extends State<TsaiFailurePage> {
   double? _yt;
   double? _yc;
   double? _s;
+  int _presetGeneration = 0;
 
   @override
   void initState() {
@@ -62,11 +65,7 @@ class _TsaiFailurePageState extends State<TsaiFailurePage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -120,6 +119,7 @@ class _TsaiFailurePageState extends State<TsaiFailurePage> {
                   SizedBox(height: context.tokens.space2),
                   AdaptiveFieldGrid(children: [
                     UnitField(
+                      key: ValueKey('Xt$_presetGeneration'),
                       label: 'Xt (fiber tensile)',
                       category: UnitCategory.stress,
                       signed: false,
@@ -127,6 +127,7 @@ class _TsaiFailurePageState extends State<TsaiFailurePage> {
                       onChangedSI: (v) => _xt = v,
                     ),
                     UnitField(
+                      key: ValueKey('Xc$_presetGeneration'),
                       label: 'Xc (fiber compressive)',
                       category: UnitCategory.stress,
                       signed: false,
@@ -134,6 +135,7 @@ class _TsaiFailurePageState extends State<TsaiFailurePage> {
                       onChangedSI: (v) => _xc = v,
                     ),
                     UnitField(
+                      key: ValueKey('Yt$_presetGeneration'),
                       label: 'Yt (transverse tensile)',
                       category: UnitCategory.stress,
                       signed: false,
@@ -141,6 +143,7 @@ class _TsaiFailurePageState extends State<TsaiFailurePage> {
                       onChangedSI: (v) => _yt = v,
                     ),
                     UnitField(
+                      key: ValueKey('Yc$_presetGeneration'),
                       label: 'Yc (transverse compressive)',
                       category: UnitCategory.stress,
                       signed: false,
@@ -148,6 +151,7 @@ class _TsaiFailurePageState extends State<TsaiFailurePage> {
                       onChangedSI: (v) => _yc = v,
                     ),
                     UnitField(
+                      key: ValueKey('S$_presetGeneration'),
                       label: 'S (in-plane shear)',
                       category: UnitCategory.stress,
                       signed: false,
@@ -155,6 +159,17 @@ class _TsaiFailurePageState extends State<TsaiFailurePage> {
                       onChangedSI: (v) => _s = v,
                     ),
                   ]),
+                  SizedBox(height: context.tokens.space2),
+                  LaminaPresetButton(
+                    onSelected: (lamina) => setState(() {
+                      _xt = lamina.xt;
+                      _xc = lamina.xc;
+                      _yt = lamina.yt;
+                      _yc = lamina.yc;
+                      _s = lamina.s;
+                      _presetGeneration++;
+                    }),
+                  ),
                 ],
               ),
             ),
@@ -203,20 +218,18 @@ class _TsaiFailurePageState extends State<TsaiFailurePage> {
         'S': '$s',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => TsaiFailureResultPage(
-            result: result,
-            s1: s1,
-            s2: s2,
-            t12: t12,
-            xt: xt,
-            xc: xc,
-            yt: yt,
-            yc: yc,
-            s: s,
-          ),
+        (context) => TsaiFailureResultPage(
+          result: result,
+          s1: s1,
+          s2: s2,
+          t12: t12,
+          xt: xt,
+          xc: xc,
+          yt: yt,
+          yc: yc,
+          s: s,
         ),
       );
     } on FormatException catch (error) {

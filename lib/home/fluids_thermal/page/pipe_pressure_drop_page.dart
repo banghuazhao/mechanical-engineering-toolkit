@@ -8,7 +8,9 @@ import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/preset_picker.dart';
 import 'package:mechanical_engineering_toolkit/ui/pipe_size_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -71,11 +73,7 @@ class _PipePressureDropPageState extends State<PipePressureDropPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(l10n.Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -215,12 +213,9 @@ class _PipePressureDropPageState extends State<PipePressureDropPage> {
         'K': '${_minorLossK ?? 0}',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) =>
-              PipePressureDropResultPage(input: input, result: result),
-        ),
+        (context) => PipePressureDropResultPage(input: input, result: result),
       );
     } on FormatException catch (error) {
       ScaffoldMessenger.of(context)

@@ -10,7 +10,9 @@ import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -61,11 +63,7 @@ class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -169,17 +167,15 @@ class _ShaftPowerTorquePageState extends State<ShaftPowerTorquePage> {
         'n': '$rpm',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => _ShaftPowerTorqueResultPage(
-            toolId: widget.toolId,
-            torque: torque,
-            power: power,
-            omega: omega,
-            rpm: rpm,
-            mode: _mode,
-          ),
+        (context) => _ShaftPowerTorqueResultPage(
+          toolId: widget.toolId,
+          torque: torque,
+          power: power,
+          omega: omega,
+          rpm: rpm,
+          mode: _mode,
         ),
       );
     } on FormatException catch (error) {

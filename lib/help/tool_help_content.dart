@@ -2505,4 +2505,265 @@ const Map<int, ToolHelp> toolHelp = {
     ],
     diagram: 'images/icons/icon_power_screw.png',
   ),
+  // ---------------------------------------------------------- thermodynamics
+  900: ToolHelp(
+    summary: 'Properties of water and steam — saturated, compressed liquid, '
+        'superheated and supercritical — from IAPWS-IF97, the formulation behind '
+        'modern steam tables and power-plant software. Give whichever pair of '
+        'properties you know: a temperature or pressure for a saturation row, or '
+        'pressure with temperature, quality, enthalpy or entropy for a single state.',
+    formulas: [
+      HelpFormula(
+        tex: r'\frac{g(p,T)}{RT} = \gamma(\pi,\tau), \quad \pi = \frac{p}{p^*}, \quad \tau = \frac{T^*}{T}',
+        plain: 'g(p,T)/(RT) = γ(π, τ), π = p/p*, τ = T*/T',
+        caption: 'Regions 1, 2 and 5: a dimensionless Gibbs free energy',
+      ),
+      HelpFormula(
+        tex: r'h = RT\,\tau\,\gamma_\tau, \quad s = R\,(\tau\gamma_\tau - \gamma), \quad v = \frac{RT}{p}\,\pi\,\gamma_\pi',
+        plain: 'h = R·T·τ·γτ, s = R·(τ·γτ − γ), v = (R·T/p)·π·γπ',
+        caption: 'Every property is a derivative of that one function',
+      ),
+      HelpFormula(
+        tex: r'\frac{f(\rho,T)}{RT} = \phi(\delta,\tau), \quad \delta = \frac{\rho}{\rho_c}',
+        plain: 'f(ρ,T)/(RT) = φ(δ, τ), δ = ρ/ρc',
+        caption: 'Region 3, around the critical point: a Helmholtz free energy',
+      ),
+      HelpFormula(
+        tex: r'y = y_f + x\,(y_g - y_f)',
+        plain: 'y = yf + x·(yg − yf)',
+        caption: 'Wet mixture: v, u, h or s weighted by the quality',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p', 'Pressure', 'kPa'),
+      HelpSymbol('T', 'Temperature', '°C'),
+      HelpSymbol('x', 'Quality, the mass fraction that is vapour'),
+      HelpSymbol('v', 'Specific volume', 'm³/kg'),
+      HelpSymbol('u', 'Specific internal energy', 'kJ/kg'),
+      HelpSymbol('h', 'Specific enthalpy', 'kJ/kg'),
+      HelpSymbol('s', 'Specific entropy', 'kJ/(kg·K)'),
+      HelpSymbol('R', 'Gas constant of water, 0.461526', 'kJ/(kg·K)'),
+      HelpSymbol('f, g', 'Subscripts for saturated liquid and saturated vapour'),
+    ],
+    notes: [
+      'Valid from 0 °C to 800 °C at pressures up to 100 MPa, and on to 2000 °C '
+          'at 50 MPa and below. Outside that range the tool refuses rather than '
+          'extrapolates.',
+      'Energies and entropy are measured from saturated liquid at the triple '
+          'point, 0.01 °C, as in every modern steam table, so the numbers mix with '
+          'a printed table. They do not mix with an old Imperial table that set '
+          'h = 0 at 32 °F; its enthalpies are offset.',
+      'Near the critical point, 373.95 °C and 22.064 MPa, properties change very '
+          'fast with p and T and cp grows without bound. The numbers there are right '
+          'for the formulation but sensitive to the inputs.',
+      'A pressure and temperature exactly on the saturation line do not fix the '
+          'state: it could be any quality. Look it up by quality, enthalpy or '
+          'entropy instead.',
+      'IF97 matches the scientific formulation, IAPWS-95, to about 0.1 % in '
+          'specific volume and a few hundredths of a percent in enthalpy — inside '
+          'the uncertainty of any measurement it would be compared with.',
+    ],
+    references: [
+      'IAPWS R7-97(2012), Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam',
+      'Wagner & Kretzschmar, International Steam Tables',
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 3',
+    ],
+    diagram: 'images/icons/icon_steam_tables.png',
+  ),
+  901: ToolHelp(
+    summary: 'An ideal gas taken through one of the five classic processes — '
+        'constant temperature, pressure or volume, isentropic, or polytropic with '
+        'pvⁿ held constant. From the start state and one end-state property the '
+        'tool finds the other end state, then the boundary work, the heat, and '
+        'the changes in internal energy, enthalpy and entropy, per kilogram and '
+        'for the whole mass.',
+    formulas: [
+      HelpFormula(
+        tex: r'pv = RT',
+        plain: 'p·v = R·T',
+        caption: 'Ideal-gas equation of state',
+      ),
+      HelpFormula(
+        tex: r'W_b = \int_1^2 p\,dV',
+        plain: 'Wb = ∫ p dV',
+        caption: 'Boundary work: the area under the process on a p–v diagram',
+      ),
+      HelpFormula(
+        tex: r'pv^n = \text{const} \;\Rightarrow\; W_b = \frac{mR\,(T_2 - T_1)}{1 - n}',
+        plain: 'p·vⁿ = const ⇒ Wb = m·R·(T2 − T1)/(1 − n)',
+        caption: 'Polytropic: n = k is isentropic, n = 1 isothermal, n = 0 isobaric',
+      ),
+      HelpFormula(
+        tex: r'Q = \Delta U + W_b, \quad \Delta U = mc_v\,(T_2 - T_1)',
+        plain: 'Q = ΔU + Wb, ΔU = m·cv·(T2 − T1)',
+        caption: 'First law for a closed system',
+      ),
+      HelpFormula(
+        tex: r'\Delta S = m\left(c_p\ln\frac{T_2}{T_1} - R\ln\frac{p_2}{p_1}\right)',
+        plain: 'ΔS = m·(cp·ln(T2/T1) − R·ln(p2/p1))',
+        caption: 'Entropy change, whatever the path',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p', 'Pressure', 'kPa'),
+      HelpSymbol('v', 'Specific volume', 'm³/kg'),
+      HelpSymbol('T', 'Absolute temperature; entered in °C and converted', 'K'),
+      HelpSymbol('R', 'Specific gas constant', 'kJ/(kg·K)'),
+      HelpSymbol('cp, cv', 'Specific heats at constant pressure and volume', 'kJ/(kg·K)'),
+      HelpSymbol('k', 'Ratio of specific heats, cp/cv'),
+      HelpSymbol('n', 'Polytropic exponent'),
+      HelpSymbol('m', 'Mass of gas', 'kg'),
+      HelpSymbol('W, Q', 'Work done by the gas and heat added to it', 'kJ'),
+    ],
+    notes: [
+      'Specific heats are constant. For air the error is about 2 % in cp between '
+          '300 K and 600 K and grows beyond that; for large temperature swings, use '
+          'ideal-gas tables with variable specific heats.',
+      'Every process here is quasi-equilibrium: slow enough that pressure and '
+          'temperature stay uniform through the gas. A free expansion reaches its '
+          'end state by no such path, and does no boundary work.',
+      'Work done by the gas and heat added to it are positive, so a compression '
+          'shows negative work and a cooling negative heat.',
+      'Ideal behaviour holds at low pressure and at temperatures well above the '
+          'critical point. Water near saturation is far from ideal — use the steam '
+          'tables for it.',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 4 and 7',
+      'Moran & Shapiro, Fundamentals of Engineering Thermodynamics, ch. 3 and 6',
+    ],
+    diagram: 'images/icons/icon_ideal_gas.png',
+  ),
+  902: ToolHelp(
+    summary: 'The idealized cycles behind the petrol engine (Otto), the diesel '
+        'engine and the gas turbine (Brayton), analysed on the cold-air standard: '
+        'air at constant specific heats, with combustion replaced by heat added '
+        'from outside and the exhaust by heat rejected. The tool finds every state, '
+        'the heat and work, and the thermal efficiency — the upper bound a real '
+        'engine chases.',
+    formulas: [
+      HelpFormula(
+        tex: r'\eta_{Otto} = 1 - \frac{1}{r^{\,k-1}}',
+        plain: 'η = 1 − 1/r^(k−1)',
+        caption: 'Otto: heat added at constant volume',
+      ),
+      HelpFormula(
+        tex: r'\eta_{Diesel} = 1 - \frac{1}{r^{\,k-1}}\,\frac{r_c^{\,k} - 1}{k\,(r_c - 1)}',
+        plain: 'η = 1 − (1/r^(k−1))·(rc^k − 1)/(k·(rc − 1))',
+        caption: 'Diesel: heat added at constant pressure',
+      ),
+      HelpFormula(
+        tex: r'\eta_{Brayton} = 1 - \frac{1}{r_p^{\,(k-1)/k}}',
+        plain: 'η = 1 − 1/rp^((k−1)/k)',
+        caption: 'Ideal Brayton: heat added and rejected at constant pressure',
+      ),
+      HelpFormula(
+        tex: r'\frac{T_2}{T_1} = r^{\,k-1} = r_p^{\,(k-1)/k}',
+        plain: 'T2/T1 = r^(k−1) = rp^((k−1)/k)',
+        caption: 'Isentropic compression, by volume or by pressure ratio',
+      ),
+      HelpFormula(
+        tex: r'\text{MEP} = \frac{w_{net}}{v_1 - v_2}',
+        plain: 'MEP = w_net/(v1 − v2)',
+        caption: 'Mean effective pressure of a piston cycle',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('r', 'Compression ratio, v1/v2'),
+      HelpSymbol('rc', 'Cutoff ratio, v3/v2'),
+      HelpSymbol('rp', 'Pressure ratio, p2/p1'),
+      HelpSymbol('k', 'Ratio of specific heats; 1.4 for air'),
+      HelpSymbol('T', 'Absolute temperature at each state', 'K'),
+      HelpSymbol('q_in, q_out', 'Heat added and rejected per kilogram', 'kJ/kg'),
+      HelpSymbol('w_net', 'Net work per kilogram', 'kJ/kg'),
+      HelpSymbol('ηc, ηt', 'Isentropic efficiencies of compressor and turbine'),
+      HelpSymbol('MEP', 'Mean effective pressure', 'kPa'),
+    ],
+    notes: [
+      'Otto efficiency depends on the compression ratio alone. Knock holds a '
+          'spark-ignition engine to about 8–12; a diesel compresses air only and '
+          'runs 14–22, which is why it is the more efficient engine in practice '
+          'even though, at equal r, the Otto cycle is.',
+      'Real engines reach roughly half these figures: the specific heats rise '
+          'with temperature, combustion takes time, heat leaks through the walls '
+          'and the gas after combustion is not air.',
+      'Brayton efficiency keeps rising with pressure ratio, but net work per '
+          'kilogram peaks and falls, because compressor work grows faster than '
+          'turbine work. With component losses there is a pressure ratio beyond '
+          'which the cycle produces nothing at all.',
+      'The Carnot figure is the most any engine could reach between the same '
+          'lowest and highest temperatures. The gap to the cycle efficiency is the '
+          'price of adding heat across a range of temperatures instead of at the '
+          'peak.',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 9',
+      'Heywood, Internal Combustion Engine Fundamentals, ch. 5',
+      'Saravanamuttoo et al., Gas Turbine Theory, ch. 2',
+    ],
+    diagram: 'images/icons/icon_air_cycle.png',
+  ),
+  903: ToolHelp(
+    summary: 'The steam power cycle behind most of the world’s electricity: a '
+        'pump raises condensate to boiler pressure, the boiler turns it to steam, '
+        'the turbine expands it for work and the condenser returns it to liquid. '
+        'With steam properties from IAPWS-IF97, the tool finds every state, the '
+        'work and heat of each component, the thermal efficiency and the turbine '
+        'exhaust quality.',
+    formulas: [
+      HelpFormula(
+        tex: r'w_p = \frac{v_1\,(p_2 - p_1)}{\eta_p}',
+        plain: 'wp = v1·(p2 − p1)/ηp',
+        caption: 'Pump work, treating the water as incompressible',
+      ),
+      HelpFormula(
+        tex: r'h_4 = h_3 - \eta_t\,(h_3 - h_{4s})',
+        plain: 'h4 = h3 − ηt·(h3 − h4s)',
+        caption: 'Turbine exit, from the isentropic expansion to condenser pressure',
+      ),
+      HelpFormula(
+        tex: r'q_{in} = h_3 - h_2, \qquad q_{out} = h_4 - h_1',
+        plain: 'q_in = h3 − h2, q_out = h4 − h1',
+        caption: 'Heat added in the boiler and rejected in the condenser',
+      ),
+      HelpFormula(
+        tex: r'\eta = \frac{w_t - w_p}{q_{in}} = \frac{(h_3 - h_4) - (h_2 - h_1)}{h_3 - h_2}',
+        plain: 'η = (wt − wp)/q_in = ((h3 − h4) − (h2 − h1))/(h3 − h2)',
+        caption: 'Thermal efficiency',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p1, p2', 'Condenser and boiler pressures', 'kPa'),
+      HelpSymbol('h', 'Specific enthalpy at each state', 'kJ/kg'),
+      HelpSymbol('s', 'Specific entropy', 'kJ/(kg·K)'),
+      HelpSymbol('v1', 'Specific volume of saturated liquid leaving the condenser', 'm³/kg'),
+      HelpSymbol('x4', 'Quality of the turbine exhaust'),
+      HelpSymbol('ηt, ηp', 'Isentropic efficiencies of turbine and pump'),
+      HelpSymbol('ṁ', 'Steam mass flow rate', 'kg/s'),
+    ],
+    notes: [
+      'State 1 is saturated liquid at the condenser pressure, so the pump never '
+          'sees vapour. State 3 is superheated steam at the given temperature, or '
+          'saturated vapour when none is given.',
+      'Lowering the condenser pressure raises efficiency, which is why condensers '
+          'run at a vacuum of a few kPa; the cooling water temperature sets how low '
+          'they can go.',
+      'Superheat and a higher boiler pressure both raise efficiency, but pressure '
+          'alone makes the exhaust wetter. Below about 88 % quality the droplets '
+          'erode the last-stage blades; reheat is the usual remedy, and the tool '
+          'flags an exhaust that wet.',
+      'The back work ratio is tiny — a percent or two — because pumping a liquid '
+          'takes far less work than compressing a gas. That is the Rankine cycle’s '
+          'great advantage over the Brayton cycle.',
+      'Not modelled: pressure and heat losses in the boiler, piping and condenser, '
+          'feedwater heating and reheat. Each moves a real plant’s efficiency by a '
+          'few points.',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 10',
+      'Moran & Shapiro, Fundamentals of Engineering Thermodynamics, ch. 8',
+      'IAPWS R7-97(2012), Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam',
+    ],
+    diagram: 'images/icons/icon_rankine.png',
+  ),
 };

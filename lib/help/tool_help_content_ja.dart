@@ -2304,4 +2304,245 @@ const Map<int, ToolHelp> toolHelpJa = {
     ],
     diagram: 'images/icons/icon_power_screw.png',
   ),
+  // ---------------------------------------------------------- thermodynamics
+  900: ToolHelp(
+    summary: '飽和・圧縮液・過熱蒸気・超臨界の水と蒸気の物性値を、現行の蒸気表や'
+        '発電プラントのソフトウェアが用いる IAPWS-IF97 で求めます。わかっている '
+        '2 つの量を入力してください。飽和表なら温度または圧力、単一の状態なら圧力と、'
+        '温度・乾き度・比エンタルピー・比エントロピーのいずれかです。',
+    formulas: [
+      HelpFormula(
+        tex: r'\frac{g(p,T)}{RT} = \gamma(\pi,\tau), \quad \pi = \frac{p}{p^*}, \quad \tau = \frac{T^*}{T}',
+        plain: 'g(p,T)/(RT) = γ(π, τ), π = p/p*, τ = T*/T',
+        caption: '領域 1・2・5：無次元のギブズ自由エネルギー',
+      ),
+      HelpFormula(
+        tex: r'h = RT\,\tau\,\gamma_\tau, \quad s = R\,(\tau\gamma_\tau - \gamma), \quad v = \frac{RT}{p}\,\pi\,\gamma_\pi',
+        plain: 'h = R·T·τ·γτ, s = R·(τ·γτ − γ), v = (R·T/p)·π·γπ',
+        caption: 'すべての物性値はこの 1 つの関数の導関数から得られる',
+      ),
+      HelpFormula(
+        tex: r'\frac{f(\rho,T)}{RT} = \phi(\delta,\tau), \quad \delta = \frac{\rho}{\rho_c}',
+        plain: 'f(ρ,T)/(RT) = φ(δ, τ), δ = ρ/ρc',
+        caption: '臨界点付近の領域 3：ヘルムホルツ自由エネルギー',
+      ),
+      HelpFormula(
+        tex: r'y = y_f + x\,(y_g - y_f)',
+        plain: 'y = yf + x·(yg − yf)',
+        caption: '湿り蒸気：v・u・h・s を乾き度で重み付けする',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p', '圧力', 'kPa'),
+      HelpSymbol('T', '温度', '°C'),
+      HelpSymbol('x', '乾き度（蒸気の質量割合）'),
+      HelpSymbol('v', '比体積', 'm³/kg'),
+      HelpSymbol('u', '比内部エネルギー', 'kJ/kg'),
+      HelpSymbol('h', '比エンタルピー', 'kJ/kg'),
+      HelpSymbol('s', '比エントロピー', 'kJ/(kg·K)'),
+      HelpSymbol('R', '水のガス定数、0.461526', 'kJ/(kg·K)'),
+      HelpSymbol('f, g', '飽和液と飽和蒸気を表す添字'),
+    ],
+    notes: [
+      '適用範囲は 100 MPa 以下で 0〜800 °C、50 MPa 以下では 2000 °C までです。'
+          '範囲外では外挿せずに計算を拒否します。',
+      'エネルギーとエントロピーは、現行の蒸気表と同じく三重点 0.01 °C の飽和液を'
+          '基準としているため、印刷された蒸気表の値と組み合わせられます。ただし '
+          '32 °F で h = 0 とした古いヤード・ポンド法の表とは基準がずれています。',
+      '臨界点（373.95 °C、22.064 MPa）付近では物性値が p と T に対して急変し、'
+          'cp は際限なく大きくなります。値は定式化として正しいものの、入力に敏感です。',
+      '飽和線上にちょうど乗る圧力と温度では状態が決まりません（乾き度が任意になるため）。'
+          'その場合は乾き度・比エンタルピー・比エントロピーで検索してください。',
+      'IF97 は学術用の定式化 IAPWS-95 と比体積で約 0.1 %、比エンタルピーで'
+          '数百分の一パーセント以内で一致します。比較対象となるどんな測定の不確かさよりも'
+          '小さい差です。',
+    ],
+    references: [
+      'IAPWS R7-97(2012), Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam',
+      'Wagner & Kretzschmar, International Steam Tables',
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 3',
+    ],
+    diagram: 'images/icons/icon_steam_tables.png',
+  ),
+  901: ToolHelp(
+    summary: '理想気体が、等温・等圧・等積・等エントロピー、または pvⁿ 一定のポリトロープ'
+        'という 5 つの代表的な状態変化をたどる場合を扱います。初期状態と終状態の量を '
+        '1 つ与えると、残りの終状態、境界仕事、熱、内部エネルギー・エンタルピー・'
+        'エントロピーの変化を、単位質量あたりと全質量について求めます。',
+    formulas: [
+      HelpFormula(
+        tex: r'pv = RT',
+        plain: 'p·v = R·T',
+        caption: '理想気体の状態方程式',
+      ),
+      HelpFormula(
+        tex: r'W_b = \int_1^2 p\,dV',
+        plain: 'Wb = ∫ p dV',
+        caption: '境界仕事：p–v 線図上で過程の下側の面積',
+      ),
+      HelpFormula(
+        tex: r'pv^n = \text{const} \;\Rightarrow\; W_b = \frac{mR\,(T_2 - T_1)}{1 - n}',
+        plain: 'p·vⁿ = const ⇒ Wb = m·R·(T2 − T1)/(1 − n)',
+        caption: 'ポリトロープ：n = k で等エントロピー、n = 1 で等温、n = 0 で等圧',
+      ),
+      HelpFormula(
+        tex: r'Q = \Delta U + W_b, \quad \Delta U = mc_v\,(T_2 - T_1)',
+        plain: 'Q = ΔU + Wb, ΔU = m·cv·(T2 − T1)',
+        caption: '閉じた系の熱力学第一法則',
+      ),
+      HelpFormula(
+        tex: r'\Delta S = m\left(c_p\ln\frac{T_2}{T_1} - R\ln\frac{p_2}{p_1}\right)',
+        plain: 'ΔS = m·(cp·ln(T2/T1) − R·ln(p2/p1))',
+        caption: '経路によらないエントロピー変化',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p', '圧力', 'kPa'),
+      HelpSymbol('v', '比体積', 'm³/kg'),
+      HelpSymbol('T', '絶対温度（°C で入力し換算）', 'K'),
+      HelpSymbol('R', 'ガス定数', 'kJ/(kg·K)'),
+      HelpSymbol('cp, cv', '定圧比熱と定積比熱', 'kJ/(kg·K)'),
+      HelpSymbol('k', '比熱比 cp/cv'),
+      HelpSymbol('n', 'ポリトロープ指数'),
+      HelpSymbol('m', '気体の質量', 'kg'),
+      HelpSymbol('W, Q', '気体がする仕事と気体が受ける熱', 'kJ'),
+    ],
+    notes: [
+      '比熱は一定としています。空気では 300 K から 600 K の間で cp の誤差は約 2 % で、'
+          'それ以上では大きくなります。温度変化が大きい場合は、比熱の温度依存を考慮した'
+          '理想気体表を使ってください。',
+      'どの状態変化も準静的、つまり気体内の圧力と温度が常に一様になるほどゆっくり'
+          '進むものとしています。自由膨張はそのような経路を通らずに終状態に達し、'
+          '境界仕事をしません。',
+      '気体がする仕事と気体が受ける熱を正とします。したがって圧縮では仕事が負、'
+          '冷却では熱が負になります。',
+      '理想気体としての振る舞いは、低圧で、臨界点より十分高い温度で成り立ちます。'
+          '飽和に近い水は理想気体からほど遠いため、蒸気表を使ってください。',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 4 and 7',
+      'Moran & Shapiro, Fundamentals of Engineering Thermodynamics, ch. 3 and 6',
+    ],
+    diagram: 'images/icons/icon_ideal_gas.png',
+  ),
+  902: ToolHelp(
+    summary: 'ガソリンエンジン（オットー）、ディーゼルエンジン、ガスタービン（ブレイトン）の'
+        '理想サイクルを空気標準（比熱一定）で解析します。作動流体は比熱一定の空気とし、'
+        '燃焼は外部からの受熱、排気は放熱に置き換えます。各状態、熱と仕事、そして'
+        '実際のエンジンが目指す上限である熱効率を求めます。',
+    formulas: [
+      HelpFormula(
+        tex: r'\eta_{Otto} = 1 - \frac{1}{r^{\,k-1}}',
+        plain: 'η = 1 − 1/r^(k−1)',
+        caption: 'オットー：等積受熱',
+      ),
+      HelpFormula(
+        tex: r'\eta_{Diesel} = 1 - \frac{1}{r^{\,k-1}}\,\frac{r_c^{\,k} - 1}{k\,(r_c - 1)}',
+        plain: 'η = 1 − (1/r^(k−1))·(rc^k − 1)/(k·(rc − 1))',
+        caption: 'ディーゼル：等圧受熱',
+      ),
+      HelpFormula(
+        tex: r'\eta_{Brayton} = 1 - \frac{1}{r_p^{\,(k-1)/k}}',
+        plain: 'η = 1 − 1/rp^((k−1)/k)',
+        caption: '理想ブレイトン：等圧で受熱・放熱',
+      ),
+      HelpFormula(
+        tex: r'\frac{T_2}{T_1} = r^{\,k-1} = r_p^{\,(k-1)/k}',
+        plain: 'T2/T1 = r^(k−1) = rp^((k−1)/k)',
+        caption: '等エントロピー圧縮（体積比または圧力比による）',
+      ),
+      HelpFormula(
+        tex: r'\text{MEP} = \frac{w_{net}}{v_1 - v_2}',
+        plain: 'MEP = w_net/(v1 − v2)',
+        caption: 'ピストンサイクルの平均有効圧',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('r', '圧縮比 v1/v2'),
+      HelpSymbol('rc', '締切比 v3/v2'),
+      HelpSymbol('rp', '圧力比 p2/p1'),
+      HelpSymbol('k', '比熱比（空気は 1.4）'),
+      HelpSymbol('T', '各状態の絶対温度', 'K'),
+      HelpSymbol('q_in, q_out', '単位質量あたりの受熱量と放熱量', 'kJ/kg'),
+      HelpSymbol('w_net', '単位質量あたりの正味仕事', 'kJ/kg'),
+      HelpSymbol('ηc, ηt', '圧縮機とタービンの断熱効率'),
+      HelpSymbol('MEP', '平均有効圧', 'kPa'),
+    ],
+    notes: [
+      'オットーサイクルの効率は圧縮比だけで決まります。火花点火機関はノッキングのため'
+          '圧縮比が 8〜12 程度に制限されますが、空気だけを圧縮するディーゼルは 14〜22 で'
+          '運転されます。同じ r ならオットーの方が高効率でも、実際にはディーゼルの方が'
+          '燃費に優れるのはこのためです。',
+      '実際のエンジンはこの値のおよそ半分にとどまります。比熱は温度とともに大きくなり、'
+          '燃焼には時間がかかり、壁から熱が逃げ、燃焼後のガスはもはや空気ではないためです。',
+      'ブレイトンの効率は圧力比とともに上がり続けますが、単位質量あたりの正味仕事は'
+          '最大値を過ぎると減少します。圧縮機仕事がタービン仕事より速く増えるためです。'
+          '損失がある場合、ある圧力比を超えるとサイクルは何も生み出さなくなります。',
+      'カルノー効率は、同じ最低温度と最高温度の間で得られる上限です。サイクル効率との差は、'
+          '最高温度ではなく温度範囲にわたって熱を加えることの代償です。',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 9',
+      'Heywood, Internal Combustion Engine Fundamentals, ch. 5',
+      'Saravanamuttoo et al., Gas Turbine Theory, ch. 2',
+    ],
+    diagram: 'images/icons/icon_air_cycle.png',
+  ),
+  903: ToolHelp(
+    summary: '世界の電力の大部分を生み出す蒸気動力サイクルです。ポンプが復水をボイラ圧力まで'
+        '昇圧し、ボイラが蒸気にし、タービンが膨張させて仕事を取り出し、復水器が液体に'
+        '戻します。IAPWS-IF97 の物性値を用いて、各状態、各機器の仕事と熱、熱効率、'
+        'タービン出口の乾き度を求めます。',
+    formulas: [
+      HelpFormula(
+        tex: r'w_p = \frac{v_1\,(p_2 - p_1)}{\eta_p}',
+        plain: 'wp = v1·(p2 − p1)/ηp',
+        caption: 'ポンプ仕事（水を非圧縮とみなす）',
+      ),
+      HelpFormula(
+        tex: r'h_4 = h_3 - \eta_t\,(h_3 - h_{4s})',
+        plain: 'h4 = h3 − ηt·(h3 − h4s)',
+        caption: 'タービン出口（復水器圧力までの等エントロピー膨張から）',
+      ),
+      HelpFormula(
+        tex: r'q_{in} = h_3 - h_2, \qquad q_{out} = h_4 - h_1',
+        plain: 'q_in = h3 − h2, q_out = h4 − h1',
+        caption: 'ボイラでの受熱量と復水器での放熱量',
+      ),
+      HelpFormula(
+        tex: r'\eta = \frac{w_t - w_p}{q_{in}} = \frac{(h_3 - h_4) - (h_2 - h_1)}{h_3 - h_2}',
+        plain: 'η = (wt − wp)/q_in = ((h3 − h4) − (h2 − h1))/(h3 − h2)',
+        caption: '熱効率',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p1, p2', '復水器圧力とボイラ圧力', 'kPa'),
+      HelpSymbol('h', '各状態の比エンタルピー', 'kJ/kg'),
+      HelpSymbol('s', '比エントロピー', 'kJ/(kg·K)'),
+      HelpSymbol('v1', '復水器を出る飽和液の比体積', 'm³/kg'),
+      HelpSymbol('x4', 'タービン出口蒸気の乾き度'),
+      HelpSymbol('ηt, ηp', 'タービンとポンプの断熱効率'),
+      HelpSymbol('ṁ', '蒸気の質量流量', 'kg/s'),
+    ],
+    notes: [
+      '状態 1 は復水器圧力の飽和液なので、ポンプが蒸気を吸い込むことはありません。'
+          '状態 3 は指定温度の過熱蒸気で、温度を指定しない場合は飽和蒸気です。',
+      '復水器圧力を下げると効率が上がります。復水器が数 kPa の真空で運転されるのはこのため'
+          'で、どこまで下げられるかは冷却水温度で決まります。',
+      '過熱度とボイラ圧力を上げるといずれも効率は上がりますが、圧力だけを上げると排気が'
+          '湿ります。乾き度が約 88 % を下回ると水滴が最終段翼を浸食します。通常の対策は'
+          '再熱で、このツールはそのような湿った排気を警告します。',
+      'バックワーク比は 1〜2 % とごくわずかです。液体を昇圧する仕事は気体を圧縮する'
+          '仕事よりはるかに小さいためで、これがランキンサイクルのブレイトンサイクルに対する'
+          '大きな利点です。',
+      'ボイラ・配管・復水器での圧力損失と熱損失、給水加熱、再熱はモデル化していません。'
+          '実際のプラントではそれぞれが効率を数ポイント変えます。',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 10',
+      'Moran & Shapiro, Fundamentals of Engineering Thermodynamics, ch. 8',
+      'IAPWS R7-97(2012), Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam',
+    ],
+    diagram: 'images/icons/icon_rankine.png',
+  ),
 };

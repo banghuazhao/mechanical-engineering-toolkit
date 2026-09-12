@@ -32,6 +32,11 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/pl
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/spherical_shell_stress_page.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/page/linear_elastic_constitutive_relation.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/page/strees_strain_of_linear_elastic_material.dart';
+import 'package:mechanical_engineering_toolkit/home/thermodynamics/page/air_cycle_page.dart';
+import 'package:mechanical_engineering_toolkit/home/thermodynamics/page/ideal_gas_page.dart';
+import 'package:mechanical_engineering_toolkit/home/thermodynamics/page/rankine_page.dart';
+import 'package:mechanical_engineering_toolkit/home/thermodynamics/page/steam_tables_page.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 
 import 'composite/page/lamina_engineering_constants_page.dart';
 import 'composite/page/lamina_stress_strain_page.dart';
@@ -71,6 +76,7 @@ enum ToolType {
   utilities,
   machineDesign,
   fluidsThermal,
+  thermodynamics,
 }
 
 class Tool {
@@ -112,7 +118,7 @@ class ToolLibrary {
           keywords: const ['stress', 'strain', 'axial', 'hooke'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => GeneralStressPage(
                         title: title,
                         toolId: toolId,
@@ -131,7 +137,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => BarForceDisplacementRelationPage(
                         title: title,
                         toolId: toolId,
@@ -145,7 +151,7 @@ class ToolLibrary {
           keywords: const ['second moment', 'section properties', 'centroid'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => MonentsOfInertiaPage(
                         title: title,
                         toolId: toolId,
@@ -159,7 +165,7 @@ class ToolLibrary {
           keywords: const ['torque', 'shear stress', 'shaft', 'twist'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => BarTorsionFormulaPage(
                         title: title,
                         toolId: toolId,
@@ -173,7 +179,7 @@ class ToolLibrary {
           keywords: const ['bending stress', 'moment', 'section modulus'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => BeamFlexureFormulaPage(
                         title: title,
                         toolId: toolId,
@@ -188,7 +194,7 @@ class ToolLibrary {
           keywords: const ['deflection', 'slope', 'cantilever'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => CantileverBeamDeflectionsSlopesPage(
                         title: title,
                         toolId: toolId,
@@ -203,7 +209,7 @@ class ToolLibrary {
           keywords: const ['deflection', 'slope', 'simply supported'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => SimpleBeamDeflectionsSlopesPage(
                         title: title,
                         toolId: toolId,
@@ -217,7 +223,7 @@ class ToolLibrary {
           keywords: const ['stress transformation', 'rotated axes'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => PlaneStressTransformationPage(
                         title: title,
                         toolId: toolId,
@@ -231,7 +237,7 @@ class ToolLibrary {
           keywords: const ['principal stress', 'max shear', 'mohr'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => PrincipalStressPage(
                         title: title,
                         toolId: toolId,
@@ -245,7 +251,7 @@ class ToolLibrary {
           keywords: const ['pressure vessel', 'hoop stress', 'sphere'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => SphericalShellStressPage(
                         title: title,
                         toolId: toolId,
@@ -261,7 +267,7 @@ class ToolLibrary {
           keywords: const ['hoop stress', 'longitudinal stress', 'thin wall'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => CylindricalPressureVesselPage(
                         title: title,
                         toolId: toolId,
@@ -275,7 +281,7 @@ class ToolLibrary {
           keywords: const ['euler buckling', 'critical load', 'slenderness'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => ColumnBucklingLoadPage(
                         title: title,
                         toolId: toolId,
@@ -289,7 +295,7 @@ class ToolLibrary {
           keywords: const ['thermal expansion', 'cte', 'temperature'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => ThermalDeformationPage(
                         title: title,
                         toolId: toolId,
@@ -303,7 +309,7 @@ class ToolLibrary {
           keywords: const ['shear flow', 'shear stress'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => TransverseShearStressPage(
                         title: title,
                         toolId: toolId,
@@ -317,7 +323,7 @@ class ToolLibrary {
           keywords: const ['torsion', 'shaft', 'twist angle'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => AngleOfTwistPage(
                         title: title,
                         toolId: toolId,
@@ -331,7 +337,7 @@ class ToolLibrary {
           keywords: const ['rpm', 'horsepower', 'torque', 'power transmission'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => ShaftPowerTorquePage(
                         title: title,
                         toolId: toolId,
@@ -345,7 +351,7 @@ class ToolLibrary {
           keywords: const ['yield', 'von mises', 'tresca', 'safety factor'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => FailureCriteriaPage(
                         title: title,
                         toolId: toolId,
@@ -363,7 +369,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => BeamSectionPropertiesPage(
                         title: title,
                         toolId: toolId,
@@ -377,7 +383,7 @@ class ToolLibrary {
           keywords: const ['principal stress', 'max shear stress'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => MohrsCirclePage(
                         title: title,
                         toolId: toolId,
@@ -391,7 +397,7 @@ class ToolLibrary {
           keywords: const ['goodman', 's-n', 'endurance limit', 'fatigue'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => FatigueSafetyFactorPage(
                         title: title,
                         toolId: toolId,
@@ -405,7 +411,7 @@ class ToolLibrary {
           keywords: const ['bolt', 'rivet', 'shear', 'bearing stress'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => BoltedJointPage(
                         title: title,
                         toolId: toolId,
@@ -419,7 +425,7 @@ class ToolLibrary {
           keywords: const ['von mises', 'combined stress', 'factor of safety'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => CombinedLoadingPage(
                         title: title,
                         toolId: toolId,
@@ -434,7 +440,7 @@ class ToolLibrary {
           keywords: const ["hooke's law", 'elastic modulus', 'poisson'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => LinearElasticConstitutiveRelationPage(
                         title: title,
                         toolId: toolId,
@@ -448,7 +454,7 @@ class ToolLibrary {
           keywords: const ["hooke's law", 'elastic constants'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => StressStrainLinearElasticPage(
                         title: title,
                         toolId: toolId,
@@ -463,7 +469,7 @@ class ToolLibrary {
           keywords: const ['ply', 'orthotropic'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => LaminaStressStrainPage(
                         title: title,
                         toolId: toolId,
@@ -477,7 +483,7 @@ class ToolLibrary {
           keywords: const ['E1 E2 G12', 'ply'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => LaminaEngineeringConstantsPage(
                         title: title,
                         toolId: toolId,
@@ -491,7 +497,7 @@ class ToolLibrary {
           keywords: const ['laminate', 'clt'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => LaminateStressStrainPage(
                         title: title,
                         toolId: toolId,
@@ -505,7 +511,7 @@ class ToolLibrary {
           keywords: const ['abd matrix', 'laminate theory'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => LaminatePlanePropertiesPage(
                         title: title,
                         toolId: toolId,
@@ -519,7 +525,7 @@ class ToolLibrary {
           keywords: const ['3d stiffness', 'laminate'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => Laminate3DPropertiesPage(
                         title: title,
                         toolId: toolId,
@@ -533,7 +539,7 @@ class ToolLibrary {
           keywords: const ['volume fraction', 'fiber matrix'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => RulesOfMixturePage(
                         title: title,
                         toolId: toolId,
@@ -552,7 +558,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => TsaiFailurePage(
                         title: title,
                         toolId: toolId,
@@ -567,7 +573,7 @@ class ToolLibrary {
           keywords: const ['vector sum', 'force resultant'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => ResultantForcePage(
                       title: title,
                       toolId: toolId,
@@ -594,7 +600,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => BeamCalculatorPage(
                       title: title,
                       toolId: toolId,
@@ -607,7 +613,7 @@ class ToolLibrary {
           keywords: const ['center of gravity', 'centroid'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => CentroidPage(
                       title: title,
                       toolId: toolId,
@@ -620,7 +626,7 @@ class ToolLibrary {
           keywords: const ['method of joints', 'truss', 'member force'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => TrussAnalysisPage(
                       title: title,
                       toolId: toolId,
@@ -634,7 +640,7 @@ class ToolLibrary {
           keywords: const ['convert', 'units'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => UnitConverterPage(
                       title: title,
                       toolId: toolId,
@@ -655,7 +661,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => DrillTapChartPage(
                       title: title,
                       toolId: toolId,
@@ -676,7 +682,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => FitsTolerancesPage(
                       title: title,
                       toolId: toolId,
@@ -699,7 +705,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => StandardSectionsPage(
                       title: title,
                       toolId: toolId,
@@ -724,7 +730,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => PipeSchedulesPage(
                       title: title,
                       toolId: toolId,
@@ -751,7 +757,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => ToleranceStackupPage(
                       title: title,
                       toolId: toolId,
@@ -783,7 +789,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => FastenerGradesPage(
                       title: title,
                       toolId: toolId,
@@ -802,7 +808,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => SpringDesignPage(
                       title: title,
                       toolId: toolId,
@@ -820,7 +826,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => SpurGearPage(
                       title: title,
                       toolId: toolId,
@@ -838,7 +844,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => ShaftFatiguePage(
                       title: title,
                       toolId: toolId,
@@ -856,7 +862,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => BearingLifePage(
                       title: title,
                       toolId: toolId,
@@ -869,7 +875,7 @@ class ToolLibrary {
           keywords: const ['pulley', 'sprocket', 'wrap angle', 'speed ratio'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => BeltDrivePage(
                       title: title,
                       toolId: toolId,
@@ -882,7 +888,7 @@ class ToolLibrary {
           keywords: const ['nut factor', 'tightening torque', 'bolted joint'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => BoltPreloadPage(
                       title: title,
                       toolId: toolId,
@@ -895,7 +901,7 @@ class ToolLibrary {
           keywords: const ['throat', 'weld shear', 'leg size'],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => FilletWeldPage(
                       title: title,
                       toolId: toolId,
@@ -913,7 +919,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => PressFitPage(
                       title: title,
                       toolId: toolId,
@@ -936,7 +942,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => ShaftCriticalSpeedPage(
                       title: title,
                       toolId: toolId,
@@ -956,7 +962,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => BeamNaturalFrequencyPage(
                       title: title,
                       toolId: toolId,
@@ -976,7 +982,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => TorsionalFrequencyPage(
                       title: title,
                       toolId: toolId,
@@ -1004,7 +1010,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => PowerScrewPage(
                       title: title,
                       toolId: toolId,
@@ -1025,7 +1031,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => ReynoldsNumberPage(
                       title: title,
                       toolId: toolId,
@@ -1047,7 +1053,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => PipePressureDropPage(
                       title: title,
                       toolId: toolId,
@@ -1068,7 +1074,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => PumpPowerPage(
                       title: title,
                       toolId: toolId,
@@ -1089,7 +1095,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => CompositeWallPage(
                       title: title,
                       toolId: toolId,
@@ -1108,7 +1114,7 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => FinEfficiencyPage(
                       title: title,
                       toolId: toolId,
@@ -1129,8 +1135,101 @@ class ToolLibrary {
           ],
           action: (context, title, toolId, {initialInputs}) => Navigator.push(
               context,
-              MaterialPageRoute(
+              ToolPageRoute(
                   builder: (context) => LmtdPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      // Thermodynamics
+      Tool(
+          id: 900,
+          image: AssetImage("images/icons/icon_steam_tables.png"),
+          title: S.of(context).Steam_Tables,
+          type: ToolType.thermodynamics,
+          keywords: const [
+            'steam',
+            'water',
+            'iapws',
+            'if97',
+            'saturation',
+            'superheated',
+            'enthalpy',
+            'entropy',
+            'quality',
+            'boiling point'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              ToolPageRoute(
+                  builder: (context) => SteamTablesPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 901,
+          image: AssetImage("images/icons/icon_ideal_gas.png"),
+          title: S.of(context).Ideal_Gas_Process,
+          type: ToolType.thermodynamics,
+          keywords: const [
+            'ideal gas',
+            'isothermal',
+            'isentropic',
+            'adiabatic',
+            'polytropic',
+            'isobaric',
+            'isochoric',
+            'boundary work',
+            'first law'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              ToolPageRoute(
+                  builder: (context) => IdealGasPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 902,
+          image: AssetImage("images/icons/icon_air_cycle.png"),
+          title: S.of(context).Air_Standard_Cycles,
+          type: ToolType.thermodynamics,
+          keywords: const [
+            'otto',
+            'diesel',
+            'brayton',
+            'joule',
+            'gas turbine',
+            'engine',
+            'compression ratio',
+            'thermal efficiency',
+            'air standard'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              ToolPageRoute(
+                  builder: (context) => AirCyclePage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 903,
+          image: AssetImage("images/icons/icon_rankine.png"),
+          title: S.of(context).Rankine_Cycle,
+          type: ToolType.thermodynamics,
+          keywords: const [
+            'rankine',
+            'steam power',
+            'power plant',
+            'turbine',
+            'boiler',
+            'condenser',
+            'thermal efficiency',
+            'back work ratio'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              ToolPageRoute(
+                  builder: (context) => RankinePage(
                       title: title,
                       toolId: toolId,
                       initialInputs: initialInputs)))),

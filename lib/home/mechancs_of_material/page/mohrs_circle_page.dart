@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/principal_stress_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/mohrs_circle_result_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -52,11 +53,7 @@ class _MohrsCirclePageState extends State<MohrsCirclePage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -131,17 +128,15 @@ class _MohrsCirclePageState extends State<MohrsCirclePage> {
         'τ_xy': '$txy',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => MohrsCircleResultPage(
-            toolId: widget.toolId,
-            title: widget.title,
-            sigmaX: sx,
-            sigmaY: sy,
-            tauXY: txy,
-            result: result,
-          ),
+        (context) => MohrsCircleResultPage(
+          toolId: widget.toolId,
+          title: widget.title,
+          sigmaX: sx,
+          sigmaY: sy,
+          tauXY: txy,
+          result: result,
         ),
       );
     } on FormatException catch (error) {

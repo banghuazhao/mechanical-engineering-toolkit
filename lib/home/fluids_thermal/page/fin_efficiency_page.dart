@@ -7,7 +7,9 @@ import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/preset_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -64,11 +66,7 @@ class _FinEfficiencyPageState extends State<FinEfficiencyPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(l10n.Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -198,19 +196,17 @@ class _FinEfficiencyPageState extends State<FinEfficiencyPage> {
         'Tinf': '$ambient',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => FinEfficiencyResultPage(
-            result: result,
-            length: length,
-            thickness: thickness,
-            width: width,
-            conductivity: conductivity,
-            coefficient: coefficient,
-            baseTemperature: base,
-            ambientTemperature: ambient,
-          ),
+        (context) => FinEfficiencyResultPage(
+          result: result,
+          length: length,
+          thickness: thickness,
+          width: width,
+          conductivity: conductivity,
+          coefficient: coefficient,
+          baseTemperature: base,
+          ambientTemperature: ambient,
         ),
       );
     } on FormatException catch (error) {

@@ -9,7 +9,9 @@ import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/multiple_row_result.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -157,13 +159,10 @@ class _ThermalDeformationPageState extends State<ThermalDeformationPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          setState(() => validate = true);
-          _calculate();
-        },
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: () {
+        setState(() => validate = true);
+        _calculate();
+      }),
       body: SafeArea(
         child: StaggeredGridView.countBuilder(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
@@ -189,18 +188,16 @@ class _ThermalDeformationPageState extends State<ThermalDeformationPage> {
       "L": _model.length!.toString(),
       "E": _model.youngsModulus!.toString(),
     });
-    Navigator.push(
+    showToolResult(
       context,
-      MaterialPageRoute(
-        builder: (_) => _ThermalResultPage(
-          toolId: widget.toolId,
-          delta: delta,
-          sigma: sigma,
-          alpha: _model.alpha!,
-          deltaT: _model.deltaT!,
-          length: _model.length!,
-          E: _model.youngsModulus!,
-        ),
+      (_) => _ThermalResultPage(
+        toolId: widget.toolId,
+        delta: delta,
+        sigma: sigma,
+        alpha: _model.alpha!,
+        deltaT: _model.deltaT!,
+        length: _model.length!,
+        E: _model.youngsModulus!,
       ),
     );
   }

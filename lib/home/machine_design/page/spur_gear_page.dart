@@ -7,7 +7,9 @@ import 'package:mechanical_engineering_toolkit/home/machine_design/page/spur_gea
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -59,11 +61,7 @@ class _SpurGearPageState extends State<SpurGearPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -188,15 +186,13 @@ class _SpurGearPageState extends State<SpurGearPage> {
         'Cp': '$_cp',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => SpurGearResultPage(
-            result: result,
-            module: m,
-            faceWidth: f,
-            wt: _wt,
-          ),
+        (context) => SpurGearResultPage(
+          result: result,
+          module: m,
+          faceWidth: f,
+          wt: _wt,
         ),
       );
     } on FormatException catch (error) {

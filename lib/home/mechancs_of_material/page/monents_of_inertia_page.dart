@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
 import 'package:provider/provider.dart';
-import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/description.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/model/cross_section_model.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/monents_of_inertia_result.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/monents_of_inertia_row.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 
 class MonentsOfInertiaPage extends StatefulWidget {
   final String title;
@@ -64,15 +65,12 @@ class _MonentsOfInertiaPageState extends State<MonentsOfInertiaPage> {
             ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
           ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            setState(() {
-              validate = true;
-            });
+        floatingActionButton: CalculateButton(onPressed: () {
+        setState(() {
+          validate = true;
+        });
             _calculate();
-          },
-          label: Text(S.of(context).Calculate),
-        ),
+          }),
         body: SafeArea(
             child: StaggeredGridView.countBuilder(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
@@ -240,16 +238,16 @@ Ip = Ix + Iy = Polar moment of inertia with respect to the origin of the x and y
 
       context.read<ToolHistory>().record(widget.toolId, inputs: inputs);
 
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MomentsOfInertiaResultPage(
-                    toolId: widget.toolId,
-                    Ix: Ix,
-                    Iy: Iy,
-                    Ixy: Ixy,
-                    Ip: Ip,
-                  )));
+      showToolResult(
+        context,
+        (context) => MomentsOfInertiaResultPage(
+          toolId: widget.toolId,
+          Ix: Ix,
+          Iy: Iy,
+          Ixy: Ixy,
+          Ip: Ip,
+        ),
+      );
     }
   }
 }

@@ -34,6 +34,7 @@ const List<MajorRecommendation> majorRecommendations = [
       712, // power screws
       709, 710, 711, // vibration and critical speed
       800, 801, 802, 810, 811, 812, // fluids and heat transfer
+      900, 901, 902, 903, // thermodynamics: steam, gases, cycles
     ],
   ),
   MajorRecommendation(
@@ -54,6 +55,7 @@ const List<MajorRecommendation> majorRecommendations = [
       119, 120, 121, 306, 706, // fatigue, joints, composite failure
       709, 710, // flutter/resonance margins on shafts and structures
       800, 801, 811, 812, // propulsion and thermal management
+      901, 902, // gas processes and the Brayton cycle behind every jet engine
     ],
   ),
   MajorRecommendation(

@@ -6,7 +6,9 @@ import 'package:mechanical_engineering_toolkit/home/machine_design/page/belt_dri
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -56,11 +58,7 @@ class _BeltDrivePageState extends State<BeltDrivePage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -157,16 +155,14 @@ class _BeltDrivePageState extends State<BeltDrivePage> {
         'P': _power == null ? '' : '$_power',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => BeltDriveResultPage(
-            result: result,
-            d1: d1,
-            d2: d2,
-            c: c,
-            n1: n1,
-          ),
+        (context) => BeltDriveResultPage(
+          result: result,
+          d1: d1,
+          d2: d2,
+          c: c,
+          n1: n1,
         ),
       );
     } on FormatException catch (error) {

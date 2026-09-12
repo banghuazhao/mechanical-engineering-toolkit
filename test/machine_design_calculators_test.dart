@@ -214,6 +214,27 @@ void main() {
       expect(result.diameterMm, closeTo(46.70, 0.05));
     });
 
+    test('the von Mises stresses at that diameter sit on the design line', () {
+      const input = ShaftFatigueInput(
+        alternatingMoment: 8e5,
+        meanMoment: 2e5,
+        alternatingTorque: 1e5,
+        meanTorque: 6e5,
+        kf: 1.7,
+        kfs: 1.5,
+        enduranceLimit: 210,
+        ultimateStrength: 690,
+        safetyFactor: 1.5,
+      );
+      final result = ShaftFatigueCalculator.calculate(input);
+      // σa′/Se + σm′/Sut = 1/n is the equation the diameter was solved from,
+      // so the Goodman diagram's operating point lands exactly on 1/n.
+      expect(
+        result.alternatingVonMises / 210 + result.meanVonMises / 690,
+        closeTo(1 / 1.5, 1e-12),
+      );
+    });
+
     test('rejects an all-zero load case', () {
       expect(
         () => ShaftFatigueCalculator.calculate(const ShaftFatigueInput(

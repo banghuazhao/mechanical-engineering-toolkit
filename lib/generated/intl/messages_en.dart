@@ -29,38 +29,51 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m3(label) =>
       "Drag along the line to explore other values of ${label}.";
 
-  static String m4(x) => "Fixing moment at x = ${x}";
+  static String m4(limit) =>
+      "The peak temperature must be above the compression-end temperature, ${limit}.";
 
-  static String m5(index) => "Layer ${index}";
+  static String m5(limit) =>
+      "The turbine inlet must be hotter than the boiler’s saturation temperature, ${limit} — or leave it blank for saturated steam.";
 
-  static String m6(index) => "Mode ${index}";
+  static String m6(x) => "Fixing moment at x = ${x}";
 
-  static String m7(total) =>
+  static String m7(index) => "Layer ${index}";
+
+  static String m8(index) => "Mode ${index}";
+
+  static String m9(max) => "Your last ${max} calculations in History";
+
+  static String m10(total) =>
       "All ${total} tools — machine design, composites, fluids and thermal, vibration, and more";
 
-  static String m8(count, total) =>
+  static String m11(count, total) =>
       "${count} of ${total} tools are free. Premium unlocks the rest.";
 
-  static String m9(count) =>
-      "Showing the ${count} most recent. Premium shows them all.";
+  static String m12(count, max) =>
+      "Showing the ${count} most recent. Premium shows up to ${max}.";
 
-  static String m10(tool) => "${tool} is a Premium tool";
+  static String m13(max) =>
+      "Premium shows up to your last ${max} calculations.";
 
-  static String m11(value) => "Preview: ${value}";
+  static String m14(tool) => "${tool} is a Premium tool";
 
-  static String m12(count) => "${count} calculations";
+  static String m15(value) => "Preview: ${value}";
 
-  static String m13(name) => "Saved “${name}”";
+  static String m16(count) => "${count} calculations";
 
-  static String m14(name) => "Renamed to “${name}”";
+  static String m17(name) => "Saved “${name}”";
 
-  static String m15(x) => "Reaction at x = ${x}";
+  static String m18(name) => "Renamed to “${name}”";
 
-  static String m16(tool) => "Remove ${tool} from favorites";
+  static String m19(x) => "Reaction at x = ${x}";
 
-  static String m17(n) => "Dimension ${n}";
+  static String m20(tool) => "Remove ${tool} from favorites";
 
-  static String m18(label) => "What if: ${label}";
+  static String m21(n) => "Dimension ${n}";
+
+  static String m22(n) => "State ${n}";
+
+  static String m23(label) => "What if: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -91,7 +104,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Aerospace_Engineering": MessageLookupByLibrary.simpleMessage(
       "Aerospace Engineering",
     ),
+    "Air_Cycle_Note": MessageLookupByLibrary.simpleMessage(
+      "Cold-air-standard analysis: air as an ideal gas with constant specific heats, with heat added and rejected reversibly. Real engines fall well short of these efficiencies — treat them as upper bounds and for comparing designs.",
+    ),
+    "Air_Standard_Cycles": MessageLookupByLibrary.simpleMessage(
+      "Otto, Diesel & Brayton Cycles",
+    ),
     "All": MessageLookupByLibrary.simpleMessage("All"),
+    "All_Tools": MessageLookupByLibrary.simpleMessage("All tools"),
     "Allowable_Shear_Stress_Optional": MessageLookupByLibrary.simpleMessage(
       "Allowable shear stress (optional)",
     ),
@@ -119,6 +139,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Area": MessageLookupByLibrary.simpleMessage("Area"),
     "Area_A": MessageLookupByLibrary.simpleMessage("Area, A"),
     "Axial_Load_F": MessageLookupByLibrary.simpleMessage("Axial load, F"),
+    "Back_Work_Ratio": MessageLookupByLibrary.simpleMessage(
+      "Back work ratio (%)",
+    ),
     "Ball_Bearing": MessageLookupByLibrary.simpleMessage(
       "Ball bearing (p = 3)",
     ),
@@ -186,6 +209,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Bending_Stress_Pinion": MessageLookupByLibrary.simpleMessage(
       "Bending stress, σ (pinion)",
     ),
+    "Boiler_Pressure": MessageLookupByLibrary.simpleMessage("Boiler pressure"),
     "Bolt_Grades_Footnote": MessageLookupByLibrary.simpleMessage(
       "Clamp load is 75% of proof strength on the tensile stress area; torque follows from T = K·F·d with K = 0.2, a plain unlubricated thread. K carries the whole friction problem in one number — plating, wax or anti-seize move it between about 0.10 and 0.25, and the torque with it. Where the preload matters, measure it rather than trusting a torque wrench. Tap a row to copy it.",
     ),
@@ -200,6 +224,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Bolted / Riveted Joint",
     ),
     "Both": MessageLookupByLibrary.simpleMessage("Both"),
+    "Boundary_Work_W": MessageLookupByLibrary.simpleMessage("Boundary work, W"),
     "Buckling_Load": MessageLookupByLibrary.simpleMessage("Buckling Load"),
     "Buckling_load_of_column": MessageLookupByLibrary.simpleMessage(
       "Buckling load of column",
@@ -210,6 +235,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Calculation copied",
     ),
     "Cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "Carnot_Efficiency": MessageLookupByLibrary.simpleMessage(
+      "Carnot efficiency, same limits (%)",
+    ),
     "Center_Distance": MessageLookupByLibrary.simpleMessage("Center distance"),
     "Center_Distance_C": MessageLookupByLibrary.simpleMessage(
       "Center distance, C",
@@ -237,6 +265,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Clearance_Close": MessageLookupByLibrary.simpleMessage("Clearance close"),
     "Clearance_Free": MessageLookupByLibrary.simpleMessage("Clearance free"),
     "Clearance_um": MessageLookupByLibrary.simpleMessage("Clearance (µm)"),
+    "Close_Results": MessageLookupByLibrary.simpleMessage("Close results"),
     "Closing_Gap": MessageLookupByLibrary.simpleMessage("Closing gap"),
     "Cold_Inlet": MessageLookupByLibrary.simpleMessage("Cold inlet"),
     "Cold_Outlet": MessageLookupByLibrary.simpleMessage("Cold outlet"),
@@ -268,6 +297,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "Composite_Wall_Conduction": MessageLookupByLibrary.simpleMessage(
       "Composite Wall Conduction",
     ),
+    "Compression_Ratio_R": MessageLookupByLibrary.simpleMessage(
+      "Compression ratio, r",
+    ),
+    "Compression_Work": MessageLookupByLibrary.simpleMessage(
+      "Compression work, w_c",
+    ),
+    "Compressor_Efficiency": MessageLookupByLibrary.simpleMessage(
+      "Compressor efficiency, ηc (%)",
+    ),
+    "Condenser_Pressure": MessageLookupByLibrary.simpleMessage(
+      "Condenser pressure",
+    ),
     "Conductivity_k": MessageLookupByLibrary.simpleMessage("Conductivity, k"),
     "Constitutive_relation_of_linear_elastic_material":
         MessageLookupByLibrary.simpleMessage(
@@ -298,6 +339,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "Critical speed, Nc",
     ),
     "Cross_Section": MessageLookupByLibrary.simpleMessage("Cross-section"),
+    "Cutoff_Ratio_Rc": MessageLookupByLibrary.simpleMessage("Cutoff ratio, rc"),
+    "Cycle_Brayton": MessageLookupByLibrary.simpleMessage("Brayton"),
+    "Cycle_Diesel": MessageLookupByLibrary.simpleMessage("Diesel"),
+    "Cycle_Label": MessageLookupByLibrary.simpleMessage("Cycle"),
+    "Cycle_Otto": MessageLookupByLibrary.simpleMessage("Otto"),
+    "Cycle_Performance": MessageLookupByLibrary.simpleMessage("Performance"),
+    "Cycle_States": MessageLookupByLibrary.simpleMessage("States"),
     "Deflection": MessageLookupByLibrary.simpleMessage("Deflection"),
     "Deflection_Delta": MessageLookupByLibrary.simpleMessage("Deflection, δ"),
     "Deflections_and_slopes_of_cantilever_beams":
@@ -316,6 +364,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Delete this project?",
     ),
     "Density": MessageLookupByLibrary.simpleMessage("Density"),
+    "Density_Rho": MessageLookupByLibrary.simpleMessage("Density, ρ"),
+    "Desc_Air_Standard_Cycles": MessageLookupByLibrary.simpleMessage(
+      "Cold-air-standard analysis of the spark-ignition, compression-ignition and gas-turbine cycles: every state, the heat in and out, net work and thermal efficiency.",
+    ),
     "Desc_Beam_Analysis": MessageLookupByLibrary.simpleMessage(
       "Solved by the direct stiffness method with Euler–Bernoulli elements. That covers the propped cantilever, the fixed-ended beam and an overhang on inset supports — none of which equilibrium alone can settle — alongside the determinate cases.",
     ),
@@ -346,6 +398,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Desc_Fin_Efficiency": MessageLookupByLibrary.simpleMessage(
       "Straight rectangular fin of uniform section, solved with an adiabatic tip and the corrected length Lc = L + t/2: m = √(2h/kt) and η = tanh(mLc)/(mLc).",
     ),
+    "Desc_Ideal_Gas_Process": MessageLookupByLibrary.simpleMessage(
+      "The end state, work, heat and entropy change of an ideal gas taken through one of the five classic processes, with constant specific heats.",
+    ),
     "Desc_Lmtd": MessageLookupByLibrary.simpleMessage(
       "Log mean temperature difference from the four terminal temperatures, and the surface area a given duty needs: A = Q/(U·ΔT_lm). Counter flow pairs each inlet with the opposite outlet; parallel flow pairs the two inlets.",
     ),
@@ -363,6 +418,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Desc_Pump_Fan_Power": MessageLookupByLibrary.simpleMessage(
       "Power a pump or fan needs: the fluid gets P = Δp·Q, and the driver must supply that divided by the efficiency. The pressure rise is also reported as a head of the pumped fluid.",
+    ),
+    "Desc_Rankine_Cycle": MessageLookupByLibrary.simpleMessage(
+      "The steam power cycle — pump, boiler, turbine and condenser — with real steam properties: every state, the work and heat of each component, and the cycle efficiency.",
     ),
     "Desc_Reynolds_Number": MessageLookupByLibrary.simpleMessage(
       "Reynolds number Re = ρVD/μ for flow in a round pipe, with the laminar / transitional / turbulent regime it falls in. Enter either a velocity or a volumetric flow rate; the other is reported back.",
@@ -385,6 +443,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Desc_Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Published dimensions and section properties for standard structural shapes. Section modulus and radius of gyration are derived from the listed area and second moment, so they stay consistent with them.",
     ),
+    "Desc_Steam_Tables": MessageLookupByLibrary.simpleMessage(
+      "Properties of water and steam — saturated, compressed liquid, superheated and supercritical — from the international IAPWS-IF97 formulation, looked up from whichever pair of properties you know.",
+    ),
     "Desc_Tolerance_Stackup": MessageLookupByLibrary.simpleMessage(
       "One-dimensional stack-up of a chain of toleranced dimensions, by both the worst-case and the statistical (RSS) method. Reports the closing gap\'s limits, whether it can go negative, and which dimension is responsible for most of the variation.",
     ),
@@ -398,6 +459,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Description_and_Formulas": MessageLookupByLibrary.simpleMessage(
       "Description and formulas",
     ),
+    "Design_Line": MessageLookupByLibrary.simpleMessage("Design line, 1/n"),
     "Diameter_D": MessageLookupByLibrary.simpleMessage("Diameter, d"),
     "Diametral_Interference": MessageLookupByLibrary.simpleMessage(
       "Diametral interference, δ",
@@ -451,11 +513,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "Enter_Fx_Fy_Components": MessageLookupByLibrary.simpleMessage(
       "Enter Fx and Fy components for each force (N)",
     ),
+    "Enthalpy_Change": MessageLookupByLibrary.simpleMessage(
+      "Change in enthalpy, ΔH",
+    ),
+    "Entropy_Change": MessageLookupByLibrary.simpleMessage(
+      "Change in entropy, ΔS",
+    ),
+    "Entropy_Of_Vaporization": MessageLookupByLibrary.simpleMessage(
+      "Entropy of vaporization, sfg",
+    ),
     "Equivalent_Load_P": MessageLookupByLibrary.simpleMessage(
       "Equivalent load, P",
     ),
     "Equivalent_Shaft_Speed": MessageLookupByLibrary.simpleMessage(
       "Equivalent shaft speed",
+    ),
+    "Err_Absolute_Zero": MessageLookupByLibrary.simpleMessage(
+      "A temperature at or below absolute zero cannot be used.",
     ),
     "Err_Active_Coils_Positive": MessageLookupByLibrary.simpleMessage(
       "Number of active coils must be positive.",
@@ -472,8 +546,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Center_Distance_Positive": MessageLookupByLibrary.simpleMessage(
       "Center distance must be positive.",
     ),
+    "Err_Cycle_Cutoff": MessageLookupByLibrary.simpleMessage(
+      "The cutoff ratio must be smaller than the compression ratio.",
+    ),
+    "Err_Cycle_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Enter every value the cycle needs.",
+    ),
+    "Err_Cycle_K": MessageLookupByLibrary.simpleMessage(
+      "The specific heat ratio k must be greater than 1.",
+    ),
+    "Err_Cycle_Peak": m4,
+    "Err_Cycle_Positive": MessageLookupByLibrary.simpleMessage(
+      "Pressures and specific heats must be positive.",
+    ),
+    "Err_Cycle_Ratio": MessageLookupByLibrary.simpleMessage(
+      "Compression, cutoff and pressure ratios must be greater than 1.",
+    ),
     "Err_Dimensions_Positive": MessageLookupByLibrary.simpleMessage(
       "Dimensions must be greater than zero.",
+    ),
+    "Err_Efficiency_Range": MessageLookupByLibrary.simpleMessage(
+      "Efficiencies must be above 0 % and at most 100 %.",
     ),
     "Err_Enter_Beam_Frequency_Inputs": MessageLookupByLibrary.simpleMessage(
       "Enter E, I, A, the length, and the density.",
@@ -539,6 +632,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Face_Width_Positive": MessageLookupByLibrary.simpleMessage(
       "Face width must be positive.",
     ),
+    "Err_Gas_Cp_R": MessageLookupByLibrary.simpleMessage(
+      "cp must be larger than R, or cv would not be positive.",
+    ),
+    "Err_Gas_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Enter the gas properties, the initial state, the mass and the final state.",
+    ),
+    "Err_Gas_No_Change": MessageLookupByLibrary.simpleMessage(
+      "The final state is the initial state, so there is no process to analyse.",
+    ),
+    "Err_Gas_Positive": MessageLookupByLibrary.simpleMessage(
+      "Pressures, the mass and the gas properties must be positive.",
+    ),
     "Err_Input_Speed_Positive": MessageLookupByLibrary.simpleMessage(
       "Input speed must be positive.",
     ),
@@ -566,12 +671,28 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_P_Positive": MessageLookupByLibrary.simpleMessage(
       "Equivalent load P must be positive.",
     ),
+    "Err_Polytropic_N": MessageLookupByLibrary.simpleMessage(
+      "Use a polytropic exponent above zero other than 1 — n = 1 is the isothermal process.",
+    ),
     "Err_Power_Screw_Inputs": MessageLookupByLibrary.simpleMessage(
       "Enter the major diameter, the pitch and the axial load.",
     ),
     "Err_Pulley_Positive": MessageLookupByLibrary.simpleMessage(
       "Pulley diameters must be positive.",
     ),
+    "Err_Rankine_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Enter the boiler and condenser pressures.",
+    ),
+    "Err_Rankine_Pressures": MessageLookupByLibrary.simpleMessage(
+      "The condenser pressure must be below the boiler pressure.",
+    ),
+    "Err_Rankine_Range": MessageLookupByLibrary.simpleMessage(
+      "The condenser must run between 0.611 kPa and the critical pressure, and the boiler at 100 MPa or less.",
+    ),
+    "Err_Rankine_Supercritical": MessageLookupByLibrary.simpleMessage(
+      "A boiler above the critical pressure needs a turbine inlet temperature.",
+    ),
+    "Err_Rankine_Superheat": m5,
     "Err_Result_Not_Savable": MessageLookupByLibrary.simpleMessage(
       "This result cannot be matched to a tool, so it cannot be saved.",
     ),
@@ -599,6 +720,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Stackup_Two_Rows": MessageLookupByLibrary.simpleMessage(
       "A stack-up needs at least two dimensions.",
     ),
+    "Err_Steam_Above_Critical": MessageLookupByLibrary.simpleMessage(
+      "Above the critical pressure, 22.064 MPa, there is no saturation: water turns from liquid to vapour without boiling.",
+    ),
+    "Err_Steam_Missing": MessageLookupByLibrary.simpleMessage(
+      "Enter the values this lookup needs.",
+    ),
+    "Err_Steam_Pressure_Range": MessageLookupByLibrary.simpleMessage(
+      "Saturation pressure runs from 0.611 kPa (0.0887 psi) to the critical pressure, 22.064 MPa (3200 psi).",
+    ),
+    "Err_Steam_Quality": MessageLookupByLibrary.simpleMessage(
+      "Quality must be between 0 and 1.",
+    ),
+    "Err_Steam_Range": MessageLookupByLibrary.simpleMessage(
+      "Outside IAPWS-IF97, which covers 0–800 °C up to 100 MPa and up to 2000 °C at 50 MPa or less.",
+    ),
+    "Err_Steam_Temperature_Range": MessageLookupByLibrary.simpleMessage(
+      "Water boils only between 0.01 °C (32 °F) and the critical point, 373.95 °C (705.1 °F).",
+    ),
     "Err_Target_FoS_Positive": MessageLookupByLibrary.simpleMessage(
       "Target factor of safety must be positive.",
     ),
@@ -613,6 +752,13 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_Wire_Coil_Positive": MessageLookupByLibrary.simpleMessage(
       "Wire and coil diameter must be positive.",
+    ),
+    "Evaporation": MessageLookupByLibrary.simpleMessage("Evaporation (fg)"),
+    "Exit_Quality": MessageLookupByLibrary.simpleMessage(
+      "Turbine exit quality, x₄",
+    ),
+    "Expansion_Work": MessageLookupByLibrary.simpleMessage(
+      "Expansion work, w_e",
     ),
     "Export_Report": MessageLookupByLibrary.simpleMessage("Export report"),
     "Express_Scan": MessageLookupByLibrary.simpleMessage("Express Scan"),
@@ -663,6 +809,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Fin_Thickness_t": MessageLookupByLibrary.simpleMessage("Fin thickness, t"),
     "Fin_Width_w": MessageLookupByLibrary.simpleMessage("Fin width, w"),
+    "Final_Pressure_P2": MessageLookupByLibrary.simpleMessage(
+      "Final pressure, p₂",
+    ),
+    "Final_State_From": MessageLookupByLibrary.simpleMessage(
+      "Final state given by",
+    ),
+    "Final_Temperature_T2": MessageLookupByLibrary.simpleMessage(
+      "Final temperature, T₂",
+    ),
     "FinanceGo": MessageLookupByLibrary.simpleMessage("Finance Go"),
     "Find_Power": MessageLookupByLibrary.simpleMessage("Find Power"),
     "Find_Torque": MessageLookupByLibrary.simpleMessage("Find Torque"),
@@ -673,7 +828,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Fits_Tolerances": MessageLookupByLibrary.simpleMessage(
       "Fits & Tolerances (ISO 286)",
     ),
-    "Fixing_Moment_At_X": m4,
+    "Fixing_Moment_At_X": m6,
     "Flange_Thickness": MessageLookupByLibrary.simpleMessage(
       "Flange thickness",
     ),
@@ -719,6 +874,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "G_Shear_Modulus": MessageLookupByLibrary.simpleMessage(
       "G (shear modulus)",
     ),
+    "Gas_Constant_R": MessageLookupByLibrary.simpleMessage("Gas constant, R"),
+    "Gas_Mass_M": MessageLookupByLibrary.simpleMessage("Mass, m"),
+    "Gas_Presets": MessageLookupByLibrary.simpleMessage("Ideal gases"),
     "Gear_Pitch_Diameter_D2": MessageLookupByLibrary.simpleMessage(
       "Gear pitch diameter, d2",
     ),
@@ -727,6 +885,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "General_stress_calculation": MessageLookupByLibrary.simpleMessage(
       "General stress calculation",
     ),
+    "Goodman_Caption": MessageLookupByLibrary.simpleMessage(
+      "The load line runs from the origin through the operating point. Where it meets the Goodman line the part fails; n is how far along that line it sits.",
+    ),
+    "Goodman_Diagram": MessageLookupByLibrary.simpleMessage("Goodman diagram"),
+    "Goodman_Line": MessageLookupByLibrary.simpleMessage("Goodman line"),
     "Grade_Class": MessageLookupByLibrary.simpleMessage("Grade"),
     "Grid_View": MessageLookupByLibrary.simpleMessage("Grid view"),
     "Group_Building": MessageLookupByLibrary.simpleMessage(
@@ -734,12 +897,23 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Group_Insulation": MessageLookupByLibrary.simpleMessage("Insulation"),
     "Group_Metal": MessageLookupByLibrary.simpleMessage("Metals"),
+    "Heat_Added_Qin": MessageLookupByLibrary.simpleMessage("Heat added, q_in"),
     "Heat_Duty_Q": MessageLookupByLibrary.simpleMessage("Heat duty, Q"),
     "Heat_Exchanger_LMTD": MessageLookupByLibrary.simpleMessage(
       "Heat Exchanger (LMTD)",
     ),
     "Heat_Flow_Q": MessageLookupByLibrary.simpleMessage("Heat flow, Q"),
     "Heat_Flux": MessageLookupByLibrary.simpleMessage("Heat flux, q\""),
+    "Heat_Input_Rate": MessageLookupByLibrary.simpleMessage("Heat input rate"),
+    "Heat_Input_Spec": MessageLookupByLibrary.simpleMessage(
+      "Heat input given as",
+    ),
+    "Heat_Rejected_Qout": MessageLookupByLibrary.simpleMessage(
+      "Heat rejected, q_out",
+    ),
+    "Heat_Spec_Heat": MessageLookupByLibrary.simpleMessage("Heat added"),
+    "Heat_Spec_Peak": MessageLookupByLibrary.simpleMessage("Peak temperature"),
+    "Heat_Transfer_Q": MessageLookupByLibrary.simpleMessage("Heat transfer, Q"),
     "Height_H": MessageLookupByLibrary.simpleMessage("Height h"),
     "Helical_Compression_Spring": MessageLookupByLibrary.simpleMessage(
       "Helical Compression Spring",
@@ -769,10 +943,29 @@ class MessageLookup extends MessageLookupByLibrary {
       "Hub outer radius, ro",
     ),
     "Hydraulic_Power": MessageLookupByLibrary.simpleMessage("Hydraulic power"),
+    "IF97_Region": MessageLookupByLibrary.simpleMessage("IAPWS-IF97 region"),
+    "Ideal_Gas_Note": MessageLookupByLibrary.simpleMessage(
+      "Specific heats are held at their room-temperature values. Above about 600 K cp rises noticeably with temperature, and tables with variable specific heats are the better source.",
+    ),
+    "Ideal_Gas_Process": MessageLookupByLibrary.simpleMessage(
+      "Ideal Gas Processes",
+    ),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
     "Imperial_US": MessageLookupByLibrary.simpleMessage("Imperial (US)"),
     "Include_Shaft_Mass": MessageLookupByLibrary.simpleMessage(
       "Include the shaft\'s own mass",
+    ),
+    "Initial_Pressure_P1": MessageLookupByLibrary.simpleMessage(
+      "Initial pressure, p₁",
+    ),
+    "Initial_Temperature_T1": MessageLookupByLibrary.simpleMessage(
+      "Initial temperature, T₁",
+    ),
+    "Inlet_Pressure_P1": MessageLookupByLibrary.simpleMessage(
+      "Inlet pressure, p₁",
+    ),
+    "Inlet_Temperature_T1": MessageLookupByLibrary.simpleMessage(
+      "Inlet temperature, T₁",
     ),
     "Input_Speed_N1": MessageLookupByLibrary.simpleMessage("Input speed, n1"),
     "Inputs": MessageLookupByLibrary.simpleMessage("Inputs"),
@@ -789,6 +982,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Instant_Face": MessageLookupByLibrary.simpleMessage("Instant Face"),
     "Interface_Radius_R": MessageLookupByLibrary.simpleMessage(
       "Interface radius, r",
+    ),
+    "Internal_Energy_Change": MessageLookupByLibrary.simpleMessage(
+      "Change in internal energy, ΔU",
     ),
     "Isothermal_Max_Heat_Flow": MessageLookupByLibrary.simpleMessage(
       "Isothermal-fin maximum",
@@ -809,6 +1005,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Lamina_Constants": MessageLookupByLibrary.simpleMessage(
       "Lamina Constants",
     ),
+    "Lamina_Preset_Note": MessageLookupByLibrary.simpleMessage(
+      "Presets are typical values from Tsai & Hahn. They fill E1, E2, G12 and ν12, and the strengths where a tool asks for them; ν23 is not published there and is left as entered.",
+    ),
+    "Lamina_Presets": MessageLookupByLibrary.simpleMessage(
+      "Unidirectional laminae",
+    ),
     "Lamina_engineering_constants": MessageLookupByLibrary.simpleMessage(
       "Lamina engineering constants",
     ),
@@ -828,7 +1030,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Large_Pulley_Diameter_D2": MessageLookupByLibrary.simpleMessage(
       "Large pulley diameter, d2",
     ),
-    "Layer_Number": m5,
+    "Latent_Heat_Hfg": MessageLookupByLibrary.simpleMessage("Latent heat, hfg"),
+    "Layer_Number": m7,
     "Layer_Resistances": MessageLookupByLibrary.simpleMessage(
       "Layer resistances",
     ),
@@ -859,6 +1062,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Load_Intensity_Start": MessageLookupByLibrary.simpleMessage(
       "Intensity at start",
     ),
+    "Load_Line": MessageLookupByLibrary.simpleMessage("Load line"),
     "Load_Magnitude_P": MessageLookupByLibrary.simpleMessage(
       "Magnitude, P (down +)",
     ),
@@ -875,6 +1079,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Machine_Design": MessageLookupByLibrary.simpleMessage("Machine Design"),
     "Major_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Major diameter, d",
+    ),
+    "Mass_Flow_Optional": MessageLookupByLibrary.simpleMessage(
+      "Mass flow rate (optional)",
     ),
     "Mass_Per_Length": MessageLookupByLibrary.simpleMessage(
       "Mass per length, ρA",
@@ -908,6 +1115,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Mean_Diameter_Dm": MessageLookupByLibrary.simpleMessage(
       "Mean diameter, dm",
     ),
+    "Mean_Effective_Pressure": MessageLookupByLibrary.simpleMessage(
+      "Mean effective pressure, MEP",
+    ),
     "Mean_Moment_Mm": MessageLookupByLibrary.simpleMessage("Mean moment, Mm"),
     "Mean_Torque_Tm": MessageLookupByLibrary.simpleMessage("Mean torque, Tm"),
     "Mechanical_Engineering": MessageLookupByLibrary.simpleMessage(
@@ -920,6 +1130,32 @@ class MessageLookup extends MessageLookupByLibrary {
       "Member Forces (+ tension, \\u2212 compression)",
     ),
     "Members": MessageLookupByLibrary.simpleMessage("Members"),
+    "Menu_Back": MessageLookupByLibrary.simpleMessage("Back"),
+    "Menu_Cut": MessageLookupByLibrary.simpleMessage("Cut"),
+    "Menu_Edit": MessageLookupByLibrary.simpleMessage("Edit"),
+    "Menu_Export": MessageLookupByLibrary.simpleMessage("Share or Export…"),
+    "Menu_File": MessageLookupByLibrary.simpleMessage("File"),
+    "Menu_Find_Tool": MessageLookupByLibrary.simpleMessage("Find Tool…"),
+    "Menu_Go": MessageLookupByLibrary.simpleMessage("Go"),
+    "Menu_Help": MessageLookupByLibrary.simpleMessage("Help"),
+    "Menu_Paste": MessageLookupByLibrary.simpleMessage("Paste"),
+    "Menu_Redo": MessageLookupByLibrary.simpleMessage("Redo"),
+    "Menu_Save_To_Project": MessageLookupByLibrary.simpleMessage(
+      "Save to Project…",
+    ),
+    "Menu_Select_All": MessageLookupByLibrary.simpleMessage("Select All"),
+    "Menu_Send_Feedback": MessageLookupByLibrary.simpleMessage(
+      "Send Feedback…",
+    ),
+    "Menu_Settings": MessageLookupByLibrary.simpleMessage("Settings…"),
+    "Menu_Tool_Library": MessageLookupByLibrary.simpleMessage("Tool Library"),
+    "Menu_Undo": MessageLookupByLibrary.simpleMessage("Undo"),
+    "Menu_Use_Imperial": MessageLookupByLibrary.simpleMessage(
+      "Use Imperial Units",
+    ),
+    "Menu_Use_SI": MessageLookupByLibrary.simpleMessage("Use SI Units"),
+    "Menu_View": MessageLookupByLibrary.simpleMessage("View"),
+    "Menu_Window": MessageLookupByLibrary.simpleMessage("Window"),
     "Metric_Coarse": MessageLookupByLibrary.simpleMessage("Metric coarse"),
     "Metric_Fine": MessageLookupByLibrary.simpleMessage("Metric fine"),
     "Metric_SI": MessageLookupByLibrary.simpleMessage("Metric (SI)"),
@@ -928,7 +1164,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("Minor losses, ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
     "Minus_Tolerance": MessageLookupByLibrary.simpleMessage("Lower, −"),
-    "Mode_Number": m6,
+    "Mode_Number": m8,
     "Module_M": MessageLookupByLibrary.simpleMessage("Module, m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("Modulus, E"),
     "Mohrs_Circle_for_Plane_Stress": MessageLookupByLibrary.simpleMessage(
@@ -956,11 +1192,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Natural_Frequency_F": MessageLookupByLibrary.simpleMessage(
       "Natural frequency, f",
     ),
+    "Net_Power": MessageLookupByLibrary.simpleMessage("Net power"),
+    "Net_Work": MessageLookupByLibrary.simpleMessage("Net work, w_net"),
     "New_Project": MessageLookupByLibrary.simpleMessage("New project"),
     "No_Favorites_Yet": MessageLookupByLibrary.simpleMessage(
       "No favorites yet",
     ),
     "No_Fluids_Found": MessageLookupByLibrary.simpleMessage("No fluids found"),
+    "No_Gases_Found": MessageLookupByLibrary.simpleMessage("No gases found"),
     "No_History_Yet": MessageLookupByLibrary.simpleMessage("No history yet"),
     "No_Matches": MessageLookupByLibrary.simpleMessage("No matches"),
     "No_Matches_Description": MessageLookupByLibrary.simpleMessage(
@@ -1003,6 +1242,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Operating_Force_F": MessageLookupByLibrary.simpleMessage(
       "Operating force, F",
     ),
+    "Operating_Point": MessageLookupByLibrary.simpleMessage("Operating point"),
     "Optional_For_Bending_Contact": MessageLookupByLibrary.simpleMessage(
       "Optional — for bending/contact stress",
     ),
@@ -1032,7 +1272,24 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "P_Load": MessageLookupByLibrary.simpleMessage("P (load)"),
     "Parallel_Flow": MessageLookupByLibrary.simpleMessage("Parallel flow"),
+    "Peak_Temperature_T3": MessageLookupByLibrary.simpleMessage(
+      "Peak temperature, T₃",
+    ),
+    "Per_Unit_Mass": MessageLookupByLibrary.simpleMessage("Per unit mass"),
+    "Phase_Compressed_Liquid": MessageLookupByLibrary.simpleMessage(
+      "Compressed liquid",
+    ),
+    "Phase_State": MessageLookupByLibrary.simpleMessage("Phase"),
+    "Phase_Supercritical": MessageLookupByLibrary.simpleMessage(
+      "Supercritical fluid",
+    ),
+    "Phase_Superheated": MessageLookupByLibrary.simpleMessage(
+      "Superheated vapour",
+    ),
+    "Phase_Wet_Mixture": MessageLookupByLibrary.simpleMessage("Wet mixture"),
     "Pick_Fluid": MessageLookupByLibrary.simpleMessage("Pick fluid"),
+    "Pick_Gas": MessageLookupByLibrary.simpleMessage("Pick gas"),
+    "Pick_Lamina": MessageLookupByLibrary.simpleMessage("Pick composite"),
     "Pick_Material": MessageLookupByLibrary.simpleMessage("Pick material"),
     "Pick_Pipe_Size": MessageLookupByLibrary.simpleMessage("Pick pipe size"),
     "Pick_Standard_Section": MessageLookupByLibrary.simpleMessage(
@@ -1076,6 +1333,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Polar_Moment_Jp": MessageLookupByLibrary.simpleMessage(
       "Polar moment of area, Jp",
     ),
+    "Polytropic_Exponent_N": MessageLookupByLibrary.simpleMessage(
+      "Polytropic exponent, n",
+    ),
     "Power_Lost": MessageLookupByLibrary.simpleMessage("Power lost"),
     "Power_Optional": MessageLookupByLibrary.simpleMessage("Power (optional)"),
     "Power_Screw": MessageLookupByLibrary.simpleMessage(
@@ -1090,37 +1350,33 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Benefit_Export": MessageLookupByLibrary.simpleMessage(
       "PDF reports, CSV export and result images",
     ),
-    "Premium_Benefit_History": MessageLookupByLibrary.simpleMessage(
-      "Your full calculation history",
-    ),
+    "Premium_Benefit_History": m9,
     "Premium_Benefit_Projects": MessageLookupByLibrary.simpleMessage(
       "Saved projects and combined project reports",
     ),
     "Premium_Benefit_Sweep": MessageLookupByLibrary.simpleMessage(
       "What-if parameter sweep charts",
     ),
-    "Premium_Benefit_Tools": m7,
+    "Premium_Benefit_Tools": m10,
     "Premium_Benefit_Universal": MessageLookupByLibrary.simpleMessage(
       "Included on iPhone and iPad too, at no extra cost",
     ),
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
       "One purchase, unlocked forever — on this Mac and on your iPhone and iPad.",
     ),
-    "Premium_Free_Tools_Note": m8,
-    "Premium_History_Limited": m9,
+    "Premium_Free_Tools_Note": m11,
+    "Premium_History_Limited": m12,
     "Premium_Locked_Export": MessageLookupByLibrary.simpleMessage(
       "PDF, CSV and image export are part of Premium.",
     ),
-    "Premium_Locked_History": MessageLookupByLibrary.simpleMessage(
-      "Premium shows your full calculation history.",
-    ),
+    "Premium_Locked_History": m13,
     "Premium_Locked_Projects": MessageLookupByLibrary.simpleMessage(
       "Saved projects are part of Premium.",
     ),
     "Premium_Locked_Sweep": MessageLookupByLibrary.simpleMessage(
       "What-if charts are part of Premium.",
     ),
-    "Premium_Locked_Tool": m10,
+    "Premium_Locked_Tool": m14,
     "Premium_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Premium is not available from the App Store yet.",
     ),
@@ -1143,8 +1399,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Press / Shrink-Fit Interference",
     ),
     "Pressure_Drop": MessageLookupByLibrary.simpleMessage("Pressure drop, Δp"),
+    "Pressure_P": MessageLookupByLibrary.simpleMessage("Pressure, p"),
+    "Pressure_Ratio_Rp": MessageLookupByLibrary.simpleMessage(
+      "Pressure ratio, rp",
+    ),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("Pressure rise, Δp"),
-    "Preview_Value": m11,
+    "Preview_Value": m15,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Principal stresses and plane",
     ),
@@ -1157,10 +1417,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Privacy choices are unavailable. Try again later.",
     ),
     "Privacy_Policy": MessageLookupByLibrary.simpleMessage("Privacy policy"),
+    "Process_Isentropic": MessageLookupByLibrary.simpleMessage("Isentropic"),
+    "Process_Isobaric": MessageLookupByLibrary.simpleMessage("Isobaric"),
+    "Process_Isochoric": MessageLookupByLibrary.simpleMessage("Isochoric"),
+    "Process_Isothermal": MessageLookupByLibrary.simpleMessage("Isothermal"),
+    "Process_Label": MessageLookupByLibrary.simpleMessage("Process"),
+    "Process_Polytropic": MessageLookupByLibrary.simpleMessage("Polytropic"),
+    "Process_Totals": MessageLookupByLibrary.simpleMessage("Whole mass"),
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Remove Ads is not available from the App Store yet.",
     ),
-    "Project_Calculations": m12,
+    "Project_Calculations": m16,
     "Project_Entry_No_Result": MessageLookupByLibrary.simpleMessage(
       "Inputs only",
     ),
@@ -1174,11 +1441,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Report_Empty": MessageLookupByLibrary.simpleMessage(
       "This project has no saved results yet. Open a calculation and use Save to project to add one.",
     ),
-    "Project_Saved": m13,
-    "Project_Updated": m14,
+    "Project_Saved": m17,
+    "Project_Updated": m18,
     "Proof_Strength_Sp": MessageLookupByLibrary.simpleMessage("Proof Sp"),
+    "Pump_Efficiency": MessageLookupByLibrary.simpleMessage(
+      "Pump efficiency, ηp (%)",
+    ),
     "Pump_Fan_Power": MessageLookupByLibrary.simpleMessage("Pump & Fan Power"),
     "Pump_Head": MessageLookupByLibrary.simpleMessage("Head, H"),
+    "Pump_Work": MessageLookupByLibrary.simpleMessage("Pump work, w_p"),
     "Purchase_Cancelled": MessageLookupByLibrary.simpleMessage(
       "Purchase cancelled. No changes were made.",
     ),
@@ -1195,14 +1466,32 @@ class MessageLookup extends MessageLookupByLibrary {
       "Purchases are currently unavailable.",
     ),
     "Purchasing": MessageLookupByLibrary.simpleMessage("Purchasing…"),
+    "Pv_Diagram": MessageLookupByLibrary.simpleMessage("p–v diagram"),
+    "Quality_X": MessageLookupByLibrary.simpleMessage("Quality, x"),
     "Radius_Gyration_rx": MessageLookupByLibrary.simpleMessage(
       "Radius of gyration, rx",
     ),
     "Radius_Gyration_ry": MessageLookupByLibrary.simpleMessage(
       "Radius of gyration, ry",
     ),
+    "Rankine_Cycle": MessageLookupByLibrary.simpleMessage("Rankine Cycle"),
+    "Rankine_Hint": MessageLookupByLibrary.simpleMessage(
+      "Leave the temperature blank for saturated steam at the turbine; give a mass flow to see power as well as work per kilogram.",
+    ),
+    "Rankine_Note": MessageLookupByLibrary.simpleMessage(
+      "The simple Rankine cycle, with steam properties from IAPWS-IF97. Pump work is taken as v·Δp, and pressure losses in the boiler, condenser and piping are neglected.",
+    ),
+    "Rankine_State_1": MessageLookupByLibrary.simpleMessage("1 · Pump inlet"),
+    "Rankine_State_2": MessageLookupByLibrary.simpleMessage("2 · Boiler inlet"),
+    "Rankine_State_3": MessageLookupByLibrary.simpleMessage(
+      "3 · Turbine inlet",
+    ),
+    "Rankine_State_4": MessageLookupByLibrary.simpleMessage("4 · Turbine exit"),
+    "Rankine_Wet_Exhaust": MessageLookupByLibrary.simpleMessage(
+      "The turbine exhausts below 88 % quality. That much moisture erodes the last-stage blades — raise the superheat, or add reheat.",
+    ),
     "RatethisApp": MessageLookupByLibrary.simpleMessage("Rate this App"),
-    "Reaction_At_X": m15,
+    "Reaction_At_X": m19,
     "Recommended_by_Major": MessageLookupByLibrary.simpleMessage(
       "Recommended by Major",
     ),
@@ -1220,7 +1509,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("Remove layer"),
     "Remove_Load": MessageLookupByLibrary.simpleMessage("Remove load"),
-    "Remove_Tool_from_Favorites": m16,
+    "Remove_Tool_from_Favorites": m20,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Remove from favorites",
     ),
@@ -1289,6 +1578,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "Rule_of_mixtures": MessageLookupByLibrary.simpleMessage(
       "Rule of mixtures",
     ),
+    "Saturated_Liquid": MessageLookupByLibrary.simpleMessage(
+      "Saturated liquid (f)",
+    ),
+    "Saturated_Vapour": MessageLookupByLibrary.simpleMessage(
+      "Saturated vapour (g)",
+    ),
+    "Saturation_Dome": MessageLookupByLibrary.simpleMessage("Saturation dome"),
+    "Saturation_Pressure": MessageLookupByLibrary.simpleMessage(
+      "Saturation pressure, psat",
+    ),
+    "Saturation_Temperature": MessageLookupByLibrary.simpleMessage(
+      "Saturation temperature, Tsat",
+    ),
     "Save": MessageLookupByLibrary.simpleMessage("Save"),
     "Save_To_Project": MessageLookupByLibrary.simpleMessage("Save to project"),
     "Save_as_Project": MessageLookupByLibrary.simpleMessage("Save as project"),
@@ -1300,6 +1602,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Search a size or grade",
     ),
     "Search_Fluids": MessageLookupByLibrary.simpleMessage("Search fluids"),
+    "Search_Gases": MessageLookupByLibrary.simpleMessage("Search gases"),
     "Search_Materials": MessageLookupByLibrary.simpleMessage(
       "Search materials",
     ),
@@ -1328,6 +1631,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "Section_Dimensions": MessageLookupByLibrary.simpleMessage("Dimensions"),
     "Section_Fill_Note": MessageLookupByLibrary.simpleMessage(
       "Picking a shape fills the dimensions below. Properties computed from them ignore the root fillets, so they run a few percent under the published values.",
+    ),
+    "Section_Fills_Combined": MessageLookupByLibrary.simpleMessage(
+      "A standard section fills A, Ix and c = d/2 for the axial and bending terms.",
+    ),
+    "Section_Fills_Extreme_Fibre": MessageLookupByLibrary.simpleMessage(
+      "A standard section fills Ix and y = d/2, the extreme fibre where bending stress peaks.",
+    ),
+    "Section_Fills_Neutral_Axis": MessageLookupByLibrary.simpleMessage(
+      "A standard section fills Q, Ix and the web thickness at the neutral axis, where shear stress peaks.",
+    ),
+    "Section_Fills_Weak_Axis": MessageLookupByLibrary.simpleMessage(
+      "A standard section fills the weak-axis Iy, which governs an unbraced column.",
     ),
     "Section_Flange_tf": MessageLookupByLibrary.simpleMessage("Flange, tf"),
     "Section_Modulus_Zx": MessageLookupByLibrary.simpleMessage(
@@ -1425,7 +1740,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "Solid_Height": MessageLookupByLibrary.simpleMessage("Solid height"),
     "Span_L": MessageLookupByLibrary.simpleMessage("Span, L"),
     "Span_L_Short": MessageLookupByLibrary.simpleMessage("Span L"),
+    "Specific_Enthalpy_H": MessageLookupByLibrary.simpleMessage(
+      "Specific enthalpy, h",
+    ),
+    "Specific_Entropy_S": MessageLookupByLibrary.simpleMessage(
+      "Specific entropy, s",
+    ),
+    "Specific_Heat_Cp": MessageLookupByLibrary.simpleMessage(
+      "Specific heat, cp",
+    ),
+    "Specific_Heat_Cv": MessageLookupByLibrary.simpleMessage(
+      "Specific heat, cv",
+    ),
+    "Specific_Heat_Ratio_K": MessageLookupByLibrary.simpleMessage(
+      "Specific heat ratio, k",
+    ),
+    "Specific_Internal_Energy_U": MessageLookupByLibrary.simpleMessage(
+      "Specific internal energy, u",
+    ),
+    "Specific_Volume_V": MessageLookupByLibrary.simpleMessage(
+      "Specific volume, v",
+    ),
     "Speed_N": MessageLookupByLibrary.simpleMessage("Speed, n"),
+    "Speed_Of_Sound": MessageLookupByLibrary.simpleMessage("Speed of sound, w"),
     "Speed_Ratio": MessageLookupByLibrary.simpleMessage("Speed ratio"),
     "Spring_Index_C": MessageLookupByLibrary.simpleMessage("Spring index, C"),
     "Spring_Rate_K": MessageLookupByLibrary.simpleMessage("Rate, k"),
@@ -1437,7 +1774,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage(
       "Share of the variation",
     ),
-    "Stackup_Dimension_N": m17,
+    "Stackup_Dimension_N": m21,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage(
       "Dimension chain",
     ),
@@ -1469,8 +1806,35 @@ class MessageLookup extends MessageLookupByLibrary {
     "Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Standard Sections",
     ),
+    "State_Numbered": m22,
     "Static_Deflection_Delta": MessageLookupByLibrary.simpleMessage(
       "Static deflection, δst",
+    ),
+    "Steam_Lookup": MessageLookupByLibrary.simpleMessage("Look up by"),
+    "Steam_Lookup_PH": MessageLookupByLibrary.simpleMessage(
+      "Pressure and enthalpy",
+    ),
+    "Steam_Lookup_PS": MessageLookupByLibrary.simpleMessage(
+      "Pressure and entropy",
+    ),
+    "Steam_Lookup_PT": MessageLookupByLibrary.simpleMessage(
+      "Pressure and temperature",
+    ),
+    "Steam_Lookup_PX": MessageLookupByLibrary.simpleMessage(
+      "Pressure and quality",
+    ),
+    "Steam_Lookup_Sat_P": MessageLookupByLibrary.simpleMessage(
+      "Saturation, by pressure",
+    ),
+    "Steam_Lookup_Sat_T": MessageLookupByLibrary.simpleMessage(
+      "Saturation, by temperature",
+    ),
+    "Steam_State": MessageLookupByLibrary.simpleMessage("State"),
+    "Steam_Tables": MessageLookupByLibrary.simpleMessage(
+      "Steam Tables (IAPWS-IF97)",
+    ),
+    "Steam_Tables_Note": MessageLookupByLibrary.simpleMessage(
+      "Enthalpy, internal energy and entropy are measured from saturated liquid at the triple point — the reference every modern steam table uses — so these numbers mix freely with a printed table\'s.",
     ),
     "Stiffness_Matrix_C": MessageLookupByLibrary.simpleMessage(
       "Stiffness Matrix C",
@@ -1481,6 +1845,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Strain": MessageLookupByLibrary.simpleMessage("Strain"),
     "Stress": MessageLookupByLibrary.simpleMessage("Stress"),
     "Stress_Area_As": MessageLookupByLibrary.simpleMessage("Stress area"),
+    "Stress_At_Diameter": MessageLookupByLibrary.simpleMessage(
+      "Stresses at this diameter",
+    ),
     "Stress_Concentration_Defaults": MessageLookupByLibrary.simpleMessage(
       "Stress-concentration factors (defaults: profiled keyway) and target safety factor",
     ),
@@ -1500,6 +1867,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Strong_Axis": MessageLookupByLibrary.simpleMessage("Strong axis (x-x)"),
     "Subtract": MessageLookupByLibrary.simpleMessage("Subtract"),
     "Sudoku_Lover": MessageLookupByLibrary.simpleMessage("Sudoku Lover"),
+    "Superheated_Exhaust": MessageLookupByLibrary.simpleMessage("Superheated"),
     "Support": MessageLookupByLibrary.simpleMessage("Support"),
     "Support_Arrangement": MessageLookupByLibrary.simpleMessage(
       "Support arrangement",
@@ -1541,6 +1909,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Target_Safety_Factor_N": MessageLookupByLibrary.simpleMessage(
       "Target safety factor, n",
     ),
+    "Temperature_T": MessageLookupByLibrary.simpleMessage("Temperature, T"),
     "The_Maximum_Shear_Stress": MessageLookupByLibrary.simpleMessage(
       "The Maximum Shear Stress",
     ),
@@ -1560,6 +1929,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Theory of Elasticity",
     ),
     "Thermal": MessageLookupByLibrary.simpleMessage("Thermal"),
+    "Thermal_Efficiency": MessageLookupByLibrary.simpleMessage(
+      "Thermal efficiency, η (%)",
+    ),
     "Thermal_Material_Presets": MessageLookupByLibrary.simpleMessage(
       "Thermal materials",
     ),
@@ -1567,6 +1939,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Thermal_deformation_and_stress": MessageLookupByLibrary.simpleMessage(
       "Thermal deformation and stress",
     ),
+    "Thermodynamics": MessageLookupByLibrary.simpleMessage("Thermodynamics"),
     "Thickness_t": MessageLookupByLibrary.simpleMessage("Thickness, t"),
     "Thread": MessageLookupByLibrary.simpleMessage("Thread"),
     "Thread_Form": MessageLookupByLibrary.simpleMessage("Thread form"),
@@ -1628,6 +2001,17 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Truss_Geometry": MessageLookupByLibrary.simpleMessage("Truss Geometry"),
     "Truss_Statics": MessageLookupByLibrary.simpleMessage("Truss / Statics"),
+    "Ts_Diagram": MessageLookupByLibrary.simpleMessage("T–s diagram"),
+    "Turbine_Efficiency": MessageLookupByLibrary.simpleMessage(
+      "Turbine efficiency, ηt (%)",
+    ),
+    "Turbine_Inlet_Optional": MessageLookupByLibrary.simpleMessage(
+      "Turbine inlet temperature (optional)",
+    ),
+    "Turbine_Inlet_T3": MessageLookupByLibrary.simpleMessage(
+      "Turbine inlet temperature, T₃",
+    ),
+    "Turbine_Work": MessageLookupByLibrary.simpleMessage("Turbine work, w_t"),
     "UDL": MessageLookupByLibrary.simpleMessage("UDL"),
     "Ultimate_Strength": MessageLookupByLibrary.simpleMessage(
       "Ultimate strength",
@@ -1652,6 +2036,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "Vibration_Modes": MessageLookupByLibrary.simpleMessage(
       "Natural frequencies",
     ),
+    "Volume_V": MessageLookupByLibrary.simpleMessage("Volume, V"),
+    "Von_Mises_Alternating": MessageLookupByLibrary.simpleMessage(
+      "Alternating von Mises stress, σa′",
+    ),
+    "Von_Mises_Mean": MessageLookupByLibrary.simpleMessage(
+      "Mean von Mises stress, σm′",
+    ),
     "W_Intensity": MessageLookupByLibrary.simpleMessage("w (intensity)"),
     "Wahl_Factor_Kw": MessageLookupByLibrary.simpleMessage("Wahl factor, Kw"),
     "Wall_Area_A": MessageLookupByLibrary.simpleMessage("Wall area, A"),
@@ -1666,7 +2057,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Weak axis (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Web thickness"),
-    "What_If": m18,
+    "What_If": m23,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("Wire diameter, d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

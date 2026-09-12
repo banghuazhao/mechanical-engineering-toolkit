@@ -142,6 +142,35 @@ const Map<UnitCategory, _Known> _known = {
     // 1 BTU = 1055.056 J, so 1 W = 3600/1055.056 BTU/h.
     si: 1, imperial: 3.412142, siLabel: 'W', imperialLabel: 'BTU/h',
   ),
+  UnitCategory.specificEnergy: _Known(
+    // 1 BTU/lb = 2.326 kJ/kg exactly (International Table BTU) — which is
+    // why saturated steam at 212 °F reads 1150.3 BTU/lb against 2675.6.
+    si: 2.326, imperial: 1, siLabel: 'kJ/kg', imperialLabel: 'BTU/lb',
+  ),
+  UnitCategory.specificEntropy: _Known(
+    // 1 BTU/(lb·°R) = 4.1868 kJ/(kg·K) exactly, so air's cp of 1.005 reads
+    // 0.240 in Imperial tables.
+    si: 4.1868, imperial: 1, siLabel: 'kJ/(kg·K)',
+    imperialLabel: 'BTU/(lb·°R)',
+  ),
+  UnitCategory.specificVolume: _Known(
+    // 1 ft³/lb = 0.028316846592 m³ / 0.45359237 kg.
+    si: 0.0624279605761, imperial: 1, siLabel: 'm³/kg', imperialLabel: 'ft³/lb',
+  ),
+  UnitCategory.volume: _Known(
+    // 1 ft = 0.3048 m, cubed.
+    si: 0.028316846592, imperial: 1, siLabel: 'm³', imperialLabel: 'ft³',
+  ),
+  UnitCategory.energy: _Known(
+    si: 1.05505585262, imperial: 1, siLabel: 'kJ', imperialLabel: 'BTU',
+  ),
+  UnitCategory.entropy: _Known(
+    // 1 BTU/°R = 1.05505585262 kJ per 5/9 K.
+    si: 1.899100534716, imperial: 1, siLabel: 'kJ/K', imperialLabel: 'BTU/°R',
+  ),
+  UnitCategory.massFlow: _Known(
+    si: 0.45359237, imperial: 1, siLabel: 'kg/s', imperialLabel: 'lb/s',
+  ),
 };
 
 /// Categories whose two systems share a unit, so conversion must be exact

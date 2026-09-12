@@ -6,7 +6,9 @@ import 'package:mechanical_engineering_toolkit/home/machine_design/page/bearing_
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -54,11 +56,7 @@ class _BearingLifePageState extends State<BearingLifePage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -151,16 +149,14 @@ class _BearingLifePageState extends State<BearingLifePage> {
         'n': '$rpm',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => BearingLifeResultPage(
-            result: result,
-            c: c,
-            p: p,
-            rpm: rpm,
-            type: _type,
-          ),
+        (context) => BearingLifeResultPage(
+          result: result,
+          c: c,
+          p: p,
+          rpm: rpm,
+          type: _type,
         ),
       );
     } on FormatException catch (error) {

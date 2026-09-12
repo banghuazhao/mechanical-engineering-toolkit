@@ -2,6 +2,12 @@ import 'package:flutter/widgets.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/beam/model/beam_solver.dart';
 import 'package:mechanical_engineering_toolkit/home/beam/page/beam_calculator_page.dart';
+import 'package:mechanical_engineering_toolkit/home/thermodynamics/model/air_standard_cycle_calculator.dart';
+import 'package:mechanical_engineering_toolkit/home/thermodynamics/model/ideal_gas_calculator.dart';
+import 'package:mechanical_engineering_toolkit/home/thermodynamics/model/steam_tables_calculator.dart';
+import 'package:mechanical_engineering_toolkit/home/thermodynamics/page/air_cycle_page.dart';
+import 'package:mechanical_engineering_toolkit/home/thermodynamics/page/ideal_gas_page.dart';
+import 'package:mechanical_engineering_toolkit/home/thermodynamics/page/steam_tables_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tolerance/page/tolerance_stackup_page.dart';
 
 /// A recorded calculation's inputs, in the form a reader should see them.
@@ -49,9 +55,45 @@ Map<String, String> displayInputs(
         continue;
       }
     }
+    // The thermodynamics tools store their mode the same way.
+    final mode = _modeLabel(context, entry.key, entry.value);
+    if (mode != null) {
+      display[mode.$1] = mode.$2;
+      continue;
+    }
     display[entry.key] = entry.value;
   }
   return display;
+}
+
+/// (heading, value) for a stored enum name, or null when [key] is not one.
+(String, String)? _modeLabel(BuildContext context, String key, String value) {
+  T? named<T extends Enum>(List<T> values) {
+    for (final candidate in values) {
+      if (candidate.name == value) return candidate;
+    }
+    return null;
+  }
+
+  final l10n = S.of(context);
+  switch (key) {
+    case steamLookupKey:
+      final lookup = named(SteamLookup.values);
+      return lookup == null
+          ? null
+          : (l10n.Steam_Lookup, steamLookupLabel(context, lookup));
+    case gasProcessKey:
+      final process = named(GasProcess.values);
+      return process == null
+          ? null
+          : (l10n.Process_Label, gasProcessLabel(context, process));
+    case airCycleKey:
+      final cycle = named(AirCycle.values);
+      return cycle == null
+          ? null
+          : (l10n.Cycle_Label, airCycleLabel(context, cycle));
+  }
+  return null;
 }
 
 /// [displayInputs] as one line, the way a list row shows it.

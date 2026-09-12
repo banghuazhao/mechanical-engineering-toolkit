@@ -6,7 +6,10 @@ import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/standard_section_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +40,7 @@ class _CombinedLoadingPageState extends State<CombinedLoadingPage> {
   double? _j;
   double? _r;
   double? _sy;
+  int _presetGeneration = 0;
 
   @override
   void initState() {
@@ -64,11 +68,7 @@ class _CombinedLoadingPageState extends State<CombinedLoadingPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -104,6 +104,7 @@ class _CombinedLoadingPageState extends State<CombinedLoadingPage> {
                       onChangedSI: (v) => _p = v,
                     ),
                     UnitField(
+                      key: ValueKey('A$_presetGeneration'),
                       label: 'Area, A',
                       category: UnitCategory.area,
                       signed: false,
@@ -117,6 +118,7 @@ class _CombinedLoadingPageState extends State<CombinedLoadingPage> {
                       onChangedSI: (v) => _m = v,
                     ),
                     UnitField(
+                      key: ValueKey('I$_presetGeneration'),
                       label: 'Second moment, I',
                       category: UnitCategory.momentOfInertia,
                       signed: false,
@@ -124,6 +126,7 @@ class _CombinedLoadingPageState extends State<CombinedLoadingPage> {
                       onChangedSI: (v) => _i = v,
                     ),
                     UnitField(
+                      key: ValueKey('c$_presetGeneration'),
                       label: 'Distance to fiber, c',
                       category: UnitCategory.length,
                       signed: false,
@@ -131,6 +134,23 @@ class _CombinedLoadingPageState extends State<CombinedLoadingPage> {
                       onChangedSI: (v) => _c = v,
                     ),
                   ]),
+                  SizedBox(height: context.tokens.space2),
+                  StandardSectionButton(
+                    // Only the axial and bending terms: an open I-shape's
+                    // torsion is not τ = T·r/J, so J and r are left alone.
+                    onSelected: (section) => setState(() {
+                      _a = section.area;
+                      _i = section.ix;
+                      _c = section.depth / 2;
+                      _presetGeneration++;
+                    }),
+                  ),
+                  Text(
+                    S.of(context).Section_Fills_Combined,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
                   SizedBox(height: context.tokens.space4),
                   Text('Torsion → shear stress τ = T·r/J',
                       style: Theme.of(context).textTheme.labelMedium),
@@ -160,6 +180,7 @@ class _CombinedLoadingPageState extends State<CombinedLoadingPage> {
                   ]),
                   SizedBox(height: context.tokens.space4),
                   UnitField(
+                    key: ValueKey('Sy$_presetGeneration'),
                     label: 'Yield strength, Sy (optional)',
                     category: UnitCategory.stress,
                     signed: false,
@@ -172,6 +193,7 @@ class _CombinedLoadingPageState extends State<CombinedLoadingPage> {
                       if (preset.yieldStrengthSI != null) {
                         _sy = preset.yieldStrengthSI;
                       }
+                      _presetGeneration++;
                     }),
                   ),
                 ],
@@ -221,16 +243,14 @@ class _CombinedLoadingPageState extends State<CombinedLoadingPage> {
         'Sy': '${_sy ?? ''}',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => CombinedLoadingResultPage(
-            toolId: widget.toolId,
-            title: widget.title,
-            sigma: sigma,
-            tau: tau,
-            yieldStrength: _sy,
-          ),
+        (context) => CombinedLoadingResultPage(
+          toolId: widget.toolId,
+          title: widget.title,
+          sigma: sigma,
+          tau: tau,
+          yieldStrength: _sy,
         ),
       );
     } on FormatException catch (error) {

@@ -9,7 +9,10 @@ import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/standard_section_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -71,6 +74,7 @@ class _ColumnBucklingLoadPageState extends State<ColumnBucklingLoadPage> {
   double? _i;
   double? _l;
   _EndCondition _endCondition = _EndCondition.pinnedPinned;
+  int _presetGeneration = 0;
 
   @override
   void initState() {
@@ -97,11 +101,7 @@ class _ColumnBucklingLoadPageState extends State<ColumnBucklingLoadPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -155,6 +155,7 @@ class _ColumnBucklingLoadPageState extends State<ColumnBucklingLoadPage> {
                   SizedBox(height: context.tokens.space4),
                   AdaptiveFieldGrid(children: [
                     UnitField(
+                      key: ValueKey('E$_presetGeneration'),
                       label: 'Modulus, E',
                       category: UnitCategory.modulus,
                       signed: false,
@@ -162,6 +163,7 @@ class _ColumnBucklingLoadPageState extends State<ColumnBucklingLoadPage> {
                       onChangedSI: (v) => _e = v,
                     ),
                     UnitField(
+                      key: ValueKey('I$_presetGeneration'),
                       label: 'Moment of inertia, I',
                       category: UnitCategory.momentOfInertia,
                       signed: false,
@@ -182,7 +184,23 @@ class _ColumnBucklingLoadPageState extends State<ColumnBucklingLoadPage> {
                       if (preset.elasticModulusSI != null) {
                         _e = preset.elasticModulusSI;
                       }
+                      _presetGeneration++;
                     }),
+                  ),
+                  StandardSectionButton(
+                    // The weak axis, not the strong one: an unbraced column
+                    // buckles about whichever axis bends most easily, and for
+                    // every I-shape in the library that is y.
+                    onSelected: (section) => setState(() {
+                      _i = section.iy;
+                      _presetGeneration++;
+                    }),
+                  ),
+                  Text(
+                    S.of(context).Section_Fills_Weak_Axis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                   ),
                 ],
               ),
@@ -217,18 +235,16 @@ class _ColumnBucklingLoadPageState extends State<ColumnBucklingLoadPage> {
         'End Condition': _endCondition.label,
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => ColumnBucklingLoadResultPage(
-            toolId: widget.toolId,
-            pcr: pcr,
-            e: e,
-            i: i,
-            l: l,
-            c: c,
-            endCondition: _endCondition.label,
-          ),
+        (context) => ColumnBucklingLoadResultPage(
+          toolId: widget.toolId,
+          pcr: pcr,
+          e: e,
+          i: i,
+          l: l,
+          c: c,
+          endCondition: _endCondition.label,
         ),
       );
     } on FormatException catch (error) {

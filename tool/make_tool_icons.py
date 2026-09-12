@@ -416,6 +416,118 @@ def power_screw():
     c.save("icon_power_screw.png")
 
 
+def steam_tables():
+    """A boiler drum part-full: water below, steam leaving above, a gauge."""
+    c = Canvas()
+    x0, y0, x1, y1 = 40, 92, 260, 262
+    water = 196
+    # Water fills the lower part; the vapour space above it stays white.
+    c.rect((x0, water, x1, y1), fill=GREY, outline=None, w=0)
+    # Bubbles rising through the water: this is saturation, not just water.
+    for bx, by, r in ((92, 238, 9), (130, 220, 7), (178, 242, 10),
+                      (216, 222, 7), (150, 246, 6)):
+        c.ellipse((bx - r, by - r, bx + r, by + r), fill=WHITE, w=3)
+    c.line((x0, water), (x1, water), BLACK, 4)
+    # Steam lifting off the surface, in the red: it is what the table is about.
+    for sx in (100, 150, 200):
+        pts = []
+        for i in range(25):
+            t = i / 24
+            pts.append((sx + 9 * math.sin(t * 2 * math.pi * 1.3), water - 14 - t * 64))
+        c.polyline(pts, RED, 5)
+    c.rect((x0, y0, x1, y1), fill=None, w=6)
+    # Pressure gauge on a stub above the drum.
+    c.rect((142, 60, 158, 92), fill=TAN, w=LW)
+    c.ellipse((114, 12, 186, 84), fill=WHITE, w=LW)
+    c.line((150, 48), (172, 30), RED, 5)
+    c.ellipse((145, 43, 155, 53), fill=BLACK, outline=None, w=0)
+    c.save("icon_steam_tables.png")
+
+
+def ideal_gas():
+    """Gas in a cylinder, compressed by a piston, heat crossing the wall."""
+    c = Canvas()
+    x0, x1, top, bot = 58, 242, 60, 262
+    piston = 132
+    # Gas below the piston, drawn as scattered molecules on grey.
+    c.rect((x0, piston, x1, bot), fill=GREY, outline=None, w=0)
+    for mx, my in ((88, 170), (132, 200), (176, 166), (212, 214), (104, 236),
+                   (160, 240), (206, 178), (120, 158)):
+        c.ellipse((mx - 6, my - 6, mx + 6, my + 6), fill=BLACK, outline=None, w=0)
+    # Piston and rod.
+    c.rect((x0, piston - 26, x1, piston), fill=TAN, w=LW)
+    c.rect((140, top - 40, 160, piston - 26), fill=TAN, w=LW)
+    # Cylinder walls and bottom.
+    c.line((x0, top), (x0, bot), BLACK, 7)
+    c.line((x1, top), (x1, bot), BLACK, 7)
+    c.line((x0, bot), (x1, bot), BLACK, 7)
+    # The work going in, and the heat that may cross the wall.
+    c.arrow((208, 16), (208, 96), RED, 6, 20)
+    c.arrow((296, 200), (252, 200), RED, 5, 17)
+    c.text((276, 172), "Q", 40, RED)
+    c.text((236, 50), "W", 40, RED)
+    c.save("icon_ideal_gas.png")
+
+
+def air_cycle():
+    """An Otto cycle on p–v: two isentropes closed by two constant-volume legs."""
+    c = Canvas()
+    ox, oy = 44, 262
+    c.arrow((ox, oy), (ox, 22), BLACK, 5, 16)
+    c.arrow((ox, oy), (288, oy), BLACK, 5, 16)
+    # Axis letters outside the plot, where the cycle cannot run into them.
+    c.text((ox - 24, 30), "p", 40)
+    c.text((276, oy + 22), "v", 40)
+    v2, v1 = 84, 256
+    k = 1.4
+
+    def isentrope(p_at_v2):
+        pts = []
+        for i in range(41):
+            v = v2 + (v1 - v2) * i / 40
+            p = p_at_v2 * (v2 / v) ** k
+            pts.append((v, oy - p))
+        return pts
+
+    lower = isentrope(128)   # compression 1→2
+    upper = isentrope(212)   # expansion 3→4
+    # Shade the enclosed net work.
+    c.polygon(upper + list(reversed(lower)), fill=TAN)
+    c.polyline(upper, RED, 6)
+    c.polyline(lower, RED, 6)
+    c.line(lower[0], upper[0], RED, 6)
+    c.line(lower[-1], upper[-1], RED, 6)
+    # Direction: clockwise, as every power cycle runs.
+    c.arrow(upper[14], upper[17], RED, 6, 20)
+    c.save("icon_air_cycle.png")
+
+
+def rankine():
+    """The steam plant loop: boiler, turbine, condenser and pump."""
+    c = Canvas()
+    # Boiler (left) and condenser (right), the two heat exchangers.
+    c.rect((26, 64, 104, 188), fill=TAN, w=LW)
+    c.rect((196, 190, 274, 262), fill=GREY, w=LW)
+    # Turbine: a trapezoid widening in the flow direction.
+    c.polygon([(186, 58), (262, 34), (262, 158), (186, 134)], fill=GREY)
+    c.polyline([(186, 58), (262, 34), (262, 158), (186, 134), (186, 58)], BLACK, LW)
+    # Pump.
+    c.ellipse((40, 214, 88, 262), fill=TAN, w=LW)
+    # The working fluid, round the loop, in red.
+    c.polyline([(104, 90), (186, 90)], RED, 6)
+    c.arrow((150, 90), (178, 90), RED, 6, 18)
+    c.polyline([(236, 150), (236, 190)], RED, 6)
+    c.arrow((236, 164), (236, 186), RED, 6, 18)
+    c.polyline([(196, 240), (88, 240)], RED, 6)
+    c.arrow((150, 240), (100, 240), RED, 6, 18)
+    c.polyline([(64, 214), (64, 188)], RED, 6)
+    c.arrow((64, 208), (64, 192), RED, 6, 16)
+    # Shaft work leaving the turbine.
+    c.line((262, 96), (292, 96), BLACK, 7)
+    c.text((280, 126), "W", 36, RED)
+    c.save("icon_rankine.png")
+
+
 def main() -> None:
     print("writing icons:")
     reynolds()
@@ -429,6 +541,10 @@ def main() -> None:
     beam_natural_frequency()
     torsional_frequency()
     power_screw()
+    steam_tables()
+    ideal_gas()
+    air_cycle()
+    rankine()
 
 
 if __name__ == "__main__":

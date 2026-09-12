@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
+import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/purchase/premium.dart';
 import 'package:mechanical_engineering_toolkit/purchase/purchase_feedback.dart';
@@ -49,7 +50,8 @@ Future<void> showLockedFeatureUpsell(
     PremiumFeature.imageExport =>
       strings.Premium_Locked_Export,
     PremiumFeature.savedProjects => strings.Premium_Locked_Projects,
-    PremiumFeature.fullHistory => strings.Premium_Locked_History,
+    PremiumFeature.fullHistory =>
+      strings.Premium_Locked_History(ToolHistory.maxEntries),
     PremiumFeature.parameterSweep => strings.Premium_Locked_Sweep,
   };
   return showPremiumUpsell(context, reason: reason);
@@ -188,7 +190,7 @@ class _PremiumOfferState extends State<PremiumOffer> {
             _Benefit(strings.Premium_Benefit_Tools(total)),
             _Benefit(strings.Premium_Benefit_Export),
             _Benefit(strings.Premium_Benefit_Projects),
-            _Benefit(strings.Premium_Benefit_History),
+            _Benefit(strings.Premium_Benefit_History(ToolHistory.maxEntries)),
             _Benefit(strings.Premium_Benefit_Sweep),
             _Benefit(strings.Premium_Benefit_Universal),
             SizedBox(height: tokens.space4),

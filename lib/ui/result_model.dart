@@ -19,6 +19,7 @@ class ResultValue {
     this.value,
     this.valueSI,
     this.category,
+    this.smallMagnitude = false,
   }) : assert(value != null || valueSI != null,
             'Provide either value or valueSI');
 
@@ -36,12 +37,20 @@ class ResultValue {
   /// Unit category for [valueSI]. Null means dimensionless.
   final UnitCategory? category;
 
+  /// Formats anything under 0.01 in exponential form, whatever the display
+  /// setting — see [SIValueFormatting.formatSmallSI]. For quantities that
+  /// routinely live there, like the 0.001043 m³/kg of liquid water, which
+  /// the default three decimals would print as a bare 0.001.
+  final bool smallMagnitude;
+
   /// The number as the reader should see it, without a unit suffix.
   String formattedValue(NumberPrecisionHelper precs, UnitSystem system) {
     final si = valueSI;
     if (si == null) return value!;
     final converted = category == null ? si : fromSI(si, category!, system);
-    return precs.formatValue(converted);
+    return smallMagnitude
+        ? precs.formatSmallValue(converted)
+        : precs.formatValue(converted);
   }
 
   /// The unit symbol for [system], or an empty string when the quantity is

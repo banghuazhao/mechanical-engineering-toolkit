@@ -5,6 +5,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -68,7 +69,10 @@ class ToolResultHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final tokens = context.tokens;
-    if (tool.image == null && tool.icon == null) {
+    // A result shown beside its inputs already has the tool's icon above the
+    // inputs; a second copy a few hundred points to the right is noise.
+    if ((tool.image == null && tool.icon == null) ||
+        ToolResultPane.maybeOf(context) != null) {
       return const SizedBox.shrink();
     }
     return Padding(
@@ -254,6 +258,7 @@ class AppCopyableValue extends StatelessWidget {
     this.value,
     this.valueSI,
     this.category,
+    this.smallMagnitude = false,
   }) : assert(value != null || valueSI != null,
             'Provide either value or valueSI');
 
@@ -269,6 +274,9 @@ class AppCopyableValue extends StatelessWidget {
 
   /// Unit category for [valueSI]. Pass null for a dimensionless value.
   final UnitCategory? category;
+
+  /// See [ResultValue.smallMagnitude].
+  final bool smallMagnitude;
 
   Future<void> _copy(BuildContext context, String text) async {
     await Clipboard.setData(ClipboardData(text: text));
@@ -341,7 +349,9 @@ class AppCopyableValue extends StatelessWidget {
     final precs = context.watch<NumberPrecisionHelper>();
     final system = context.watch<UnitSystemPreference>().system;
     final displayNumber = category == null ? si : fromSI(si, category!, system);
-    final formatted = precs.formatValue(displayNumber);
+    final formatted = smallMagnitude
+        ? precs.formatSmallValue(displayNumber)
+        : precs.formatValue(displayNumber);
     final unit = category == null ? '' : unitLabel(category!, system);
     return unit.isEmpty ? formatted : '$formatted $unit';
   }

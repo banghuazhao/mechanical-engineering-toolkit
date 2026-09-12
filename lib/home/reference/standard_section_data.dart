@@ -85,6 +85,22 @@ class StandardSection {
   /// Radius of gyration about y, mm.
   double get ry => math.sqrt(iy / area);
 
+  /// First moment of the area above the neutral axis about that axis, mm³ —
+  /// the Q of τ = VQ/(It) where transverse shear peaks.
+  ///
+  /// Computed from the flange and web rectangles, so it leaves out the root
+  /// fillets the published Ix includes; for these shapes that understates Q
+  /// by a few percent, on the conservative side of nothing — shear stress
+  /// comes out a few percent low. Twice this is the plastic modulus Zx, which
+  /// is how it is checked against the tables.
+  double get firstMomentAtNeutralAxis {
+    final halfDepth = depth / 2;
+    final flange = width * flangeThickness * (halfDepth - flangeThickness / 2);
+    final webHeight = halfDepth - flangeThickness;
+    final web = webThickness * webHeight * webHeight / 2;
+    return flange + web;
+  }
+
   /// Reads an AISC row in its published units: inches, in², in⁴.
   ///
   /// Converting here rather than in the table below keeps every literal

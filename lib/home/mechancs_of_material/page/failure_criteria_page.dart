@@ -11,7 +11,9 @@ import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -61,11 +63,7 @@ class _FailureCriteriaPageState extends State<FailureCriteriaPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -175,22 +173,20 @@ class _FailureCriteriaPageState extends State<FailureCriteriaPage> {
         'S_y': _yield == null ? '' : '$_yield',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => _FailureCriteriaResultPage(
-            s1: s1,
-            s2: s2,
-            vonMises: vonMises,
-            tresca: tresca,
-            tauMax: tauMax,
-            yieldStrength: _yield,
-            sx: sx,
-            sy: sy,
-            txy: txy,
-            avg: avg,
-            r: r,
-          ),
+        (context) => _FailureCriteriaResultPage(
+          s1: s1,
+          s2: s2,
+          vonMises: vonMises,
+          tresca: tresca,
+          tauMax: tauMax,
+          yieldStrength: _yield,
+          sx: sx,
+          sy: sy,
+          txy: txy,
+          avg: avg,
+          r: r,
         ),
       );
     } on FormatException catch (error) {

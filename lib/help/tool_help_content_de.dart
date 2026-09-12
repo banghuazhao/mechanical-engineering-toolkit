@@ -2607,4 +2607,274 @@ const Map<int, ToolHelp> toolHelpDe = {
     ],
     diagram: 'images/icons/icon_power_screw.png',
   ),
+  // ---------------------------------------------------------- thermodynamics
+  900: ToolHelp(
+    summary: 'Stoffwerte von Wasser und Wasserdampf – Sättigung, unterkühlte '
+        'Flüssigkeit, überhitzter Dampf und überkritischer Zustand – nach '
+        'IAPWS-IF97, der Formulierung hinter modernen Dampftafeln und '
+        'Kraftwerkssoftware. Geben Sie das Wertepaar ein, das Sie kennen: eine '
+        'Temperatur oder einen Druck für eine Sättigungszeile, oder den Druck mit '
+        'Temperatur, Dampfgehalt, Enthalpie oder Entropie für einen einzelnen Zustand.',
+    formulas: [
+      HelpFormula(
+        tex: r'\frac{g(p,T)}{RT} = \gamma(\pi,\tau), \quad \pi = \frac{p}{p^*}, \quad \tau = \frac{T^*}{T}',
+        plain: 'g(p,T)/(RT) = γ(π, τ), π = p/p*, τ = T*/T',
+        caption: 'Gebiete 1, 2 und 5: eine dimensionslose freie Enthalpie',
+      ),
+      HelpFormula(
+        tex: r'h = RT\,\tau\,\gamma_\tau, \quad s = R\,(\tau\gamma_\tau - \gamma), \quad v = \frac{RT}{p}\,\pi\,\gamma_\pi',
+        plain: 'h = R·T·τ·γτ, s = R·(τ·γτ − γ), v = (R·T/p)·π·γπ',
+        caption: 'Jede Zustandsgröße ist eine Ableitung dieser einen Funktion',
+      ),
+      HelpFormula(
+        tex: r'\frac{f(\rho,T)}{RT} = \phi(\delta,\tau), \quad \delta = \frac{\rho}{\rho_c}',
+        plain: 'f(ρ,T)/(RT) = φ(δ, τ), δ = ρ/ρc',
+        caption: 'Gebiet 3 um den kritischen Punkt: eine freie Energie',
+      ),
+      HelpFormula(
+        tex: r'y = y_f + x\,(y_g - y_f)',
+        plain: 'y = yf + x·(yg − yf)',
+        caption: 'Nassdampf: v, u, h oder s nach dem Dampfgehalt gewichtet',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p', 'Druck', 'kPa'),
+      HelpSymbol('T', 'Temperatur', '°C'),
+      HelpSymbol('x', 'Dampfgehalt, der Massenanteil des Dampfes'),
+      HelpSymbol('v', 'Spezifisches Volumen', 'm³/kg'),
+      HelpSymbol('u', 'Spezifische innere Energie', 'kJ/kg'),
+      HelpSymbol('h', 'Spezifische Enthalpie', 'kJ/kg'),
+      HelpSymbol('s', 'Spezifische Entropie', 'kJ/(kg·K)'),
+      HelpSymbol('R', 'Spezifische Gaskonstante von Wasser, 0,461526', 'kJ/(kg·K)'),
+      HelpSymbol('f, g', 'Indizes für siedende Flüssigkeit und gesättigten Dampf'),
+    ],
+    notes: [
+      'Gültig von 0 °C bis 800 °C bei Drücken bis 100 MPa und weiter bis 2000 °C '
+          'bei höchstens 50 MPa. Außerhalb dieses Bereichs verweigert das Werkzeug '
+          'die Rechnung, statt zu extrapolieren.',
+      'Energien und Entropie beziehen sich auf siedende Flüssigkeit am Tripelpunkt, '
+          '0,01 °C, wie in jeder modernen Dampftafel; die Werte lassen sich daher mit '
+          'einer gedruckten Tafel mischen. Nicht aber mit einer alten angloamerikanischen '
+          'Tafel, die h = 0 bei 32 °F setzte – deren Enthalpien sind verschoben.',
+      'Nahe dem kritischen Punkt, 373,95 °C und 22,064 MPa, ändern sich die '
+          'Stoffwerte sehr schnell mit p und T, und cp wächst unbegrenzt. Die Werte '
+          'dort sind für die Formulierung richtig, reagieren aber empfindlich auf die '
+          'Eingaben.',
+      'Druck und Temperatur genau auf der Sättigungslinie legen den Zustand nicht '
+          'fest: Er kann jeden Dampfgehalt haben. Suchen Sie dann nach Dampfgehalt, '
+          'Enthalpie oder Entropie.',
+      'IF97 stimmt mit der wissenschaftlichen Formulierung IAPWS-95 auf etwa 0,1 % '
+          'im spezifischen Volumen und wenige Hundertstelprozent in der Enthalpie '
+          'überein – innerhalb der Unsicherheit jeder Messung, mit der man sie '
+          'vergleichen würde.',
+    ],
+    references: [
+      'IAPWS R7-97(2012), Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam',
+      'Wagner & Kretzschmar, International Steam Tables',
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 3',
+    ],
+    diagram: 'images/icons/icon_steam_tables.png',
+  ),
+  901: ToolHelp(
+    summary: 'Ein ideales Gas bei einer der fünf klassischen Zustandsänderungen – '
+        'isotherm, isobar, isochor, isentrop oder polytrop mit konstantem pvⁿ. Aus '
+        'dem Anfangszustand und einer Größe des Endzustands bestimmt das Werkzeug '
+        'den übrigen Endzustand, dann die Volumenänderungsarbeit, die Wärme und die '
+        'Änderungen von innerer Energie, Enthalpie und Entropie, je Kilogramm und '
+        'für die gesamte Masse.',
+    formulas: [
+      HelpFormula(
+        tex: r'pv = RT',
+        plain: 'p·v = R·T',
+        caption: 'Thermische Zustandsgleichung des idealen Gases',
+      ),
+      HelpFormula(
+        tex: r'W_b = \int_1^2 p\,dV',
+        plain: 'Wb = ∫ p dV',
+        caption: 'Volumenänderungsarbeit: die Fläche unter der Kurve im p-v-Diagramm',
+      ),
+      HelpFormula(
+        tex: r'pv^n = \text{const} \;\Rightarrow\; W_b = \frac{mR\,(T_2 - T_1)}{1 - n}',
+        plain: 'p·vⁿ = const ⇒ Wb = m·R·(T2 − T1)/(1 − n)',
+        caption: 'Polytrop: n = k ist isentrop, n = 1 isotherm, n = 0 isobar',
+      ),
+      HelpFormula(
+        tex: r'Q = \Delta U + W_b, \quad \Delta U = mc_v\,(T_2 - T_1)',
+        plain: 'Q = ΔU + Wb, ΔU = m·cv·(T2 − T1)',
+        caption: 'Erster Hauptsatz für ein geschlossenes System',
+      ),
+      HelpFormula(
+        tex: r'\Delta S = m\left(c_p\ln\frac{T_2}{T_1} - R\ln\frac{p_2}{p_1}\right)',
+        plain: 'ΔS = m·(cp·ln(T2/T1) − R·ln(p2/p1))',
+        caption: 'Entropieänderung, unabhängig vom Weg',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p', 'Druck', 'kPa'),
+      HelpSymbol('v', 'Spezifisches Volumen', 'm³/kg'),
+      HelpSymbol('T', 'Absolute Temperatur; in °C eingegeben und umgerechnet', 'K'),
+      HelpSymbol('R', 'Spezifische Gaskonstante', 'kJ/(kg·K)'),
+      HelpSymbol('cp, cv', 'Spezifische Wärmekapazitäten bei konstantem Druck und Volumen', 'kJ/(kg·K)'),
+      HelpSymbol('k', 'Isentropenexponent, cp/cv'),
+      HelpSymbol('n', 'Polytropenexponent'),
+      HelpSymbol('m', 'Gasmasse', 'kg'),
+      HelpSymbol('W, Q', 'Vom Gas abgegebene Arbeit und zugeführte Wärme', 'kJ'),
+    ],
+    notes: [
+      'Die spezifischen Wärmekapazitäten sind konstant. Für Luft beträgt der '
+          'Fehler in cp zwischen 300 K und 600 K etwa 2 % und wächst darüber; bei '
+          'großen Temperaturänderungen sind Tafeln mit temperaturabhängigen Werten '
+          'genauer.',
+      'Jede Zustandsänderung ist quasistatisch: so langsam, dass Druck und '
+          'Temperatur im Gas überall gleich bleiben. Eine freie Expansion erreicht '
+          'ihren Endzustand auf keinem solchen Weg und leistet keine '
+          'Volumenänderungsarbeit.',
+      'Vom Gas abgegebene Arbeit und ihm zugeführte Wärme sind positiv; eine '
+          'Verdichtung zeigt daher negative Arbeit, eine Abkühlung negative Wärme.',
+      'Ideales Verhalten gilt bei niedrigem Druck und bei Temperaturen weit über '
+          'dem kritischen Punkt. Wasser nahe der Sättigung ist alles andere als '
+          'ideal – verwenden Sie dafür die Dampftafel.',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 4 and 7',
+      'Moran & Shapiro, Fundamentals of Engineering Thermodynamics, ch. 3 and 6',
+    ],
+    diagram: 'images/icons/icon_ideal_gas.png',
+  ),
+  902: ToolHelp(
+    summary: 'Die idealisierten Prozesse hinter dem Ottomotor, dem Dieselmotor und '
+        'der Gasturbine (Joule- bzw. Brayton-Prozess), berechnet nach dem '
+        'Kaltluft-Standard: Luft mit konstanten Wärmekapazitäten, die Verbrennung '
+        'ersetzt durch von außen zugeführte Wärme und das Abgas durch abgeführte '
+        'Wärme. Das Werkzeug bestimmt alle Zustände, Wärme und Arbeit und den '
+        'thermischen Wirkungsgrad – die Obergrenze, der ein realer Motor nachjagt.',
+    formulas: [
+      HelpFormula(
+        tex: r'\eta_{Otto} = 1 - \frac{1}{r^{\,k-1}}',
+        plain: 'η = 1 − 1/r^(k−1)',
+        caption: 'Otto: Wärmezufuhr bei konstantem Volumen',
+      ),
+      HelpFormula(
+        tex: r'\eta_{Diesel} = 1 - \frac{1}{r^{\,k-1}}\,\frac{r_c^{\,k} - 1}{k\,(r_c - 1)}',
+        plain: 'η = 1 − (1/r^(k−1))·(rc^k − 1)/(k·(rc − 1))',
+        caption: 'Diesel: Wärmezufuhr bei konstantem Druck',
+      ),
+      HelpFormula(
+        tex: r'\eta_{Brayton} = 1 - \frac{1}{r_p^{\,(k-1)/k}}',
+        plain: 'η = 1 − 1/rp^((k−1)/k)',
+        caption: 'Idealer Joule-Prozess: Wärmezu- und -abfuhr bei konstantem Druck',
+      ),
+      HelpFormula(
+        tex: r'\frac{T_2}{T_1} = r^{\,k-1} = r_p^{\,(k-1)/k}',
+        plain: 'T2/T1 = r^(k−1) = rp^((k−1)/k)',
+        caption: 'Isentrope Verdichtung, über Volumen- oder Druckverhältnis',
+      ),
+      HelpFormula(
+        tex: r'\text{MEP} = \frac{w_{net}}{v_1 - v_2}',
+        plain: 'MEP = w_net/(v1 − v2)',
+        caption: 'Mitteldruck eines Kolbenprozesses',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('r', 'Verdichtungsverhältnis, v1/v2'),
+      HelpSymbol('rc', 'Einspritzverhältnis, v3/v2'),
+      HelpSymbol('rp', 'Druckverhältnis, p2/p1'),
+      HelpSymbol('k', 'Isentropenexponent; 1,4 für Luft'),
+      HelpSymbol('T', 'Absolute Temperatur in jedem Zustand', 'K'),
+      HelpSymbol('q_in, q_out', 'Zu- und abgeführte Wärme je Kilogramm', 'kJ/kg'),
+      HelpSymbol('w_net', 'Nutzarbeit je Kilogramm', 'kJ/kg'),
+      HelpSymbol('ηc, ηt', 'Isentrope Wirkungsgrade von Verdichter und Turbine'),
+      HelpSymbol('MEP', 'Mitteldruck', 'kPa'),
+    ],
+    notes: [
+      'Der Otto-Wirkungsgrad hängt allein vom Verdichtungsverhältnis ab. Klopfen '
+          'begrenzt einen Ottomotor auf etwa 8–12; ein Diesel verdichtet reine Luft '
+          'und läuft mit 14–22 – deshalb ist er in der Praxis der sparsamere Motor, '
+          'obwohl bei gleichem r der Otto-Prozess besser ist.',
+      'Reale Motoren erreichen etwa die Hälfte dieser Werte: Die '
+          'Wärmekapazitäten steigen mit der Temperatur, die Verbrennung braucht Zeit, '
+          'Wärme geht über die Wände verloren und das Gas nach der Verbrennung ist '
+          'keine Luft mehr.',
+      'Der Joule-Wirkungsgrad steigt mit dem Druckverhältnis weiter, die '
+          'Nutzarbeit je Kilogramm erreicht aber ein Maximum und fällt dann, weil '
+          'die Verdichterarbeit schneller wächst als die Turbinenarbeit. Mit '
+          'Komponentenverlusten gibt es ein Druckverhältnis, oberhalb dessen der '
+          'Prozess gar nichts mehr leistet.',
+      'Der Carnot-Wert ist das Höchste, was eine Maschine zwischen derselben '
+          'niedrigsten und höchsten Temperatur erreichen könnte. Der Abstand zum '
+          'Prozesswirkungsgrad ist der Preis dafür, Wärme über einen '
+          'Temperaturbereich statt beim Höchstwert zuzuführen.',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 9',
+      'Heywood, Internal Combustion Engine Fundamentals, ch. 5',
+      'Saravanamuttoo et al., Gas Turbine Theory, ch. 2',
+    ],
+    diagram: 'images/icons/icon_air_cycle.png',
+  ),
+  903: ToolHelp(
+    summary: 'Der Dampfkraftprozess hinter dem größten Teil des weltweit erzeugten '
+        'Stroms: Eine Pumpe fördert das Kondensat auf Kesseldruck, der Kessel '
+        'verdampft es, die Turbine entspannt den Dampf unter Arbeitsabgabe und der '
+        'Kondensator verflüssigt ihn wieder. Mit Stoffwerten nach IAPWS-IF97 '
+        'bestimmt das Werkzeug alle Zustände, Arbeit und Wärme jeder Komponente, '
+        'den thermischen Wirkungsgrad und den Dampfgehalt am Turbinenaustritt.',
+    formulas: [
+      HelpFormula(
+        tex: r'w_p = \frac{v_1\,(p_2 - p_1)}{\eta_p}',
+        plain: 'wp = v1·(p2 − p1)/ηp',
+        caption: 'Pumpenarbeit, Wasser als inkompressibel betrachtet',
+      ),
+      HelpFormula(
+        tex: r'h_4 = h_3 - \eta_t\,(h_3 - h_{4s})',
+        plain: 'h4 = h3 − ηt·(h3 − h4s)',
+        caption: 'Turbinenaustritt, aus der isentropen Entspannung auf Kondensatordruck',
+      ),
+      HelpFormula(
+        tex: r'q_{in} = h_3 - h_2, \qquad q_{out} = h_4 - h_1',
+        plain: 'q_in = h3 − h2, q_out = h4 − h1',
+        caption: 'Im Kessel zugeführte und im Kondensator abgeführte Wärme',
+      ),
+      HelpFormula(
+        tex: r'\eta = \frac{w_t - w_p}{q_{in}} = \frac{(h_3 - h_4) - (h_2 - h_1)}{h_3 - h_2}',
+        plain: 'η = (wt − wp)/q_in = ((h3 − h4) − (h2 − h1))/(h3 − h2)',
+        caption: 'Thermischer Wirkungsgrad',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p1, p2', 'Kondensator- und Kesseldruck', 'kPa'),
+      HelpSymbol('h', 'Spezifische Enthalpie in jedem Zustand', 'kJ/kg'),
+      HelpSymbol('s', 'Spezifische Entropie', 'kJ/(kg·K)'),
+      HelpSymbol('v1', 'Spezifisches Volumen der siedenden Flüssigkeit am Kondensatoraustritt', 'm³/kg'),
+      HelpSymbol('x4', 'Dampfgehalt am Turbinenaustritt'),
+      HelpSymbol('ηt, ηp', 'Isentrope Wirkungsgrade von Turbine und Pumpe'),
+      HelpSymbol('ṁ', 'Dampfmassenstrom', 'kg/s'),
+    ],
+    notes: [
+      'Zustand 1 ist siedende Flüssigkeit bei Kondensatordruck, sodass die Pumpe '
+          'nie Dampf ansaugt. Zustand 3 ist überhitzter Dampf bei der angegebenen '
+          'Temperatur oder, ohne Angabe, Sattdampf.',
+      'Ein niedrigerer Kondensatordruck erhöht den Wirkungsgrad; deshalb arbeiten '
+          'Kondensatoren im Vakuum von wenigen kPa. Wie tief es geht, bestimmt die '
+          'Kühlwassertemperatur.',
+      'Überhitzung und höherer Kesseldruck steigern beide den Wirkungsgrad, der '
+          'Druck allein macht das Abdampfgebiet aber nasser. Unter etwa 88 % '
+          'Dampfgehalt erodieren die Tropfen die Endstufenschaufeln; übliche Abhilfe '
+          'ist die Zwischenüberhitzung, und das Werkzeug weist auf so nassen '
+          'Abdampf hin.',
+      'Das Rückarbeitsverhältnis ist winzig – ein, zwei Prozent –, weil das Pumpen '
+          'einer Flüssigkeit weit weniger Arbeit kostet als das Verdichten eines '
+          'Gases. Das ist der große Vorteil des Clausius-Rankine- gegenüber dem '
+          'Joule-Prozess.',
+      'Nicht modelliert: Druck- und Wärmeverluste in Kessel, Leitungen und '
+          'Kondensator, Speisewasservorwärmung und Zwischenüberhitzung. Jedes davon '
+          'verschiebt den Wirkungsgrad eines realen Kraftwerks um einige Punkte.',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 10',
+      'Moran & Shapiro, Fundamentals of Engineering Thermodynamics, ch. 8',
+      'IAPWS R7-97(2012), Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam',
+    ],
+    diagram: 'images/icons/icon_rankine.png',
+  ),
 };

@@ -10,7 +10,9 @@ import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/page/strees_strain_of_linear_elastic_material_result.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/widget/linear_elastic_stress_strain_row.dart';
 import 'package:mechanical_engineering_toolkit/home/theory_of_elasticity/widget/material_input_row.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:provider/provider.dart';
 
 class StressStrainLinearElasticPage extends StatefulWidget {
@@ -150,15 +152,12 @@ class _StressStrainLinearElasticPageState
             ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
           ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            setState(() {
-              validate = true;
-            });
+        floatingActionButton: CalculateButton(onPressed: () {
+        setState(() {
+          validate = true;
+        });
             _calculate();
-          },
-          label: Text(S.of(context).Calculate),
-        ),
+          }),
         body: SafeArea(
             child: StaggeredGridView.countBuilder(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
@@ -718,14 +717,14 @@ C_ij = Components of stiffness in i row and j column
               stressVector[5][0]);
         }
 
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => StressStrainLinearElasticResultPage(
-                    toolId: widget.toolId,
-                    mechanicalTensor: resultTensor,
-                    C: C,
-                    S: S_matrix)));
+        showToolResult(
+          context,
+          (context) => StressStrainLinearElasticResultPage(
+            toolId: widget.toolId,
+            mechanicalTensor: resultTensor,
+            C: C,
+            S: S_matrix),
+        );
       }
 
       Matrix S_matrix = Matrix([
@@ -788,14 +787,14 @@ C_ij = Components of stiffness in i row and j column
             stressVector[5][0]);
       }
 
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => StressStrainLinearElasticResultPage(
-                  toolId: widget.toolId,
-                  mechanicalTensor: resultTensor,
-                  C: C,
-                  S: S_matrix)));
+      showToolResult(
+        context,
+        (context) => StressStrainLinearElasticResultPage(
+          toolId: widget.toolId,
+          mechanicalTensor: resultTensor,
+          C: C,
+          S: S_matrix),
+      );
     }
   }
 }

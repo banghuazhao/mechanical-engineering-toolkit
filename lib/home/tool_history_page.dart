@@ -195,8 +195,9 @@ class ToolHistoryPage extends StatelessWidget {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // History entries are evicted after 50; this is how
-                          // a calculation graduates into something permanent.
+                          // History entries are evicted after
+                          // ToolHistory.maxEntries; this is how a calculation
+                          // graduates into something permanent.
                           IconButton(
                             icon: const Icon(Icons.bookmark_add_outlined),
                             tooltip: S.of(context).Save_as_Project,
@@ -290,7 +291,9 @@ class _HistoryLimitCard extends StatelessWidget {
           Icons.workspace_premium_rounded,
           color: theme.colorScheme.primary,
         ),
-        title: Text(strings.Premium_History_Limited(shown)),
+        title: Text(
+          strings.Premium_History_Limited(shown, ToolHistory.maxEntries),
+        ),
         trailing: TextButton(
           onPressed: () => showLockedFeatureUpsell(
             context,

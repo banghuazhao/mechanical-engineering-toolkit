@@ -42,10 +42,21 @@ class ShaftFatigueInput {
 }
 
 class ShaftFatigueResult {
-  const ShaftFatigueResult({required this.diameterMm});
+  const ShaftFatigueResult({
+    required this.diameterMm,
+    required this.alternatingVonMises,
+    required this.meanVonMises,
+  });
 
   /// Required shaft diameter, mm.
   final double diameterMm;
+
+  /// Von Mises alternating and mean stresses at that diameter, MPa:
+  /// σa′ = (16/πd³)·√(4(Kf·Ma)² + 3(Kfs·Ta)²), and likewise for the means.
+  /// They sit on the Goodman line scaled by 1/n by construction — which is
+  /// what the diagram on the result page shows.
+  final double alternatingVonMises;
+  final double meanVonMises;
 }
 
 /// Shigley's DE-Goodman shaft-diameter equation:
@@ -84,7 +95,12 @@ abstract final class ShaftFatigueCalculator {
         meanTerm / input.ultimateStrength;
     final dCubed = (16 * input.safetyFactor / math.pi) * bracket;
     final d = math.pow(dCubed, 1 / 3).toDouble();
+    final stressPerTerm = 16 / (math.pi * dCubed);
 
-    return ShaftFatigueResult(diameterMm: d);
+    return ShaftFatigueResult(
+      diameterMm: d,
+      alternatingVonMises: stressPerTerm * alternatingTerm,
+      meanVonMises: stressPerTerm * meanTerm,
+    );
   }
 }

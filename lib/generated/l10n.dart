@@ -1119,13 +1119,13 @@ class S {
     );
   }
 
-  /// `Premium shows your full calculation history.`
-  String get Premium_Locked_History {
+  /// `Premium shows up to your last {max} calculations.`
+  String Premium_Locked_History(Object max) {
     return Intl.message(
-      'Premium shows your full calculation history.',
+      'Premium shows up to your last $max calculations.',
       name: 'Premium_Locked_History',
       desc: '',
-      args: [],
+      args: [max],
     );
   }
 
@@ -1169,13 +1169,13 @@ class S {
     );
   }
 
-  /// `Your full calculation history`
-  String get Premium_Benefit_History {
+  /// `Your last {max} calculations in History`
+  String Premium_Benefit_History(Object max) {
     return Intl.message(
-      'Your full calculation history',
+      'Your last $max calculations in History',
       name: 'Premium_Benefit_History',
       desc: '',
-      args: [],
+      args: [max],
     );
   }
 
@@ -1199,13 +1199,13 @@ class S {
     );
   }
 
-  /// `Showing the {count} most recent. Premium shows them all.`
-  String Premium_History_Limited(Object count) {
+  /// `Showing the {count} most recent. Premium shows up to {max}.`
+  String Premium_History_Limited(Object count, Object max) {
     return Intl.message(
-      'Showing the $count most recent. Premium shows them all.',
+      'Showing the $count most recent. Premium shows up to $max.',
       name: 'Premium_History_Limited',
       desc: '',
-      args: [count],
+      args: [count, max],
     );
   }
 
@@ -7002,6 +7002,1661 @@ class S {
   /// `Copied`
   String get Copied {
     return Intl.message('Copied', name: 'Copied', desc: '', args: []);
+  }
+
+  /// `Thermodynamics`
+  String get Thermodynamics {
+    return Intl.message(
+      'Thermodynamics',
+      name: 'Thermodynamics',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Steam Tables (IAPWS-IF97)`
+  String get Steam_Tables {
+    return Intl.message(
+      'Steam Tables (IAPWS-IF97)',
+      name: 'Steam_Tables',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ideal Gas Processes`
+  String get Ideal_Gas_Process {
+    return Intl.message(
+      'Ideal Gas Processes',
+      name: 'Ideal_Gas_Process',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Otto, Diesel & Brayton Cycles`
+  String get Air_Standard_Cycles {
+    return Intl.message(
+      'Otto, Diesel & Brayton Cycles',
+      name: 'Air_Standard_Cycles',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rankine Cycle`
+  String get Rankine_Cycle {
+    return Intl.message(
+      'Rankine Cycle',
+      name: 'Rankine_Cycle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Properties of water and steam — saturated, compressed liquid, superheated and supercritical — from the international IAPWS-IF97 formulation, looked up from whichever pair of properties you know.`
+  String get Desc_Steam_Tables {
+    return Intl.message(
+      'Properties of water and steam — saturated, compressed liquid, superheated and supercritical — from the international IAPWS-IF97 formulation, looked up from whichever pair of properties you know.',
+      name: 'Desc_Steam_Tables',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The end state, work, heat and entropy change of an ideal gas taken through one of the five classic processes, with constant specific heats.`
+  String get Desc_Ideal_Gas_Process {
+    return Intl.message(
+      'The end state, work, heat and entropy change of an ideal gas taken through one of the five classic processes, with constant specific heats.',
+      name: 'Desc_Ideal_Gas_Process',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cold-air-standard analysis of the spark-ignition, compression-ignition and gas-turbine cycles: every state, the heat in and out, net work and thermal efficiency.`
+  String get Desc_Air_Standard_Cycles {
+    return Intl.message(
+      'Cold-air-standard analysis of the spark-ignition, compression-ignition and gas-turbine cycles: every state, the heat in and out, net work and thermal efficiency.',
+      name: 'Desc_Air_Standard_Cycles',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The steam power cycle — pump, boiler, turbine and condenser — with real steam properties: every state, the work and heat of each component, and the cycle efficiency.`
+  String get Desc_Rankine_Cycle {
+    return Intl.message(
+      'The steam power cycle — pump, boiler, turbine and condenser — with real steam properties: every state, the work and heat of each component, and the cycle efficiency.',
+      name: 'Desc_Rankine_Cycle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Look up by`
+  String get Steam_Lookup {
+    return Intl.message('Look up by', name: 'Steam_Lookup', desc: '', args: []);
+  }
+
+  /// `Saturation, by temperature`
+  String get Steam_Lookup_Sat_T {
+    return Intl.message(
+      'Saturation, by temperature',
+      name: 'Steam_Lookup_Sat_T',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saturation, by pressure`
+  String get Steam_Lookup_Sat_P {
+    return Intl.message(
+      'Saturation, by pressure',
+      name: 'Steam_Lookup_Sat_P',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pressure and temperature`
+  String get Steam_Lookup_PT {
+    return Intl.message(
+      'Pressure and temperature',
+      name: 'Steam_Lookup_PT',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pressure and quality`
+  String get Steam_Lookup_PX {
+    return Intl.message(
+      'Pressure and quality',
+      name: 'Steam_Lookup_PX',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pressure and enthalpy`
+  String get Steam_Lookup_PH {
+    return Intl.message(
+      'Pressure and enthalpy',
+      name: 'Steam_Lookup_PH',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pressure and entropy`
+  String get Steam_Lookup_PS {
+    return Intl.message(
+      'Pressure and entropy',
+      name: 'Steam_Lookup_PS',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Temperature, T`
+  String get Temperature_T {
+    return Intl.message(
+      'Temperature, T',
+      name: 'Temperature_T',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pressure, p`
+  String get Pressure_P {
+    return Intl.message('Pressure, p', name: 'Pressure_P', desc: '', args: []);
+  }
+
+  /// `Quality, x`
+  String get Quality_X {
+    return Intl.message('Quality, x', name: 'Quality_X', desc: '', args: []);
+  }
+
+  /// `Specific enthalpy, h`
+  String get Specific_Enthalpy_H {
+    return Intl.message(
+      'Specific enthalpy, h',
+      name: 'Specific_Enthalpy_H',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Specific entropy, s`
+  String get Specific_Entropy_S {
+    return Intl.message(
+      'Specific entropy, s',
+      name: 'Specific_Entropy_S',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Specific volume, v`
+  String get Specific_Volume_V {
+    return Intl.message(
+      'Specific volume, v',
+      name: 'Specific_Volume_V',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Density, ρ`
+  String get Density_Rho {
+    return Intl.message('Density, ρ', name: 'Density_Rho', desc: '', args: []);
+  }
+
+  /// `Specific internal energy, u`
+  String get Specific_Internal_Energy_U {
+    return Intl.message(
+      'Specific internal energy, u',
+      name: 'Specific_Internal_Energy_U',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Specific heat, cp`
+  String get Specific_Heat_Cp {
+    return Intl.message(
+      'Specific heat, cp',
+      name: 'Specific_Heat_Cp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Specific heat, cv`
+  String get Specific_Heat_Cv {
+    return Intl.message(
+      'Specific heat, cv',
+      name: 'Specific_Heat_Cv',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Speed of sound, w`
+  String get Speed_Of_Sound {
+    return Intl.message(
+      'Speed of sound, w',
+      name: 'Speed_Of_Sound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saturation temperature, Tsat`
+  String get Saturation_Temperature {
+    return Intl.message(
+      'Saturation temperature, Tsat',
+      name: 'Saturation_Temperature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saturation pressure, psat`
+  String get Saturation_Pressure {
+    return Intl.message(
+      'Saturation pressure, psat',
+      name: 'Saturation_Pressure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saturated liquid (f)`
+  String get Saturated_Liquid {
+    return Intl.message(
+      'Saturated liquid (f)',
+      name: 'Saturated_Liquid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saturated vapour (g)`
+  String get Saturated_Vapour {
+    return Intl.message(
+      'Saturated vapour (g)',
+      name: 'Saturated_Vapour',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Evaporation (fg)`
+  String get Evaporation {
+    return Intl.message(
+      'Evaporation (fg)',
+      name: 'Evaporation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Latent heat, hfg`
+  String get Latent_Heat_Hfg {
+    return Intl.message(
+      'Latent heat, hfg',
+      name: 'Latent_Heat_Hfg',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Entropy of vaporization, sfg`
+  String get Entropy_Of_Vaporization {
+    return Intl.message(
+      'Entropy of vaporization, sfg',
+      name: 'Entropy_Of_Vaporization',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phase`
+  String get Phase_State {
+    return Intl.message('Phase', name: 'Phase_State', desc: '', args: []);
+  }
+
+  /// `Compressed liquid`
+  String get Phase_Compressed_Liquid {
+    return Intl.message(
+      'Compressed liquid',
+      name: 'Phase_Compressed_Liquid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wet mixture`
+  String get Phase_Wet_Mixture {
+    return Intl.message(
+      'Wet mixture',
+      name: 'Phase_Wet_Mixture',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Superheated vapour`
+  String get Phase_Superheated {
+    return Intl.message(
+      'Superheated vapour',
+      name: 'Phase_Superheated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supercritical fluid`
+  String get Phase_Supercritical {
+    return Intl.message(
+      'Supercritical fluid',
+      name: 'Phase_Supercritical',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `IAPWS-IF97 region`
+  String get IF97_Region {
+    return Intl.message(
+      'IAPWS-IF97 region',
+      name: 'IF97_Region',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `State`
+  String get Steam_State {
+    return Intl.message('State', name: 'Steam_State', desc: '', args: []);
+  }
+
+  /// `Enter the values this lookup needs.`
+  String get Err_Steam_Missing {
+    return Intl.message(
+      'Enter the values this lookup needs.',
+      name: 'Err_Steam_Missing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Water boils only between 0.01 °C (32 °F) and the critical point, 373.95 °C (705.1 °F).`
+  String get Err_Steam_Temperature_Range {
+    return Intl.message(
+      'Water boils only between 0.01 °C (32 °F) and the critical point, 373.95 °C (705.1 °F).',
+      name: 'Err_Steam_Temperature_Range',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Saturation pressure runs from 0.611 kPa (0.0887 psi) to the critical pressure, 22.064 MPa (3200 psi).`
+  String get Err_Steam_Pressure_Range {
+    return Intl.message(
+      'Saturation pressure runs from 0.611 kPa (0.0887 psi) to the critical pressure, 22.064 MPa (3200 psi).',
+      name: 'Err_Steam_Pressure_Range',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Above the critical pressure, 22.064 MPa, there is no saturation: water turns from liquid to vapour without boiling.`
+  String get Err_Steam_Above_Critical {
+    return Intl.message(
+      'Above the critical pressure, 22.064 MPa, there is no saturation: water turns from liquid to vapour without boiling.',
+      name: 'Err_Steam_Above_Critical',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quality must be between 0 and 1.`
+  String get Err_Steam_Quality {
+    return Intl.message(
+      'Quality must be between 0 and 1.',
+      name: 'Err_Steam_Quality',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Outside IAPWS-IF97, which covers 0–800 °C up to 100 MPa and up to 2000 °C at 50 MPa or less.`
+  String get Err_Steam_Range {
+    return Intl.message(
+      'Outside IAPWS-IF97, which covers 0–800 °C up to 100 MPa and up to 2000 °C at 50 MPa or less.',
+      name: 'Err_Steam_Range',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `T–s diagram`
+  String get Ts_Diagram {
+    return Intl.message('T–s diagram', name: 'Ts_Diagram', desc: '', args: []);
+  }
+
+  /// `p–v diagram`
+  String get Pv_Diagram {
+    return Intl.message('p–v diagram', name: 'Pv_Diagram', desc: '', args: []);
+  }
+
+  /// `Saturation dome`
+  String get Saturation_Dome {
+    return Intl.message(
+      'Saturation dome',
+      name: 'Saturation_Dome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cycle`
+  String get Cycle_Label {
+    return Intl.message('Cycle', name: 'Cycle_Label', desc: '', args: []);
+  }
+
+  /// `Process`
+  String get Process_Label {
+    return Intl.message('Process', name: 'Process_Label', desc: '', args: []);
+  }
+
+  /// `Enthalpy, internal energy and entropy are measured from saturated liquid at the triple point — the reference every modern steam table uses — so these numbers mix freely with a printed table's.`
+  String get Steam_Tables_Note {
+    return Intl.message(
+      'Enthalpy, internal energy and entropy are measured from saturated liquid at the triple point — the reference every modern steam table uses — so these numbers mix freely with a printed table\'s.',
+      name: 'Steam_Tables_Note',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pick gas`
+  String get Pick_Gas {
+    return Intl.message('Pick gas', name: 'Pick_Gas', desc: '', args: []);
+  }
+
+  /// `Ideal gases`
+  String get Gas_Presets {
+    return Intl.message('Ideal gases', name: 'Gas_Presets', desc: '', args: []);
+  }
+
+  /// `Search gases`
+  String get Search_Gases {
+    return Intl.message(
+      'Search gases',
+      name: 'Search_Gases',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No gases found`
+  String get No_Gases_Found {
+    return Intl.message(
+      'No gases found',
+      name: 'No_Gases_Found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gas constant, R`
+  String get Gas_Constant_R {
+    return Intl.message(
+      'Gas constant, R',
+      name: 'Gas_Constant_R',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Specific heat ratio, k`
+  String get Specific_Heat_Ratio_K {
+    return Intl.message(
+      'Specific heat ratio, k',
+      name: 'Specific_Heat_Ratio_K',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Isothermal`
+  String get Process_Isothermal {
+    return Intl.message(
+      'Isothermal',
+      name: 'Process_Isothermal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Isobaric`
+  String get Process_Isobaric {
+    return Intl.message(
+      'Isobaric',
+      name: 'Process_Isobaric',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Isochoric`
+  String get Process_Isochoric {
+    return Intl.message(
+      'Isochoric',
+      name: 'Process_Isochoric',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Isentropic`
+  String get Process_Isentropic {
+    return Intl.message(
+      'Isentropic',
+      name: 'Process_Isentropic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Polytropic`
+  String get Process_Polytropic {
+    return Intl.message(
+      'Polytropic',
+      name: 'Process_Polytropic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Final state given by`
+  String get Final_State_From {
+    return Intl.message(
+      'Final state given by',
+      name: 'Final_State_From',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Initial pressure, p₁`
+  String get Initial_Pressure_P1 {
+    return Intl.message(
+      'Initial pressure, p₁',
+      name: 'Initial_Pressure_P1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Initial temperature, T₁`
+  String get Initial_Temperature_T1 {
+    return Intl.message(
+      'Initial temperature, T₁',
+      name: 'Initial_Temperature_T1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Final pressure, p₂`
+  String get Final_Pressure_P2 {
+    return Intl.message(
+      'Final pressure, p₂',
+      name: 'Final_Pressure_P2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Final temperature, T₂`
+  String get Final_Temperature_T2 {
+    return Intl.message(
+      'Final temperature, T₂',
+      name: 'Final_Temperature_T2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mass, m`
+  String get Gas_Mass_M {
+    return Intl.message('Mass, m', name: 'Gas_Mass_M', desc: '', args: []);
+  }
+
+  /// `Polytropic exponent, n`
+  String get Polytropic_Exponent_N {
+    return Intl.message(
+      'Polytropic exponent, n',
+      name: 'Polytropic_Exponent_N',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `State {n}`
+  String State_Numbered(Object n) {
+    return Intl.message(
+      'State $n',
+      name: 'State_Numbered',
+      desc: '',
+      args: [n],
+    );
+  }
+
+  /// `Volume, V`
+  String get Volume_V {
+    return Intl.message('Volume, V', name: 'Volume_V', desc: '', args: []);
+  }
+
+  /// `Boundary work, W`
+  String get Boundary_Work_W {
+    return Intl.message(
+      'Boundary work, W',
+      name: 'Boundary_Work_W',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Heat transfer, Q`
+  String get Heat_Transfer_Q {
+    return Intl.message(
+      'Heat transfer, Q',
+      name: 'Heat_Transfer_Q',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change in internal energy, ΔU`
+  String get Internal_Energy_Change {
+    return Intl.message(
+      'Change in internal energy, ΔU',
+      name: 'Internal_Energy_Change',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change in enthalpy, ΔH`
+  String get Enthalpy_Change {
+    return Intl.message(
+      'Change in enthalpy, ΔH',
+      name: 'Enthalpy_Change',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change in entropy, ΔS`
+  String get Entropy_Change {
+    return Intl.message(
+      'Change in entropy, ΔS',
+      name: 'Entropy_Change',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Per unit mass`
+  String get Per_Unit_Mass {
+    return Intl.message(
+      'Per unit mass',
+      name: 'Per_Unit_Mass',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Whole mass`
+  String get Process_Totals {
+    return Intl.message(
+      'Whole mass',
+      name: 'Process_Totals',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the gas properties, the initial state, the mass and the final state.`
+  String get Err_Gas_Inputs {
+    return Intl.message(
+      'Enter the gas properties, the initial state, the mass and the final state.',
+      name: 'Err_Gas_Inputs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pressures, the mass and the gas properties must be positive.`
+  String get Err_Gas_Positive {
+    return Intl.message(
+      'Pressures, the mass and the gas properties must be positive.',
+      name: 'Err_Gas_Positive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A temperature at or below absolute zero cannot be used.`
+  String get Err_Absolute_Zero {
+    return Intl.message(
+      'A temperature at or below absolute zero cannot be used.',
+      name: 'Err_Absolute_Zero',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `cp must be larger than R, or cv would not be positive.`
+  String get Err_Gas_Cp_R {
+    return Intl.message(
+      'cp must be larger than R, or cv would not be positive.',
+      name: 'Err_Gas_Cp_R',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use a polytropic exponent above zero other than 1 — n = 1 is the isothermal process.`
+  String get Err_Polytropic_N {
+    return Intl.message(
+      'Use a polytropic exponent above zero other than 1 — n = 1 is the isothermal process.',
+      name: 'Err_Polytropic_N',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The final state is the initial state, so there is no process to analyse.`
+  String get Err_Gas_No_Change {
+    return Intl.message(
+      'The final state is the initial state, so there is no process to analyse.',
+      name: 'Err_Gas_No_Change',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Specific heats are held at their room-temperature values. Above about 600 K cp rises noticeably with temperature, and tables with variable specific heats are the better source.`
+  String get Ideal_Gas_Note {
+    return Intl.message(
+      'Specific heats are held at their room-temperature values. Above about 600 K cp rises noticeably with temperature, and tables with variable specific heats are the better source.',
+      name: 'Ideal_Gas_Note',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Otto`
+  String get Cycle_Otto {
+    return Intl.message('Otto', name: 'Cycle_Otto', desc: '', args: []);
+  }
+
+  /// `Diesel`
+  String get Cycle_Diesel {
+    return Intl.message('Diesel', name: 'Cycle_Diesel', desc: '', args: []);
+  }
+
+  /// `Brayton`
+  String get Cycle_Brayton {
+    return Intl.message('Brayton', name: 'Cycle_Brayton', desc: '', args: []);
+  }
+
+  /// `Inlet temperature, T₁`
+  String get Inlet_Temperature_T1 {
+    return Intl.message(
+      'Inlet temperature, T₁',
+      name: 'Inlet_Temperature_T1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inlet pressure, p₁`
+  String get Inlet_Pressure_P1 {
+    return Intl.message(
+      'Inlet pressure, p₁',
+      name: 'Inlet_Pressure_P1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Compression ratio, r`
+  String get Compression_Ratio_R {
+    return Intl.message(
+      'Compression ratio, r',
+      name: 'Compression_Ratio_R',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cutoff ratio, rc`
+  String get Cutoff_Ratio_Rc {
+    return Intl.message(
+      'Cutoff ratio, rc',
+      name: 'Cutoff_Ratio_Rc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pressure ratio, rp`
+  String get Pressure_Ratio_Rp {
+    return Intl.message(
+      'Pressure ratio, rp',
+      name: 'Pressure_Ratio_Rp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Heat input given as`
+  String get Heat_Input_Spec {
+    return Intl.message(
+      'Heat input given as',
+      name: 'Heat_Input_Spec',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Heat added, q_in`
+  String get Heat_Added_Qin {
+    return Intl.message(
+      'Heat added, q_in',
+      name: 'Heat_Added_Qin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Heat rejected, q_out`
+  String get Heat_Rejected_Qout {
+    return Intl.message(
+      'Heat rejected, q_out',
+      name: 'Heat_Rejected_Qout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Peak temperature, T₃`
+  String get Peak_Temperature_T3 {
+    return Intl.message(
+      'Peak temperature, T₃',
+      name: 'Peak_Temperature_T3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Turbine inlet temperature, T₃`
+  String get Turbine_Inlet_T3 {
+    return Intl.message(
+      'Turbine inlet temperature, T₃',
+      name: 'Turbine_Inlet_T3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Heat added`
+  String get Heat_Spec_Heat {
+    return Intl.message(
+      'Heat added',
+      name: 'Heat_Spec_Heat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Peak temperature`
+  String get Heat_Spec_Peak {
+    return Intl.message(
+      'Peak temperature',
+      name: 'Heat_Spec_Peak',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Compressor efficiency, ηc (%)`
+  String get Compressor_Efficiency {
+    return Intl.message(
+      'Compressor efficiency, ηc (%)',
+      name: 'Compressor_Efficiency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Turbine efficiency, ηt (%)`
+  String get Turbine_Efficiency {
+    return Intl.message(
+      'Turbine efficiency, ηt (%)',
+      name: 'Turbine_Efficiency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pump efficiency, ηp (%)`
+  String get Pump_Efficiency {
+    return Intl.message(
+      'Pump efficiency, ηp (%)',
+      name: 'Pump_Efficiency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Thermal efficiency, η (%)`
+  String get Thermal_Efficiency {
+    return Intl.message(
+      'Thermal efficiency, η (%)',
+      name: 'Thermal_Efficiency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Carnot efficiency, same limits (%)`
+  String get Carnot_Efficiency {
+    return Intl.message(
+      'Carnot efficiency, same limits (%)',
+      name: 'Carnot_Efficiency',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Net work, w_net`
+  String get Net_Work {
+    return Intl.message(
+      'Net work, w_net',
+      name: 'Net_Work',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Compression work, w_c`
+  String get Compression_Work {
+    return Intl.message(
+      'Compression work, w_c',
+      name: 'Compression_Work',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expansion work, w_e`
+  String get Expansion_Work {
+    return Intl.message(
+      'Expansion work, w_e',
+      name: 'Expansion_Work',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back work ratio (%)`
+  String get Back_Work_Ratio {
+    return Intl.message(
+      'Back work ratio (%)',
+      name: 'Back_Work_Ratio',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mean effective pressure, MEP`
+  String get Mean_Effective_Pressure {
+    return Intl.message(
+      'Mean effective pressure, MEP',
+      name: 'Mean_Effective_Pressure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `States`
+  String get Cycle_States {
+    return Intl.message('States', name: 'Cycle_States', desc: '', args: []);
+  }
+
+  /// `Performance`
+  String get Cycle_Performance {
+    return Intl.message(
+      'Performance',
+      name: 'Cycle_Performance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter every value the cycle needs.`
+  String get Err_Cycle_Inputs {
+    return Intl.message(
+      'Enter every value the cycle needs.',
+      name: 'Err_Cycle_Inputs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pressures and specific heats must be positive.`
+  String get Err_Cycle_Positive {
+    return Intl.message(
+      'Pressures and specific heats must be positive.',
+      name: 'Err_Cycle_Positive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The specific heat ratio k must be greater than 1.`
+  String get Err_Cycle_K {
+    return Intl.message(
+      'The specific heat ratio k must be greater than 1.',
+      name: 'Err_Cycle_K',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Compression, cutoff and pressure ratios must be greater than 1.`
+  String get Err_Cycle_Ratio {
+    return Intl.message(
+      'Compression, cutoff and pressure ratios must be greater than 1.',
+      name: 'Err_Cycle_Ratio',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The cutoff ratio must be smaller than the compression ratio.`
+  String get Err_Cycle_Cutoff {
+    return Intl.message(
+      'The cutoff ratio must be smaller than the compression ratio.',
+      name: 'Err_Cycle_Cutoff',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Efficiencies must be above 0 % and at most 100 %.`
+  String get Err_Efficiency_Range {
+    return Intl.message(
+      'Efficiencies must be above 0 % and at most 100 %.',
+      name: 'Err_Efficiency_Range',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The peak temperature must be above the compression-end temperature, {limit}.`
+  String Err_Cycle_Peak(Object limit) {
+    return Intl.message(
+      'The peak temperature must be above the compression-end temperature, $limit.',
+      name: 'Err_Cycle_Peak',
+      desc: '',
+      args: [limit],
+    );
+  }
+
+  /// `Cold-air-standard analysis: air as an ideal gas with constant specific heats, with heat added and rejected reversibly. Real engines fall well short of these efficiencies — treat them as upper bounds and for comparing designs.`
+  String get Air_Cycle_Note {
+    return Intl.message(
+      'Cold-air-standard analysis: air as an ideal gas with constant specific heats, with heat added and rejected reversibly. Real engines fall well short of these efficiencies — treat them as upper bounds and for comparing designs.',
+      name: 'Air_Cycle_Note',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Boiler pressure`
+  String get Boiler_Pressure {
+    return Intl.message(
+      'Boiler pressure',
+      name: 'Boiler_Pressure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Condenser pressure`
+  String get Condenser_Pressure {
+    return Intl.message(
+      'Condenser pressure',
+      name: 'Condenser_Pressure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Turbine inlet temperature (optional)`
+  String get Turbine_Inlet_Optional {
+    return Intl.message(
+      'Turbine inlet temperature (optional)',
+      name: 'Turbine_Inlet_Optional',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mass flow rate (optional)`
+  String get Mass_Flow_Optional {
+    return Intl.message(
+      'Mass flow rate (optional)',
+      name: 'Mass_Flow_Optional',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Leave the temperature blank for saturated steam at the turbine; give a mass flow to see power as well as work per kilogram.`
+  String get Rankine_Hint {
+    return Intl.message(
+      'Leave the temperature blank for saturated steam at the turbine; give a mass flow to see power as well as work per kilogram.',
+      name: 'Rankine_Hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `1 · Pump inlet`
+  String get Rankine_State_1 {
+    return Intl.message(
+      '1 · Pump inlet',
+      name: 'Rankine_State_1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `2 · Boiler inlet`
+  String get Rankine_State_2 {
+    return Intl.message(
+      '2 · Boiler inlet',
+      name: 'Rankine_State_2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `3 · Turbine inlet`
+  String get Rankine_State_3 {
+    return Intl.message(
+      '3 · Turbine inlet',
+      name: 'Rankine_State_3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `4 · Turbine exit`
+  String get Rankine_State_4 {
+    return Intl.message(
+      '4 · Turbine exit',
+      name: 'Rankine_State_4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pump work, w_p`
+  String get Pump_Work {
+    return Intl.message(
+      'Pump work, w_p',
+      name: 'Pump_Work',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Turbine work, w_t`
+  String get Turbine_Work {
+    return Intl.message(
+      'Turbine work, w_t',
+      name: 'Turbine_Work',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Turbine exit quality, x₄`
+  String get Exit_Quality {
+    return Intl.message(
+      'Turbine exit quality, x₄',
+      name: 'Exit_Quality',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Net power`
+  String get Net_Power {
+    return Intl.message('Net power', name: 'Net_Power', desc: '', args: []);
+  }
+
+  /// `Heat input rate`
+  String get Heat_Input_Rate {
+    return Intl.message(
+      'Heat input rate',
+      name: 'Heat_Input_Rate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Superheated`
+  String get Superheated_Exhaust {
+    return Intl.message(
+      'Superheated',
+      name: 'Superheated_Exhaust',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The turbine exhausts below 88 % quality. That much moisture erodes the last-stage blades — raise the superheat, or add reheat.`
+  String get Rankine_Wet_Exhaust {
+    return Intl.message(
+      'The turbine exhausts below 88 % quality. That much moisture erodes the last-stage blades — raise the superheat, or add reheat.',
+      name: 'Rankine_Wet_Exhaust',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the boiler and condenser pressures.`
+  String get Err_Rankine_Inputs {
+    return Intl.message(
+      'Enter the boiler and condenser pressures.',
+      name: 'Err_Rankine_Inputs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The condenser pressure must be below the boiler pressure.`
+  String get Err_Rankine_Pressures {
+    return Intl.message(
+      'The condenser pressure must be below the boiler pressure.',
+      name: 'Err_Rankine_Pressures',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The condenser must run between 0.611 kPa and the critical pressure, and the boiler at 100 MPa or less.`
+  String get Err_Rankine_Range {
+    return Intl.message(
+      'The condenser must run between 0.611 kPa and the critical pressure, and the boiler at 100 MPa or less.',
+      name: 'Err_Rankine_Range',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The turbine inlet must be hotter than the boiler’s saturation temperature, {limit} — or leave it blank for saturated steam.`
+  String Err_Rankine_Superheat(Object limit) {
+    return Intl.message(
+      'The turbine inlet must be hotter than the boiler’s saturation temperature, $limit — or leave it blank for saturated steam.',
+      name: 'Err_Rankine_Superheat',
+      desc: '',
+      args: [limit],
+    );
+  }
+
+  /// `A boiler above the critical pressure needs a turbine inlet temperature.`
+  String get Err_Rankine_Supercritical {
+    return Intl.message(
+      'A boiler above the critical pressure needs a turbine inlet temperature.',
+      name: 'Err_Rankine_Supercritical',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The simple Rankine cycle, with steam properties from IAPWS-IF97. Pump work is taken as v·Δp, and pressure losses in the boiler, condenser and piping are neglected.`
+  String get Rankine_Note {
+    return Intl.message(
+      'The simple Rankine cycle, with steam properties from IAPWS-IF97. Pump work is taken as v·Δp, and pressure losses in the boiler, condenser and piping are neglected.',
+      name: 'Rankine_Note',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close results`
+  String get Close_Results {
+    return Intl.message(
+      'Close results',
+      name: 'Close_Results',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `File`
+  String get Menu_File {
+    return Intl.message('File', name: 'Menu_File', desc: '', args: []);
+  }
+
+  /// `Edit`
+  String get Menu_Edit {
+    return Intl.message('Edit', name: 'Menu_Edit', desc: '', args: []);
+  }
+
+  /// `View`
+  String get Menu_View {
+    return Intl.message('View', name: 'Menu_View', desc: '', args: []);
+  }
+
+  /// `Go`
+  String get Menu_Go {
+    return Intl.message('Go', name: 'Menu_Go', desc: '', args: []);
+  }
+
+  /// `Window`
+  String get Menu_Window {
+    return Intl.message('Window', name: 'Menu_Window', desc: '', args: []);
+  }
+
+  /// `Help`
+  String get Menu_Help {
+    return Intl.message('Help', name: 'Menu_Help', desc: '', args: []);
+  }
+
+  /// `Settings…`
+  String get Menu_Settings {
+    return Intl.message('Settings…', name: 'Menu_Settings', desc: '', args: []);
+  }
+
+  /// `Undo`
+  String get Menu_Undo {
+    return Intl.message('Undo', name: 'Menu_Undo', desc: '', args: []);
+  }
+
+  /// `Redo`
+  String get Menu_Redo {
+    return Intl.message('Redo', name: 'Menu_Redo', desc: '', args: []);
+  }
+
+  /// `Cut`
+  String get Menu_Cut {
+    return Intl.message('Cut', name: 'Menu_Cut', desc: '', args: []);
+  }
+
+  /// `Paste`
+  String get Menu_Paste {
+    return Intl.message('Paste', name: 'Menu_Paste', desc: '', args: []);
+  }
+
+  /// `Select All`
+  String get Menu_Select_All {
+    return Intl.message(
+      'Select All',
+      name: 'Menu_Select_All',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find Tool…`
+  String get Menu_Find_Tool {
+    return Intl.message(
+      'Find Tool…',
+      name: 'Menu_Find_Tool',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save to Project…`
+  String get Menu_Save_To_Project {
+    return Intl.message(
+      'Save to Project…',
+      name: 'Menu_Save_To_Project',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Share or Export…`
+  String get Menu_Export {
+    return Intl.message(
+      'Share or Export…',
+      name: 'Menu_Export',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back`
+  String get Menu_Back {
+    return Intl.message('Back', name: 'Menu_Back', desc: '', args: []);
+  }
+
+  /// `Tool Library`
+  String get Menu_Tool_Library {
+    return Intl.message(
+      'Tool Library',
+      name: 'Menu_Tool_Library',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use SI Units`
+  String get Menu_Use_SI {
+    return Intl.message(
+      'Use SI Units',
+      name: 'Menu_Use_SI',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use Imperial Units`
+  String get Menu_Use_Imperial {
+    return Intl.message(
+      'Use Imperial Units',
+      name: 'Menu_Use_Imperial',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send Feedback…`
+  String get Menu_Send_Feedback {
+    return Intl.message(
+      'Send Feedback…',
+      name: 'Menu_Send_Feedback',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All tools`
+  String get All_Tools {
+    return Intl.message('All tools', name: 'All_Tools', desc: '', args: []);
+  }
+
+  /// `A standard section fills the weak-axis Iy, which governs an unbraced column.`
+  String get Section_Fills_Weak_Axis {
+    return Intl.message(
+      'A standard section fills the weak-axis Iy, which governs an unbraced column.',
+      name: 'Section_Fills_Weak_Axis',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A standard section fills Ix and y = d/2, the extreme fibre where bending stress peaks.`
+  String get Section_Fills_Extreme_Fibre {
+    return Intl.message(
+      'A standard section fills Ix and y = d/2, the extreme fibre where bending stress peaks.',
+      name: 'Section_Fills_Extreme_Fibre',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A standard section fills Q, Ix and the web thickness at the neutral axis, where shear stress peaks.`
+  String get Section_Fills_Neutral_Axis {
+    return Intl.message(
+      'A standard section fills Q, Ix and the web thickness at the neutral axis, where shear stress peaks.',
+      name: 'Section_Fills_Neutral_Axis',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A standard section fills A, Ix and c = d/2 for the axial and bending terms.`
+  String get Section_Fills_Combined {
+    return Intl.message(
+      'A standard section fills A, Ix and c = d/2 for the axial and bending terms.',
+      name: 'Section_Fills_Combined',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pick composite`
+  String get Pick_Lamina {
+    return Intl.message(
+      'Pick composite',
+      name: 'Pick_Lamina',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unidirectional laminae`
+  String get Lamina_Presets {
+    return Intl.message(
+      'Unidirectional laminae',
+      name: 'Lamina_Presets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Presets are typical values from Tsai & Hahn. They fill E1, E2, G12 and ν12, and the strengths where a tool asks for them; ν23 is not published there and is left as entered.`
+  String get Lamina_Preset_Note {
+    return Intl.message(
+      'Presets are typical values from Tsai & Hahn. They fill E1, E2, G12 and ν12, and the strengths where a tool asks for them; ν23 is not published there and is left as entered.',
+      name: 'Lamina_Preset_Note',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Goodman diagram`
+  String get Goodman_Diagram {
+    return Intl.message(
+      'Goodman diagram',
+      name: 'Goodman_Diagram',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Goodman line`
+  String get Goodman_Line {
+    return Intl.message(
+      'Goodman line',
+      name: 'Goodman_Line',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Design line, 1/n`
+  String get Design_Line {
+    return Intl.message(
+      'Design line, 1/n',
+      name: 'Design_Line',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Load line`
+  String get Load_Line {
+    return Intl.message('Load line', name: 'Load_Line', desc: '', args: []);
+  }
+
+  /// `Operating point`
+  String get Operating_Point {
+    return Intl.message(
+      'Operating point',
+      name: 'Operating_Point',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The load line runs from the origin through the operating point. Where it meets the Goodman line the part fails; n is how far along that line it sits.`
+  String get Goodman_Caption {
+    return Intl.message(
+      'The load line runs from the origin through the operating point. Where it meets the Goodman line the part fails; n is how far along that line it sits.',
+      name: 'Goodman_Caption',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Alternating von Mises stress, σa′`
+  String get Von_Mises_Alternating {
+    return Intl.message(
+      'Alternating von Mises stress, σa′',
+      name: 'Von_Mises_Alternating',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mean von Mises stress, σm′`
+  String get Von_Mises_Mean {
+    return Intl.message(
+      'Mean von Mises stress, σm′',
+      name: 'Von_Mises_Mean',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stresses at this diameter`
+  String get Stress_At_Diameter {
+    return Intl.message(
+      'Stresses at this diameter',
+      name: 'Stress_At_Diameter',
+      desc: '',
+      args: [],
+    );
   }
 }
 

@@ -2154,4 +2154,230 @@ const Map<int, ToolHelp> toolHelpZhHk = {
     ],
     diagram: 'images/icons/icon_power_screw.png',
   ),
+  // ---------------------------------------------------------- thermodynamics
+  900: ToolHelp(
+    summary: '依據現代水蒸氣表和電廠軟件所採用的 IAPWS-IF97，求水和水蒸氣在飽和、壓縮液體、'
+        '過熱蒸汽及超臨界狀態下的物性。輸入已知的一組參數即可：查飽和表給溫度或壓力；'
+        '查單一狀態則給壓力，再加溫度、乾度、比焓或比熵之一。',
+    formulas: [
+      HelpFormula(
+        tex: r'\frac{g(p,T)}{RT} = \gamma(\pi,\tau), \quad \pi = \frac{p}{p^*}, \quad \tau = \frac{T^*}{T}',
+        plain: 'g(p,T)/(RT) = γ(π, τ), π = p/p*, τ = T*/T',
+        caption: '1、2、5 區：無量綱吉布斯自由能',
+      ),
+      HelpFormula(
+        tex: r'h = RT\,\tau\,\gamma_\tau, \quad s = R\,(\tau\gamma_\tau - \gamma), \quad v = \frac{RT}{p}\,\pi\,\gamma_\pi',
+        plain: 'h = R·T·τ·γτ, s = R·(τ·γτ − γ), v = (R·T/p)·π·γπ',
+        caption: '所有物性都由這一個函數求導得到',
+      ),
+      HelpFormula(
+        tex: r'\frac{f(\rho,T)}{RT} = \phi(\delta,\tau), \quad \delta = \frac{\rho}{\rho_c}',
+        plain: 'f(ρ,T)/(RT) = φ(δ, τ), δ = ρ/ρc',
+        caption: '臨界點附近的 3 區：亥姆霍茲自由能',
+      ),
+      HelpFormula(
+        tex: r'y = y_f + x\,(y_g - y_f)',
+        plain: 'y = yf + x·(yg − yf)',
+        caption: '濕蒸汽：v、u、h、s 按乾度加權',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p', '壓力', 'kPa'),
+      HelpSymbol('T', '溫度', '°C'),
+      HelpSymbol('x', '乾度，即蒸汽所佔的質量分數'),
+      HelpSymbol('v', '比體積', 'm³/kg'),
+      HelpSymbol('u', '比內能', 'kJ/kg'),
+      HelpSymbol('h', '比焓', 'kJ/kg'),
+      HelpSymbol('s', '比熵', 'kJ/(kg·K)'),
+      HelpSymbol('R', '水的氣體常數，0.461526', 'kJ/(kg·K)'),
+      HelpSymbol('f, g', '飽和液體與飽和蒸汽的下標'),
+    ],
+    notes: [
+      '適用範圍：100 MPa 以下 0–800 °C；50 MPa 以下可達 2000 °C。超出範圍時不外推，'
+          '直接拒絕計算。',
+      '能量和熵以三相點 0.01 °C 的飽和液體為基準，與現代水蒸氣表一致，因此可與印刷版表格'
+          '混用；但不能與在 32 °F 取 h = 0 的舊英制表格混用，其焓值存在偏移。',
+      '在臨界點（373.95 °C，22.064 MPa）附近，物性隨 p 和 T 變化極快，cp 趨於無窮。'
+          '此處的數值對該公式而言是正確的，但對輸入十分敏感。',
+      '壓力和溫度恰好落在飽和線上時狀態並不確定（乾度可為任意值），此時請按乾度、比焓或'
+          '比熵查詢。',
+      'IF97 與科學用公式 IAPWS-95 的偏差：比體積約 0.1 %，比焓僅百分之幾的百分之一，'
+          '小於任何可供比較的測量的不確定度。',
+    ],
+    references: [
+      'IAPWS R7-97(2012), Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam',
+      'Wagner & Kretzschmar, International Steam Tables',
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 3',
+    ],
+    diagram: 'images/icons/icon_steam_tables.png',
+  ),
+  901: ToolHelp(
+    summary: '理想氣體經歷五種典型過程之一：等溫、等壓、等容、等熵，或保持 pvⁿ 不變的多變過程。'
+        '給出初態和終態的一個參數，工具即求出終態的其餘參數，以及邊界功、熱量和內能、焓、熵的'
+        '變化，分別按單位質量和總質量給出。',
+    formulas: [
+      HelpFormula(
+        tex: r'pv = RT',
+        plain: 'p·v = R·T',
+        caption: '理想氣體狀態方程',
+      ),
+      HelpFormula(
+        tex: r'W_b = \int_1^2 p\,dV',
+        plain: 'Wb = ∫ p dV',
+        caption: '邊界功：p–v 圖上過程曲線下的面積',
+      ),
+      HelpFormula(
+        tex: r'pv^n = \text{const} \;\Rightarrow\; W_b = \frac{mR\,(T_2 - T_1)}{1 - n}',
+        plain: 'p·vⁿ = const ⇒ Wb = m·R·(T2 − T1)/(1 − n)',
+        caption: '多變過程：n = k 為等熵，n = 1 為等溫，n = 0 為等壓',
+      ),
+      HelpFormula(
+        tex: r'Q = \Delta U + W_b, \quad \Delta U = mc_v\,(T_2 - T_1)',
+        plain: 'Q = ΔU + Wb, ΔU = m·cv·(T2 − T1)',
+        caption: '閉口系統的熱力學第一定律',
+      ),
+      HelpFormula(
+        tex: r'\Delta S = m\left(c_p\ln\frac{T_2}{T_1} - R\ln\frac{p_2}{p_1}\right)',
+        plain: 'ΔS = m·(cp·ln(T2/T1) − R·ln(p2/p1))',
+        caption: '熵變，與路徑無關',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p', '壓力', 'kPa'),
+      HelpSymbol('v', '比體積', 'm³/kg'),
+      HelpSymbol('T', '熱力學溫度；以 °C 輸入後換算', 'K'),
+      HelpSymbol('R', '氣體常數', 'kJ/(kg·K)'),
+      HelpSymbol('cp, cv', '定壓比熱容和定容比熱容', 'kJ/(kg·K)'),
+      HelpSymbol('k', '比熱比 cp/cv'),
+      HelpSymbol('n', '多變指數'),
+      HelpSymbol('m', '氣體質量', 'kg'),
+      HelpSymbol('W, Q', '氣體對外做的功和吸收的熱量', 'kJ'),
+    ],
+    notes: [
+      '比熱容視為常數。空氣在 300 K 至 600 K 之間 cp 的誤差約 2 %，溫度更高時誤差更大；'
+          '溫差較大時請使用變比熱的理想氣體表。',
+      '所有過程均為準靜態過程，即進行得足夠緩慢，使氣體內壓力和溫度始終均勻。自由膨脹並不'
+          '沿這樣的路徑到達終態，也不做邊界功。',
+      '氣體對外做功和吸熱為正，因此壓縮時功為負，冷卻時熱量為負。',
+      '理想氣體性質在低壓且溫度遠高於臨界點時成立。接近飽和的水遠非理想氣體，請使用'
+          '水蒸氣表。',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 4 and 7',
+      'Moran & Shapiro, Fundamentals of Engineering Thermodynamics, ch. 3 and 6',
+    ],
+    diagram: 'images/icons/icon_ideal_gas.png',
+  ),
+  902: ToolHelp(
+    summary: '汽油機（奧圖）、柴油機（狄塞爾）和燃氣輪機（布雷頓）背後的理想循環，按冷空氣標準'
+        '分析：工質為定比熱空氣，燃燒以外部加熱代替，排氣以放熱代替。工具求出各狀態點、熱量和'
+        '功以及熱效率——實際發動機追求的上限。',
+    formulas: [
+      HelpFormula(
+        tex: r'\eta_{Otto} = 1 - \frac{1}{r^{\,k-1}}',
+        plain: 'η = 1 − 1/r^(k−1)',
+        caption: '奧圖循環：定容加熱',
+      ),
+      HelpFormula(
+        tex: r'\eta_{Diesel} = 1 - \frac{1}{r^{\,k-1}}\,\frac{r_c^{\,k} - 1}{k\,(r_c - 1)}',
+        plain: 'η = 1 − (1/r^(k−1))·(rc^k − 1)/(k·(rc − 1))',
+        caption: '狄塞爾循環：定壓加熱',
+      ),
+      HelpFormula(
+        tex: r'\eta_{Brayton} = 1 - \frac{1}{r_p^{\,(k-1)/k}}',
+        plain: 'η = 1 − 1/rp^((k−1)/k)',
+        caption: '理想布雷頓循環：定壓加熱與放熱',
+      ),
+      HelpFormula(
+        tex: r'\frac{T_2}{T_1} = r^{\,k-1} = r_p^{\,(k-1)/k}',
+        plain: 'T2/T1 = r^(k−1) = rp^((k−1)/k)',
+        caption: '等熵壓縮，按體積比或壓力比',
+      ),
+      HelpFormula(
+        tex: r'\text{MEP} = \frac{w_{net}}{v_1 - v_2}',
+        plain: 'MEP = w_net/(v1 − v2)',
+        caption: '活塞式循環的平均有效壓力',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('r', '壓縮比 v1/v2'),
+      HelpSymbol('rc', '預脹比 v3/v2'),
+      HelpSymbol('rp', '增壓比 p2/p1'),
+      HelpSymbol('k', '比熱比；空氣為 1.4'),
+      HelpSymbol('T', '各狀態點的熱力學溫度', 'K'),
+      HelpSymbol('q_in, q_out', '單位質量吸熱量與放熱量', 'kJ/kg'),
+      HelpSymbol('w_net', '單位質量淨功', 'kJ/kg'),
+      HelpSymbol('ηc, ηt', '壓氣機和透平的等熵效率'),
+      HelpSymbol('MEP', '平均有效壓力', 'kPa'),
+    ],
+    notes: [
+      '奧圖循環效率只取決於壓縮比。爆震使點燃式發動機的壓縮比限於 8–12 左右；柴油機只壓縮'
+          '空氣，壓縮比可達 14–22。因此儘管同一 r 下奧圖循環效率更高，實際中柴油機更省油。',
+      '實際發動機只能達到這些數值的一半左右：比熱容隨溫度升高，燃燒需要時間，熱量經壁面'
+          '散失，燃燒後的氣體也不再是空氣。',
+      '布雷頓循環效率隨增壓比不斷提高，但單位質量淨功先增後減，因為壓氣機功比透平功增長'
+          '更快。存在部件損失時，增壓比超過某一值後循環將完全不輸出功。',
+      '卡諾效率是在相同最低和最高溫度之間任何熱機所能達到的上限。它與循環效率之差，是在'
+          '一段溫度範圍內而非在最高溫度下加熱的代價。',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 9',
+      'Heywood, Internal Combustion Engine Fundamentals, ch. 5',
+      'Saravanamuttoo et al., Gas Turbine Theory, ch. 2',
+    ],
+    diagram: 'images/icons/icon_air_cycle.png',
+  ),
+  903: ToolHelp(
+    summary: '產生全球大部分電力的蒸汽動力循環：泵將凝結水升壓至鍋爐壓力，鍋爐將其加熱成蒸汽，'
+        '汽輪機使蒸汽膨脹做功，冷凝器再將其凝結為液體。工具採用 IAPWS-IF97 物性，求出各狀態點、'
+        '各部件的功和熱量、熱效率以及汽輪機排汽乾度。',
+    formulas: [
+      HelpFormula(
+        tex: r'w_p = \frac{v_1\,(p_2 - p_1)}{\eta_p}',
+        plain: 'wp = v1·(p2 − p1)/ηp',
+        caption: '泵功，視水為不可壓縮',
+      ),
+      HelpFormula(
+        tex: r'h_4 = h_3 - \eta_t\,(h_3 - h_{4s})',
+        plain: 'h4 = h3 − ηt·(h3 − h4s)',
+        caption: '汽輪機出口，由等熵膨脹至冷凝器壓力求得',
+      ),
+      HelpFormula(
+        tex: r'q_{in} = h_3 - h_2, \qquad q_{out} = h_4 - h_1',
+        plain: 'q_in = h3 − h2, q_out = h4 − h1',
+        caption: '鍋爐吸熱量與冷凝器放熱量',
+      ),
+      HelpFormula(
+        tex: r'\eta = \frac{w_t - w_p}{q_{in}} = \frac{(h_3 - h_4) - (h_2 - h_1)}{h_3 - h_2}',
+        plain: 'η = (wt − wp)/q_in = ((h3 − h4) − (h2 − h1))/(h3 − h2)',
+        caption: '熱效率',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('p1, p2', '冷凝器壓力與鍋爐壓力', 'kPa'),
+      HelpSymbol('h', '各狀態點的比焓', 'kJ/kg'),
+      HelpSymbol('s', '比熵', 'kJ/(kg·K)'),
+      HelpSymbol('v1', '離開冷凝器的飽和液體比體積', 'm³/kg'),
+      HelpSymbol('x4', '汽輪機排汽乾度'),
+      HelpSymbol('ηt, ηp', '汽輪機和泵的等熵效率'),
+      HelpSymbol('ṁ', '蒸汽質量流量', 'kg/s'),
+    ],
+    notes: [
+      '狀態點 1 為冷凝器壓力下的飽和液體，因此泵不會吸入蒸汽。狀態點 3 為給定溫度的過熱蒸汽；'
+          '未給溫度時為飽和蒸汽。',
+      '降低冷凝器壓力可提高效率，所以冷凝器在幾 kPa 的真空下運行；能降到多低取決於冷卻水溫度。',
+      '提高過熱度和鍋爐壓力都能提高效率，但單純提高壓力會使排汽更濕。乾度低於約 88 % 時，'
+          '水滴會沖蝕末級葉片；常用對策是再熱，工具會對如此濕的排汽給出提示。',
+      '反功比極小，只有百分之一二，因為泵送液體所需的功遠小於壓縮氣體。這是朗肯循環相對於'
+          '布雷頓循環的一大優勢。',
+      '未計入：鍋爐、管道和冷凝器中的壓力損失與散熱損失、給水回熱和再熱。它們各自會使實際'
+          '電廠的效率變化幾個百分點。',
+    ],
+    references: [
+      'Çengel & Boles, Thermodynamics: An Engineering Approach, ch. 10',
+      'Moran & Shapiro, Fundamentals of Engineering Thermodynamics, ch. 8',
+      'IAPWS R7-97(2012), Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam',
+    ],
+    diagram: 'images/icons/icon_rankine.png',
+  ),
 };

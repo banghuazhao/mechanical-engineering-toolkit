@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
 import 'package:provider/provider.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
@@ -13,6 +14,7 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/description
 import 'package:mechanical_engineering_toolkit/home/composite/widget/layup_angle_row.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/spherical_shell_stress_result.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/plane_stress_row.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 
@@ -61,15 +63,12 @@ class _PlaneStressTransformationPageState
             ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
           ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            setState(() {
-              validate = true;
-            });
+        floatingActionButton: CalculateButton(onPressed: () {
+        setState(() {
+          validate = true;
+        });
             _calculate();
-          },
-          label: Text(S.of(context).Calculate),
-        ),
+          }),
         body: SafeArea(
             child: StaggeredGridView.countBuilder(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
@@ -161,27 +160,27 @@ The transformation equations for plane stress are:
         "θ": angle.toString(),
       });
 
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => SphericalShellStressResultPage(
-                    toolId: widget.toolId,
-                    rowTitle: "Transformed Stresses",
-                    titles: const ["σ_x'", "σ_y'", "τ_x'y'"],
-                    values: [sigma_x1, sigma_y1, sigma_xy],
-                    valueUnits: const [
-                      UnitCategory.stress,
-                      UnitCategory.stress,
-                      UnitCategory.stress,
-                    ],
-                    calculationSteps: [
-                      'θ = ${precs.formatValue(angle)}°,  2θ = ${precs.formatValue(2 * angle)}°',
-                      'sin2θ = ${precs.formatValue(s)},  cos2θ = ${precs.formatValue(c)}',
-                      'σₓ\' = (σₓ+σᵧ)/2 + (σₓ−σᵧ)/2·cos2θ + τ·sin2θ = ${precs.formatValue(sigma_x1)}',
-                      'σᵧ\' = (σₓ+σᵧ)/2 − (σₓ−σᵧ)/2·cos2θ − τ·sin2θ = ${precs.formatValue(sigma_y1)}',
-                      'τₓ\'ᵧ\' = −(σₓ−σᵧ)/2·sin2θ + τ·cos2θ = ${precs.formatValue(sigma_xy)}',
-                    ],
-                  )));
+      showToolResult(
+        context,
+        (context) => SphericalShellStressResultPage(
+          toolId: widget.toolId,
+          rowTitle: "Transformed Stresses",
+          titles: const ["σ_x'", "σ_y'", "τ_x'y'"],
+          values: [sigma_x1, sigma_y1, sigma_xy],
+          valueUnits: const [
+            UnitCategory.stress,
+            UnitCategory.stress,
+            UnitCategory.stress,
+          ],
+          calculationSteps: [
+            'θ = ${precs.formatValue(angle)}°,  2θ = ${precs.formatValue(2 * angle)}°',
+            'sin2θ = ${precs.formatValue(s)},  cos2θ = ${precs.formatValue(c)}',
+            'σₓ\' = (σₓ+σᵧ)/2 + (σₓ−σᵧ)/2·cos2θ + τ·sin2θ = ${precs.formatValue(sigma_x1)}',
+            'σᵧ\' = (σₓ+σᵧ)/2 − (σₓ−σᵧ)/2·cos2θ − τ·sin2θ = ${precs.formatValue(sigma_y1)}',
+            'τₓ\'ᵧ\' = −(σₓ−σᵧ)/2·sin2θ + τ·cos2θ = ${precs.formatValue(sigma_xy)}',
+          ],
+        ),
+      );
     }
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/model/material_model.dart';
+import 'package:mechanical_engineering_toolkit/ui/preset_picker.dart';
+import 'package:mechanical_engineering_toolkit/util/lamina_library.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 
@@ -25,6 +27,22 @@ class LaminaContantsRow extends StatefulWidget {
 class _LaminaContantsRowState extends State<LaminaContantsRow> {
   late TextEditingController _nu12Controller;
   late TextEditingController _nu23Controller;
+
+  /// Re-keys the modulus fields when a preset lands, so each re-reads its
+  /// initial value instead of keeping whatever was typed before.
+  int _presetGeneration = 0;
+
+  void _applyPreset(LaminaPreset preset) {
+    setState(() {
+      widget.material
+        ..e1 = preset.e1
+        ..e2 = preset.e2
+        ..g12 = preset.g12
+        ..nu12 = preset.nu12;
+      _nu12Controller.text = preset.nu12.toString();
+      _presetGeneration++;
+    });
+  }
 
   @override
   void initState() {
@@ -86,6 +104,7 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                     children: [
                       Expanded(
                         child: UnitField(
+                          key: ValueKey('E1$_presetGeneration'),
                           label: "E1",
                           category: UnitCategory.modulus,
                           initialSI: widget.material.e1,
@@ -104,6 +123,7 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: UnitField(
+                          key: ValueKey('E2$_presetGeneration'),
                           label: "E2",
                           category: UnitCategory.modulus,
                           initialSI: widget.material.e2,
@@ -126,6 +146,7 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                     children: [
                       Expanded(
                         child: UnitField(
+                          key: ValueKey('G12$_presetGeneration'),
                           label: "G12",
                           category: UnitCategory.modulus,
                           initialSI: widget.material.g12,
@@ -195,7 +216,15 @@ class _LaminaContantsRowState extends State<LaminaContantsRow> {
                             Expanded(child: Container()),
                           ],
                         ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 8),
+                  LaminaPresetButton(onSelected: _applyPreset),
+                  Text(
+                    S.of(context).Lamina_Preset_Note,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),

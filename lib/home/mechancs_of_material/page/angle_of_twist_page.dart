@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
@@ -11,7 +10,9 @@ import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/material_preset_picker.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -60,11 +61,7 @@ class _AngleOfTwistPageState extends State<AngleOfTwistPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -174,18 +171,16 @@ class _AngleOfTwistPageState extends State<AngleOfTwistPage> {
         'J': '$j',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => _AngleOfTwistResultPage(
-            toolId: widget.toolId,
-            phiRad: phiRad,
-            phiDeg: phiDeg,
-            t: t,
-            l: l,
-            g: g,
-            j: j,
-          ),
+        (context) => _AngleOfTwistResultPage(
+          toolId: widget.toolId,
+          phiRad: phiRad,
+          phiDeg: phiDeg,
+          t: t,
+          l: l,
+          g: g,
+          j: j,
         ),
       );
     } on FormatException catch (error) {

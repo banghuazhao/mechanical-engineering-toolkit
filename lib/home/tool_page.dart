@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/language_picker.dart';
 import 'package:mechanical_engineering_toolkit/home/major_list_page.dart';
@@ -12,6 +10,7 @@ import 'package:mechanical_engineering_toolkit/home/tool_favorites.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_launcher.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_setting_page.dart';
+import 'package:mechanical_engineering_toolkit/more/app_actions.dart';
 import 'package:mechanical_engineering_toolkit/more/more_app_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/more/more_row.dart';
@@ -21,11 +20,11 @@ import 'package:mechanical_engineering_toolkit/purchase/remove_ads_page.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_banner_ad.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/app_platform.dart';
 import 'package:mechanical_engineering_toolkit/util/language.dart';
 import 'package:mechanical_engineering_toolkit/util/others.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -52,8 +51,43 @@ class ToolViewModePreference {
 class ToolSection {
   final String title;
   final List<Tool> tools;
-  ToolSection(this.title, this.tools);
+  final ToolType type;
+  ToolSection(this.title, this.tools, this.type);
 }
+
+/// The library's categories in the order they are listed, with the glyph the
+/// wide layout's sidebar shows beside each.
+const List<(ToolType, IconData)> toolCategories = [
+  (ToolType.mechanicsOfMaterial, Icons.straighten_rounded),
+  (ToolType.beamEngineering, Icons.horizontal_split_rounded),
+  (ToolType.machineDesign, Icons.settings_rounded),
+  (ToolType.statics, Icons.change_history_rounded),
+  (ToolType.theoryOfElasticity, Icons.grid_4x4_rounded),
+  (ToolType.composite, Icons.layers_rounded),
+  (ToolType.fluidsThermal, Icons.water_drop_rounded),
+  (ToolType.thermodynamics, Icons.local_fire_department_rounded),
+  (ToolType.utilities, Icons.menu_book_rounded),
+];
+
+String toolCategoryTitle(BuildContext context, ToolType type) {
+  final l10n = S.of(context);
+  return switch (type) {
+    ToolType.mechanicsOfMaterial => l10n.Mechanics_of_Material,
+    ToolType.beamEngineering => l10n.Beam_Engineering,
+    ToolType.machineDesign => l10n.Machine_Design,
+    ToolType.statics => l10n.Truss_Statics,
+    ToolType.theoryOfElasticity => l10n.Theory_of_Elasticity,
+    ToolType.composite => l10n.Composite_Material,
+    ToolType.fluidsThermal => l10n.Fluids_and_Thermal,
+    ToolType.thermodynamics => l10n.Thermodynamics,
+    ToolType.utilities => l10n.Utilities,
+  };
+}
+
+/// Window width from which the library gets a permanent sidebar in place of
+/// the drawer. Below the tool workspace's own breakpoint on purpose: the
+/// sidebar is narrow and pays for itself sooner than a second column does.
+const double kLibrarySidebarWidth = 900;
 
 /// Latin diacritics folded to their bare letter, so a French or German user
 /// gets hits without reaching for the accented key: "elasticite" finds
@@ -100,6 +134,10 @@ class _ToolPageState extends State<ToolPage> {
   List<ToolSection> sections = [];
   late ToolViewMode _viewMode;
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocus = FocusNode();
+
+  /// The category the sidebar narrows the library to; null shows them all.
+  ToolType? _category;
   String _searchQuery = '';
   List<String> _searchTerms = const [];
   AppOpenAdManager? _appOpenAdManager;
@@ -153,48 +191,15 @@ class _ToolPageState extends State<ToolPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _configureAppOpenAds();
-    sections = [];
     final allTools = ToolLibrary.shared.getTools(context);
-
-    sections.add(ToolSection(
-      S.of(context).Mechanics_of_Material,
-      allTools.where((e) => e.type == ToolType.mechanicsOfMaterial).toList(),
-    ));
-
-    sections.add(ToolSection(
-      S.of(context).Beam_Engineering,
-      allTools.where((e) => e.type == ToolType.beamEngineering).toList(),
-    ));
-
-    sections.add(ToolSection(
-      S.of(context).Machine_Design,
-      allTools.where((e) => e.type == ToolType.machineDesign).toList(),
-    ));
-
-    sections.add(ToolSection(
-      S.of(context).Truss_Statics,
-      allTools.where((e) => e.type == ToolType.statics).toList(),
-    ));
-
-    sections.add(ToolSection(
-      S.of(context).Theory_of_Elasticity,
-      allTools.where((e) => e.type == ToolType.theoryOfElasticity).toList(),
-    ));
-
-    sections.add(ToolSection(
-      S.of(context).Composite_Material,
-      allTools.where((e) => e.type == ToolType.composite).toList(),
-    ));
-
-    sections.add(ToolSection(
-      S.of(context).Fluids_and_Thermal,
-      allTools.where((e) => e.type == ToolType.fluidsThermal).toList(),
-    ));
-
-    sections.add(ToolSection(
-      S.of(context).Utilities,
-      allTools.where((e) => e.type == ToolType.utilities).toList(),
-    ));
+    sections = [
+      for (final (type, _) in toolCategories)
+        ToolSection(
+          toolCategoryTitle(context, type),
+          allTools.where((tool) => tool.type == type).toList(),
+          type,
+        ),
+    ];
   }
 
   void _configureAppOpenAds() {
@@ -216,256 +221,279 @@ class _ToolPageState extends State<ToolPage> {
     if (reactor != null) WidgetsBinding.instance.removeObserver(reactor);
     _appOpenAdManager?.dispose();
     _searchController.dispose();
+    _searchFocus.dispose();
     super.dispose();
+  }
+
+  /// Focuses the search field — the answer to ⌘F.
+  void _focusSearch() {
+    _searchFocus.requestFocus();
+    _searchController.selection = TextSelection(
+      baseOffset: 0,
+      extentOffset: _searchController.text.length,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).ME_Toolkit),
-        actions: [
-          IconButton(
-            onPressed: _toggleViewMode,
-            tooltip: _viewMode == ToolViewMode.list
-                ? S.of(context).Grid_View
-                : S.of(context).List_View,
-            icon: Icon(_viewMode == ToolViewMode.list
-                ? Icons.grid_view_rounded
-                : Icons.view_list_rounded),
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ToolHistoryPage()));
-            },
-            icon: const Icon(Icons.history_rounded),
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ToolFavoritesPage()));
-            },
-            icon: const Icon(Icons.star_border_rounded),
-          ),
-        ],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-              child: Center(
-                child: Image(
-                  height: 150,
-                  image: AssetImage("images/app_icon_clear.png"),
-                  fit: BoxFit.fitHeight,
-                ),
+    final wide = MediaQuery.sizeOf(context).width >= kLibrarySidebarWidth;
+    return AppCommandHandler(
+      command: AppCommand.findTool,
+      onInvoke: _focusSearch,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(S.of(context).ME_Toolkit),
+          actions: [
+            IconButton(
+              onPressed: _toggleViewMode,
+              tooltip: _viewMode == ToolViewMode.list
+                  ? S.of(context).Grid_View
+                  : S.of(context).List_View,
+              icon: Icon(_viewMode == ToolViewMode.list
+                  ? Icons.grid_view_rounded
+                  : Icons.view_list_rounded),
+            ),
+            IconButton(
+              tooltip: S.of(context).History,
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ToolHistoryPage()),
               ),
+              icon: const Icon(Icons.history_rounded),
             ),
-            MoreRow(
-              title: S.of(context).Recommended_by_Major,
-              leadingIcon: Icons.school_rounded,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MajorListPage(),
-                  ),
-                );
-              },
-            ),
-            MoreRow(
-              title: S.of(context).Saved_Projects,
-              leadingIcon: Icons.bookmark_rounded,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SavedProjectsPage(),
-                  ),
-                );
-              },
-            ),
-            const Divider(height: 24, indent: 16, endIndent: 16),
-            MoreRow(
-                title: S.of(context).Settings,
-                leadingIcon: Icons.settings_rounded,
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ToolSettingPage()));
-                }),
-            Consumer<LanguagePreference>(
-              builder: (context, languagePref, _) => MoreRow(
-                title: S.of(context).Language,
-                leadingIcon: Icons.translate_rounded,
-                trailingText: languageLabel(context, languagePref.language),
-                onTap: () => showLanguagePicker(context),
+            IconButton(
+              tooltip: S.of(context).Favorites,
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ToolFavoritesPage()),
               ),
-            ),
-            Consumer<RemoveAdsService>(
-              builder: (context, purchases, _) {
-                if (!purchases.isSupported) return const SizedBox.shrink();
-                // The same destination under two names: the purchase stops
-                // ads where there are ads, and unlocks the gated tools where
-                // there are none.
-                final gate = PremiumGate.watch(context);
-                return MoreRow(
-                  title: gate.gatesFeatures
-                      ? (gate.isEntitled
-                          ? S.of(context).Premium
-                          : S.of(context).Unlock_Premium)
-                      : S.of(context).Remove_Ads,
-                  leadingIcon: gate.gatesFeatures
-                      ? (gate.isEntitled
-                          ? Icons.verified_rounded
-                          : Icons.workspace_premium_rounded)
-                      : (purchases.isAdsRemoved
-                          ? Icons.verified_rounded
-                          : Icons.block_rounded),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const RemoveAdsPage(),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-            MoreRow(
-              title: S.of(context).Feedback,
-              leadingIcon: Icons.chat_rounded,
-              onTap: () async {
-                final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-
-                String device;
-                String systemVersion;
-
-                if (Platform.isAndroid) {
-                  AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-                  device = androidInfo.model;
-                  systemVersion = androidInfo.version.sdkInt.toString();
-                } else if (Platform.isIOS) {
-                  IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-                  device = iosInfo.model;
-                  systemVersion = iosInfo.systemVersion;
-                } else if (Platform.isMacOS) {
-                  MacOsDeviceInfo macInfo = await deviceInfo.macOsInfo;
-                  // `model` is the marketing identifier (MacBookPro18,3);
-                  // osRelease is the macOS version string.
-                  device = macInfo.model;
-                  systemVersion = macInfo.osRelease;
-                } else {
-                  device = "";
-                  systemVersion = "";
-                }
-
-                PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-                String appName = packageInfo.appName;
-                String version = packageInfo.version;
-
-                final Uri params = Uri(
-                  scheme: 'mailto',
-                  path: 'appsbayarea@gmail.com',
-                  query:
-                      'subject=$appName Feedback&body=\n\n\nVersion=$version\nDevice=$device\nSystem Version=$systemVersion', //add subject and body here
-                );
-
-                var url = params.toString();
-                if (await canLaunchUrl(Uri.parse(url))) {
-                  await launchUrl(Uri.parse(url));
-                } else {
-                  throw 'Could not launch $url';
-                }
-              },
-            ),
-            MoreRow(
-              title: S.of(context).RatethisApp,
-              leadingIcon: Icons.thumb_up_rounded,
-              onTap: () async {
-                final InAppReview inAppReview = InAppReview.instance;
-                if (await inAppReview.isAvailable()) {
-                  await inAppReview.openStoreListing();
-                }
-              },
-            ),
-            MoreRow(
-              title: S.of(context).SharethisApp,
-              leadingIcon: Icons.share_rounded,
-              onTap: () async {
-                final Size size = MediaQuery.of(context).size;
-                // macOS is the same App Store listing as iOS — one record,
-                // two platforms — so it shares the same link, and share_plus
-                // wants the anchor rect on desktop for the same reason iPad
-                // does: the sheet is a popover.
-                if (Platform.isIOS || Platform.isMacOS) {
-                  await SharePlus.instance.share(ShareParams(
-                    text: 'https://apps.apple.com/app/id1601099443',
-                    sharePositionOrigin:
-                        Rect.fromLTWH(0, 0, size.width, size.height / 2),
-                  ));
-                } else {
-                  AppOpenAdManager.bypassShowAd = true;
-                  await SharePlus.instance.share(ShareParams(
-                    text:
-                        'https://play.google.com/store/apps/details?id=com.appsbay.mechanical_engineering_toolkit',
-                  ));
-                }
-              },
-            ),
-            MoreRow(
-              title: S.of(context).MoreApps,
-              leadingIcon: Icons.more_horiz_rounded,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => const MoreAppPage(),
-                  ),
-                );
-              },
-            ),
-            // Also reachable from Settings; surfaced here because store review
-            // and several privacy regimes expect it to be easy to find.
-            MoreRow(
-              title: S.of(context).Privacy_Policy,
-              leadingIcon: Icons.policy_rounded,
-              onTap: () => launchUrl(
-                Uri.parse(privacyPolicyUrl),
-                mode: LaunchMode.externalApplication,
-              ),
+              icon: const Icon(Icons.star_border_rounded),
             ),
           ],
         ),
+        // A wide window keeps the menu open as a sidebar; a drawer that has
+        // to be summoned is a phone's answer to a phone's lack of room.
+        drawer: wide
+            ? null
+            : Drawer(
+                child: ListView(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      child: Center(
+                        child: Image(
+                          height: 150,
+                          image: AssetImage("images/app_icon_clear.png"),
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                    ),
+                    ..._menuRows(context, inDrawer: true),
+                  ],
+                ),
+              ),
+        body: SafeArea(
+          child: wide
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(width: 264, child: _buildSidebar(context)),
+                    const VerticalDivider(width: 1, thickness: 1),
+                    Expanded(child: buildContents(context)),
+                  ],
+                )
+              : buildContents(context),
+        ),
+        bottomNavigationBar: const AppBannerAd(),
       ),
-      body: SafeArea(child: buildContents(context)),
-      bottomNavigationBar: const AppBannerAd(),
     );
+  }
+
+  /// The library's categories, then everything the phone layout keeps in its
+  /// drawer.
+  Widget _buildSidebar(BuildContext context) {
+    final theme = Theme.of(context);
+    Widget category(ToolType? type, String title, IconData icon, int count) {
+      final selected = _category == type;
+      return ListTile(
+        dense: true,
+        selected: selected,
+        selectedTileColor: theme.colorScheme.secondaryContainer,
+        selectedColor: theme.colorScheme.onSecondaryContainer,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(context.tokens.radiusMedium),
+        ),
+        leading: Icon(icon, size: 20),
+        title: Text(title, maxLines: 2, overflow: TextOverflow.ellipsis),
+        trailing: Text('$count', style: theme.textTheme.labelSmall),
+        onTap: () => setState(() => _category = type),
+      );
+    }
+
+    return ListView(
+      padding: EdgeInsets.all(context.tokens.space2),
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+            context.tokens.space3,
+            context.tokens.space2,
+            context.tokens.space3,
+            context.tokens.space2,
+          ),
+          child: Text(
+            S.of(context).Menu_Tool_Library,
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: theme.colorScheme.primary,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+        category(
+          null,
+          S.of(context).All_Tools,
+          Icons.apps_rounded,
+          sections.fold(0, (sum, section) => sum + section.tools.length),
+        ),
+        for (final (type, icon) in toolCategories)
+          category(
+            type,
+            toolCategoryTitle(context, type),
+            icon,
+            sections.firstWhere((s) => s.type == type).tools.length,
+          ),
+        const Divider(height: 24),
+        ..._menuRows(context, inDrawer: false),
+      ],
+    );
+  }
+
+  /// The rows the drawer and the sidebar share. [inDrawer] closes the drawer
+  /// before navigating; the sidebar has nothing to close, and popping there
+  /// would pop the library itself.
+  List<Widget> _menuRows(BuildContext context, {required bool inDrawer}) {
+    void open(Widget page) {
+      if (inDrawer) Navigator.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+    }
+
+    return [
+      MoreRow(
+        title: S.of(context).Recommended_by_Major,
+        leadingIcon: Icons.school_rounded,
+        onTap: () => open(const MajorListPage()),
+      ),
+      MoreRow(
+        title: S.of(context).Saved_Projects,
+        leadingIcon: Icons.bookmark_rounded,
+        onTap: () => open(const SavedProjectsPage()),
+      ),
+      const Divider(height: 24, indent: 16, endIndent: 16),
+      MoreRow(
+        title: S.of(context).Settings,
+        leadingIcon: Icons.settings_rounded,
+        onTap: () => open(const ToolSettingPage()),
+      ),
+      Consumer<LanguagePreference>(
+        builder: (context, languagePref, _) => MoreRow(
+          title: S.of(context).Language,
+          leadingIcon: Icons.translate_rounded,
+          trailingText: languageLabel(context, languagePref.language),
+          onTap: () => showLanguagePicker(context),
+        ),
+      ),
+      Consumer<RemoveAdsService>(
+        builder: (context, purchases, _) {
+          if (!purchases.isSupported) return const SizedBox.shrink();
+          // The same destination under two names: the purchase stops ads
+          // where there are ads, and unlocks the gated tools where there are
+          // none.
+          final gate = PremiumGate.watch(context);
+          return MoreRow(
+            title: gate.gatesFeatures
+                ? (gate.isEntitled
+                    ? S.of(context).Premium
+                    : S.of(context).Unlock_Premium)
+                : S.of(context).Remove_Ads,
+            leadingIcon: gate.gatesFeatures
+                ? (gate.isEntitled
+                    ? Icons.verified_rounded
+                    : Icons.workspace_premium_rounded)
+                : (purchases.isAdsRemoved
+                    ? Icons.verified_rounded
+                    : Icons.block_rounded),
+            onTap: () => open(const RemoveAdsPage()),
+          );
+        },
+      ),
+      MoreRow(
+        title: S.of(context).Feedback,
+        leadingIcon: Icons.chat_rounded,
+        onTap: sendFeedbackEmail,
+      ),
+      MoreRow(
+        title: S.of(context).RatethisApp,
+        leadingIcon: Icons.thumb_up_rounded,
+        onTap: openStoreListing,
+      ),
+      MoreRow(
+        title: S.of(context).SharethisApp,
+        leadingIcon: Icons.share_rounded,
+        onTap: () async {
+          final Size size = MediaQuery.of(context).size;
+          // macOS is the same App Store listing as iOS — one record, two
+          // platforms — so it shares the same link, and share_plus wants the
+          // anchor rect on desktop for the same reason iPad does: the sheet
+          // is a popover.
+          if (Platform.isIOS || Platform.isMacOS) {
+            await SharePlus.instance.share(ShareParams(
+              text: 'https://apps.apple.com/app/id1601099443',
+              sharePositionOrigin:
+                  Rect.fromLTWH(0, 0, size.width, size.height / 2),
+            ));
+          } else {
+            AppOpenAdManager.bypassShowAd = true;
+            await SharePlus.instance.share(ShareParams(
+              text:
+                  'https://play.google.com/store/apps/details?id=com.appsbay.mechanical_engineering_toolkit',
+            ));
+          }
+        },
+      ),
+      MoreRow(
+        title: S.of(context).MoreApps,
+        leadingIcon: Icons.more_horiz_rounded,
+        onTap: () => open(const MoreAppPage()),
+      ),
+      // Also reachable from Settings; surfaced here because store review and
+      // several privacy regimes expect it to be easy to find.
+      MoreRow(
+        title: S.of(context).Privacy_Policy,
+        leadingIcon: Icons.policy_rounded,
+        onTap: () => launchUrl(
+          Uri.parse(privacyPolicyUrl),
+          mode: LaunchMode.externalApplication,
+        ),
+      ),
+    ];
   }
 
   Widget buildContents(BuildContext context) {
     final gate = PremiumGate.watch(context);
-    final visibleSections = _searchTerms.isEmpty
+    final inCategory = _category == null ||
+            MediaQuery.sizeOf(context).width < kLibrarySidebarWidth
         ? sections
-        : sections
+        : sections.where((section) => section.type == _category).toList();
+    final visibleSections = _searchTerms.isEmpty
+        ? inCategory
+        : inCategory
             .map(
               (section) => ToolSection(
                 section.title,
                 section.tools
                     .where((tool) => _matchesSearch(tool, section.title))
                     .toList(),
+                section.type,
               ),
             )
             .where((section) => section.tools.isNotEmpty)
@@ -482,10 +510,12 @@ class _ToolPageState extends State<ToolPage> {
                 child: TextField(
                   key: const Key('toolSearchField'),
                   controller: _searchController,
+                  focusNode: _searchFocus,
                   onChanged: _updateSearch,
                   textInputAction: TextInputAction.search,
                   decoration: InputDecoration(
-                    hintText: S.of(context).Search_Tools,
+                    hintText: withShortcutHint(
+                        S.of(context).Search_Tools, AppCommand.findTool),
                     prefixIcon: const Icon(Icons.search_rounded),
                     suffixIcon: _searchQuery.isEmpty
                         ? null

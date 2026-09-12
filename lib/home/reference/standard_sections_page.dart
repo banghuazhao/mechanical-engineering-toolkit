@@ -3,6 +3,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/reference/standard_section_data.dart';
 import 'package:mechanical_engineering_toolkit/home/reference/standard_section_detail_page.dart';
 import 'package:mechanical_engineering_toolkit/ui/reference_table_page.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
@@ -39,11 +40,11 @@ class StandardSectionsPage extends StatelessWidget {
       searchHint: l10n.Search_Section,
       footnote: l10n.Sections_Footnote,
       searchText: (section) => section.designation,
-      onRowTap: (section) => Navigator.push(
+      // Beside the table on a wide window, so the list stays in view while
+      // one shape after another is looked up.
+      onRowTap: (section) => showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => StandardSectionDetailPage(section: section),
-        ),
+        (context) => StandardSectionDetailPage(section: section),
       ),
       filters: [
         for (final family in SectionFamily.values)

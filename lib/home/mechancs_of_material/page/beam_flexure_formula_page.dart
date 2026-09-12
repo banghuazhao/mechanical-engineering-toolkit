@@ -6,7 +6,10 @@ import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/page/be
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/standard_section_picker.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +34,7 @@ class _BeamFlexureFormulaPageState extends State<BeamFlexureFormulaPage> {
   double? _m;
   double? _y;
   double? _i;
+  int _presetGeneration = 0;
 
   @override
   void initState() {
@@ -52,11 +56,7 @@ class _BeamFlexureFormulaPageState extends State<BeamFlexureFormulaPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -97,6 +97,7 @@ class _BeamFlexureFormulaPageState extends State<BeamFlexureFormulaPage> {
                       onChangedSI: (v) => _m = v,
                     ),
                     UnitField(
+                      key: ValueKey('I$_presetGeneration'),
                       label: 'Moment of inertia, I',
                       category: UnitCategory.momentOfInertia,
                       signed: false,
@@ -104,12 +105,29 @@ class _BeamFlexureFormulaPageState extends State<BeamFlexureFormulaPage> {
                       onChangedSI: (v) => _i = v,
                     ),
                     UnitField(
+                      key: ValueKey('y$_presetGeneration'),
                       label: 'Distance, y (optional)',
                       category: UnitCategory.length,
                       initialSI: _y,
                       onChangedSI: (v) => _y = v,
                     ),
                   ]),
+                  SizedBox(height: context.tokens.space2),
+                  StandardSectionButton(
+                    // The extreme fibre, where σ is largest and the check is
+                    // made; the published Ix already carries the root fillets.
+                    onSelected: (section) => setState(() {
+                      _i = section.ix;
+                      _y = section.depth / 2;
+                      _presetGeneration++;
+                    }),
+                  ),
+                  Text(
+                    S.of(context).Section_Fills_Extreme_Fibre,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
                 ],
               ),
             ),
@@ -138,16 +156,14 @@ class _BeamFlexureFormulaPageState extends State<BeamFlexureFormulaPage> {
         'I': '$i',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => BeamFlexureFormulaResultPage(
-            toolId: widget.toolId,
-            coefficient: coefficient,
-            y: _y,
-            m: m,
-            i: i,
-          ),
+        (context) => BeamFlexureFormulaResultPage(
+          toolId: widget.toolId,
+          coefficient: coefficient,
+          y: _y,
+          m: m,
+          i: i,
         ),
       );
     } on FormatException catch (error) {

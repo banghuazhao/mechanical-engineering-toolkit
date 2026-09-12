@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/model/shaft_fatigue_calculator.dart';
+import 'package:mechanical_engineering_toolkit/ui/goodman_diagram_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
@@ -37,7 +38,9 @@ class ShaftFatigueResultPage extends StatelessWidget {
     ];
 
     return ResultScaffold(
-      toolName: 'Shaft Fatigue Design',
+      // The localized title, which is what a saved project is matched back
+      // to its tool by; the English literal missed in every other language.
+      toolName: S.of(context).Shaft_Fatigue_Design,
       formulaSteps: formulaSteps,
       results: [
         ResultSection(
@@ -50,9 +53,31 @@ class ShaftFatigueResultPage extends StatelessWidget {
             ),
           ],
         ),
+        ResultSection(
+          title: S.of(context).Stress_At_Diameter,
+          values: [
+            ResultValue(
+              label: S.of(context).Von_Mises_Alternating,
+              valueSI: result.alternatingVonMises,
+              category: UnitCategory.stress,
+            ),
+            ResultValue(
+              label: S.of(context).Von_Mises_Mean,
+              valueSI: result.meanVonMises,
+              category: UnitCategory.stress,
+            ),
+          ],
+        ),
       ],
       children: [
         FormulaCard(steps: formulaSteps),
+        GoodmanDiagramCard(
+          alternatingStress: result.alternatingVonMises,
+          meanStress: result.meanVonMises,
+          enduranceLimit: se,
+          ultimateStrength: sut,
+          safetyFactor: n,
+        ),
         ParameterSweepCard(
           variableLabel: S.of(context).Target_Safety_Factor_N,
           variableCategory: null,

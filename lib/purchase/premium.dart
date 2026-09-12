@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 ///
 /// Chosen so the free app is a usable engineering companion rather than a
 /// demo: every lookup table, and at least one working calculator from each of
-/// the eight categories, weighted towards the first-year staples an engineer
+/// the nine categories, weighted towards the first-year staples an engineer
 /// reaches for most (axial stress, torsion, bending, buckling, von Mises).
 /// Everything else — and every export — is what the unlock is for.
 ///
@@ -42,6 +42,10 @@ const Set<int> kFreeToolIds = {
   200, // Theory of Elasticity — linear elastic constitutive relation
   300, // Composite Material — lamina stress/strain
   800, // Fluids & Thermal — Reynolds number
+
+  // Thermodynamics — the steam tables, which are a lookup like the reference
+  // tables above; the cycles built on them are what Premium adds.
+  900,
 };
 
 /// The things a macOS build holds back, beyond the locked tools themselves.

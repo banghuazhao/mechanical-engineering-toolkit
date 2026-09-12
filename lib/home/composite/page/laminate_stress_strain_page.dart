@@ -13,7 +13,9 @@ import 'package:mechanical_engineering_toolkit/home/composite/widget/laminate_st
 import 'package:mechanical_engineering_toolkit/home/composite/widget/layer_thickness_row.dart';
 import 'package:mechanical_engineering_toolkit/home/composite/widget/layup_sequence_row.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:provider/provider.dart';
 
 import 'laminate_stress_strain_result_page.dart';
@@ -92,13 +94,10 @@ class _LaminateStressStrainPageState extends State<LaminateStressStrainPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          setState(() => validate = true);
-          _calculate();
-        },
-        label: Text(S.of(context).Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: () {
+        setState(() => validate = true);
+        _calculate();
+      }),
       body: SafeArea(
         child: StaggeredGridView.countBuilder(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
@@ -217,15 +216,13 @@ class _LaminateStressStrainPageState extends State<LaminateStressStrainPage> {
     );
 
     final output = LaminarStressStrainCalculator.calculate(input);
-    Navigator.push(
+    showToolResult(
       context,
-      MaterialPageRoute(
-        builder: (_) => LaminateStressStrainResultPage(
-          toolId: widget.toolId,
-          output: output,
-          input: input,
-          material: material,
-        ),
+      (_) => LaminateStressStrainResultPage(
+        toolId: widget.toolId,
+        output: output,
+        input: input,
+        material: material,
       ),
     );
   }

@@ -7,7 +7,9 @@ import 'package:mechanical_engineering_toolkit/home/machine_design/page/power_sc
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_help_button.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_workspace.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_field.dart';
 import 'package:mechanical_engineering_toolkit/util/units.dart';
 import 'package:provider/provider.dart';
@@ -79,11 +81,7 @@ class _PowerScrewPageState extends State<PowerScrewPage> {
           ToolHelpButton(toolId: widget.toolId, toolTitle: widget.title),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _calculate,
-        icon: const Icon(Icons.analytics_rounded),
-        label: Text(l10n.Calculate),
-      ),
+      floatingActionButton: CalculateButton(onPressed: _calculate),
       body: AppContent(
         padding: EdgeInsets.zero,
         child: ListView(
@@ -237,15 +235,13 @@ class _PowerScrewPageState extends State<PowerScrewPage> {
         'dc': '${_collarDiameter ?? 0}',
       });
 
-      Navigator.push(
+      showToolResult(
         context,
-        MaterialPageRoute(
-          builder: (context) => PowerScrewResultPage(
-            toolId: widget.toolId,
-            title: widget.title,
-            input: input,
-            result: result,
-          ),
+        (context) => PowerScrewResultPage(
+          toolId: widget.toolId,
+          title: widget.title,
+          input: input,
+          result: result,
         ),
       );
     } on FormatException catch (error) {

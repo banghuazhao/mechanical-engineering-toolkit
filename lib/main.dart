@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_page.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_menu_bar.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
+import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
 import 'package:mechanical_engineering_toolkit/util/ads_manager.dart';
 import 'package:mechanical_engineering_toolkit/util/in_app_reviewer_helper.dart';
 import 'package:mechanical_engineering_toolkit/util/language.dart';
@@ -49,6 +51,10 @@ class MyApp extends StatelessWidget {
 
   final RemoveAdsService removeAdsService;
 
+  /// The root navigator, which the Mac menu bar sits above and navigates
+  /// through.
+  static final navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -65,15 +71,20 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer2<LanguagePreference, ThemePreference>(
         builder: (context, languagePref, themePref, _) => MaterialApp(
-          builder: (context, child) => NotificationListener<ScrollNotification>(
-            onNotification: (notification) {
-              if (notification is ScrollStartNotification &&
-                  notification.dragDetails != null) {
-                FocusManager.instance.primaryFocus?.unfocus();
-              }
-              return false;
-            },
-            child: child ?? const SizedBox.shrink(),
+          navigatorKey: navigatorKey,
+          navigatorObservers: [AppCommands.instance.routeObserver],
+          builder: (context, child) => AppMenuBar(
+            navigatorKey: navigatorKey,
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (notification) {
+                if (notification is ScrollStartNotification &&
+                    notification.dragDetails != null) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                }
+                return false;
+              },
+              child: child ?? const SizedBox.shrink(),
+            ),
           ),
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [

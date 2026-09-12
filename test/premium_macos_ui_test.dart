@@ -269,7 +269,8 @@ void main() {
       expect(
         find.text(S
             .of(tester.element(find.byType(ToolHistoryPage)))
-            .Premium_History_Limited(PremiumGate.freeHistoryLimit)),
+            .Premium_History_Limited(
+                PremiumGate.freeHistoryLimit, ToolHistory.maxEntries)),
         findsOneWidget,
       );
       service.dispose();
@@ -293,7 +294,8 @@ void main() {
       expect(
         find.text(S
             .of(tester.element(find.byType(ToolHistoryPage)))
-            .Premium_History_Limited(PremiumGate.freeHistoryLimit)),
+            .Premium_History_Limited(
+                PremiumGate.freeHistoryLimit, ToolHistory.maxEntries)),
         findsNothing,
       );
       service.dispose();

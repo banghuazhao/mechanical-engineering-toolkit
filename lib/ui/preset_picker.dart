@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/util/fluid_library.dart';
+import 'package:mechanical_engineering_toolkit/util/lamina_library.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/thermal_material_library.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
@@ -219,6 +220,35 @@ class ThermalMaterialButton extends StatelessWidget {
         final k = precs.formatSI(
             material.conductivitySI, UnitCategory.thermalConductivity, system);
         return '${_groupLabel(context, material.group)} · k = $k';
+      },
+      onSelected: onSelected,
+    );
+  }
+}
+
+/// Picks a unidirectional lamina, handing back its elastic constants and
+/// strengths together so the composite tools fill a matched set.
+class LaminaPresetButton extends StatelessWidget {
+  const LaminaPresetButton({super.key, required this.onSelected});
+
+  final ValueChanged<LaminaPreset> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return PresetPickerButton<LaminaPreset>(
+      buttonLabel: S.of(context).Pick_Lamina,
+      sheetTitle: S.of(context).Lamina_Presets,
+      searchHint: S.of(context).Search_Materials,
+      emptyLabel: S.of(context).No_Materials_Found,
+      icon: Icons.layers_outlined,
+      presets: builtInLaminae,
+      nameOf: (lamina) => lamina.name,
+      subtitleOf: (context, lamina) {
+        final system = context.read<UnitSystemPreference>().system;
+        final precs = context.read<NumberPrecisionHelper>();
+        String modulus(double v) => precs.formatSI(v, UnitCategory.modulus, system);
+        return 'E1 = ${modulus(lamina.e1)} · E2 = ${modulus(lamina.e2)}'
+            ' · G12 = ${modulus(lamina.g12)} · ν12 = ${precs.formatValue(lamina.nu12)}';
       },
       onSelected: onSelected,
     );
