@@ -65,11 +65,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m20(tool) => "${tool}をお気に入りから削除";
 
-  static String m21(n) => "寸法 ${n}";
+  static String m21(count, total) =>
+      "${total}個中${count}個のツールが無料です。広告1本でツール1つを解除するか、プレミアムですべて利用できます。";
 
-  static String m22(n) => "状態 ${n}";
+  static String m22(n) => "寸法 ${n}";
 
-  static String m23(label) => "もし〜なら: ${label}";
+  static String m23(n) => "状態 ${n}";
+
+  static String m24(label) => "もし〜なら: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -1053,6 +1056,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "PDF レポート、CSV 書き出し、結果画像",
     ),
     "Premium_Benefit_History": m9,
+    "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage("すべての広告を削除"),
     "Premium_Benefit_Projects": MessageLookupByLibrary.simpleMessage(
       "保存プロジェクトとプロジェクト全体のレポート",
     ),
@@ -1061,10 +1065,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Premium_Benefit_Tools": m10,
     "Premium_Benefit_Universal": MessageLookupByLibrary.simpleMessage(
-      "iPhone・iPad でも追加料金なしで利用可能",
+      "同じApple AccountでiPhone・iPad・Macのプレミアムを利用",
     ),
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
-      "一度の購入で永続的に解除されます。この Mac でも、iPhone や iPad でも使えます。",
+      "一度の購入で、iPhone・iPad・Macでずっと利用できます。同じApple Accountで購入を復元してください。",
     ),
     "Premium_Free_Tools_Note": m11,
     "Premium_History_Limited": m12,
@@ -1083,7 +1087,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "プレミアムはまだ App Store で提供されていません。",
     ),
     "Premium_Purchase_Success": MessageLookupByLibrary.simpleMessage(
-      "プレミアムを解除しました。すべてのツールとエクスポートが利用できます。",
+      "プレミアムユーザーになりました。すべてのツールが利用可能になり、広告が削除されました。",
     ),
     "Premium_Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
       "以前の購入は見つかりませんでした。",
@@ -1091,9 +1095,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Restore_Success": MessageLookupByLibrary.simpleMessage(
       "プレミアムの購入を復元しました。",
     ),
-    "Premium_Unlocked": MessageLookupByLibrary.simpleMessage("プレミアム解除済み"),
+    "Premium_Unlocked": MessageLookupByLibrary.simpleMessage("プレミアムユーザー"),
     "Premium_Unlocked_Description": MessageLookupByLibrary.simpleMessage(
-      "ME Toolkit をご支援いただきありがとうございます。すべてのツールとエクスポートをご利用いただけます。",
+      "すべてのツールが利用可能になり、広告が削除されました。同じApple AccountでiPhone・iPad・Macの購入を復元できます。",
     ),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "圧入・焼きばめのしめしろ",
@@ -1209,6 +1213,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "Result_Strain": MessageLookupByLibrary.simpleMessage("結果のひずみ"),
     "Result_Stress": MessageLookupByLibrary.simpleMessage("結果の応力"),
     "Resultant_of_Forces_2D": MessageLookupByLibrary.simpleMessage("力の合力（2D）"),
+    "Rewarded_Tool_Description": MessageLookupByLibrary.simpleMessage(
+      "広告を1本見ると、この端末でこのツールが永久に使えるようになります。広告1本につきツール1つを解除できます。",
+    ),
+    "Rewarded_Tool_Loading": MessageLookupByLibrary.simpleMessage("広告を読み込み中…"),
+    "Rewarded_Tool_Save_Failed": MessageLookupByLibrary.simpleMessage(
+      "解除状態を保存できませんでした。もう一度お試しください。",
+    ),
+    "Rewarded_Tool_Skipped": MessageLookupByLibrary.simpleMessage(
+      "報酬を獲得する前に広告が終了しました。最後まで見て、このツールを解除してください。",
+    ),
+    "Rewarded_Tool_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "現在、広告を利用できません。しばらくしてからもう一度お試しください。",
+    ),
+    "Rewarded_Tool_Watch": MessageLookupByLibrary.simpleMessage("広告を見て解除"),
+    "Rewarded_Tools_Note": m21,
     "Reynolds_Number": MessageLookupByLibrary.simpleMessage("レイノルズ数と流れの状態"),
     "Reynolds_Number_Re": MessageLookupByLibrary.simpleMessage("レイノルズ数 Re"),
     "Right_Reaction_RB": MessageLookupByLibrary.simpleMessage("右反力、RB"),
@@ -1360,7 +1379,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Adds": MessageLookupByLibrary.simpleMessage("加える"),
     "Stackup_Clearance": MessageLookupByLibrary.simpleMessage("常にすきまあり"),
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage("ばらつきの寄与"),
-    "Stackup_Dimension_N": m21,
+    "Stackup_Dimension_N": m22,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage("寸法の連なり"),
     "Stackup_Dominant": MessageLookupByLibrary.simpleMessage("最大の寄与"),
     "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
@@ -1378,7 +1397,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Subtracts": MessageLookupByLibrary.simpleMessage("引く"),
     "Stackup_Worst_Case": MessageLookupByLibrary.simpleMessage("ワーストケース"),
     "Standard_Sections": MessageLookupByLibrary.simpleMessage("標準形鋼"),
-    "State_Numbered": m22,
+    "State_Numbered": m23,
     "Static_Deflection_Delta": MessageLookupByLibrary.simpleMessage(
       "静たわみ, δst",
     ),
@@ -1522,7 +1541,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Unit_Converter": MessageLookupByLibrary.simpleMessage("単位換算"),
     "Unit_System": MessageLookupByLibrary.simpleMessage("単位系"),
-    "Unlock_Premium": MessageLookupByLibrary.simpleMessage("プレミアムを解除"),
+    "Unlock_Premium": MessageLookupByLibrary.simpleMessage("プレミアムにアップグレード"),
     "Utilities": MessageLookupByLibrary.simpleMessage("ツール"),
     "Velocity_Head": MessageLookupByLibrary.simpleMessage("速度水頭 V²/2g"),
     "Vibration_Modes": MessageLookupByLibrary.simpleMessage("固有振動数"),
@@ -1543,7 +1562,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("弱軸 (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("ウェブ厚"),
-    "What_If": m23,
+    "What_If": m24,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("線径、d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

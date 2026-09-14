@@ -62,11 +62,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m20(tool) => "將${tool}從收藏中移除";
 
-  static String m21(n) => "尺寸 ${n}";
+  static String m21(count, total) =>
+      "${total} 個工具中有 ${count} 個免費。每觀看一個廣告可解鎖一個工具，或升級為高級用戶解鎖全部工具。";
 
-  static String m22(n) => "狀態 ${n}";
+  static String m22(n) => "尺寸 ${n}";
 
-  static String m23(label) => "假設分析：${label}";
+  static String m23(n) => "狀態 ${n}";
+
+  static String m24(label) => "假設分析：${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -968,16 +971,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "PDF 報告、CSV 匯出與結果圖片",
     ),
     "Premium_Benefit_History": m9,
+    "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage("移除所有廣告"),
     "Premium_Benefit_Projects": MessageLookupByLibrary.simpleMessage(
       "儲存的專案與專案彙總報告",
     ),
     "Premium_Benefit_Sweep": MessageLookupByLibrary.simpleMessage("參數掃描分析圖"),
     "Premium_Benefit_Tools": m10,
     "Premium_Benefit_Universal": MessageLookupByLibrary.simpleMessage(
-      "iPhone 與 iPad 同樣包含，無需額外付費",
+      "同一 Apple 帳户可在 iPhone、iPad 和 Mac 上享用高級功能",
     ),
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
-      "一次購買，永久解鎖——本機 Mac 與您的 iPhone、iPad 均可使用。",
+      "一次購買，永久在 iPhone、iPad 和 Mac 上使用。使用同一 Apple 帳户還原購買。",
     ),
     "Premium_Free_Tools_Note": m11,
     "Premium_History_Limited": m12,
@@ -996,7 +1000,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "高級版尚未在 App Store 上架。",
     ),
     "Premium_Purchase_Success": MessageLookupByLibrary.simpleMessage(
-      "已解鎖高級版，全部工具與匯出功能現已開放。",
+      "您已成為高級用戶。所有工具已解鎖，廣告已移除。",
     ),
     "Premium_Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
       "找不到先前的購買紀錄。",
@@ -1004,9 +1008,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Restore_Success": MessageLookupByLibrary.simpleMessage(
       "已回復您的高級版購買。",
     ),
-    "Premium_Unlocked": MessageLookupByLibrary.simpleMessage("已解鎖高級版"),
+    "Premium_Unlocked": MessageLookupByLibrary.simpleMessage("高級用戶"),
     "Premium_Unlocked_Description": MessageLookupByLibrary.simpleMessage(
-      "感謝您支持 ME Toolkit。全部工具與匯出功能均已開放。",
+      "所有工具已解鎖，廣告已移除。可使用同一 Apple 帳户在 iPhone、iPad 或 Mac 上還原購買。",
     ),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "壓裝 / 熱裝過盈配合",
@@ -1106,6 +1110,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "Result_Strain": MessageLookupByLibrary.simpleMessage("應變結果"),
     "Result_Stress": MessageLookupByLibrary.simpleMessage("應力結果"),
     "Resultant_of_Forces_2D": MessageLookupByLibrary.simpleMessage("力的合成（二維）"),
+    "Rewarded_Tool_Description": MessageLookupByLibrary.simpleMessage(
+      "觀看一個廣告，即可在此裝置上永久解鎖目前工具。一個廣告解鎖一個工具。",
+    ),
+    "Rewarded_Tool_Loading": MessageLookupByLibrary.simpleMessage("正在載入廣告…"),
+    "Rewarded_Tool_Save_Failed": MessageLookupByLibrary.simpleMessage(
+      "無法儲存解鎖狀態，請重試。",
+    ),
+    "Rewarded_Tool_Skipped": MessageLookupByLibrary.simpleMessage(
+      "廣告在獲得獎勵前已結束。請完整觀看廣告以解鎖此工具。",
+    ),
+    "Rewarded_Tool_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "暫時沒有可用的廣告，請稍後重試。",
+    ),
+    "Rewarded_Tool_Watch": MessageLookupByLibrary.simpleMessage("觀看廣告解鎖"),
+    "Rewarded_Tools_Note": m21,
     "Reynolds_Number": MessageLookupByLibrary.simpleMessage("雷諾數與流態"),
     "Reynolds_Number_Re": MessageLookupByLibrary.simpleMessage("雷諾數 Re"),
     "Right_Reaction_RB": MessageLookupByLibrary.simpleMessage("右支座反力 RB"),
@@ -1243,7 +1262,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Adds": MessageLookupByLibrary.simpleMessage("增大"),
     "Stackup_Clearance": MessageLookupByLibrary.simpleMessage("一直有間隙"),
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage("變動的比例"),
-    "Stackup_Dimension_N": m21,
+    "Stackup_Dimension_N": m22,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage("尺寸鏈"),
     "Stackup_Dominant": MessageLookupByLibrary.simpleMessage("比例最大的尺寸"),
     "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
@@ -1261,7 +1280,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Subtracts": MessageLookupByLibrary.simpleMessage("縮小"),
     "Stackup_Worst_Case": MessageLookupByLibrary.simpleMessage("極值法"),
     "Standard_Sections": MessageLookupByLibrary.simpleMessage("標準型鋼截面"),
-    "State_Numbered": m22,
+    "State_Numbered": m23,
     "Static_Deflection_Delta": MessageLookupByLibrary.simpleMessage("靜撓度, δst"),
     "Steam_Lookup": MessageLookupByLibrary.simpleMessage("查詢方式"),
     "Steam_Lookup_PH": MessageLookupByLibrary.simpleMessage("壓力與比焓"),
@@ -1391,7 +1410,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Unit_Converter": MessageLookupByLibrary.simpleMessage("單位換算"),
     "Unit_System": MessageLookupByLibrary.simpleMessage("單位制"),
-    "Unlock_Premium": MessageLookupByLibrary.simpleMessage("解鎖高級版"),
+    "Unlock_Premium": MessageLookupByLibrary.simpleMessage("升級為高級用戶"),
     "Utilities": MessageLookupByLibrary.simpleMessage("常用工具"),
     "Velocity_Head": MessageLookupByLibrary.simpleMessage("速度水頭 V²/2g"),
     "Vibration_Modes": MessageLookupByLibrary.simpleMessage("固有頻率"),
@@ -1414,7 +1433,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("喝水吧"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("弱軸 (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("腹板厚度"),
-    "What_If": m23,
+    "What_If": m24,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("簧絲直徑 d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage("極簡天氣"),
     "Wrap_Angle_Large_Pulley": MessageLookupByLibrary.simpleMessage("大帶輪包角"),

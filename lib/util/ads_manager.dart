@@ -10,6 +10,12 @@ import 'package:mechanical_engineering_toolkit/util/secrets.dart';
 
 class AdsManager {
   static bool disableAllAdsForScreenshot = false;
+  static bool rewardedAdInProgress = false;
+  static DateTime? suppressAppOpenUntil;
+
+  static bool get suppressAppOpenAds =>
+      rewardedAdInProgress ||
+      (suppressAppOpenUntil?.isAfter(DateTime.now()) ?? false);
   static String bannerAdUnitIdIOS = Secrets.bannerAdUnitIdIOS;
   static String openAdUnitIDIOS = Secrets.openAdUnitIDIOS;
   static String bannerAdUnitIdAndroid = Secrets.bannerAdUnitIdAndroid;
@@ -301,6 +307,7 @@ class AppOpenAdManager {
   }
 
   void showAdIfAvailable() {
+    if (AdsManager.suppressAppOpenAds) return;
     if (AdsManager.adsRemoved) {
       dispose();
       return;

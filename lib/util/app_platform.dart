@@ -27,6 +27,7 @@ class AppPlatform {
 
   static const macOS = _MacOSPlatform();
   static const mobile = _MobilePlatform();
+  static const iOS = _IOSPlatform();
 
   /// True while `flutter test` is running, which it sets in the environment.
   ///
@@ -44,6 +45,7 @@ class AppPlatform {
     // they mean with [overrideWith].
     if (_inFlutterTest) return mobile;
     if (!kIsWeb && Platform.isMacOS) return macOS;
+    if (!kIsWeb && Platform.isIOS) return iOS;
     return mobile;
   }
 
@@ -56,10 +58,12 @@ class AppPlatform {
 
   /// Whether some of the app is held back until a purchase.
   ///
-  /// The mobile apps give away every tool and monetize with ads, so nothing is
-  /// gated there. The Mac app has no ads and instead ships a free tier — see
-  /// [kFreeToolIds] in `lib/purchase/premium.dart`.
+  /// macOS gates exports and other advanced features. iOS gates tools only.
   bool get gatesFeatures => false;
+
+  bool get gatesTools => gatesFeatures;
+
+  bool get supportsRewardedToolUnlocks => false;
 
   /// Whether the OS reports device model and OS version through
   /// `device_info_plus` in a form the feedback email uses.
@@ -74,6 +78,16 @@ class AppPlatform {
 
 class _MobilePlatform extends AppPlatform {
   const _MobilePlatform() : super._();
+}
+
+class _IOSPlatform extends AppPlatform {
+  const _IOSPlatform() : super._();
+
+  @override
+  bool get gatesTools => true;
+
+  @override
+  bool get supportsRewardedToolUnlocks => true;
 }
 
 class _MacOSPlatform extends AppPlatform {

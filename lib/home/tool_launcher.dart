@@ -11,7 +11,7 @@ import 'package:mechanical_engineering_toolkit/purchase/premium_upsell.dart';
 /// — which is exactly what would happen if each of those screens called
 /// [Tool.action] and remembered its own check.
 ///
-/// Nothing is locked on iOS or Android; there this is a direct call through.
+/// Android tools open directly; iOS also accepts per-tool rewarded unlocks.
 Future<void> launchTool(
   BuildContext context,
   Tool tool, {
@@ -19,7 +19,9 @@ Future<void> launchTool(
 }) async {
   if (PremiumGate.read(context).isToolLocked(tool.id)) {
     await showLockedToolUpsell(context, tool);
-    return;
+    if (!context.mounted || PremiumGate.read(context).isToolLocked(tool.id)) {
+      return;
+    }
   }
   tool.action(context, tool.title, tool.id, initialInputs: initialInputs);
 }

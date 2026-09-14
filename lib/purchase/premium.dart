@@ -1,20 +1,22 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
+import 'package:mechanical_engineering_toolkit/purchase/tool_unlock_service.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
 import 'package:mechanical_engineering_toolkit/util/app_platform.dart';
 import 'package:provider/provider.dart';
 
-/// The tools a macOS build hands out without a purchase.
+/// The tools iOS and macOS include without a purchase or rewarded ad.
 ///
 /// Chosen so the free app is a usable engineering companion rather than a
 /// demo: every lookup table, and at least one working calculator from each of
 /// the nine categories, weighted towards the first-year staples an engineer
 /// reaches for most (axial stress, torsion, bending, buckling, von Mises).
-/// Everything else — and every export — is what the unlock is for.
+/// Additional tools require Premium or, on iOS, a rewarded ad.
 ///
 /// Ids are the ones registered in `lib/home/tool_model.dart`; a tool missing
 /// from that library simply never comes up.
 ///
-/// This set has no effect on iOS or Android, where nothing is gated.
+/// Android remains ungated. iOS can unlock each additional tool with an ad.
 const Set<int> kFreeToolIds = {
   // Reference and utilities — lookups, free in full.
   500, // Unit Converter
@@ -71,47 +73,60 @@ enum PremiumFeature {
 
 /// Answers "may this build do that yet?".
 ///
-/// One object rather than a `Platform.isMacOS && !purchased` test at each call
-/// site, because the two halves of that condition are easy to get subtly wrong
-/// in opposite directions: forget the platform check and an iPhone loses its
-/// PDF export; forget the entitlement check and the unlock does nothing.
-///
-/// Immutable and cheap — build one per widget build from [watch] or [read].
+/// iOS gates tools; macOS also gates advanced features. Rewarded unlocks
+/// apply only to individual iOS tools and never grant Premium.
 @immutable
 class PremiumGate {
-  const PremiumGate({required this.isEntitled, required this.gatesFeatures});
+  const PremiumGate({
+    required this.isEntitled,
+    required this.gatesFeatures,
+    bool? gatesTools,
+    this.rewardedToolIds = const {},
+  }) : gatesTools = gatesTools ?? gatesFeatures;
 
-  /// Nothing is gated: the mobile builds, which monetize with ads instead.
+  /// Nothing is gated, as on Android.
   const PremiumGate.ungated()
       : isEntitled = true,
-        gatesFeatures = false;
+        gatesFeatures = false,
+        gatesTools = false,
+        rewardedToolIds = const {};
 
   /// The purchase has been made (or restored from another device).
   final bool isEntitled;
 
-  /// This platform gates anything at all. False on iOS and Android.
+  /// This platform gates advanced features. False on iOS and Android.
   final bool gatesFeatures;
+  final bool gatesTools;
+  final Set<int> rewardedToolIds;
+
+  bool get usesPremiumWording => gatesTools || gatesFeatures;
 
   /// How many history entries a free macOS build keeps visible. The rest are
   /// still recorded — the unlock reveals them rather than starting over.
   static const int freeHistoryLimit = 5;
 
   /// Rebuilds the caller when the entitlement changes.
-  static PremiumGate watch(BuildContext context) =>
-      _from(context.watch<RemoveAdsService>());
+  static PremiumGate watch(BuildContext context) => _from(
+      context.watch<RemoveAdsService>(), context.watch<ToolUnlockService?>());
 
   /// The same answer without subscribing, for callbacks.
-  static PremiumGate read(BuildContext context) =>
-      _from(context.read<RemoveAdsService>());
+  static PremiumGate read(BuildContext context) => _from(
+      context.read<RemoveAdsService>(), context.read<ToolUnlockService?>());
 
-  static PremiumGate _from(RemoveAdsService service) => PremiumGate(
+  static PremiumGate _from(
+          RemoveAdsService service, ToolUnlockService? unlocks) =>
+      PremiumGate(
         isEntitled: service.isEntitled,
         gatesFeatures: AppPlatform.current.gatesFeatures,
+        gatesTools: AppPlatform.current.gatesTools,
+        rewardedToolIds: AppPlatform.current.supportsRewardedToolUnlocks
+            ? unlocks?.unlockedToolIds ?? const {}
+            : const {},
       );
 
   /// Everything is available: either this platform gates nothing, or the
   /// purchase has been made.
-  bool get isUnlocked => !gatesFeatures || isEntitled;
+  bool get isUnlocked => !(gatesFeatures || gatesTools) || isEntitled;
 
   /// Something is being held back right now, so the UI should show locks and
   /// offer the upgrade. The inverse of [isUnlocked], named for readability at
@@ -120,20 +135,27 @@ class PremiumGate {
 
   /// Whether opening the tool with this id should offer the upgrade instead.
   bool isToolLocked(int toolId) =>
-      showsLocks && !kFreeToolIds.contains(toolId);
+      gatesTools &&
+      !isEntitled &&
+      !kFreeToolIds.contains(toolId) &&
+      !rewardedToolIds.contains(toolId);
 
   /// Whether [feature] should offer the upgrade instead of running.
-  bool isFeatureLocked(PremiumFeature feature) => showsLocks;
+  bool isFeatureLocked(PremiumFeature feature) => gatesFeatures && !isEntitled;
 
   /// How many history entries to show. Null means all of them.
-  int? get historyLimit => showsLocks ? freeHistoryLimit : null;
+  int? get historyLimit =>
+      isFeatureLocked(PremiumFeature.fullHistory) ? freeHistoryLimit : null;
 
   @override
   bool operator ==(Object other) =>
       other is PremiumGate &&
       other.isEntitled == isEntitled &&
-      other.gatesFeatures == gatesFeatures;
+      other.gatesFeatures == gatesFeatures &&
+      other.gatesTools == gatesTools &&
+      setEquals(other.rewardedToolIds, rewardedToolIds);
 
   @override
-  int get hashCode => Object.hash(isEntitled, gatesFeatures);
+  int get hashCode => Object.hash(isEntitled, gatesFeatures, gatesTools,
+      Object.hashAllUnordered(rewardedToolIds));
 }

@@ -13,11 +13,8 @@ const Set<RemoveAdsStatus> kTransientPurchaseStatuses = {
 
 /// What to tell the user about [status], or null when it is not worth saying.
 ///
-/// One product, two stories: the same transaction stops the ads on iOS and
-/// Android and unlocks the gated tools on macOS, so the outcome messages have
-/// to differ even though the purchase does not. [premiumWording] picks which
-/// set — pass `PremiumGate.gatesFeatures`, so the wording follows the same
-/// switch that decides whether anything is locked in the first place.
+/// iOS and macOS use Premium wording for the existing purchase; Android keeps
+/// its Remove Ads wording. Use `PremiumGate.usesPremiumWording` to choose.
 String? purchaseStatusMessage(
   S strings,
   RemoveAdsStatus status, {

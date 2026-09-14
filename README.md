@@ -107,7 +107,7 @@ build's `Info.plist`.
 
 ```bash
 flutter build appbundle --release   # Android App Bundle
-flutter build ipa --release         # iOS App Store package
+flutter build ipa --release --dart-define=IOS_REWARDED_AD_UNIT_ID=YOUR_REWARDED_UNIT_ID
 flutter build macos --release       # macOS app bundle
 ```
 
@@ -118,8 +118,14 @@ The macOS target needs no AdMob configuration: it serves no ads, and
 
 Two models, one purchase.
 
-**iOS and Android** ship every tool for free and carry a banner and app-open ad.
-The `Remove Ads` in-app purchase suppresses both.
+**iOS** includes the same free tools as macOS. A completed rewarded ad permanently
+unlocks one selected tool on that device; skipping or failing an ad unlocks
+nothing. These device-local unlocks survive restarts but do not transfer to
+other devices or grant Premium. Existing exports, history and projects stay free.
+**Premium** unlocks all tools and removes banner and app-open ads.
+
+**Android** continues to ship every tool for free with banner and app-open ads.
+Its existing `Remove Ads` purchase suppresses both.
 
 **macOS** carries no ads at all — `google_mobile_ads` has no macOS
 implementation, and the Mac app is sold as a one-off unlock instead. A free Mac
@@ -141,7 +147,28 @@ Everything that decides what is locked lives in
 every calculator is opened through
 [`launchTool`](lib/home/tool_launcher.dart), so a locked tool cannot be reached
 by finding another route to it. `PremiumGate.gatesFeatures` is false off macOS,
-which is what keeps the mobile apps untouched by any of this.
+so advanced features remain available on mobile. `gatesTools` is true on iOS
+and macOS; rewarded tool unlocks are accepted only on iOS.
+
+### Rewarded ads and Premium release configuration
+
+Set `IOS_REWARDED_AD_UNIT_ID` with `--dart-define` when building an iOS release.
+Debug builds always use Google's rewarded test unit. If the production ID is
+missing, the offer reports that no ad is available; it never grants an unlock or
+uses a test ad in release. Rewarded ads use the existing UMP/ATT consent flow.
+App-open ads are suppressed while a rewarded ad is loading or showing.
+
+Keep the App Store product ID and existing entitlement storage key unchanged:
+`com.appsbay.mechanicalEngineeringToolkit.remove_ads` and
+`REMOVE_ADS_ENTITLEMENT_V1`. Existing customers automatically receive Premium;
+restoring with the same Apple Account grants it on iPhone, iPad and Mac.
+
+The app copy is localized in all six supported languages. Update the existing
+product's display metadata in App Store Connect as well (do not create a new
+product):
+
+- Display name: **Premium User**
+- Description: **Unlock all tools and remove ads on iPhone, iPad and Mac.**
 
 ## Adding a new calculator
 

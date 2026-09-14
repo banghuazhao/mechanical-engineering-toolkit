@@ -346,10 +346,9 @@ void main() {
     });
   });
 
-  // The mobile apps monetize with ads and gate nothing. Everything above is
-  // keyed off one flag, so these assert that the flag is the only thing
-  // standing between iOS/Android and a paywall they should never see.
-  group('the mobile builds are untouched', () {
+  // Android keeps its existing free tools and Remove Ads purchase.
+  // iOS's separate tool-only gating is covered by premium_ios_ui_test.dart.
+  group('the Android build is untouched', () {
     setUp(() => AppPlatform.overrideWith(AppPlatform.mobile));
 
     testWidgets('every export format is offered unmarked', (tester) async {

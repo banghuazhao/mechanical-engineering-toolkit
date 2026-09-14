@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mechanical_engineering_toolkit/purchase/tool_unlock_service.dart';
+import 'package:mechanical_engineering_toolkit/util/app_platform.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
@@ -21,12 +23,16 @@ import 'package:provider/provider.dart';
 Future<void> showPremiumUpsell(
   BuildContext context, {
   required String reason,
+  Tool? rewardedTool,
 }) {
   return showModalBottomSheet<void>(
     context: context,
-    showDragHandle: true,
+    showDragHandle: rewardedTool == null,
+    isDismissible: rewardedTool == null,
+    enableDrag: rewardedTool == null,
     isScrollControlled: true,
-    builder: (sheetContext) => _PremiumUpsellSheet(reason: reason),
+    builder: (sheetContext) =>
+        _PremiumUpsellSheet(reason: reason, rewardedTool: rewardedTool),
   );
 }
 
@@ -35,6 +41,7 @@ Future<void> showLockedToolUpsell(BuildContext context, Tool tool) {
   return showPremiumUpsell(
     context,
     reason: S.of(context).Premium_Locked_Tool(tool.title),
+    rewardedTool: AppPlatform.current.supportsRewardedToolUnlocks ? tool : null,
   );
 }
 
@@ -58,9 +65,10 @@ Future<void> showLockedFeatureUpsell(
 }
 
 class _PremiumUpsellSheet extends StatelessWidget {
-  const _PremiumUpsellSheet({required this.reason});
+  const _PremiumUpsellSheet({required this.reason, this.rewardedTool});
 
   final String reason;
+  final Tool? rewardedTool;
 
   @override
   Widget build(BuildContext context) {
@@ -68,46 +76,126 @@ class _PremiumUpsellSheet extends StatelessWidget {
     final theme = Theme.of(context);
     final tokens = context.tokens;
 
-    return SafeArea(
-      child: ConstrainedBox(
-        // The sheet is content, not a full screen: on a wide Mac window an
-        // unbounded one would stretch the benefit list across the whole
-        // display and become hard to read.
-        constraints: const BoxConstraints(maxWidth: 520),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(
-            tokens.space5,
-            0,
-            tokens.space5,
-            tokens.space5,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Icon(
-                Icons.workspace_premium_rounded,
-                size: 44,
-                color: theme.colorScheme.primary,
-              ),
-              SizedBox(height: tokens.space3),
-              Text(
-                reason,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.titleMedium
-                    ?.copyWith(fontWeight: FontWeight.w700),
-              ),
-              SizedBox(height: tokens.space4),
-              const PremiumOffer(),
-              SizedBox(height: tokens.space2),
-              TextButton(
-                onPressed: () => Navigator.of(context).maybePop(),
-                child: Text(strings.Maybe_Later),
-              ),
-            ],
+    final busy = context.watch<ToolUnlockService?>()?.isBusy ?? false;
+    final entitled = context.watch<RemoveAdsService>().isEntitled;
+    return PopScope(
+      canPop: !busy,
+      child: SafeArea(
+        child: ConstrainedBox(
+          // The sheet is content, not a full screen: on a wide Mac window an
+          // unbounded one would stretch the benefit list across the whole
+          // display and become hard to read.
+          constraints: const BoxConstraints(maxWidth: 520),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(
+              tokens.space5,
+              rewardedTool == null ? 0 : tokens.space5,
+              tokens.space5,
+              tokens.space5,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Icon(
+                  Icons.workspace_premium_rounded,
+                  size: 44,
+                  color: theme.colorScheme.primary,
+                ),
+                SizedBox(height: tokens.space3),
+                Text(
+                  reason,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.titleMedium
+                      ?.copyWith(fontWeight: FontWeight.w700),
+                ),
+                SizedBox(height: tokens.space4),
+                if (rewardedTool != null && !entitled) ...[
+                  RewardedToolUnlockButton(toolId: rewardedTool!.id),
+                  SizedBox(height: tokens.space4),
+                  const Divider(),
+                  SizedBox(height: tokens.space3),
+                ],
+                PremiumOffer(enabled: !busy),
+                SizedBox(height: tokens.space2),
+                TextButton(
+                  onPressed:
+                      busy ? null : () => Navigator.of(context).maybePop(),
+                  child: Text(strings.Maybe_Later),
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+}
+
+/// The reward is saved by the service before this sheet opens the selected tool.
+class RewardedToolUnlockButton extends StatefulWidget {
+  const RewardedToolUnlockButton({super.key, required this.toolId});
+  final int toolId;
+
+  @override
+  State<RewardedToolUnlockButton> createState() =>
+      _RewardedToolUnlockButtonState();
+}
+
+class _RewardedToolUnlockButtonState extends State<RewardedToolUnlockButton> {
+  ToolUnlockResult? _result;
+
+  Future<void> _watch(ToolUnlockService service) async {
+    setState(() => _result = null);
+    final result = await service.unlockWithAd(widget.toolId);
+    if (!mounted) return;
+    if (result == ToolUnlockResult.unlocked) {
+      // Wait for PopScope to rebuild after the service clears its busy state.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) Navigator.of(context).pop();
+      });
+    } else {
+      setState(() => _result = result);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = S.of(context);
+    final service = context.watch<ToolUnlockService?>();
+    final busy = service?.isBusy ?? false;
+    final purchasing = context.watch<RemoveAdsService>().isBusy;
+    final message = switch (_result) {
+      ToolUnlockResult.skipped => strings.Rewarded_Tool_Skipped,
+      ToolUnlockResult.saveFailed => strings.Rewarded_Tool_Save_Failed,
+      ToolUnlockResult.unavailable => strings.Rewarded_Tool_Unavailable,
+      _ => null,
+    };
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(strings.Rewarded_Tool_Description, textAlign: TextAlign.center),
+        SizedBox(height: context.tokens.space3),
+        OutlinedButton.icon(
+          onPressed: service == null || busy || purchasing
+              ? null
+              : () => _watch(service),
+          icon: busy
+              ? const SizedBox.square(
+                  dimension: 18,
+                  child: CircularProgressIndicator(strokeWidth: 2))
+              : const Icon(Icons.ondemand_video_rounded),
+          label: Text(busy
+              ? strings.Rewarded_Tool_Loading
+              : strings.Rewarded_Tool_Watch),
+        ),
+        if (message != null) ...[
+          SizedBox(height: context.tokens.space2),
+          Semantics(
+              liveRegion: true,
+              child: Text(message, textAlign: TextAlign.center)),
+        ],
+      ],
     );
   }
 }
@@ -117,7 +205,9 @@ class _PremiumUpsellSheet extends StatelessWidget {
 /// Shared by the upsell sheet and the Premium screen reached from the menu, so
 /// the two cannot drift into describing different products.
 class PremiumOffer extends StatefulWidget {
-  const PremiumOffer({super.key});
+  const PremiumOffer({super.key, this.enabled = true});
+
+  final bool enabled;
 
   @override
   State<PremiumOffer> createState() => _PremiumOfferState();
@@ -182,16 +272,20 @@ class _PremiumOfferState extends State<PremiumOffer> {
         final isPending = service.hasPendingPurchase;
         // A pending order blocks a second purchase — the store would reject
         // it — but leaves restore available.
-        final canBuy = price != null && !service.isBusy && !isPending;
+        final canBuy =
+            widget.enabled && price != null && !service.isBusy && !isPending;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _Benefit(strings.Premium_Benefit_Tools(total)),
-            _Benefit(strings.Premium_Benefit_Export),
-            _Benefit(strings.Premium_Benefit_Projects),
-            _Benefit(strings.Premium_Benefit_History(ToolHistory.maxEntries)),
-            _Benefit(strings.Premium_Benefit_Sweep),
+            _Benefit(strings.Premium_Benefit_No_Ads),
+            if (AppPlatform.current.gatesFeatures) ...[
+              _Benefit(strings.Premium_Benefit_Export),
+              _Benefit(strings.Premium_Benefit_Projects),
+              _Benefit(strings.Premium_Benefit_History(ToolHistory.maxEntries)),
+              _Benefit(strings.Premium_Benefit_Sweep),
+            ],
             _Benefit(strings.Premium_Benefit_Universal),
             SizedBox(height: tokens.space4),
             FilledButton.icon(
@@ -223,7 +317,9 @@ class _PremiumOfferState extends State<PremiumOffer> {
               ),
             ),
             TextButton.icon(
-              onPressed: service.isBusy ? null : service.restorePurchases,
+              onPressed: !widget.enabled || service.isBusy
+                  ? null
+                  : service.restorePurchases,
               icon: const Icon(Icons.restore_rounded),
               label: Text(service.status == RemoveAdsStatus.restoring
                   ? strings.Restoring

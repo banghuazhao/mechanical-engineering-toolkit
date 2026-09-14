@@ -405,17 +405,16 @@ class _ToolPageState extends State<ToolPage> {
       Consumer<RemoveAdsService>(
         builder: (context, purchases, _) {
           if (!purchases.isSupported) return const SizedBox.shrink();
-          // The same destination under two names: the purchase stops ads
-          // where there are ads, and unlocks the gated tools where there are
-          // none.
+          // Apple platforms share the Premium purchase; Android retains
+          // its existing Remove Ads offer.
           final gate = PremiumGate.watch(context);
           return MoreRow(
-            title: gate.gatesFeatures
+            title: gate.usesPremiumWording
                 ? (gate.isEntitled
                     ? S.of(context).Premium
                     : S.of(context).Unlock_Premium)
                 : S.of(context).Remove_Ads,
-            leadingIcon: gate.gatesFeatures
+            leadingIcon: gate.usesPremiumWording
                 ? (gate.isEntitled
                     ? Icons.verified_rounded
                     : Icons.workspace_premium_rounded)
@@ -866,7 +865,9 @@ class _FreeTierNotice extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                strings.Premium_Free_Tools_Note(freeCount, totalCount),
+                AppPlatform.current.supportsRewardedToolUnlocks
+                    ? strings.Rewarded_Tools_Note(freeCount, totalCount)
+                    : strings.Premium_Free_Tools_Note(freeCount, totalCount),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSecondaryContainer,
                 ),

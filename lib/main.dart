@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_page.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
+import 'package:mechanical_engineering_toolkit/purchase/tool_unlock_service.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_menu_bar.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/tool_commands.dart';
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: removeAdsService),
+        ChangeNotifierProvider(create: (_) => ToolUnlockService()),
         ChangeNotifierProvider(create: (context) => Favorites()),
         ChangeNotifierProvider(create: (context) => NumberPrecisionHelper()),
         ChangeNotifierProvider(create: (context) => UnitSystemPreference()),

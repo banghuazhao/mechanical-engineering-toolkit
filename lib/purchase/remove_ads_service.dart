@@ -27,7 +27,7 @@ enum AppStore {
   /// belong to the record rather than to a platform. So there is one product
   /// to configure, one price, and a customer who buys on either side gets the
   /// other for free when StoreKit restores. What the purchase *unlocks*
-  /// differs by platform: ads on iOS, the gated tools and exports on macOS
+  /// includes tools and ad removal on iOS, plus gated tools and exports on macOS
   /// (see `lib/purchase/premium.dart`).
   macAppStore('com.appsbay.mechanicalEngineeringToolkit.remove_ads'),
 
@@ -244,10 +244,10 @@ class RemoveAdsService extends ChangeNotifier {
 
   bool get isAdsRemoved => _isAdsRemoved;
 
-  /// The same flag as [isAdsRemoved], under the name the macOS build uses.
+  /// The original Remove Ads entitlement also grants Premium on iOS and macOS.
   ///
-  /// One purchase, two meanings: it suppresses advertising on iOS and Android,
-  /// and it unlocks the gated tools and exports on macOS. Reading it through
+  /// It suppresses advertising on iOS and Android, unlocks all iOS tools,
+  /// and unlocks the gated tools and exports on macOS. Reading it through
   /// this name keeps the Mac call sites from looking like they care about ads
   /// in a build that has none. Prefer [PremiumGate] over touching this
   /// directly — it also answers whether the platform gates anything.
@@ -265,6 +265,7 @@ class RemoveAdsService extends ChangeNotifier {
   /// frame can coalesce the transient state between them out of existence —
   /// so the value alone cannot say whether an outcome is new.
   int get statusRevision => _statusRevision;
+
   /// Work is in flight right now, so the screen should show a spinner and
   /// refuse a second tap. Deliberately excludes [RemoveAdsStatus.pending],
   /// which is not in-flight work — see [hasPendingPurchase].

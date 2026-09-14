@@ -69,11 +69,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m20(tool) => "Retirer ${tool} des favoris";
 
-  static String m21(n) => "Cote ${n}";
+  static String m21(count, total) =>
+      "${count} outils sur ${total} sont gratuits. Regardez une publicité par outil pour en débloquer davantage, ou obtenez-les tous avec Premium.";
 
-  static String m22(n) => "État ${n}";
+  static String m22(n) => "Cote ${n}";
 
-  static String m23(label) => "Et si : ${label}";
+  static String m23(n) => "État ${n}";
+
+  static String m24(label) => "Et si : ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -1491,6 +1494,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Rapports PDF, export CSV et images de résultats",
     ),
     "Premium_Benefit_History": m9,
+    "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage(
+      "Supprimer toutes les publicités",
+    ),
     "Premium_Benefit_Projects": MessageLookupByLibrary.simpleMessage(
       "Projets enregistrés et rapports de projet combinés",
     ),
@@ -1499,10 +1505,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Premium_Benefit_Tools": m10,
     "Premium_Benefit_Universal": MessageLookupByLibrary.simpleMessage(
-      "Inclus aussi sur iPhone et iPad, sans supplément",
+      "Premium sur iPhone, iPad et Mac avec le même compte Apple",
     ),
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
-      "Un seul achat, débloqué pour toujours — sur ce Mac comme sur votre iPhone et votre iPad.",
+      "Un seul achat, pour toujours sur iPhone, iPad et Mac. Restaurez avec le même compte Apple.",
     ),
     "Premium_Free_Tools_Note": m11,
     "Premium_History_Limited": m12,
@@ -1521,7 +1527,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Premium n’est pas encore disponible sur l’App Store.",
     ),
     "Premium_Purchase_Success": MessageLookupByLibrary.simpleMessage(
-      "Premium débloqué. Tous les outils et exports sont désormais disponibles.",
+      "Vous êtes maintenant Premium. Tous les outils sont débloqués et les publicités supprimées.",
     ),
     "Premium_Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Aucun achat antérieur n’a été trouvé.",
@@ -1530,10 +1536,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Votre achat Premium a été restauré.",
     ),
     "Premium_Unlocked": MessageLookupByLibrary.simpleMessage(
-      "Premium débloqué",
+      "Utilisateur Premium",
     ),
     "Premium_Unlocked_Description": MessageLookupByLibrary.simpleMessage(
-      "Merci de soutenir ME Toolkit. Tous les outils et tous les exports vous sont accessibles.",
+      "Tous les outils sont débloqués et les publicités supprimées. Restaurez votre achat sur iPhone, iPad ou Mac avec le même compte Apple.",
     ),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Serrage par emmanchement à force / au frein",
@@ -1709,6 +1715,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "Resultant_of_Forces_2D": MessageLookupByLibrary.simpleMessage(
       "Résultante des forces (2D)",
     ),
+    "Rewarded_Tool_Description": MessageLookupByLibrary.simpleMessage(
+      "Regardez une publicité pour débloquer définitivement cet outil sur cet appareil. Une publicité débloque un outil.",
+    ),
+    "Rewarded_Tool_Loading": MessageLookupByLibrary.simpleMessage(
+      "Chargement de la publicité…",
+    ),
+    "Rewarded_Tool_Save_Failed": MessageLookupByLibrary.simpleMessage(
+      "Le déblocage n’a pas pu être enregistré. Veuillez réessayer.",
+    ),
+    "Rewarded_Tool_Skipped": MessageLookupByLibrary.simpleMessage(
+      "La publicité s’est terminée avant la récompense. Regardez-la entièrement pour débloquer cet outil.",
+    ),
+    "Rewarded_Tool_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "Aucune publicité n’est disponible pour le moment. Réessayez plus tard.",
+    ),
+    "Rewarded_Tool_Watch": MessageLookupByLibrary.simpleMessage(
+      "Voir une publicité pour débloquer",
+    ),
+    "Rewarded_Tools_Note": m21,
     "Reynolds_Number": MessageLookupByLibrary.simpleMessage(
       "Nombre de Reynolds et régime d\'écoulement",
     ),
@@ -1968,7 +1993,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage(
       "Part de la dispersion",
     ),
-    "Stackup_Dimension_N": m21,
+    "Stackup_Dimension_N": m22,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage(
       "Chaîne de cotes",
     ),
@@ -1998,7 +2023,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Profilés normalisés",
     ),
-    "State_Numbered": m22,
+    "State_Numbered": m23,
     "Static_Deflection_Delta": MessageLookupByLibrary.simpleMessage(
       "Flèche statique, δst",
     ),
@@ -2248,7 +2273,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Convertisseur d\'unités",
     ),
     "Unit_System": MessageLookupByLibrary.simpleMessage("SYSTÈME D\'UNITÉS"),
-    "Unlock_Premium": MessageLookupByLibrary.simpleMessage("Débloquer Premium"),
+    "Unlock_Premium": MessageLookupByLibrary.simpleMessage("Passer à Premium"),
     "Utilities": MessageLookupByLibrary.simpleMessage("Outils"),
     "Velocity_Head": MessageLookupByLibrary.simpleMessage(
       "Hauteur dynamique, V²/2g",
@@ -2283,7 +2308,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Axe faible (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Épaisseur d\'âme"),
-    "What_If": m23,
+    "What_If": m24,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Diamètre du fil, d",
     ),

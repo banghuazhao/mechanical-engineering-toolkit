@@ -69,11 +69,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m20(tool) => "Remove ${tool} from favorites";
 
-  static String m21(n) => "Dimension ${n}";
+  static String m21(count, total) =>
+      "${count} of ${total} tools are free. Watch one ad per tool to unlock more, or get all tools with Premium.";
 
-  static String m22(n) => "State ${n}";
+  static String m22(n) => "Dimension ${n}";
 
-  static String m23(label) => "What if: ${label}";
+  static String m23(n) => "State ${n}";
+
+  static String m24(label) => "What if: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -1351,6 +1354,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "PDF reports, CSV export and result images",
     ),
     "Premium_Benefit_History": m9,
+    "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage(
+      "Remove all ads",
+    ),
     "Premium_Benefit_Projects": MessageLookupByLibrary.simpleMessage(
       "Saved projects and combined project reports",
     ),
@@ -1359,10 +1365,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Premium_Benefit_Tools": m10,
     "Premium_Benefit_Universal": MessageLookupByLibrary.simpleMessage(
-      "Included on iPhone and iPad too, at no extra cost",
+      "Premium on iPhone, iPad and Mac with the same Apple Account",
     ),
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
-      "One purchase, unlocked forever — on this Mac and on your iPhone and iPad.",
+      "One purchase, yours forever on iPhone, iPad and Mac. Restore with the same Apple Account.",
     ),
     "Premium_Free_Tools_Note": m11,
     "Premium_History_Limited": m12,
@@ -1381,7 +1387,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Premium is not available from the App Store yet.",
     ),
     "Premium_Purchase_Success": MessageLookupByLibrary.simpleMessage(
-      "Premium unlocked. Every tool and export is now available.",
+      "You are now a Premium user. All tools are unlocked and ads are removed.",
     ),
     "Premium_Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
       "No previous purchase was found.",
@@ -1389,11 +1395,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Restore_Success": MessageLookupByLibrary.simpleMessage(
       "Your Premium purchase was restored.",
     ),
-    "Premium_Unlocked": MessageLookupByLibrary.simpleMessage(
-      "Premium unlocked",
-    ),
+    "Premium_Unlocked": MessageLookupByLibrary.simpleMessage("Premium user"),
     "Premium_Unlocked_Description": MessageLookupByLibrary.simpleMessage(
-      "Thank you for supporting ME Toolkit. Every tool and every export is yours.",
+      "All tools are unlocked and ads are removed. Restore your purchase on iPhone, iPad or Mac with the same Apple Account.",
     ),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Press / Shrink-Fit Interference",
@@ -1541,6 +1545,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "Resultant_of_Forces_2D": MessageLookupByLibrary.simpleMessage(
       "Resultant of Forces (2D)",
     ),
+    "Rewarded_Tool_Description": MessageLookupByLibrary.simpleMessage(
+      "Watch one ad to permanently unlock this tool on this device. Each ad unlocks one tool.",
+    ),
+    "Rewarded_Tool_Loading": MessageLookupByLibrary.simpleMessage(
+      "Loading ad…",
+    ),
+    "Rewarded_Tool_Save_Failed": MessageLookupByLibrary.simpleMessage(
+      "Your unlock could not be saved. Please try again.",
+    ),
+    "Rewarded_Tool_Skipped": MessageLookupByLibrary.simpleMessage(
+      "The ad ended before you earned the reward. Watch a complete ad to unlock this tool.",
+    ),
+    "Rewarded_Tool_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "No ad is available right now. Please try again later.",
+    ),
+    "Rewarded_Tool_Watch": MessageLookupByLibrary.simpleMessage(
+      "Watch ad to unlock",
+    ),
+    "Rewarded_Tools_Note": m21,
     "Reynolds_Number": MessageLookupByLibrary.simpleMessage(
       "Reynolds Number & Flow Regime",
     ),
@@ -1774,7 +1797,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage(
       "Share of the variation",
     ),
-    "Stackup_Dimension_N": m21,
+    "Stackup_Dimension_N": m22,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage(
       "Dimension chain",
     ),
@@ -1806,7 +1829,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Standard Sections",
     ),
-    "State_Numbered": m22,
+    "State_Numbered": m23,
     "Static_Deflection_Delta": MessageLookupByLibrary.simpleMessage(
       "Static deflection, δst",
     ),
@@ -2028,7 +2051,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Unit_Converter": MessageLookupByLibrary.simpleMessage("Unit Converter"),
     "Unit_System": MessageLookupByLibrary.simpleMessage("UNIT SYSTEM"),
-    "Unlock_Premium": MessageLookupByLibrary.simpleMessage("Unlock Premium"),
+    "Unlock_Premium": MessageLookupByLibrary.simpleMessage(
+      "Upgrade to Premium",
+    ),
     "Utilities": MessageLookupByLibrary.simpleMessage("Utilities"),
     "Velocity_Head": MessageLookupByLibrary.simpleMessage(
       "Velocity head, V²/2g",
@@ -2057,7 +2082,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Weak axis (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Web thickness"),
-    "What_If": m23,
+    "What_If": m24,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("Wire diameter, d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

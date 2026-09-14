@@ -69,11 +69,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m20(tool) => "${tool} aus Favoriten entfernen";
 
-  static String m21(n) => "Maß ${n}";
+  static String m21(count, total) =>
+      "${count} von ${total} Werkzeugen sind kostenlos. Schalte weitere mit je einer Werbung frei oder erhalte alle mit Premium.";
 
-  static String m22(n) => "Zustand ${n}";
+  static String m22(n) => "Maß ${n}";
 
-  static String m23(label) => "Was wäre wenn: ${label}";
+  static String m23(n) => "Zustand ${n}";
+
+  static String m24(label) => "Was wäre wenn: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -1431,6 +1434,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "PDF-Berichte, CSV-Export und Ergebnisbilder",
     ),
     "Premium_Benefit_History": m9,
+    "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage(
+      "Alle Werbung entfernen",
+    ),
     "Premium_Benefit_Projects": MessageLookupByLibrary.simpleMessage(
       "Gespeicherte Projekte und zusammengefasste Projektberichte",
     ),
@@ -1439,10 +1445,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Premium_Benefit_Tools": m10,
     "Premium_Benefit_Universal": MessageLookupByLibrary.simpleMessage(
-      "Ohne Aufpreis auch auf iPhone und iPad enthalten",
+      "Premium auf iPhone, iPad und Mac mit demselben Apple Account",
     ),
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
-      "Einmal kaufen, dauerhaft freigeschaltet — auf diesem Mac und auf Ihrem iPhone und iPad.",
+      "Einmal kaufen, dauerhaft auf iPhone, iPad und Mac nutzen. Mit demselben Apple Account wiederherstellen.",
     ),
     "Premium_Free_Tools_Note": m11,
     "Premium_History_Limited": m12,
@@ -1461,7 +1467,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Premium ist im App Store noch nicht verfügbar.",
     ),
     "Premium_Purchase_Success": MessageLookupByLibrary.simpleMessage(
-      "Premium freigeschaltet. Alle Werkzeuge und Exporte sind jetzt verfügbar.",
+      "Du bist jetzt Premium-Nutzer. Alle Werkzeuge sind freigeschaltet und Werbung ist entfernt.",
     ),
     "Premium_Restore_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Es wurde kein früherer Kauf gefunden.",
@@ -1469,11 +1475,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Restore_Success": MessageLookupByLibrary.simpleMessage(
       "Ihr Premium-Kauf wurde wiederhergestellt.",
     ),
-    "Premium_Unlocked": MessageLookupByLibrary.simpleMessage(
-      "Premium freigeschaltet",
-    ),
+    "Premium_Unlocked": MessageLookupByLibrary.simpleMessage("Premium-Nutzer"),
     "Premium_Unlocked_Description": MessageLookupByLibrary.simpleMessage(
-      "Danke, dass Sie ME Toolkit unterstützen. Alle Werkzeuge und Exporte stehen Ihnen zur Verfügung.",
+      "Alle Werkzeuge sind freigeschaltet und Werbung ist entfernt. Stelle den Kauf mit demselben Apple Account auf iPhone, iPad oder Mac wieder her.",
     ),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Übermaß bei Press-/Schrumpfsitz",
@@ -1643,6 +1647,25 @@ class MessageLookup extends MessageLookupByLibrary {
     "Resultant_of_Forces_2D": MessageLookupByLibrary.simpleMessage(
       "Kräfteresultierende (2D)",
     ),
+    "Rewarded_Tool_Description": MessageLookupByLibrary.simpleMessage(
+      "Sieh dir eine Werbung an, um dieses Werkzeug dauerhaft auf diesem Gerät freizuschalten. Jede Werbung schaltet ein Werkzeug frei.",
+    ),
+    "Rewarded_Tool_Loading": MessageLookupByLibrary.simpleMessage(
+      "Werbung wird geladen…",
+    ),
+    "Rewarded_Tool_Save_Failed": MessageLookupByLibrary.simpleMessage(
+      "Die Freischaltung konnte nicht gespeichert werden. Versuche es erneut.",
+    ),
+    "Rewarded_Tool_Skipped": MessageLookupByLibrary.simpleMessage(
+      "Die Werbung endete vor der Belohnung. Sieh sie vollständig an, um dieses Werkzeug freizuschalten.",
+    ),
+    "Rewarded_Tool_Unavailable": MessageLookupByLibrary.simpleMessage(
+      "Derzeit ist keine Werbung verfügbar. Versuche es später erneut.",
+    ),
+    "Rewarded_Tool_Watch": MessageLookupByLibrary.simpleMessage(
+      "Werbung ansehen und freischalten",
+    ),
+    "Rewarded_Tools_Note": m21,
     "Reynolds_Number": MessageLookupByLibrary.simpleMessage(
       "Reynolds-Zahl & Strömungsform",
     ),
@@ -1890,7 +1913,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage(
       "Anteil an der Streuung",
     ),
-    "Stackup_Dimension_N": m21,
+    "Stackup_Dimension_N": m22,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage("Maßkette"),
     "Stackup_Dominant": MessageLookupByLibrary.simpleMessage("Größter Anteil"),
     "Stackup_Footnote": MessageLookupByLibrary.simpleMessage(
@@ -1914,7 +1937,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Subtracts": MessageLookupByLibrary.simpleMessage("Subtrahiert"),
     "Stackup_Worst_Case": MessageLookupByLibrary.simpleMessage("Worst Case"),
     "Standard_Sections": MessageLookupByLibrary.simpleMessage("Normprofile"),
-    "State_Numbered": m22,
+    "State_Numbered": m23,
     "Static_Deflection_Delta": MessageLookupByLibrary.simpleMessage(
       "Statische Durchbiegung, δst",
     ),
@@ -2147,7 +2170,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Unit_System": MessageLookupByLibrary.simpleMessage("EINHEITENSYSTEM"),
     "Unlock_Premium": MessageLookupByLibrary.simpleMessage(
-      "Premium freischalten",
+      "Auf Premium upgraden",
     ),
     "Utilities": MessageLookupByLibrary.simpleMessage("Werkzeuge"),
     "Velocity_Head": MessageLookupByLibrary.simpleMessage(
@@ -2175,7 +2198,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Schwache Achse (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Stegdicke"),
-    "What_If": m23,
+    "What_If": m24,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage(
       "Drahtdurchmesser, d",
     ),

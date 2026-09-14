@@ -9,11 +9,8 @@ import 'package:provider/provider.dart';
 
 /// The purchase screen, reached from the menu.
 ///
-/// One product with two faces. Where nothing is gated — iOS and Android — it
-/// is the Remove Ads screen it has always been. Where features are gated it
-/// becomes the Premium screen instead, listing what the unlock includes; the
-/// transaction underneath is identical, so a customer who bought on either
-/// platform already owns the other.
+/// iOS and macOS present Premium using the original product and entitlement.
+/// Android retains its existing Remove Ads offer.
 class RemoveAdsPage extends StatefulWidget {
   const RemoveAdsPage({super.key});
 
@@ -51,7 +48,7 @@ class _RemoveAdsPageState extends State<RemoveAdsPage> {
     final strings = S.of(context);
     final gate = PremiumGate.watch(context);
 
-    if (gate.gatesFeatures) {
+    if (gate.usesPremiumWording) {
       // PremiumOffer runs its own status announcements, so this page must not
       // also announce them — two snackbars for one purchase.
       return Scaffold(
@@ -62,7 +59,7 @@ class _RemoveAdsPageState extends State<RemoveAdsPage> {
               padding: const EdgeInsets.all(16),
               children: [
                 AppSectionCard(
-                  title: strings.Unlock_Premium,
+                  title: gate.isEntitled ? strings.Premium : strings.Unlock_Premium,
                   child: const PremiumOffer(),
                 ),
               ],

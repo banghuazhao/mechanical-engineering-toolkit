@@ -994,40 +994,40 @@ class S {
     return Intl.message('Premium', name: 'Premium', desc: '', args: []);
   }
 
-  /// `Unlock Premium`
+  /// `Upgrade to Premium`
   String get Unlock_Premium {
     return Intl.message(
-      'Unlock Premium',
+      'Upgrade to Premium',
       name: 'Unlock_Premium',
       desc: '',
       args: [],
     );
   }
 
-  /// `One purchase, unlocked forever — on this Mac and on your iPhone and iPad.`
+  /// `One purchase, yours forever on iPhone, iPad and Mac. Restore with the same Apple Account.`
   String get Premium_Description {
     return Intl.message(
-      'One purchase, unlocked forever — on this Mac and on your iPhone and iPad.',
+      'One purchase, yours forever on iPhone, iPad and Mac. Restore with the same Apple Account.',
       name: 'Premium_Description',
       desc: '',
       args: [],
     );
   }
 
-  /// `Premium unlocked`
+  /// `Premium user`
   String get Premium_Unlocked {
     return Intl.message(
-      'Premium unlocked',
+      'Premium user',
       name: 'Premium_Unlocked',
       desc: '',
       args: [],
     );
   }
 
-  /// `Thank you for supporting ME Toolkit. Every tool and every export is yours.`
+  /// `All tools are unlocked and ads are removed. Restore your purchase on iPhone, iPad or Mac with the same Apple Account.`
   String get Premium_Unlocked_Description {
     return Intl.message(
-      'Thank you for supporting ME Toolkit. Every tool and every export is yours.',
+      'All tools are unlocked and ads are removed. Restore your purchase on iPhone, iPad or Mac with the same Apple Account.',
       name: 'Premium_Unlocked_Description',
       desc: '',
       args: [],
@@ -1044,10 +1044,10 @@ class S {
     );
   }
 
-  /// `Premium unlocked. Every tool and export is now available.`
+  /// `You are now a Premium user. All tools are unlocked and ads are removed.`
   String get Premium_Purchase_Success {
     return Intl.message(
-      'Premium unlocked. Every tool and export is now available.',
+      'You are now a Premium user. All tools are unlocked and ads are removed.',
       name: 'Premium_Purchase_Success',
       desc: '',
       args: [],
@@ -1189,10 +1189,10 @@ class S {
     );
   }
 
-  /// `Included on iPhone and iPad too, at no extra cost`
+  /// `Premium on iPhone, iPad and Mac with the same Apple Account`
   String get Premium_Benefit_Universal {
     return Intl.message(
-      'Included on iPhone and iPad too, at no extra cost',
+      'Premium on iPhone, iPad and Mac with the same Apple Account',
       name: 'Premium_Benefit_Universal',
       desc: '',
       args: [],
@@ -8656,6 +8656,86 @@ class S {
       name: 'Stress_At_Diameter',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Remove all ads`
+  String get Premium_Benefit_No_Ads {
+    return Intl.message(
+      'Remove all ads',
+      name: 'Premium_Benefit_No_Ads',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Watch one ad to permanently unlock this tool on this device. Each ad unlocks one tool.`
+  String get Rewarded_Tool_Description {
+    return Intl.message(
+      'Watch one ad to permanently unlock this tool on this device. Each ad unlocks one tool.',
+      name: 'Rewarded_Tool_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Watch ad to unlock`
+  String get Rewarded_Tool_Watch {
+    return Intl.message(
+      'Watch ad to unlock',
+      name: 'Rewarded_Tool_Watch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading ad…`
+  String get Rewarded_Tool_Loading {
+    return Intl.message(
+      'Loading ad…',
+      name: 'Rewarded_Tool_Loading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The ad ended before you earned the reward. Watch a complete ad to unlock this tool.`
+  String get Rewarded_Tool_Skipped {
+    return Intl.message(
+      'The ad ended before you earned the reward. Watch a complete ad to unlock this tool.',
+      name: 'Rewarded_Tool_Skipped',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No ad is available right now. Please try again later.`
+  String get Rewarded_Tool_Unavailable {
+    return Intl.message(
+      'No ad is available right now. Please try again later.',
+      name: 'Rewarded_Tool_Unavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your unlock could not be saved. Please try again.`
+  String get Rewarded_Tool_Save_Failed {
+    return Intl.message(
+      'Your unlock could not be saved. Please try again.',
+      name: 'Rewarded_Tool_Save_Failed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} of {total} tools are free. Watch one ad per tool to unlock more, or get all tools with Premium.`
+  String Rewarded_Tools_Note(Object count, Object total) {
+    return Intl.message(
+      '$count of $total tools are free. Watch one ad per tool to unlock more, or get all tools with Premium.',
+      name: 'Rewarded_Tools_Note',
+      desc: '',
+      args: [count, total],
     );
   }
 }
