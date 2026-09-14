@@ -72,7 +72,8 @@ dev_dependencies:
 
 flutter_icons:
   android: "launcher_icon"
-  ios: true
+  # iOS and macOS compile ios/Runner/AppIcon.icon with Xcode 26+.
+  ios: false
   image_path: "images/app_icon.png"
 
 

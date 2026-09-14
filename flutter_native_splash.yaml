@@ -1,3 +1,8 @@
+# Native launch screens are kept deliberately quiet and match AppTheme.surface.
+# iOS uses the adaptive LaunchSurface color asset; Android 12+ shows its system icon.
 flutter_native_splash:
-  color: "#ffffff"
-  image: images/app_icon.png
+  color: "#FFFBF8"
+  color_dark: "#171210"
+  android_12:
+    color: "#FFFBF8"
+    color_dark: "#171210"

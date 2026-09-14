@@ -1,0 +1,44 @@
+{
+  "fill": {
+    "automatic-gradient": "extended-srgb:0.54510,0.39608,0.29412,1.00000"
+  },
+  "groups": [
+    {
+      "layers": [
+        {
+          "image-name": "01-Precision-Gear.svg",
+          "name": "01-Precision-Gear"
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.35
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.2
+      },
+      "name": "01 \u00b7 Frosted precision gear"
+    },
+    {
+      "name": "02 \u00b7 Bronze hex hub",
+      "layers": [
+        {
+          "image-name": "02-Hex-Hub.svg",
+          "name": "02-Hex-Hub"
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.3
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.3
+      }
+    }
+  ],
+  "supported-platforms": {
+    "squares": "shared"
+  }
+}
