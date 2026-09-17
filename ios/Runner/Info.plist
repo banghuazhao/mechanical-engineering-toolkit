@@ -282,7 +282,7 @@
 					<key>UISceneConfigurationName</key>
 					<string>flutter</string>
 					<key>UISceneDelegateClassName</key>
-					<string>FlutterSceneDelegate</string>
+					<string>$(PRODUCT_MODULE_NAME).METoolkitSceneDelegate</string>
 					<key>UISceneStoryboardFile</key>
 					<string>Main</string>
 				</dict>
@@ -310,6 +310,26 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<!-- The scheme a Home Screen widget tile and the "Open Tool" shortcut use
+	     to reach one calculator. Handled in AppDelegate and routed in Dart by
+	     lib/util/deep_links.dart. -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.appsbay.mechanicalEngineeringToolkit.deeplink</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>metoolkit</string>
+			</array>
+		</dict>
+	</array>
+	<!-- The App Group the widget extension shares; see
+	     METoolkitShared/SharedStore.swift. -->
+	<key>METoolkitAppGroup</key>
+	<string>$(ME_APP_GROUP_ID)</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>

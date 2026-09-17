@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Shared with the widget extension, which reads the tool catalogue,
+	     favourites and recents the app publishes here. See
+	     METoolkitShared/SharedStore.swift. -->
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>$(ME_APP_GROUP_ID)</string>
+	</array>
+</dict>
+</plist>

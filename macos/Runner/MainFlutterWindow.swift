@@ -36,6 +36,14 @@ class MainFlutterWindow: NSWindow {
 
     RegisterGeneratedPlugins(registry: flutterViewController)
 
+    // The engine exists only now, so this is the earliest the shortcut bridge
+    // can be built. Attaching it also drains any URL the OS delivered during
+    // launch, which on a cold start from a widget tap arrives before this
+    // point.
+    METoolkitBridgeHost.shared.attach(
+      METoolkitShortcutBridge(
+        messenger: flutterViewController.engine.binaryMessenger))
+
     super.awakeFromNib()
   }
 }

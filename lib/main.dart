@@ -14,6 +14,9 @@ import 'package:mechanical_engineering_toolkit/util/language.dart';
 import 'package:mechanical_engineering_toolkit/util/material_library.dart';
 import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/others.dart';
+import 'package:mechanical_engineering_toolkit/util/deep_links.dart';
+import 'package:mechanical_engineering_toolkit/util/shortcut_bridge.dart';
+import 'package:mechanical_engineering_toolkit/util/shortcut_publisher.dart';
 import 'package:mechanical_engineering_toolkit/util/theme_preference.dart';
 import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +48,14 @@ Future<void> main() async {
   AdsManager.debugPrintID();
 
   runApp(MyApp(removeAdsService: removeAdsService));
+
+  // After the first frame, because the router needs the navigator that frame
+  // builds. Nothing is lost by waiting: the native side queues every link
+  // that arrives before this handshake — a cold launch from a widget tap is
+  // exactly that case — and delivers the queue the moment it lands.
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    unawaited(ShortcutBridge.installLinkHandler(MyApp.deepLinkRouter.handle));
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -55,6 +66,10 @@ class MyApp extends StatelessWidget {
   /// The root navigator, which the Mac menu bar sits above and navigates
   /// through.
   static final navigatorKey = GlobalKey<NavigatorState>();
+
+  /// Routes the `metoolkit://` links that arrive from a Home Screen widget
+  /// tile or a Shortcuts action.
+  static final deepLinkRouter = DeepLinkRouter(navigatorKey);
 
   @override
   Widget build(BuildContext context) {
@@ -77,15 +92,20 @@ class MyApp extends StatelessWidget {
           navigatorObservers: [AppCommands.instance.routeObserver],
           builder: (context, child) => AppMenuBar(
             navigatorKey: navigatorKey,
-            child: NotificationListener<ScrollNotification>(
-              onNotification: (notification) {
-                if (notification is ScrollStartNotification &&
-                    notification.dragDetails != null) {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                }
-                return false;
-              },
-              child: child ?? const SizedBox.shrink(),
+            // Inside the builder so it sits under the providers and under a
+            // Localizations scope: it publishes the tool titles in whatever
+            // language the app is currently running in.
+            child: ShortcutPublisher(
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (notification) {
+                  if (notification is ScrollStartNotification &&
+                      notification.dragDetails != null) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  }
+                  return false;
+                },
+                child: child ?? const SizedBox.shrink(),
+              ),
             ),
           ),
           debugShowCheckedModeBanner: false,

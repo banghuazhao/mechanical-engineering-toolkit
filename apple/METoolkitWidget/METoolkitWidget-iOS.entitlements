@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- The one container the widget shares with the app. Written as a build
+	     setting because iOS and macOS spell the identifier differently — a
+	     sandboxed Mac app's groups carry the team prefix, iOS's do not. -->
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>$(ME_APP_GROUP_ID)</string>
+	</array>
+</dict>
+</plist>

@@ -46,6 +46,12 @@ substituted calculation steps, and a result you can export or share.
   sidebar. The Mac app carries a native menu bar with the shortcuts that go
   with it: ⌘↩ calculate, ⌘F find a tool, ⌘S save to a project, ⌘E export, ⌘?
   explain this tool.
+- **Shortcuts and Siri.** Three App Intents: *Convert Unit* answers without
+  opening the app, *Open Tool* jumps into any calculator, and *Open Unit
+  Converter* does what it says. Usable from the Shortcuts app, the Action
+  button, Spotlight and Siri.
+- **Home Screen widgets.** *Favourite Tools* and *Recent Tools*, in all three
+  sizes, each tile opening its calculator directly.
 - **iPhone, iPad, Android and Mac.** The Mac app is a second platform on the same
   App Store record, so its unlock is shared with iOS — see below.
 
@@ -71,12 +77,17 @@ substituted calculation steps, and a result you can export or share.
 |---|---|
 | Flutter | 3.44 or newer |
 | Dart | `>=3.0.0 <4.0.0` |
-| iOS | 15.0+ |
+| iOS | 15.0+ (Shortcuts 16.0+, widgets 17.0+) |
 | Android | 7.0+ (API 24) |
-| macOS | 12.0+ |
+| macOS | 12.0+ (Shortcuts 13.0+, widgets 14.0+) |
 
 Apple plugins are managed by **Swift Package Manager**, not CocoaPods — there is
 no `Podfile` and no `ios/Pods` directory.
+
+The Shortcuts actions and the widget need a newer OS than the app itself, so
+they are marked `@available` and the widget extension carries its own
+deployment target. An older device simply does not see them; nothing else in
+the app changes.
 
 ## Getting started
 
@@ -113,6 +124,11 @@ flutter build macos --release       # macOS app bundle
 
 The macOS target needs no AdMob configuration: it serves no ads, and
 `lib/util/secrets.dart` is never read there.
+
+Signed builds additionally need the **App Groups** capability on the App ID,
+which is configured in the Apple Developer portal rather than in this
+repository — see
+[The App Group](#the-app-group-and-the-one-step-that-is-not-in-this-repository).
 
 ## How the app is paid for
 
@@ -169,6 +185,115 @@ product):
 
 - Display name: **Premium User**
 - Description: **Unlock all tools and remove ads on iPhone, iPad and Mac.**
+
+## Shortcuts and the Home Screen widget
+
+The native code both platforms share lives in [`apple/`](apple), not under
+`ios/` or `macos/`, because both Xcode projects compile it — one copy, two
+platforms.
+
+| Directory | Compiled into |
+|---|---|
+| [`apple/METoolkitShared`](apple/METoolkitShared) | the app (iOS and macOS), plus the three files the widget also needs |
+| [`apple/METoolkitWidget`](apple/METoolkitWidget) | the `METoolkitWidgetExtension` target only |
+
+`ShortcutBridge.swift` imports Flutter and the intent files import
+AppIntents, so neither is in the widget's target; the widget compiles only
+`SharedStore.swift`, `DeepLink.swift` and `CategoryGlyph.swift`.
+
+### How the widget gets its data
+
+The widget cannot read `SharedPreferences`, and it cannot read Flutter assets
+either. Instead the app publishes a snapshot into an App Group container:
+
+1. [`ShortcutPublisher`](lib/util/shortcut_publisher.dart) sits in the widget
+   tree, watches `Favorites`, `ToolHistory` and `PremiumGate`, and hands the
+   whole tool catalogue to
+   [`ShortcutBridge`](lib/util/shortcut_bridge.dart) whenever one of them
+   moves. Being in the tree is the point: the titles come from
+   `S.of(context)`, so a German user's widget reads German with no `.strings`
+   file in the extension.
+2. `METoolkitShortcutBridge` writes it as JSON to the shared `UserDefaults`
+   and calls `WidgetCenter.reloadAllTimelines()`.
+3. The widget reads it back through `METoolkitSharedStore`.
+
+Tool illustrations are the one thing that does not survive the trip — they are
+Flutter assets inside `App.framework`, which an extension does not load — so
+widget tiles use a per-category SF Symbol from `CategoryGlyph.swift`.
+
+### Deep links
+
+A widget tile and the `Open Tool` action both open `metoolkit://tool/<id>`,
+handled by the app delegates and routed by
+[`DeepLinkRouter`](lib/util/deep_links.dart). Links go through `launchTool`
+like every other route into a calculator, so a widget tile cannot become a
+second door into a tool this build holds behind Premium — it reaches the same
+upgrade sheet the library shows. An id that no longer exists is ignored rather
+than crashing, which is what an old widget tile looks like after a tool is
+withdrawn.
+
+### The App Group, and the one step that is not in this repository
+
+Both targets resolve the group from a single `ME_APP_GROUP_ID` build setting,
+substituted into each target's `Info.plist` and `.entitlements`:
+
+| Platform | Value |
+|---|---|
+| iOS | `group.com.appsbay.mechanicalEngineeringToolkit` |
+| macOS | `F694X76A5X.group.com.appsbay.mechanicalEngineeringToolkit` |
+
+macOS carries the team prefix because a sandboxed group requires one. It is
+written out rather than built from `$(TeamIdentifierPrefix)` on purpose: that
+variable is defined during code signing, not while Xcode processes an
+`Info.plist`, so the app and the widget would resolve different names and
+silently open different containers. `METoolkitSharedStore` reads the value
+back from the running bundle, which is what guarantees they agree.
+
+**Before a signed build, the App ID `com.appsbay.mechanicalEngineeringToolkit`
+needs the App Groups capability enabled in the Apple Developer portal, with
+both group identifiers registered.** Automatic signing cannot add a capability
+by itself, so until that is done a device or distribution build fails to sign.
+Simulator and local Mac builds work without it. When the group is missing at
+runtime, `publishSnapshot` returns false, the widget draws its empty state,
+and the rest of the app is unaffected.
+
+#### One thing to verify on macOS before shipping the Mac widget
+
+On a locally built Mac app — which `flutter build macos` signs ad-hoc, with
+`TeamIdentifier=not set` — the first write to the group container raises the
+system prompt *"ME Toolkit.app would like to access data from other apps"*,
+and **while that prompt sits unanswered the app's window is blank**. A
+`sample` of the stalled process shows why: two threads are waiting on
+`cfprefsd`, one being our own group write and the other AppKit's unrelated
+input-method preferences read queued behind it. It is the app's whole
+preferences domain that stalls, not just our call, so moving the write off the
+platform thread does not cure it — `ShortcutPublisher.firstPublishDelay` only
+buys enough time for the window to draw first, so the prompt appears over a
+working app.
+
+The prompt almost certainly comes from the ad-hoc signature: the group is
+`F694X76A5X.group.…` and an ad-hoc-signed build carries no team identifier to
+match that prefix. A build signed with team `F694X76A5X` should not be asked.
+**That has not been verified here** — it needs a Developer ID or App Store
+signed build. Check it before shipping the Mac widget; if the prompt does
+appear in a signed build, the Mac widget is worth reconsidering, since iOS has
+no equivalent prompt and is unaffected either way.
+
+### Changing the unit catalogue
+
+The `Convert Unit` action runs in Swift with no Dart available, so the
+converter's table exists twice: once in
+[`converter_catalog.dart`](lib/util/converter_catalog.dart) and once in
+`apple/METoolkitShared/UnitCatalog.generated.swift`. Only the Dart file is
+edited by hand. After changing it:
+
+```bash
+dart run tool/gen_swift_units.dart
+```
+
+`test/swift_units_sync_test.dart` fails until the committed Swift matches, so a
+forgotten run is caught by `flutter test` rather than by a Shortcut quietly
+converting against a stale factor.
 
 ## Adding a new calculator
 

@@ -21,14 +21,30 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		F812DAA12F24000200A11002 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = F812DAA12F24000200A11001 /* AppIcon.icon */; };
+		090899CCB3D479A2CCC4EF15 /* METoolkitShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21408B781344256AFD439782 /* METoolkitShortcuts.swift */; };
+		173C78223D7AFBAAC909329B /* OpenToolIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2EAF5A5274C1D92709AA88 /* OpenToolIntent.swift */; };
+		1D7C18CA0686ACB9B3609D47 /* METoolkitWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A904A9674A79BB76BEE3A8A /* METoolkitWidgetBundle.swift */; };
+		1DA990230B71F7DA34648EF1 /* ShortcutBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9738C4365FB909EC1ED15A /* ShortcutBridge.swift */; };
+		2592BC7B4EBB24C4243EF6AD /* CategoryGlyph.swift in Sources */ = {isa = PBXBuildFile; fileRef = A715214E4FE2EBE053CE1A19 /* CategoryGlyph.swift */; };
 		331C80D8294CF71000263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C80D7294CF71000263BE5 /* RunnerTests.swift */; };
 		335BBD1B22A9A15E00E9071D /* GeneratedPluginRegistrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335BBD1A22A9A15E00E9071D /* GeneratedPluginRegistrant.swift */; };
 		33CC10F12044A3C60003C045 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC10F02044A3C60003C045 /* AppDelegate.swift */; };
 		33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F22044A3C60003C045 /* Assets.xcassets */; };
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
+		48191410E507F521F4DE9333 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E9136ECC8039CD396433130 /* Cocoa.framework */; };
+		73CF3C2BCFAA91CDB8DE8D00 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD782CCA7C31C99DA18E776 /* DeepLink.swift */; };
 		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
+		9FD899CA7312230C9AC96FF6 /* UnitCatalog.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC26BF81C8C1F8032F9BB4C /* UnitCatalog.generated.swift */; };
+		B6D49D18E484ED891352B2B7 /* METoolkitWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5E4A8C66BF9BC40DF1389B50 /* METoolkitWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BF38850E57ADD3F3F0AB5A7C /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD782CCA7C31C99DA18E776 /* DeepLink.swift */; };
+		C2AFC284DC034C00AF883126 /* QuickToolsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BEB97090E7B3C7D7D044087 /* QuickToolsWidget.swift */; };
+		C3608553D558F8185247650C /* SharedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660C332A22D253ED3D1F45DC /* SharedStore.swift */; };
+		C55B0BCF512A640C13363E51 /* UnitConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C998A4286515A814FD97DC47 /* UnitConversion.swift */; };
+		D211A4EE5E83FCDFB5E9B5AB /* CategoryGlyph.swift in Sources */ = {isa = PBXBuildFile; fileRef = A715214E4FE2EBE053CE1A19 /* CategoryGlyph.swift */; };
+		D77138220755552277C619C8 /* SharedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660C332A22D253ED3D1F45DC /* SharedStore.swift */; };
+		EF02F1710E5786F66B2CCEE6 /* ConvertUnitIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F54E34EEF37474193FD7236 /* ConvertUnitIntent.swift */; };
+		F812DAA12F24000200A11002 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = F812DAA12F24000200A11001 /* AppIcon.icon */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +62,13 @@
 			remoteGlobalIDString = 33CC111A2044C6BA0003C045;
 			remoteInfo = FLX;
 		};
+		A7FF1E37035A532ED48A0D11 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 33CC10E52044A3C60003C045 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D6B982EC8468C99D2E5F0831;
+			remoteInfo = METoolkitWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -59,15 +82,28 @@
 			name = "Bundle Framework";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A4DE72D7ABDA683F61FFB125 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B6D49D18E484ED891352B2B7 /* METoolkitWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		F812DAA12F24000200A11001 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = ../ios/Runner/AppIcon.icon; sourceTree = SOURCE_ROOT; };
+		0B9738C4365FB909EC1ED15A /* ShortcutBridge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShortcutBridge.swift; sourceTree = "<group>"; };
+		0F54E34EEF37474193FD7236 /* ConvertUnitIntent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ConvertUnitIntent.swift; sourceTree = "<group>"; };
+		21408B781344256AFD439782 /* METoolkitShortcuts.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = METoolkitShortcuts.swift; sourceTree = "<group>"; };
 		331C80D5294CF71000263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		331C80D7294CF71000263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		333000ED22D3DE5D00554162 /* Warnings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Warnings.xcconfig; sourceTree = "<group>"; };
 		335BBD1A22A9A15E00E9071D /* GeneratedPluginRegistrant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedPluginRegistrant.swift; sourceTree = "<group>"; };
-		33CC10ED2044A3C60003C045 /* mechanical_engineering_toolkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "mechanical_engineering_toolkit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		33CC10ED2044A3C60003C045 /* mechanical_engineering_toolkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mechanical_engineering_toolkit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33CC10F02044A3C60003C045 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		33CC10F22044A3C60003C045 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Runner/Assets.xcassets; sourceTree = "<group>"; };
 		33CC10F52044A3C60003C045 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -79,12 +115,33 @@
 		33E51913231747F40026EE4D /* DebugProfile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DebugProfile.entitlements; sourceTree = "<group>"; };
 		33E51914231749380026EE4D /* Release.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Release.entitlements; sourceTree = "<group>"; };
 		33E5194F232828860026EE4D /* AppInfo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppInfo.xcconfig; sourceTree = "<group>"; };
+		3BEB97090E7B3C7D7D044087 /* QuickToolsWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = QuickToolsWidget.swift; sourceTree = "<group>"; };
+		4DC26BF81C8C1F8032F9BB4C /* UnitCatalog.generated.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UnitCatalog.generated.swift; sourceTree = "<group>"; };
+		58633AB939F55BA626557539 /* METoolkitWidget-macOS.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = "METoolkitWidget-macOS.entitlements"; sourceTree = "<group>"; };
+		5BD782CCA7C31C99DA18E776 /* DeepLink.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
+		5D2EAF5A5274C1D92709AA88 /* OpenToolIntent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpenToolIntent.swift; sourceTree = "<group>"; };
+		5E4A8C66BF9BC40DF1389B50 /* METoolkitWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = METoolkitWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		660C332A22D253ED3D1F45DC /* SharedStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SharedStore.swift; sourceTree = "<group>"; };
+		6A904A9674A79BB76BEE3A8A /* METoolkitWidgetBundle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = METoolkitWidgetBundle.swift; sourceTree = "<group>"; };
+		7785BD8001602CBDD5E375B8 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78E0A7A72DC9AD7400C4905E /* FlutterGeneratedPluginSwiftPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FlutterGeneratedPluginSwiftPackage; path = ephemeral/Packages/FlutterGeneratedPluginSwiftPackage; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		8E9136ECC8039CD396433130 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		A715214E4FE2EBE053CE1A19 /* CategoryGlyph.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CategoryGlyph.swift; sourceTree = "<group>"; };
+		C998A4286515A814FD97DC47 /* UnitConversion.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UnitConversion.swift; sourceTree = "<group>"; };
+		F812DAA12F24000200A11001 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = ../ios/Runner/AppIcon.icon; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0614F0382E7FD782203A4A8C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48191410E507F521F4DE9333 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		331C80D2294CF70F00263BE5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -103,6 +160,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00169D88AFE6CD906AA866F4 /* METoolkitWidget */ = {
+			isa = PBXGroup;
+			children = (
+				3BEB97090E7B3C7D7D044087 /* QuickToolsWidget.swift */,
+				6A904A9674A79BB76BEE3A8A /* METoolkitWidgetBundle.swift */,
+				7785BD8001602CBDD5E375B8 /* Info.plist */,
+				58633AB939F55BA626557539 /* METoolkitWidget-macOS.entitlements */,
+			);
+			name = METoolkitWidget;
+			path = ../apple/METoolkitWidget;
+			sourceTree = "<group>";
+		};
 		331C80D6294CF71000263BE5 /* RunnerTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +199,8 @@
 				331C80D6294CF71000263BE5 /* RunnerTests */,
 				33CC10EE2044A3C60003C045 /* Products */,
 				D73912EC22F37F3D000D13A0 /* Frameworks */,
+				A1991A8D1F9C993F9C6D24BE /* METoolkitShared */,
+				00169D88AFE6CD906AA866F4 /* METoolkitWidget */,
 			);
 			sourceTree = "<group>";
 		};
@@ -138,6 +209,7 @@
 			children = (
 				33CC10ED2044A3C60003C045 /* mechanical_engineering_toolkit.app */,
 				331C80D5294CF71000263BE5 /* RunnerTests.xctest */,
+				5E4A8C66BF9BC40DF1389B50 /* METoolkitWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -179,11 +251,37 @@
 			path = Runner;
 			sourceTree = "<group>";
 		};
+		A1991A8D1F9C993F9C6D24BE /* METoolkitShared */ = {
+			isa = PBXGroup;
+			children = (
+				C998A4286515A814FD97DC47 /* UnitConversion.swift */,
+				4DC26BF81C8C1F8032F9BB4C /* UnitCatalog.generated.swift */,
+				660C332A22D253ED3D1F45DC /* SharedStore.swift */,
+				5BD782CCA7C31C99DA18E776 /* DeepLink.swift */,
+				A715214E4FE2EBE053CE1A19 /* CategoryGlyph.swift */,
+				0F54E34EEF37474193FD7236 /* ConvertUnitIntent.swift */,
+				5D2EAF5A5274C1D92709AA88 /* OpenToolIntent.swift */,
+				21408B781344256AFD439782 /* METoolkitShortcuts.swift */,
+				0B9738C4365FB909EC1ED15A /* ShortcutBridge.swift */,
+			);
+			name = METoolkitShared;
+			path = ../apple/METoolkitShared;
+			sourceTree = "<group>";
+		};
 		D73912EC22F37F3D000D13A0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ED13D08ACFD323E1773B8636 /* OS X */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ED13D08ACFD323E1773B8636 /* OS X */ = {
+			isa = PBXGroup;
+			children = (
+				8E9136ECC8039CD396433130 /* Cocoa.framework */,
+			);
+			name = "OS X";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,12 +313,14 @@
 				33CC10EA2044A3C60003C045 /* Frameworks */,
 				33CC10EB2044A3C60003C045 /* Resources */,
 				33CC110E2044A8840003C045 /* Bundle Framework */,
+				A4DE72D7ABDA683F61FFB125 /* Embed Foundation Extensions */,
 				3399D490228B24CF009A79C7 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				33CC11202044C79F0003C045 /* PBXTargetDependency */,
+				5181F92C635048705AD760A9 /* PBXTargetDependency */,
 			);
 			name = Runner;
 			packageProductDependencies = (
@@ -229,6 +329,23 @@
 			productName = Runner;
 			productReference = 33CC10ED2044A3C60003C045 /* mechanical_engineering_toolkit.app */;
 			productType = "com.apple.product-type.application";
+		};
+		D6B982EC8468C99D2E5F0831 /* METoolkitWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AEC3EE62B55E12C00887A545 /* Build configuration list for PBXNativeTarget "METoolkitWidgetExtension" */;
+			buildPhases = (
+				97ECEC2752133C22132F0C20 /* Sources */,
+				0614F0382E7FD782203A4A8C /* Frameworks */,
+				6B409DB52F0A059BF08540B6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = METoolkitWidgetExtension;
+			productName = METoolkitWidgetExtension;
+			productReference = 5E4A8C66BF9BC40DF1389B50 /* METoolkitWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -271,7 +388,7 @@
 			);
 			mainGroup = 33CC10E42044A3C60003C045;
 			packageReferences = (
-				781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage" */,
+				781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */,
 			);
 			productRefGroup = 33CC10EE2044A3C60003C045 /* Products */;
 			projectDirPath = "";
@@ -280,6 +397,7 @@
 				33CC10EC2044A3C60003C045 /* Runner */,
 				331C80D4294CF70F00263BE5 /* RunnerTests */,
 				33CC111A2044C6BA0003C045 /* Flutter Assemble */,
+				D6B982EC8468C99D2E5F0831 /* METoolkitWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -299,6 +417,13 @@
 				33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */,
 				F812DAA12F24000200A11002 /* AppIcon.icon in Resources */,
 				33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6B409DB52F0A059BF08540B6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,6 +486,27 @@
 				33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */,
 				33CC10F12044A3C60003C045 /* AppDelegate.swift in Sources */,
 				335BBD1B22A9A15E00E9071D /* GeneratedPluginRegistrant.swift in Sources */,
+				C55B0BCF512A640C13363E51 /* UnitConversion.swift in Sources */,
+				9FD899CA7312230C9AC96FF6 /* UnitCatalog.generated.swift in Sources */,
+				D77138220755552277C619C8 /* SharedStore.swift in Sources */,
+				73CF3C2BCFAA91CDB8DE8D00 /* DeepLink.swift in Sources */,
+				2592BC7B4EBB24C4243EF6AD /* CategoryGlyph.swift in Sources */,
+				EF02F1710E5786F66B2CCEE6 /* ConvertUnitIntent.swift in Sources */,
+				173C78223D7AFBAAC909329B /* OpenToolIntent.swift in Sources */,
+				090899CCB3D479A2CCC4EF15 /* METoolkitShortcuts.swift in Sources */,
+				1DA990230B71F7DA34648EF1 /* ShortcutBridge.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97ECEC2752133C22132F0C20 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2AFC284DC034C00AF883126 /* QuickToolsWidget.swift in Sources */,
+				1D7C18CA0686ACB9B3609D47 /* METoolkitWidgetBundle.swift in Sources */,
+				C3608553D558F8185247650C /* SharedStore.swift in Sources */,
+				BF38850E57ADD3F3F0AB5A7C /* DeepLink.swift in Sources */,
+				D211A4EE5E83FCDFB5E9B5AB /* CategoryGlyph.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,6 +523,12 @@
 			target = 33CC111A2044C6BA0003C045 /* Flutter Assemble */;
 			targetProxy = 33CC111F2044C79F0003C045 /* PBXContainerItemProxy */;
 		};
+		5181F92C635048705AD760A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = METoolkitWidgetExtension;
+			target = D6B982EC8468C99D2E5F0831 /* METoolkitWidgetExtension */;
+			targetProxy = A7FF1E37035A532ED48A0D11 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -392,6 +544,32 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1A3E661BD924252230B9DDF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 33CEB47422A05771004F2AC0 /* Flutter-Release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_ENTITLEMENTS = "../apple/METoolkitWidget/METoolkitWidget-macOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = F694X76A5X;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ../apple/METoolkitWidget/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = "$(FLUTTER_BUILD_NAME)";
+				ME_APP_GROUP_ID = F694X76A5X.group.com.appsbay.mechanicalEngineeringToolkit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appsbay.mechanicalEngineeringToolkit.METoolkitWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		331C80DB294CF71000263BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -491,13 +669,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/DebugProfile.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F694X76A5X;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = F694X76A5X;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				ME_APP_GROUP_ID = F694X76A5X.group.com.appsbay.mechanicalEngineeringToolkit;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
@@ -624,13 +803,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/DebugProfile.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F694X76A5X;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = F694X76A5X;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				ME_APP_GROUP_ID = F694X76A5X.group.com.appsbay.mechanicalEngineeringToolkit;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -645,13 +825,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Release.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F694X76A5X;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = F694X76A5X;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				ME_APP_GROUP_ID = F694X76A5X.group.com.appsbay.mechanicalEngineeringToolkit;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
@@ -673,6 +854,58 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
+		};
+		37F8DA0121C83BE8B9F5853A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 33CEB47222A05771004F2AC0 /* Flutter-Debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_ENTITLEMENTS = "../apple/METoolkitWidget/METoolkitWidget-macOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = F694X76A5X;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ../apple/METoolkitWidget/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = "$(FLUTTER_BUILD_NAME)";
+				ME_APP_GROUP_ID = F694X76A5X.group.com.appsbay.mechanicalEngineeringToolkit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appsbay.mechanicalEngineeringToolkit.METoolkitWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		EC882E44F9E4A2D7B32ABA13 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 33CEB47422A05771004F2AC0 /* Flutter-Release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_ENTITLEMENTS = "../apple/METoolkitWidget/METoolkitWidget-macOS.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = F694X76A5X;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ../apple/METoolkitWidget/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = "$(FLUTTER_BUILD_NAME)";
+				ME_APP_GROUP_ID = F694X76A5X.group.com.appsbay.mechanicalEngineeringToolkit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appsbay.mechanicalEngineeringToolkit.METoolkitWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Profile;
 		};
 /* End XCBuildConfiguration section */
 
@@ -717,10 +950,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		AEC3EE62B55E12C00887A545 /* Build configuration list for PBXNativeTarget "METoolkitWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A3E661BD924252230B9DDF7 /* Release */,
+				37F8DA0121C83BE8B9F5853A /* Debug */,
+				EC882E44F9E4A2D7B32ABA13 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage" */ = {
+		781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage;
 		};

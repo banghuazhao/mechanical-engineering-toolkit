@@ -36,6 +36,27 @@
 	<string>$(PRODUCT_COPYRIGHT)</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
+	<!-- The scheme a widget tile and the "Open Tool" shortcut use to reach one
+	     calculator. Handled in AppDelegate and routed in Dart by
+	     lib/util/deep_links.dart. Matches ios/Runner/Info.plist. -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.appsbay.mechanicalEngineeringToolkit.deeplink</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>metoolkit</string>
+			</array>
+		</dict>
+	</array>
+	<!-- The App Group the widget extension shares; see
+	     METoolkitShared/SharedStore.swift. On macOS this resolves with the
+	     team identifier prefix a sandboxed group requires. -->
+	<key>METoolkitAppGroup</key>
+	<string>$(ME_APP_GROUP_ID)</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
