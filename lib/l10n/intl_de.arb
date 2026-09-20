@@ -994,5 +994,8 @@
   "Rewarded_Tool_Skipped": "Die Werbung endete vor der Belohnung. Sieh sie vollständig an, um dieses Werkzeug freizuschalten.",
   "Rewarded_Tool_Unavailable": "Derzeit ist keine Werbung verfügbar. Versuche es später erneut.",
   "Rewarded_Tool_Save_Failed": "Die Freischaltung konnte nicht gespeichert werden. Versuche es erneut.",
-  "Rewarded_Tools_Note": "{count} von {total} Werkzeugen sind kostenlos. Schalte weitere mit je einer Werbung frei oder erhalte alle mit Premium."
+  "Rewarded_Tools_Note": "{count} von {total} Werkzeugen sind kostenlos. Schalte weitere mit je einer Werbung frei oder erhalte alle mit Premium.",
+  "Premium_Description_Play": "Einmal kaufen, dauerhaft nutzen. Auf jedem Android-Gerät mit demselben Google-Konto wiederherstellen.",
+  "Premium_Unlocked_Description_Play": "Alle Werkzeuge sind freigeschaltet und Werbung ist entfernt. Stelle den Kauf auf jedem Android-Gerät mit demselben Google-Konto wieder her.",
+  "Premium_Not_Found_Play": "Premium ist bei Google Play noch nicht verfügbar."
 }

@@ -28,6 +28,7 @@ class AppPlatform {
   static const macOS = _MacOSPlatform();
   static const mobile = _MobilePlatform();
   static const iOS = _IOSPlatform();
+  static const android = _AndroidPlatform();
 
   /// True while `flutter test` is running, which it sets in the environment.
   ///
@@ -46,6 +47,7 @@ class AppPlatform {
     if (_inFlutterTest) return mobile;
     if (!kIsWeb && Platform.isMacOS) return macOS;
     if (!kIsWeb && Platform.isIOS) return iOS;
+    if (!kIsWeb && Platform.isAndroid) return android;
     return mobile;
   }
 
@@ -58,7 +60,8 @@ class AppPlatform {
 
   /// Whether some of the app is held back until a purchase.
   ///
-  /// macOS gates exports and other advanced features. iOS gates tools only.
+  /// macOS gates exports and other advanced features. iOS and Android gate
+  /// tools only.
   bool get gatesFeatures => false;
 
   bool get gatesTools => gatesFeatures;
@@ -80,14 +83,24 @@ class _MobilePlatform extends AppPlatform {
   const _MobilePlatform() : super._();
 }
 
-class _IOSPlatform extends AppPlatform {
-  const _IOSPlatform() : super._();
+/// The phones and tablets: a free set of tools, each of the rest unlocked by
+/// one rewarded ad or all of them by Premium. Advanced features stay free.
+abstract class _RewardedToolsPlatform extends AppPlatform {
+  const _RewardedToolsPlatform() : super._();
 
   @override
   bool get gatesTools => true;
 
   @override
   bool get supportsRewardedToolUnlocks => true;
+}
+
+class _IOSPlatform extends _RewardedToolsPlatform {
+  const _IOSPlatform();
+}
+
+class _AndroidPlatform extends _RewardedToolsPlatform {
+  const _AndroidPlatform();
 }
 
 class _MacOSPlatform extends AppPlatform {

@@ -1510,6 +1510,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
       "Un seul achat, pour toujours sur iPhone, iPad et Mac. Restaurez avec le même compte Apple.",
     ),
+    "Premium_Description_Play": MessageLookupByLibrary.simpleMessage(
+      "Un seul achat, pour toujours. Restaurez-le sur tout appareil Android connecté au même compte Google.",
+    ),
     "Premium_Free_Tools_Note": m11,
     "Premium_History_Limited": m12,
     "Premium_Locked_Export": MessageLookupByLibrary.simpleMessage(
@@ -1526,6 +1529,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Premium n’est pas encore disponible sur l’App Store.",
     ),
+    "Premium_Not_Found_Play": MessageLookupByLibrary.simpleMessage(
+      "Premium n’est pas encore disponible sur Google Play.",
+    ),
     "Premium_Purchase_Success": MessageLookupByLibrary.simpleMessage(
       "Vous êtes maintenant Premium. Tous les outils sont débloqués et les publicités supprimées.",
     ),
@@ -1540,6 +1546,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Premium_Unlocked_Description": MessageLookupByLibrary.simpleMessage(
       "Tous les outils sont débloqués et les publicités supprimées. Restaurez votre achat sur iPhone, iPad ou Mac avec le même compte Apple.",
+    ),
+    "Premium_Unlocked_Description_Play": MessageLookupByLibrary.simpleMessage(
+      "Tous les outils sont débloqués et les publicités supprimées. Restaurez votre achat sur tout appareil Android avec le même compte Google.",
     ),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Serrage par emmanchement à force / au frein",

@@ -983,6 +983,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
       "一次購買，永久在 iPhone、iPad 和 Mac 上使用。使用同一 Apple 帳户還原購買。",
     ),
+    "Premium_Description_Play": MessageLookupByLibrary.simpleMessage(
+      "一次購買，永久使用。可在使用同一 Google 帳户的任何 Android 裝置上還原購買。",
+    ),
     "Premium_Free_Tools_Note": m11,
     "Premium_History_Limited": m12,
     "Premium_Locked_Export": MessageLookupByLibrary.simpleMessage(
@@ -999,6 +1002,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Not_Found": MessageLookupByLibrary.simpleMessage(
       "高級版尚未在 App Store 上架。",
     ),
+    "Premium_Not_Found_Play": MessageLookupByLibrary.simpleMessage(
+      "高級版尚未在 Google Play 上架。",
+    ),
     "Premium_Purchase_Success": MessageLookupByLibrary.simpleMessage(
       "您已成為高級用戶。所有工具已解鎖，廣告已移除。",
     ),
@@ -1011,6 +1017,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Unlocked": MessageLookupByLibrary.simpleMessage("高級用戶"),
     "Premium_Unlocked_Description": MessageLookupByLibrary.simpleMessage(
       "所有工具已解鎖，廣告已移除。可使用同一 Apple 帳户在 iPhone、iPad 或 Mac 上還原購買。",
+    ),
+    "Premium_Unlocked_Description_Play": MessageLookupByLibrary.simpleMessage(
+      "所有工具已解鎖，廣告已移除。可在使用同一 Google 帳户的任何 Android 裝置上還原購買。",
     ),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "壓裝 / 熱裝過盈配合",

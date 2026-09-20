@@ -13,18 +13,25 @@ const Set<RemoveAdsStatus> kTransientPurchaseStatuses = {
 
 /// What to tell the user about [status], or null when it is not worth saying.
 ///
-/// iOS and macOS use Premium wording for the existing purchase; Android keeps
-/// its Remove Ads wording. Use `PremiumGate.usesPremiumWording` to choose.
+/// Every store build uses Premium wording for the existing purchase; the
+/// Remove Ads wording remains for a build that gates nothing. Use
+/// `PremiumGate.usesPremiumWording` to choose. [store] names the storefront
+/// in the not-found message.
 String? purchaseStatusMessage(
   S strings,
   RemoveAdsStatus status, {
   required bool premiumWording,
+  AppStore? store,
 }) {
   if (kTransientPurchaseStatuses.contains(status)) return null;
   return switch (status) {
     RemoveAdsStatus.unavailable => strings.Purchase_Unavailable,
     RemoveAdsStatus.notFound =>
-      premiumWording ? strings.Premium_Not_Found : strings.Product_Not_Found,
+      premiumWording
+          ? (store == AppStore.playStore
+              ? strings.Premium_Not_Found_Play
+              : strings.Premium_Not_Found)
+          : strings.Product_Not_Found,
     RemoveAdsStatus.failed => strings.Purchase_Failed,
     RemoveAdsStatus.cancelled => strings.Purchase_Cancelled,
     RemoveAdsStatus.pending => strings.Purchase_Pending,

@@ -405,8 +405,8 @@ class _ToolPageState extends State<ToolPage> {
       Consumer<RemoveAdsService>(
         builder: (context, purchases, _) {
           if (!purchases.isSupported) return const SizedBox.shrink();
-          // Apple platforms share the Premium purchase; Android retains
-          // its existing Remove Ads offer.
+          // Every store build sells the original product as Premium; the
+          // Remove Ads wording remains for a build that gates nothing.
           final gate = PremiumGate.watch(context);
           return MoreRow(
             title: gate.usesPremiumWording

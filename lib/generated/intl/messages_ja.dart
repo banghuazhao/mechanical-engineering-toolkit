@@ -1070,6 +1070,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
       "一度の購入で、iPhone・iPad・Macでずっと利用できます。同じApple Accountで購入を復元してください。",
     ),
+    "Premium_Description_Play": MessageLookupByLibrary.simpleMessage(
+      "一度の購入でずっと利用できます。同じGoogleアカウントでログインしたAndroidデバイスで購入を復元できます。",
+    ),
     "Premium_Free_Tools_Note": m11,
     "Premium_History_Limited": m12,
     "Premium_Locked_Export": MessageLookupByLibrary.simpleMessage(
@@ -1086,6 +1089,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Not_Found": MessageLookupByLibrary.simpleMessage(
       "プレミアムはまだ App Store で提供されていません。",
     ),
+    "Premium_Not_Found_Play": MessageLookupByLibrary.simpleMessage(
+      "プレミアムはまだ Google Play で提供されていません。",
+    ),
     "Premium_Purchase_Success": MessageLookupByLibrary.simpleMessage(
       "プレミアムユーザーになりました。すべてのツールが利用可能になり、広告が削除されました。",
     ),
@@ -1098,6 +1104,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Unlocked": MessageLookupByLibrary.simpleMessage("プレミアムユーザー"),
     "Premium_Unlocked_Description": MessageLookupByLibrary.simpleMessage(
       "すべてのツールが利用可能になり、広告が削除されました。同じApple AccountでiPhone・iPad・Macの購入を復元できます。",
+    ),
+    "Premium_Unlocked_Description_Play": MessageLookupByLibrary.simpleMessage(
+      "すべてのツールが利用可能になり、広告が削除されました。同じGoogleアカウントのAndroidデバイスで購入を復元できます。",
     ),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "圧入・焼きばめのしめしろ",

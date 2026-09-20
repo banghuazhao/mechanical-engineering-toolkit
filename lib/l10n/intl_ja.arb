@@ -994,5 +994,8 @@
   "Rewarded_Tool_Skipped": "報酬を獲得する前に広告が終了しました。最後まで見て、このツールを解除してください。",
   "Rewarded_Tool_Unavailable": "現在、広告を利用できません。しばらくしてからもう一度お試しください。",
   "Rewarded_Tool_Save_Failed": "解除状態を保存できませんでした。もう一度お試しください。",
-  "Rewarded_Tools_Note": "{total}個中{count}個のツールが無料です。広告1本でツール1つを解除するか、プレミアムですべて利用できます。"
+  "Rewarded_Tools_Note": "{total}個中{count}個のツールが無料です。広告1本でツール1つを解除するか、プレミアムですべて利用できます。",
+  "Premium_Description_Play": "一度の購入でずっと利用できます。同じGoogleアカウントでログインしたAndroidデバイスで購入を復元できます。",
+  "Premium_Unlocked_Description_Play": "すべてのツールが利用可能になり、広告が削除されました。同じGoogleアカウントのAndroidデバイスで購入を復元できます。",
+  "Premium_Not_Found_Play": "プレミアムはまだ Google Play で提供されていません。"
 }

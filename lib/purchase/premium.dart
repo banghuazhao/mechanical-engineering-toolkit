@@ -5,18 +5,18 @@ import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart'
 import 'package:mechanical_engineering_toolkit/util/app_platform.dart';
 import 'package:provider/provider.dart';
 
-/// The tools iOS and macOS include without a purchase or rewarded ad.
+/// The tools iOS, Android and macOS include without a purchase or rewarded ad.
 ///
 /// Chosen so the free app is a usable engineering companion rather than a
 /// demo: every lookup table, and at least one working calculator from each of
 /// the nine categories, weighted towards the first-year staples an engineer
 /// reaches for most (axial stress, torsion, bending, buckling, von Mises).
-/// Additional tools require Premium or, on iOS, a rewarded ad.
+/// Additional tools require Premium or, on iOS and Android, a rewarded ad.
 ///
 /// Ids are the ones registered in `lib/home/tool_model.dart`; a tool missing
 /// from that library simply never comes up.
 ///
-/// Android remains ungated. iOS can unlock each additional tool with an ad.
+/// iOS and Android can unlock each additional tool with an ad.
 const Set<int> kFreeToolIds = {
   // Reference and utilities — lookups, free in full.
   500, // Unit Converter
@@ -73,8 +73,9 @@ enum PremiumFeature {
 
 /// Answers "may this build do that yet?".
 ///
-/// iOS gates tools; macOS also gates advanced features. Rewarded unlocks
-/// apply only to individual iOS tools and never grant Premium.
+/// iOS and Android gate tools; macOS also gates advanced features. Rewarded
+/// unlocks apply only to individual iOS and Android tools and never grant
+/// Premium.
 @immutable
 class PremiumGate {
   const PremiumGate({
@@ -84,7 +85,7 @@ class PremiumGate {
     this.rewardedToolIds = const {},
   }) : gatesTools = gatesTools ?? gatesFeatures;
 
-  /// Nothing is gated, as on Android.
+  /// Nothing is gated, as in a build with no store.
   const PremiumGate.ungated()
       : isEntitled = true,
         gatesFeatures = false,
@@ -94,7 +95,7 @@ class PremiumGate {
   /// The purchase has been made (or restored from another device).
   final bool isEntitled;
 
-  /// This platform gates advanced features. False on iOS and Android.
+  /// This platform gates advanced features. Only macOS does.
   final bool gatesFeatures;
   final bool gatesTools;
   final Set<int> rewardedToolIds;

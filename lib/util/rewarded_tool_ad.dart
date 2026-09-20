@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -12,12 +13,19 @@ abstract interface class RewardedToolAdClient {
 }
 
 class GoogleRewardedToolAdClient implements RewardedToolAdClient {
-  // Keep production configuration separate from Google's debug-only test unit.
-  static const productionAdUnitId =
+  // Keep production configuration separate from Google's debug-only test
+  // units. Each store build injects its own id with --dart-define.
+  static const iosProductionAdUnitId =
       String.fromEnvironment('IOS_REWARDED_AD_UNIT_ID');
-  static String get adUnitId => kDebugMode
-      ? 'ca-app-pub-3940256099942544/1712485313'
-      : productionAdUnitId;
+  static const androidProductionAdUnitId =
+      String.fromEnvironment('ANDROID_REWARDED_AD_UNIT_ID');
+  static String get adUnitId => Platform.isAndroid
+      ? (kDebugMode
+          ? 'ca-app-pub-3940256099942544/5224354917'
+          : androidProductionAdUnitId)
+      : (kDebugMode
+          ? 'ca-app-pub-3940256099942544/1712485313'
+          : iosProductionAdUnitId);
 
   @override
   Future<RewardedToolAdOutcome> show({required VoidCallback onReward}) async {

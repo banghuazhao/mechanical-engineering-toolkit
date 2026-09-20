@@ -9,8 +9,8 @@ import 'package:provider/provider.dart';
 
 /// The purchase screen, reached from the menu.
 ///
-/// iOS and macOS present Premium using the original product and entitlement.
-/// Android retains its existing Remove Ads offer.
+/// Every store build presents Premium using the original product and
+/// entitlement. The Remove Ads offer remains for a build that gates nothing.
 class RemoveAdsPage extends StatefulWidget {
   const RemoveAdsPage({super.key});
 

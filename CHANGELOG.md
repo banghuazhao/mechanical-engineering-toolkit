@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Android now offers Premium on the same terms as iOS: the free set of tools stays free, any other tool unlocks permanently on the device after one rewarded ad, and Premium unlocks them all and removes ads. Premium is the existing Play `remove_ads` product, so everyone who bought Remove Ads on Android already has it.
 - Added Shortcuts support on iPhone, iPad and Mac. "Convert Unit" converts between any two of the Unit Converter's units and answers without opening the app; "Open Tool" jumps straight into any of the sixty-four calculators, picked from a list that is already in your language; "Open Unit Converter" does what it says. All three work from the Shortcuts app, the Action button, Spotlight and Siri.
 - Added two Home Screen widgets, Favourite Tools and Recent Tools, in all three sizes. Every tile opens its calculator directly, and a locked tool is marked as such rather than surprising you with an upgrade sheet. On a Mac they sit in Notification Center and on the desktop.
 - Fixed the Unit Converter printing a stray decimal point on round numbers in exponential form: 1 GPa in Pa read "1.e+9", and a millimetre in kilometres "1.e-6".

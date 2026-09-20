@@ -11,7 +11,7 @@ import 'package:mechanical_engineering_toolkit/purchase/premium_upsell.dart';
 /// — which is exactly what would happen if each of those screens called
 /// [Tool.action] and remembered its own check.
 ///
-/// Android tools open directly; iOS also accepts per-tool rewarded unlocks.
+/// iOS and Android also accept per-tool rewarded unlocks.
 Future<void> launchTool(
   BuildContext context,
   Tool tool, {

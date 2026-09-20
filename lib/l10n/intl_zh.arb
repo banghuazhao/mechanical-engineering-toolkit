@@ -993,5 +993,8 @@
   "Rewarded_Tool_Skipped": "广告在获得奖励前已结束。请完整观看广告以解锁此工具。",
   "Rewarded_Tool_Unavailable": "暂时没有可用的广告，请稍后重试。",
   "Rewarded_Tool_Save_Failed": "无法保存解锁状态，请重试。",
-  "Rewarded_Tools_Note": "{total} 个工具中有 {count} 个免费。每观看一个广告可解锁一个工具，或升级为高级用户解锁全部工具。"
+  "Rewarded_Tools_Note": "{total} 个工具中有 {count} 个免费。每观看一个广告可解锁一个工具，或升级为高级用户解锁全部工具。",
+  "Premium_Description_Play": "一次购买，永久使用。可在使用同一 Google 账号的任意 Android 设备上恢复购买。",
+  "Premium_Unlocked_Description_Play": "所有工具已解锁，广告已移除。可在使用同一 Google 账号的任意 Android 设备上恢复购买。",
+  "Premium_Not_Found_Play": "高级版尚未在 Google Play 上架。"
 }

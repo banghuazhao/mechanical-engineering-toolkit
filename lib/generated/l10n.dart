@@ -8738,6 +8738,36 @@ class S {
       args: [count, total],
     );
   }
+
+  /// `One purchase, yours forever. Restore it on any Android device signed in to the same Google Account.`
+  String get Premium_Description_Play {
+    return Intl.message(
+      'One purchase, yours forever. Restore it on any Android device signed in to the same Google Account.',
+      name: 'Premium_Description_Play',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All tools are unlocked and ads are removed. Restore your purchase on any Android device with the same Google Account.`
+  String get Premium_Unlocked_Description_Play {
+    return Intl.message(
+      'All tools are unlocked and ads are removed. Restore your purchase on any Android device with the same Google Account.',
+      name: 'Premium_Unlocked_Description_Play',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Premium is not available from Google Play yet.`
+  String get Premium_Not_Found_Play {
+    return Intl.message(
+      'Premium is not available from Google Play yet.',
+      name: 'Premium_Not_Found_Play',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

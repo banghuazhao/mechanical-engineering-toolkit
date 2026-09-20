@@ -994,5 +994,8 @@
   "Rewarded_Tool_Skipped": "The ad ended before you earned the reward. Watch a complete ad to unlock this tool.",
   "Rewarded_Tool_Unavailable": "No ad is available right now. Please try again later.",
   "Rewarded_Tool_Save_Failed": "Your unlock could not be saved. Please try again.",
-  "Rewarded_Tools_Note": "{count} of {total} tools are free. Watch one ad per tool to unlock more, or get all tools with Premium."
+  "Rewarded_Tools_Note": "{count} of {total} tools are free. Watch one ad per tool to unlock more, or get all tools with Premium.",
+  "Premium_Description_Play": "One purchase, yours forever. Restore it on any Android device signed in to the same Google Account.",
+  "Premium_Unlocked_Description_Play": "All tools are unlocked and ads are removed. Restore your purchase on any Android device with the same Google Account.",
+  "Premium_Not_Found_Play": "Premium is not available from Google Play yet."
 }

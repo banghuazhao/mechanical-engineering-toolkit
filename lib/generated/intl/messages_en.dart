@@ -1370,6 +1370,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
       "One purchase, yours forever on iPhone, iPad and Mac. Restore with the same Apple Account.",
     ),
+    "Premium_Description_Play": MessageLookupByLibrary.simpleMessage(
+      "One purchase, yours forever. Restore it on any Android device signed in to the same Google Account.",
+    ),
     "Premium_Free_Tools_Note": m11,
     "Premium_History_Limited": m12,
     "Premium_Locked_Export": MessageLookupByLibrary.simpleMessage(
@@ -1386,6 +1389,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Premium is not available from the App Store yet.",
     ),
+    "Premium_Not_Found_Play": MessageLookupByLibrary.simpleMessage(
+      "Premium is not available from Google Play yet.",
+    ),
     "Premium_Purchase_Success": MessageLookupByLibrary.simpleMessage(
       "You are now a Premium user. All tools are unlocked and ads are removed.",
     ),
@@ -1398,6 +1404,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Unlocked": MessageLookupByLibrary.simpleMessage("Premium user"),
     "Premium_Unlocked_Description": MessageLookupByLibrary.simpleMessage(
       "All tools are unlocked and ads are removed. Restore your purchase on iPhone, iPad or Mac with the same Apple Account.",
+    ),
+    "Premium_Unlocked_Description_Play": MessageLookupByLibrary.simpleMessage(
+      "All tools are unlocked and ads are removed. Restore your purchase on any Android device with the same Google Account.",
     ),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Press / Shrink-Fit Interference",

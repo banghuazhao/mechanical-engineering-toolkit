@@ -244,10 +244,10 @@ class RemoveAdsService extends ChangeNotifier {
 
   bool get isAdsRemoved => _isAdsRemoved;
 
-  /// The original Remove Ads entitlement also grants Premium on iOS and macOS.
+  /// The original Remove Ads entitlement is Premium on every store.
   ///
-  /// It suppresses advertising on iOS and Android, unlocks all iOS tools,
-  /// and unlocks the gated tools and exports on macOS. Reading it through
+  /// It suppresses advertising on iOS and Android, unlocks all iOS and
+  /// Android tools, and unlocks the gated tools and exports on macOS. Reading it through
   /// this name keeps the Mac call sites from looking like they care about ads
   /// in a build that has none. Prefer [PremiumGate] over touching this
   /// directly — it also answers whether the platform gates anything.

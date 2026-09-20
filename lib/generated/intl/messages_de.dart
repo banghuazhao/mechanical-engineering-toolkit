@@ -1450,6 +1450,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Description": MessageLookupByLibrary.simpleMessage(
       "Einmal kaufen, dauerhaft auf iPhone, iPad und Mac nutzen. Mit demselben Apple Account wiederherstellen.",
     ),
+    "Premium_Description_Play": MessageLookupByLibrary.simpleMessage(
+      "Einmal kaufen, dauerhaft nutzen. Auf jedem Android-Gerät mit demselben Google-Konto wiederherstellen.",
+    ),
     "Premium_Free_Tools_Note": m11,
     "Premium_History_Limited": m12,
     "Premium_Locked_Export": MessageLookupByLibrary.simpleMessage(
@@ -1466,6 +1469,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Premium ist im App Store noch nicht verfügbar.",
     ),
+    "Premium_Not_Found_Play": MessageLookupByLibrary.simpleMessage(
+      "Premium ist bei Google Play noch nicht verfügbar.",
+    ),
     "Premium_Purchase_Success": MessageLookupByLibrary.simpleMessage(
       "Du bist jetzt Premium-Nutzer. Alle Werkzeuge sind freigeschaltet und Werbung ist entfernt.",
     ),
@@ -1478,6 +1484,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Unlocked": MessageLookupByLibrary.simpleMessage("Premium-Nutzer"),
     "Premium_Unlocked_Description": MessageLookupByLibrary.simpleMessage(
       "Alle Werkzeuge sind freigeschaltet und Werbung ist entfernt. Stelle den Kauf mit demselben Apple Account auf iPhone, iPad oder Mac wieder her.",
+    ),
+    "Premium_Unlocked_Description_Play": MessageLookupByLibrary.simpleMessage(
+      "Alle Werkzeuge sind freigeschaltet und Werbung ist entfernt. Stelle den Kauf auf jedem Android-Gerät mit demselben Google-Konto wieder her.",
     ),
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Übermaß bei Press-/Schrumpfsitz",

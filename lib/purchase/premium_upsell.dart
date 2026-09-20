@@ -244,6 +244,7 @@ class _PremiumOfferState extends State<PremiumOffer> {
       S.of(context),
       service.status,
       premiumWording: true,
+      store: service.store,
     );
     if (message == null) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -270,6 +271,9 @@ class _PremiumOfferState extends State<PremiumOffer> {
 
         final price = service.localizedPrice;
         final isPending = service.hasPendingPurchase;
+        // Play purchases restore on Android only; the Universal Purchase that
+        // spans iPhone, iPad and Mac is an App Store arrangement.
+        final onPlay = service.store == AppStore.playStore;
         // A pending order blocks a second purchase — the store would reject
         // it — but leaves restore available.
         final canBuy =
@@ -286,7 +290,7 @@ class _PremiumOfferState extends State<PremiumOffer> {
               _Benefit(strings.Premium_Benefit_History(ToolHistory.maxEntries)),
               _Benefit(strings.Premium_Benefit_Sweep),
             ],
-            _Benefit(strings.Premium_Benefit_Universal),
+            if (!onPlay) _Benefit(strings.Premium_Benefit_Universal),
             SizedBox(height: tokens.space4),
             FilledButton.icon(
               onPressed: canBuy ? service.buyRemoveAds : null,
@@ -309,7 +313,9 @@ class _PremiumOfferState extends State<PremiumOffer> {
             Padding(
               padding: EdgeInsets.only(top: tokens.space2),
               child: Text(
-                strings.Premium_Description,
+                onPlay
+                    ? strings.Premium_Description_Play
+                    : strings.Premium_Description,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -348,7 +354,9 @@ class _PremiumUnlocked extends StatelessWidget {
           contentPadding: EdgeInsets.zero,
           leading: Icon(Icons.verified_rounded, color: scheme.secondary),
           title: Text(strings.Premium_Unlocked),
-          subtitle: Text(strings.Premium_Unlocked_Description),
+          subtitle: Text(service.store == AppStore.playStore
+              ? strings.Premium_Unlocked_Description_Play
+              : strings.Premium_Unlocked_Description),
         ),
         TextButton.icon(
           onPressed: service.isBusy ? null : service.restorePurchases,
