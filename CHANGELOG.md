@@ -2,11 +2,17 @@
 
 ## Unreleased
 
+## 1.14.0 - 2026-09-20
+
+- iPhone and iPad now offer Premium: the free set of tools stays free, any other tool unlocks permanently on the device after one rewarded ad, and Premium unlocks them all and removes ads. Premium is the existing Remove Ads purchase under a new name, so everyone who bought Remove Ads already has it, and it is the same purchase as the Mac's Premium.
 - Android now offers Premium on the same terms as iOS: the free set of tools stays free, any other tool unlocks permanently on the device after one rewarded ad, and Premium unlocks them all and removes ads. Premium is the existing Play `remove_ads` product, so everyone who bought Remove Ads on Android already has it.
 - Added Shortcuts support on iPhone, iPad and Mac. "Convert Unit" converts between any two of the Unit Converter's units and answers without opening the app; "Open Tool" jumps straight into any of the sixty-four calculators, picked from a list that is already in your language; "Open Unit Converter" does what it says. All three work from the Shortcuts app, the Action button, Spotlight and Siri.
 - Added two Home Screen widgets, Favourite Tools and Recent Tools, in all three sizes. Every tile opens its calculator directly, and a locked tool is marked as such rather than surprising you with an upgrade sheet. On a Mac they sit in Notification Center and on the desktop.
 - Fixed the Unit Converter printing a stray decimal point on round numbers in exponential form: 1 GPa in Pa read "1.e+9", and a millimetre in kilometres "1.e-6".
-- Fixed PDF reports in Japanese and Chinese dropping characters from the rewarded-ad and Premium messages added in the last release: the embedded CJK fonts had not been rebuilt since those strings landed.
+- Refreshed the app icon, now a layered Icon Composer icon that iOS and macOS render in Liquid Glass, with a new Android launcher icon and launch screens that follow light and dark mode.
+
+## 1.13.0 - 2026-09-12
+
 - Added a Thermodynamics category, the first new subject since Fluids & Thermal: steam tables computed from IAPWS-IF97 (saturation by temperature or pressure, and single states from pressure with temperature, quality, enthalpy or entropy), ideal gas processes, the air-standard Otto, Diesel and Brayton cycles, and the Rankine steam cycle with turbine and pump efficiencies. The cycles come with their state tables and p–v and T–s diagrams, drawn over the saturation dome where steam is the working fluid.
 - On a wide window a tool now shows its result beside its inputs instead of over them, so changing a number and recalculating no longer means paging back and forth. Below 1000 points wide — every phone, and a narrow Mac window — the result opens as its own page exactly as before.
 - The Mac app has a real menu bar in place of the Flutter template's, whose Preferences… and Find… did nothing. Calculate is ⌘↩, Find Tool ⌘F, Save to Project ⌘S, Share or Export ⌘E, and ⌘? opens the open tool's explanation; the Go menu reaches the library, favourites, history and projects, and View switches between SI and Imperial units. Items that nothing on screen can answer are greyed out rather than silently doing nothing.
