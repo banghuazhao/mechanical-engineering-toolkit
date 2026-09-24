@@ -996,6 +996,73 @@ const Map<int, ToolHelp> toolHelpDe = {
     ],
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
+  122: ToolHelp(
+    summary: 'Spannungen in einem dicken gekrümmten Bauteil – Kranhaken, Bügel einer '
+        'Schraubzwinge, Kettenglied, Ring – nach der Theorie des gekrümmten '
+        'Balkens von Winkler–Bach. Ebene Querschnitte bleiben eben, doch die '
+        'inneren Fasern sind kürzer als die äußeren: Die Biegespannung verläuft '
+        'hyperbolisch statt linear, die neutrale Faser verschiebt sich zum '
+        'Krümmungsmittelpunkt, und die Innenfaser trägt mehr, als die '
+        'Biegeformel vorhersagt.',
+    formulas: [
+      HelpFormula(
+        tex: r'r_n = \frac{A}{\int_A dA/r}, \qquad e = r_c - r_n',
+        plain: 'rn = A / ∫dA/r,   e = rc − rn',
+        caption: 'Radius der neutralen Faser und ihre Verschiebung gegenüber dem '
+            'Schwerpunkt',
+      ),
+      HelpFormula(
+        tex: r'\sigma(r) = \frac{N}{A} + \frac{M\,(r_n - r)}{A\,e\,r}',
+        plain: 'σ(r) = N/A + M·(rn − r) / (A·e·r)',
+        caption: 'Spannung beim Radius r',
+      ),
+      HelpFormula(
+        tex: r'\int_A \frac{dA}{r} = b \ln\frac{r_o}{r_i}',
+        plain: '∫dA/r = b·ln(ro/ri)',
+        caption: 'Für ein Rechteck; jeder Querschnitt hat seine eigene geschlossene '
+            'Lösung',
+      ),
+      HelpFormula(
+        tex: r'K_i = \frac{\sigma_{i}}{M c_i^{\prime} / I}',
+        plain: 'Ki = σi / (M·ci′/I), mit ci′ = rc − ri',
+        caption: 'Krümmungsfaktor an der Innenfaser',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('ri, ro', 'Radien zur Innen- und Außenfaser', 'mm'),
+      HelpSymbol('rc', 'Radius zum Schwerpunkt', 'mm'),
+      HelpSymbol('rn', 'Radius zur neutralen Faser', 'mm'),
+      HelpSymbol('e', 'Exzentrizität, rc − rn', 'mm'),
+      HelpSymbol('A', 'Querschnittsfläche', 'mm²'),
+      HelpSymbol('M', 'Biegemoment, positiv, wenn es den Balken aufbiegt', 'N·mm'),
+      HelpSymbol('N', 'Normalkraft im Schwerpunkt, positiv bei Zug', 'N'),
+      HelpSymbol('σ', 'Normalspannung, positiv bei Zug', 'MPa'),
+      HelpSymbol('Ki', 'Verhältnis der Biegespannung im gekrümmten zu der im geraden Balken'),
+    ],
+    notes: [
+      'Setzt linear-elastischen Werkstoff, eine Symmetrieebene, in der die '
+          'Last liegt, und eben bleibende Querschnitte voraus. Radial- und '
+          'Schubspannungen werden vernachlässigt; das ist zulässig, außer bei '
+          'sehr hohen Querschnitten und bei I- und T-Profilen mit dünnen '
+          'Flanschen, die sich verformen.',
+      'Bei der Hakenlast geht die Kraft durch den Krümmungsmittelpunkt; der '
+          'Querschnitt trägt dann N = F und M = F·rc, und die Normalspannung F/A '
+          'addiert sich an der Innenfaser zur Biegespannung.',
+      'e ist die kleine Differenz zweier fast gleicher Radien; deshalb wird '
+          'rn aus dem exakten Integral berechnet – ein leicht falsches e '
+          'verändert die Spannung stark.',
+      'Oberhalb von rc/h ≈ 10 liegt die Biegeformel innerhalb weniger '
+          'Prozent; unter etwa 5 unterschätzt sie die Innenfaser um deutlich mehr '
+          'als 10 %.',
+      'Kerbwirkung an Querschnittsübergängen und Ermüdung sind nicht Teil '
+          'dieser Berechnung.',
+    ],
+    references: [
+      'Shigley\'s Mechanical Engineering Design, §3-18',
+      'Boresi & Schmidt, Advanced Mechanics of Materials, ch. 9',
+      'Young & Budynas, Roark\'s Formulas for Stress and Strain, §9.1',
+    ],
+  ),
   400: ToolHelp(
     summary: 'Fasst zentrale Kräfte in einer Ebene zu einer Resultierenden '
         'zusammen, mit Betrag und Richtung. Der erste Schritt fast jeder '
@@ -1105,6 +1172,62 @@ const Map<int, ToolHelp> toolHelpDe = {
     references: [
       'Hibbeler, Structural Analysis, ch. 3',
       'Beer & Johnston, Vector Mechanics for Engineers, ch. 6',
+    ],
+  ),
+  404: ToolHelp(
+    summary: 'Löst einen ebenen Rahmen oder eine Maschine – ein Tragwerk mit '
+        'mindestens einem Mehrkraftstab, etwa Ausleger mit Strebe, A-Gestell, '
+        'Zange oder Gelenkgetriebe –, indem es zerlegt wird: Jeder Stab ist ein '
+        'starrer Körper im Gleichgewicht, und jeder Bolzen ist mit den '
+        'angeschlossenen Stäben, Lasten und dem Lager im Gleichgewicht. '
+        'Ergebnis sind die Kräfte, die jeder Bolzen auf jeden Stab ausübt, und '
+        'die Lagerreaktionen.',
+    formulas: [
+      HelpFormula(
+        tex: r'\sum F_x = 0, \quad \sum F_y = 0, \quad \sum M = 0 \;\text{on every member}',
+        plain: 'ΣFx = 0, ΣFy = 0, ΣM = 0 an jedem Stab',
+        caption: 'Gleichgewicht, drei Gleichungen je Stab',
+      ),
+      HelpFormula(
+        tex: r'\sum F_x = 0, \quad \sum F_y = 0 \;\text{at every pin}',
+        plain: 'ΣFx = 0 und ΣFy = 0 an jedem Bolzen',
+        caption: 'Gleichgewicht, zwei Gleichungen je Bolzen',
+      ),
+      HelpFormula(
+        tex: r'2a + r = 3m + 2j',
+        plain: '2·a + r = 3·m + 2·j',
+        caption: 'Nachweis der statischen Bestimmtheit',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('a', 'Anzahl der Stab-Knoten-Anschlüsse'),
+      HelpSymbol('r', 'Anzahl der Lagerreaktionskomponenten'),
+      HelpSymbol('m', 'Anzahl der Stäbe'),
+      HelpSymbol('j', 'Anzahl der Knoten'),
+    ],
+    notes: [
+      'Stäbe sind starr, Bolzen reibungsfrei. Ein Stab durch drei oder mehr '
+          'Knoten ist ein einziger starrer Körper – so lassen sich geknickte '
+          'Hebel und verzweigte Stäbe abbilden.',
+      'Eine Last an einem Knoten, den sich mehrere Stäbe teilen, wirkt auf '
+          'den Bolzen. Soll sie dort nur einen Stab belasten, setzen Sie sie an '
+          'einen Knoten dieses Stabs direkt neben dem Bolzen: Die Lagerreaktionen '
+          'bleiben gleich, die Bolzenkräfte an den einzelnen Stäben ändern sich.',
+      'Ein Moment kann nur an einem Knoten eines einzelnen Stabs angreifen, '
+          'und eine Einspannung kann nur einen Stab halten, denn ein '
+          'reibungsfreier Bolzen überträgt kein Moment.',
+      'Weniger Unbekannte als Gleichungen bedeuten eine Kinematik, mehr ein '
+          'statisch unbestimmtes System, das Stabsteifigkeiten braucht. Auch bei '
+          'ausgeglichener Zählung machen ungünstig angeordnete Lager – drei '
+          'Reaktionen durch einen Punkt oder alle parallel – den Rahmen instabil; '
+          'das Werkzeug meldet dies.',
+      'Ein gerader Stab mit zwei Knoten, auf den zwischen seinen Bolzen '
+          'nichts wirkt, ist ein Pendelstab; seine Normalkraft wird als Zug oder '
+          'Druck ausgegeben. Druckstäbe sind gesondert auf Knicken zu prüfen.',
+    ],
+    references: [
+      'Beer & Johnston, Vector Mechanics for Engineers: Statics, ch. 6',
+      'Hibbeler, Engineering Mechanics: Statics, §6.6',
     ],
   ),
   200: ToolHelp(

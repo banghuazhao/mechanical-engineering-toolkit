@@ -8768,6 +8768,1221 @@ class S {
       args: [],
     );
   }
+
+  /// `Enter a name.`
+  String get Preset_Name_Required {
+    return Intl.message(
+      'Enter a name.',
+      name: 'Preset_Name_Required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Another preset already has this name.`
+  String get Preset_Name_Taken {
+    return Intl.message(
+      'Another preset already has this name.',
+      name: 'Preset_Name_Taken',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit preset`
+  String get Edit_Preset {
+    return Intl.message('Edit preset', name: 'Edit_Preset', desc: '', args: []);
+  }
+
+  /// `Fill in what you know — each tool uses only the properties it needs. Leave G blank to derive it from E and ν.`
+  String get Custom_Material_Hint {
+    return Intl.message(
+      'Fill in what you know — each tool uses only the properties it needs. Leave G blank to derive it from E and ν.',
+      name: 'Custom_Material_Hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Poisson's ratio, ν`
+  String get Poissons_Ratio_Nu {
+    return Intl.message(
+      'Poisson\'s ratio, ν',
+      name: 'Poissons_Ratio_Nu',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter at least one property.`
+  String get Preset_Needs_A_Property {
+    return Intl.message(
+      'Enter at least one property.',
+      name: 'Preset_Needs_A_Property',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Poisson's ratio must be greater than −1 and no more than 0.5.`
+  String get Err_Poisson_Range {
+    return Intl.message(
+      'Poisson\'s ratio must be greater than −1 and no more than 0.5.',
+      name: 'Err_Poisson_Range',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add custom lamina`
+  String get Add_Custom_Lamina {
+    return Intl.message(
+      'Add custom lamina',
+      name: 'Add_Custom_Lamina',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `E1, E2, G12 and ν12 are required. The strengths are optional; when given, they fill the Tsai failure criteria.`
+  String get Custom_Lamina_Hint {
+    return Intl.message(
+      'E1, E2, G12 and ν12 are required. The strengths are optional; when given, they fill the Tsai failure criteria.',
+      name: 'Custom_Lamina_Hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Xt (fibre tensile)`
+  String get Strength_Xt {
+    return Intl.message(
+      'Xt (fibre tensile)',
+      name: 'Strength_Xt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Xc (fibre compressive)`
+  String get Strength_Xc {
+    return Intl.message(
+      'Xc (fibre compressive)',
+      name: 'Strength_Xc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yt (transverse tensile)`
+  String get Strength_Yt {
+    return Intl.message(
+      'Yt (transverse tensile)',
+      name: 'Strength_Yt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yc (transverse compressive)`
+  String get Strength_Yc {
+    return Intl.message(
+      'Yc (transverse compressive)',
+      name: 'Strength_Yc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `S (in-plane shear)`
+  String get Strength_S {
+    return Intl.message(
+      'S (in-plane shear)',
+      name: 'Strength_S',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter E1, E2, G12 and ν12.`
+  String get Err_Lamina_Constants_Required {
+    return Intl.message(
+      'Enter E1, E2, G12 and ν12.',
+      name: 'Err_Lamina_Constants_Required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add custom fluid`
+  String get Add_Custom_Fluid {
+    return Intl.message(
+      'Add custom fluid',
+      name: 'Add_Custom_Fluid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Both properties change with temperature, so include it in the name — for example “Hydraulic oil, 40 °C”.`
+  String get Custom_Fluid_Hint {
+    return Intl.message(
+      'Both properties change with temperature, so include it in the name — for example “Hydraulic oil, 40 °C”.',
+      name: 'Custom_Fluid_Hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a positive density and viscosity.`
+  String get Err_Fluid_Properties_Required {
+    return Intl.message(
+      'Enter a positive density and viscosity.',
+      name: 'Err_Fluid_Properties_Required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add thermal material`
+  String get Add_Custom_Thermal_Material {
+    return Intl.message(
+      'Add thermal material',
+      name: 'Add_Custom_Thermal_Material',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a positive conductivity.`
+  String get Err_Conductivity_Required {
+    return Intl.message(
+      'Enter a positive conductivity.',
+      name: 'Err_Conductivity_Required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{name} (copy)`
+  String Preset_Copy_Name(Object name) {
+    return Intl.message(
+      '$name (copy)',
+      name: 'Preset_Copy_Name',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `{name} (copy {n})`
+  String Preset_Copy_Name_N(Object name, Object n) {
+    return Intl.message(
+      '$name (copy $n)',
+      name: 'Preset_Copy_Name_N',
+      desc: '',
+      args: [name, n],
+    );
+  }
+
+  /// `Delete “{name}”?`
+  String Delete_Preset_Question(Object name) {
+    return Intl.message(
+      'Delete “$name”?',
+      name: 'Delete_Preset_Question',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `This removes it from your presets on this device. Calculations that already used it keep their numbers.`
+  String get Delete_Preset_Description {
+    return Intl.message(
+      'This removes it from your presets on this device. Calculations that already used it keep their numbers.',
+      name: 'Delete_Preset_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My presets`
+  String get My_Presets {
+    return Intl.message('My presets', name: 'My_Presets', desc: '', args: []);
+  }
+
+  /// `Built-in`
+  String get Built_In_Presets {
+    return Intl.message(
+      'Built-in',
+      name: 'Built_In_Presets',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `More actions`
+  String get More_Actions {
+    return Intl.message(
+      'More actions',
+      name: 'More_Actions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get Edit {
+    return Intl.message('Edit', name: 'Edit', desc: '', args: []);
+  }
+
+  /// `Duplicate`
+  String get Duplicate {
+    return Intl.message('Duplicate', name: 'Duplicate', desc: '', args: []);
+  }
+
+  /// `Duplicate and edit`
+  String get Duplicate_And_Edit {
+    return Intl.message(
+      'Duplicate and edit',
+      name: 'Duplicate_And_Edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Materials`
+  String get My_Materials {
+    return Intl.message(
+      'My Materials',
+      name: 'My_Materials',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Solids`
+  String get Tab_Solids {
+    return Intl.message('Solids', name: 'Tab_Solids', desc: '', args: []);
+  }
+
+  /// `Laminae`
+  String get Tab_Laminae {
+    return Intl.message('Laminae', name: 'Tab_Laminae', desc: '', args: []);
+  }
+
+  /// `Fluids`
+  String get Tab_Fluids {
+    return Intl.message('Fluids', name: 'Tab_Fluids', desc: '', args: []);
+  }
+
+  /// `Thermal`
+  String get Tab_Thermal {
+    return Intl.message('Thermal', name: 'Tab_Thermal', desc: '', args: []);
+  }
+
+  /// `Nothing of your own yet. Tap Add to create one, or duplicate a built-in below and change what differs.`
+  String get No_Custom_Presets_Message {
+    return Intl.message(
+      'Nothing of your own yet. Tap Add to create one, or duplicate a built-in below and change what differs.',
+      name: 'No_Custom_Presets_Message',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copy export`
+  String get Copy_Presets_Export {
+    return Intl.message(
+      'Copy export',
+      name: 'Copy_Presets_Export',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Share export`
+  String get Share_Presets_Export {
+    return Intl.message(
+      'Share export',
+      name: 'Share_Presets_Export',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import from clipboard`
+  String get Import_From_Clipboard {
+    return Intl.message(
+      'Import from clipboard',
+      name: 'Import_From_Clipboard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copied {count} presets. Use Import from clipboard on the other device.`
+  String Presets_Export_Copied(Object count) {
+    return Intl.message(
+      'Copied $count presets. Use Import from clipboard on the other device.',
+      name: 'Presets_Export_Copied',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Imported {added}; skipped {skipped} already here.`
+  String Presets_Imported(Object added, Object skipped) {
+    return Intl.message(
+      'Imported $added; skipped $skipped already here.',
+      name: 'Presets_Imported',
+      desc: '',
+      args: [added, skipped],
+    );
+  }
+
+  /// `The clipboard does not hold an ME Toolkit materials export.`
+  String get Presets_Import_Invalid {
+    return Intl.message(
+      'The clipboard does not hold an ME Toolkit materials export.',
+      name: 'Presets_Import_Invalid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There are no presets of your own to export yet.`
+  String get Nothing_To_Export {
+    return Intl.message(
+      'There are no presets of your own to export yet.',
+      name: 'Nothing_To_Export',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Curved Beam in Bending`
+  String get Curved_Beam {
+    return Intl.message(
+      'Curved Beam in Bending',
+      name: 'Curved_Beam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stresses in a thick curved member — a crane hook, a C-frame, a chain link — where the flexure formula underestimates the inner fibre. Winkler–Bach curved-beam theory.`
+  String get Desc_Curved_Beam {
+    return Intl.message(
+      'Stresses in a thick curved member — a crane hook, a C-frame, a chain link — where the flexure formula underestimates the inner fibre. Winkler–Bach curved-beam theory.',
+      name: 'Desc_Curved_Beam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cross-section`
+  String get Section_Shape {
+    return Intl.message(
+      'Cross-section',
+      name: 'Section_Shape',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rectangle`
+  String get Section_Rectangle {
+    return Intl.message(
+      'Rectangle',
+      name: 'Section_Rectangle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Trapezoid`
+  String get Section_Trapezoid {
+    return Intl.message(
+      'Trapezoid',
+      name: 'Section_Trapezoid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Solid round`
+  String get Section_Solid_Round {
+    return Intl.message(
+      'Solid round',
+      name: 'Section_Solid_Round',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Round tube`
+  String get Section_Round_Tube {
+    return Intl.message(
+      'Round tube',
+      name: 'Section_Round_Tube',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `T-section`
+  String get Section_T {
+    return Intl.message('T-section', name: 'Section_T', desc: '', args: []);
+  }
+
+  /// `I-section`
+  String get Section_I {
+    return Intl.message('I-section', name: 'Section_I', desc: '', args: []);
+  }
+
+  /// `Flange on the inner side`
+  String get Flange_Inside {
+    return Intl.message(
+      'Flange on the inner side',
+      name: 'Flange_Inside',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flange on the outer side`
+  String get Flange_Outside {
+    return Intl.message(
+      'Flange on the outer side',
+      name: 'Flange_Outside',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inner radius, ri`
+  String get Inner_Radius_Ri {
+    return Intl.message(
+      'Inner radius, ri',
+      name: 'Inner_Radius_Ri',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Outer radius, ro`
+  String get Outer_Radius_Ro {
+    return Intl.message(
+      'Outer radius, ro',
+      name: 'Outer_Radius_Ro',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Radial depth, h`
+  String get Radial_Depth_H {
+    return Intl.message(
+      'Radial depth, h',
+      name: 'Radial_Depth_H',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Width at inner fibre, bi`
+  String get Inner_Width_Bi {
+    return Intl.message(
+      'Width at inner fibre, bi',
+      name: 'Inner_Width_Bi',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Width at outer fibre, bo`
+  String get Outer_Width_Bo {
+    return Intl.message(
+      'Width at outer fibre, bo',
+      name: 'Outer_Width_Bo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bore diameter, di`
+  String get Bore_Diameter_Di {
+    return Intl.message(
+      'Bore diameter, di',
+      name: 'Bore_Diameter_Di',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flange width, bf`
+  String get Flange_Width_Bf {
+    return Intl.message(
+      'Flange width, bf',
+      name: 'Flange_Width_Bf',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flange thickness, tf`
+  String get Flange_Thickness_Tf {
+    return Intl.message(
+      'Flange thickness, tf',
+      name: 'Flange_Thickness_Tf',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Web thickness, tw`
+  String get Web_Thickness_Tw {
+    return Intl.message(
+      'Web thickness, tw',
+      name: 'Web_Thickness_Tw',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inner flange width, b1`
+  String get Inner_Flange_Width_B1 {
+    return Intl.message(
+      'Inner flange width, b1',
+      name: 'Inner_Flange_Width_B1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inner flange thickness, t1`
+  String get Inner_Flange_Thickness_T1 {
+    return Intl.message(
+      'Inner flange thickness, t1',
+      name: 'Inner_Flange_Thickness_T1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Outer flange width, b2`
+  String get Outer_Flange_Width_B2 {
+    return Intl.message(
+      'Outer flange width, b2',
+      name: 'Outer_Flange_Width_B2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Outer flange thickness, t2`
+  String get Outer_Flange_Thickness_T2 {
+    return Intl.message(
+      'Outer flange thickness, t2',
+      name: 'Outer_Flange_Thickness_T2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading`
+  String get Section_Loading {
+    return Intl.message('Loading', name: 'Section_Loading', desc: '', args: []);
+  }
+
+  /// `Moment`
+  String get Loading_Moment {
+    return Intl.message('Moment', name: 'Loading_Moment', desc: '', args: []);
+  }
+
+  /// `Hook load`
+  String get Loading_Hook {
+    return Intl.message('Hook load', name: 'Loading_Hook', desc: '', args: []);
+  }
+
+  /// `Bending moment, M`
+  String get Bending_Moment_Straightening {
+    return Intl.message(
+      'Bending moment, M',
+      name: 'Bending_Moment_Straightening',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Normal force, N (+ tension)`
+  String get Normal_Force_N {
+    return Intl.message(
+      'Normal force, N (+ tension)',
+      name: 'Normal_Force_N',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Load, F`
+  String get Hook_Load_F {
+    return Intl.message('Load, F', name: 'Hook_Load_F', desc: '', args: []);
+  }
+
+  /// `A positive M straightens the beam and puts the inner fibre in tension; a negative one closes it up. N acts at the centroid.`
+  String get Curved_Beam_Sign_Hint {
+    return Intl.message(
+      'A positive M straightens the beam and puts the inner fibre in tension; a negative one closes it up. N acts at the centroid.',
+      name: 'Curved_Beam_Sign_Hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The load's line of action passes through the centre of curvature, as on a crane hook: the section carries N = F and M = F·rc.`
+  String get Curved_Beam_Hook_Hint {
+    return Intl.message(
+      'The load\'s line of action passes through the centre of curvature, as on a crane hook: the section carries N = F and M = F·rc.',
+      name: 'Curved_Beam_Hook_Hint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter the inner radius, every dimension of the section and the load.`
+  String get Err_Curved_Beam_Inputs {
+    return Intl.message(
+      'Enter the inner radius, every dimension of the section and the load.',
+      name: 'Err_Curved_Beam_Inputs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fibre stresses`
+  String get Fibre_Stresses {
+    return Intl.message(
+      'Fibre stresses',
+      name: 'Fibre_Stresses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inner fibre stress, σi`
+  String get Inner_Fibre_Stress {
+    return Intl.message(
+      'Inner fibre stress, σi',
+      name: 'Inner_Fibre_Stress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Outer fibre stress, σo`
+  String get Outer_Fibre_Stress {
+    return Intl.message(
+      'Outer fibre stress, σo',
+      name: 'Outer_Fibre_Stress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Straight-beam σi (M·c/I)`
+  String get Straight_Beam_Inner {
+    return Intl.message(
+      'Straight-beam σi (M·c/I)',
+      name: 'Straight_Beam_Inner',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Straight-beam σo (M·c/I)`
+  String get Straight_Beam_Outer {
+    return Intl.message(
+      'Straight-beam σo (M·c/I)',
+      name: 'Straight_Beam_Outer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Curvature factor, Ki`
+  String get Curvature_Factor_Ki {
+    return Intl.message(
+      'Curvature factor, Ki',
+      name: 'Curvature_Factor_Ki',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Curvature factor, Ko`
+  String get Curvature_Factor_Ko {
+    return Intl.message(
+      'Curvature factor, Ko',
+      name: 'Curvature_Factor_Ko',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section geometry`
+  String get Section_Geometry {
+    return Intl.message(
+      'Section geometry',
+      name: 'Section_Geometry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section to scale`
+  String get Section_To_Scale {
+    return Intl.message(
+      'Section to scale',
+      name: 'Section_To_Scale',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Centroid radius, rc`
+  String get Centroid_Radius_Rc {
+    return Intl.message(
+      'Centroid radius, rc',
+      name: 'Centroid_Radius_Rc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Neutral-axis radius, rn`
+  String get Neutral_Radius_Rn {
+    return Intl.message(
+      'Neutral-axis radius, rn',
+      name: 'Neutral_Radius_Rn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Eccentricity, e = rc − rn`
+  String get Eccentricity_E {
+    return Intl.message(
+      'Eccentricity, e = rc − rn',
+      name: 'Eccentricity_E',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Curvature ratio, rc/h`
+  String get Curvature_Ratio_Rc_H {
+    return Intl.message(
+      'Curvature ratio, rc/h',
+      name: 'Curvature_Ratio_Rc_H',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Section loads`
+  String get Section_Loads {
+    return Intl.message(
+      'Section loads',
+      name: 'Section_Loads',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bending moment, M`
+  String get Moment_Carried_M {
+    return Intl.message(
+      'Bending moment, M',
+      name: 'Moment_Carried_M',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Normal force, N`
+  String get Normal_Force_Carried_N {
+    return Intl.message(
+      'Normal force, N',
+      name: 'Normal_Force_Carried_N',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stress through the depth`
+  String get Stress_Through_Depth {
+    return Intl.message(
+      'Stress through the depth',
+      name: 'Stress_Through_Depth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Centroid, rc`
+  String get Centroid_Rc {
+    return Intl.message(
+      'Centroid, rc',
+      name: 'Centroid_Rc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Neutral axis, rn`
+  String get Neutral_Axis_Rn {
+    return Intl.message(
+      'Neutral axis, rn',
+      name: 'Neutral_Axis_Rn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `toward the centre of curvature`
+  String get Toward_Centre_Of_Curvature {
+    return Intl.message(
+      'toward the centre of curvature',
+      name: 'Toward_Centre_Of_Curvature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The flexure formula M·c/I underestimates the inner-fibre stress by the factor Ki, and the error grows as rc/h falls — below about 5 it is well over 10 %. Check the inner fibre first.`
+  String get Curved_Beam_Note {
+    return Intl.message(
+      'The flexure formula M·c/I underestimates the inner-fibre stress by the factor Ki, and the error grows as rc/h falls — below about 5 it is well over 10 %. Check the inner fibre first.',
+      name: 'Curved_Beam_Note',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Solve for an input`
+  String get Solve_For {
+    return Intl.message(
+      'Solve for an input',
+      name: 'Solve_For',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set the result you want and choose which input may change; the app finds the value that gives it.`
+  String get Solve_For_Description {
+    return Intl.message(
+      'Set the result you want and choose which input may change; the app finds the value that gives it.',
+      name: 'Solve_For_Description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Result`
+  String get Solve_Target_Output {
+    return Intl.message(
+      'Result',
+      name: 'Solve_Target_Output',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Target value`
+  String get Solve_Target_Value {
+    return Intl.message(
+      'Target value',
+      name: 'Solve_Target_Value',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `By changing`
+  String get Solve_By_Changing {
+    return Intl.message(
+      'By changing',
+      name: 'Solve_By_Changing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Now: {output} = {value}`
+  String Solve_Current_Value(Object output, Object value) {
+    return Intl.message(
+      'Now: $output = $value',
+      name: 'Solve_Current_Value',
+      desc: '',
+      args: [output, value],
+    );
+  }
+
+  /// `Solve`
+  String get Solve {
+    return Intl.message('Solve', name: 'Solve', desc: '', args: []);
+  }
+
+  /// `Was {value}`
+  String Solve_Was(Object value) {
+    return Intl.message(
+      'Was $value',
+      name: 'Solve_Was',
+      desc: '',
+      args: [value],
+    );
+  }
+
+  /// `{count} values give this result; this is the one nearest your current input.`
+  String Solve_Nearest_Of(Object count) {
+    return Intl.message(
+      '$count values give this result; this is the one nearest your current input.',
+      name: 'Solve_Nearest_Of',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Use this value`
+  String get Solve_Use_Value {
+    return Intl.message(
+      'Use this value',
+      name: 'Solve_Use_Value',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No value of {input} gives this result.`
+  String Solve_No_Solution(Object input) {
+    return Intl.message(
+      'No value of $input gives this result.',
+      name: 'Solve_No_Solution',
+      desc: '',
+      args: [input],
+    );
+  }
+
+  /// `No value of {input} gives this result. Changing it alone, {output} can range from {low} to {high}.`
+  String Solve_No_Solution_Range(
+    Object input,
+    Object output,
+    Object low,
+    Object high,
+  ) {
+    return Intl.message(
+      'No value of $input gives this result. Changing it alone, $output can range from $low to $high.',
+      name: 'Solve_No_Solution_Range',
+      desc: '',
+      args: [input, output, low, high],
+    );
+  }
+
+  /// `{input} is filled in. Calculate to see the full result.`
+  String Solved_Value_Filled(Object input) {
+    return Intl.message(
+      '$input is filled in. Calculate to see the full result.',
+      name: 'Solved_Value_Filled',
+      desc: '',
+      args: [input],
+    );
+  }
+
+  /// `Solving for an input is part of Premium.`
+  String get Premium_Locked_Solve {
+    return Intl.message(
+      'Solving for an input is part of Premium.',
+      name: 'Premium_Locked_Solve',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Solve any calculation backwards for the input you need`
+  String get Premium_Benefit_Solve {
+    return Intl.message(
+      'Solve any calculation backwards for the input you need',
+      name: 'Premium_Benefit_Solve',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Frames and Machines`
+  String get Frames_and_Machines {
+    return Intl.message(
+      'Frames and Machines',
+      name: 'Frames_and_Machines',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add a joint wherever members meet, a load or couple acts, a support holds the structure, or a member bends. A load at a joint shared by several members acts on the pin.`
+  String get Desc_Frame_Joints {
+    return Intl.message(
+      'Add a joint wherever members meet, a load or couple acts, a support holds the structure, or a member bends. A load at a joint shared by several members acts on the pin.',
+      name: 'Desc_Frame_Joints',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Each member is one rigid body. Pick its joints in order along it; three or more make a bent or branched member, such as a lever or the arm of a pair of pliers.`
+  String get Desc_Frame_Members {
+    return Intl.message(
+      'Each member is one rigid body. Pick its joints in order along it; three or more make a bent or branched member, such as a lever or the arm of a pair of pliers.',
+      name: 'Desc_Frame_Members',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fixed`
+  String get Support_Fixed {
+    return Intl.message('Fixed', name: 'Support_Fixed', desc: '', args: []);
+  }
+
+  /// `Couple, M (+ counter-clockwise)`
+  String get Applied_Couple_M {
+    return Intl.message(
+      'Couple, M (+ counter-clockwise)',
+      name: 'Applied_Couple_M',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Member {n}`
+  String Member_N(Object n) {
+    return Intl.message('Member $n', name: 'Member_N', desc: '', args: [n]);
+  }
+
+  /// `Along the member: {path}`
+  String Frame_Member_Path(Object path) {
+    return Intl.message(
+      'Along the member: $path',
+      name: 'Frame_Member_Path',
+      desc: '',
+      args: [path],
+    );
+  }
+
+  /// `Enter x and y for J{n}.`
+  String Err_Joint_Coordinates(Object n) {
+    return Intl.message(
+      'Enter x and y for J$n.',
+      name: 'Err_Joint_Coordinates',
+      desc: '',
+      args: [n],
+    );
+  }
+
+  /// `Member {n} needs at least two joints.`
+  String Err_Member_Needs_Two_Joints(Object n) {
+    return Intl.message(
+      'Member $n needs at least two joints.',
+      name: 'Err_Member_Needs_Two_Joints',
+      desc: '',
+      args: [n],
+    );
+  }
+
+  /// `{members} members × 3 + {joints} pins × 2 = {equations} equations`
+  String Frame_Count_Step(Object members, Object joints, Object equations) {
+    return Intl.message(
+      '$members members × 3 + $joints pins × 2 = $equations equations',
+      name: 'Frame_Count_Step',
+      desc: '',
+      args: [members, joints, equations],
+    );
+  }
+
+  /// `{count} unknowns: two pin-force components per member at each of its joints, plus the reactions`
+  String Frame_Unknowns_Step(Object count) {
+    return Intl.message(
+      '$count unknowns: two pin-force components per member at each of its joints, plus the reactions',
+      name: 'Frame_Unknowns_Step',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Each pin: ΣFx = 0, ΣFy = 0 with the members, loads and support at it`
+  String get Frame_Pin_Step {
+    return Intl.message(
+      'Each pin: ΣFx = 0, ΣFy = 0 with the members, loads and support at it',
+      name: 'Frame_Pin_Step',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Frame`
+  String get Frame_Geometry {
+    return Intl.message('Frame', name: 'Frame_Geometry', desc: '', args: []);
+  }
+
+  /// `Load`
+  String get Applied_Load {
+    return Intl.message('Load', name: 'Applied_Load', desc: '', args: []);
+  }
+
+  /// `Reaction`
+  String get Reaction {
+    return Intl.message('Reaction', name: 'Reaction', desc: '', args: []);
+  }
+
+  /// `Two-force member: tension`
+  String get Axial_Force_Tension {
+    return Intl.message(
+      'Two-force member: tension',
+      name: 'Axial_Force_Tension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Two-force member: compression`
+  String get Axial_Force_Compression {
+    return Intl.message(
+      'Two-force member: compression',
+      name: 'Axial_Force_Compression',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Force on member at J{n}`
+  String Pin_Force_At(Object n) {
+    return Intl.message(
+      'Force on member at J$n',
+      name: 'Pin_Force_At',
+      desc: '',
+      args: [n],
+    );
+  }
+
+  /// `Pin forces are those each pin exerts on the member listed; the member exerts the equal and opposite force on the pin. θ is measured counter-clockwise from +x.`
+  String get Frame_Note {
+    return Intl.message(
+      'Pin forces are those each pin exerts on the member listed; the member exerts the equal and opposite force on the pin. θ is measured counter-clockwise from +x.',
+      name: 'Frame_Note',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

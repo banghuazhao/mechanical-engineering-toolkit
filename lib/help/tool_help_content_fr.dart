@@ -1004,6 +1004,72 @@ const Map<int, ToolHelp> toolHelpFr = {
     ],
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
+  122: ToolHelp(
+    summary: 'Contraintes dans une pièce courbe épaisse — crochet de levage, bâti de '
+        'serre-joint, maillon de chaîne, anneau — selon la théorie des poutres '
+        'courbes de Winkler–Bach. Les sections planes restent planes, mais les '
+        'fibres intérieures sont plus courtes que les fibres extérieures : la '
+        'contrainte de flexion est hyperbolique et non linéaire, l’axe neutre '
+        'se déplace vers le centre de courbure, et la fibre intérieure est plus '
+        'sollicitée que ne le prévoit la formule de flexion.',
+    formulas: [
+      HelpFormula(
+        tex: r'r_n = \frac{A}{\int_A dA/r}, \qquad e = r_c - r_n',
+        plain: 'rn = A / ∫dA/r,   e = rc − rn',
+        caption: 'Rayon de l’axe neutre et son décalage par rapport au centre de gravité',
+      ),
+      HelpFormula(
+        tex: r'\sigma(r) = \frac{N}{A} + \frac{M\,(r_n - r)}{A\,e\,r}',
+        plain: 'σ(r) = N/A + M·(rn − r) / (A·e·r)',
+        caption: 'Contrainte au rayon r',
+      ),
+      HelpFormula(
+        tex: r'\int_A \frac{dA}{r} = b \ln\frac{r_o}{r_i}',
+        plain: '∫dA/r = b·ln(ro/ri)',
+        caption: 'Pour un rectangle ; chaque section a sa propre forme exacte',
+      ),
+      HelpFormula(
+        tex: r'K_i = \frac{\sigma_{i}}{M c_i^{\prime} / I}',
+        plain: 'Ki = σi / (M·ci′/I), avec ci′ = rc − ri',
+        caption: 'Facteur de courbure à la fibre intérieure',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('ri, ro', 'Rayons des fibres intérieure et extérieure', 'mm'),
+      HelpSymbol('rc', 'Rayon du centre de gravité', 'mm'),
+      HelpSymbol('rn', 'Rayon de l’axe neutre', 'mm'),
+      HelpSymbol('e', 'Excentricité, rc − rn', 'mm'),
+      HelpSymbol('A', 'Aire de la section', 'mm²'),
+      HelpSymbol('M', 'Moment fléchissant, positif lorsqu’il redresse la poutre', 'N·mm'),
+      HelpSymbol('N', 'Effort normal au centre de gravité, positif en traction', 'N'),
+      HelpSymbol('σ', 'Contrainte normale, positive en traction', 'MPa'),
+      HelpSymbol('Ki', 'Rapport de la contrainte de flexion en poutre courbe à celle en poutre '
+          'droite'),
+    ],
+    notes: [
+      'Suppose un matériau élastique linéaire, un plan de symétrie contenant '
+          'la charge et des sections qui restent planes. Les contraintes radiales '
+          'et de cisaillement sont négligées, ce qui est justifié sauf pour les '
+          'sections très hautes et les profils en I et en T à semelles minces, '
+          'qui se déforment.',
+      'Avec la charge de crochet, l’effort passe par le centre de courbure : '
+          'la section supporte N = F et M = F·rc, et la contrainte directe F/A '
+          's’ajoute à la flexion sur la fibre intérieure.',
+      'e est la petite différence de deux rayons presque égaux ; rn est donc '
+          'calculé à partir de l’intégrale exacte, car un e légèrement faux '
+          'modifie beaucoup la contrainte.',
+      'Au-delà de rc/h ≈ 10, la formule de flexion est juste à quelques pour '
+          'cent près ; en dessous d’environ 5, elle sous-estime la fibre '
+          'intérieure de bien plus de 10 %.',
+      'Les concentrations de contraintes aux changements de section et la '
+          'fatigue ne font pas partie de ce calcul.',
+    ],
+    references: [
+      'Shigley\'s Mechanical Engineering Design, §3-18',
+      'Boresi & Schmidt, Advanced Mechanics of Materials, ch. 9',
+      'Young & Budynas, Roark\'s Formulas for Stress and Strain, §9.1',
+    ],
+  ),
   400: ToolHelp(
     summary: 'Additionne des forces concourantes dans un plan en une '
         'résultante unique, avec son module et sa direction. La première étape '
@@ -1112,6 +1178,64 @@ const Map<int, ToolHelp> toolHelpFr = {
     references: [
       'Hibbeler, Structural Analysis, ch. 3',
       'Beer & Johnston, Vector Mechanics for Engineers, ch. 6',
+    ],
+  ),
+  404: ToolHelp(
+    summary: 'Résout un bâti ou un mécanisme plan — une structure comportant au '
+        'moins une barre soumise à plusieurs efforts, comme une flèche et son '
+        'hauban, un chevalet en A, une pince ou une timonerie — en le démontant '
+        ': chaque barre est un corps rigide en équilibre, et chaque axe est en '
+        'équilibre avec les barres, charges et appui qui s’y rejoignent. On '
+        'obtient l’effort que chaque axe exerce sur chaque barre, ainsi que les '
+        'réactions d’appui.',
+    formulas: [
+      HelpFormula(
+        tex: r'\sum F_x = 0, \quad \sum F_y = 0, \quad \sum M = 0 \;\text{on every member}',
+        plain: 'ΣFx = 0, ΣFy = 0, ΣM = 0 sur chaque barre',
+        caption: 'Équilibre, trois équations par barre',
+      ),
+      HelpFormula(
+        tex: r'\sum F_x = 0, \quad \sum F_y = 0 \;\text{at every pin}',
+        plain: 'ΣFx = 0 et ΣFy = 0 en chaque axe',
+        caption: 'Équilibre, deux équations par axe',
+      ),
+      HelpFormula(
+        tex: r'2a + r = 3m + 2j',
+        plain: '2·a + r = 3·m + 2·j',
+        caption: 'Vérification de l’isostaticité',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('a', 'Nombre de liaisons barre–nœud'),
+      HelpSymbol('r', 'Nombre de composantes de réaction d’appui'),
+      HelpSymbol('m', 'Nombre de barres'),
+      HelpSymbol('j', 'Nombre de nœuds'),
+    ],
+    notes: [
+      'Les barres sont rigides et les axes sans frottement. Une barre passant '
+          'par trois nœuds ou plus est un seul corps rigide : c’est ainsi qu’on '
+          'représente un levier coudé ou une barre ramifiée.',
+      'Une charge placée sur un nœud partagé par plusieurs barres s’applique '
+          'à l’axe. Pour charger une seule barre à cet endroit, placez la charge '
+          'sur un nœud de cette barre seule, juste à côté de l’axe : les '
+          'réactions ne changent pas, mais les efforts d’axe sur chaque barre, '
+          'si.',
+      'Un couple ne peut s’appliquer qu’à un nœud d’une seule barre, et un '
+          'encastrement ne peut tenir qu’une barre, car un axe sans frottement ne '
+          'transmet aucun moment.',
+      'Moins d’inconnues que d’équations, c’est un mécanisme ; davantage, '
+          'c’est un système hyperstatique qui exige les rigidités des barres. '
+          'Même si le compte est juste, des appuis mal placés — trois réactions '
+          'concourantes ou toutes parallèles — rendent le bâti instable, ce que '
+          'l’outil signale.',
+      'Une barre droite à deux nœuds sur laquelle rien n’agit entre ses axes '
+          'est une barre à deux forces ; son effort normal est donné en traction '
+          'ou en compression. Vérifiez séparément le flambement des barres '
+          'comprimées.',
+    ],
+    references: [
+      'Beer & Johnston, Vector Mechanics for Engineers: Statics, ch. 6',
+      'Hibbeler, Engineering Mechanics: Statics, §6.6',
     ],
   ),
   200: ToolHelp(

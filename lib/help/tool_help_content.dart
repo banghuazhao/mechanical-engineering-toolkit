@@ -962,6 +962,68 @@ const Map<int, ToolHelp> toolHelp = {
     ],
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
+  122: ToolHelp(
+    summary: 'Stresses in a thick curved member — a crane hook, a C-clamp frame, a '
+        'chain link, a ring — by Winkler–Bach curved-beam theory. Plane '
+        'sections stay plane, but the fibres on the inside are shorter than '
+        'those outside, so the bending stress is hyperbolic rather than linear, '
+        'the neutral axis moves toward the centre of curvature, and the inner '
+        'fibre carries more stress than the flexure formula predicts.',
+    formulas: [
+      HelpFormula(
+        tex: r'r_n = \frac{A}{\int_A dA/r}, \qquad e = r_c - r_n',
+        plain: 'rn = A / ∫dA/r,   e = rc − rn',
+        caption: 'Neutral-axis radius, and its shift from the centroid',
+      ),
+      HelpFormula(
+        tex: r'\sigma(r) = \frac{N}{A} + \frac{M\,(r_n - r)}{A\,e\,r}',
+        plain: 'σ(r) = N/A + M·(rn − r) / (A·e·r)',
+        caption: 'Stress at radius r',
+      ),
+      HelpFormula(
+        tex: r'\int_A \frac{dA}{r} = b \ln\frac{r_o}{r_i}',
+        plain: '∫dA/r = b·ln(ro/ri)',
+        caption: 'For a rectangle; each section has its own closed form',
+      ),
+      HelpFormula(
+        tex: r'K_i = \frac{\sigma_{i}}{M c_i^{\prime} / I}',
+        plain: 'Ki = σi / (M·ci′/I), with ci′ = rc − ri',
+        caption: 'Curvature factor at the inner fibre',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('ri, ro', 'Radii to the inner and outer fibres', 'mm'),
+      HelpSymbol('rc', 'Radius to the centroid', 'mm'),
+      HelpSymbol('rn', 'Radius to the neutral axis', 'mm'),
+      HelpSymbol('e', 'Eccentricity, rc − rn', 'mm'),
+      HelpSymbol('A', 'Cross-sectional area', 'mm²'),
+      HelpSymbol('M', 'Bending moment, positive when it straightens the beam', 'N·mm'),
+      HelpSymbol('N', 'Normal force at the centroid, positive in tension', 'N'),
+      HelpSymbol('σ', 'Normal stress, positive in tension', 'MPa'),
+      HelpSymbol('Ki', 'Ratio of the curved-beam bending stress to the straight-beam one'),
+    ],
+    notes: [
+      'Assumes a linear elastic material, a plane of symmetry containing the '
+          'load, and plane sections remaining plane. Radial and shear stresses '
+          'are neglected, which is sound except in very deep sections and in '
+          'thin-flanged I and T sections, whose flanges distort.',
+      'With the hook load, the force passes through the centre of curvature, '
+          'so the section carries N = F and M = F·rc; the direct stress F/A adds '
+          'to the bending stress at the inner fibre.',
+      'e is the small difference of two nearly equal radii, so rn is computed '
+          'from the exact integral: an e that is slightly off changes the stress '
+          'a great deal.',
+      'Above rc/h ≈ 10 the flexure formula is within a few per cent; below '
+          'about 5 it is well over 10 % unconservative at the inner fibre.',
+      'Stress concentrations at a change of section, and fatigue, are outside '
+          'this calculation.',
+    ],
+    references: [
+      'Shigley\'s Mechanical Engineering Design, §3-18',
+      'Boresi & Schmidt, Advanced Mechanics of Materials, ch. 9',
+      'Young & Budynas, Roark\'s Formulas for Stress and Strain, §9.1',
+    ],
+  ),
   // ---------------------------------------------------------------- statics
   400: ToolHelp(
     summary: 'Adds concurrent forces in a plane into a single resultant, with '
@@ -1066,6 +1128,59 @@ const Map<int, ToolHelp> toolHelp = {
     references: [
       'Hibbeler, Structural Analysis, ch. 3',
       'Beer & Johnston, Vector Mechanics for Engineers, ch. 6',
+    ],
+  ),
+  404: ToolHelp(
+    summary: 'Solves a planar frame or machine — a structure with at least one '
+        'multi-force member, such as a boom and brace, an A-frame, a pair of '
+        'pliers or a linkage — by taking it apart: every member is a rigid body '
+        'in equilibrium, and every pin is in equilibrium with the members, '
+        'loads and support that meet at it. The result is the force each pin '
+        'exerts on each member, and the support reactions.',
+    formulas: [
+      HelpFormula(
+        tex: r'\sum F_x = 0, \quad \sum F_y = 0, \quad \sum M = 0 \;\text{on every member}',
+        plain: 'ΣFx = 0, ΣFy = 0, ΣM = 0 on every member',
+        caption: 'Equilibrium, three equations per member',
+      ),
+      HelpFormula(
+        tex: r'\sum F_x = 0, \quad \sum F_y = 0 \;\text{at every pin}',
+        plain: 'ΣFx = 0 and ΣFy = 0 at every pin',
+        caption: 'Equilibrium, two equations per pin',
+      ),
+      HelpFormula(
+        tex: r'2a + r = 3m + 2j',
+        plain: '2·a + r = 3·m + 2·j',
+        caption: 'Statical determinacy check',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('a', 'Number of member–joint connections'),
+      HelpSymbol('r', 'Number of support reaction components'),
+      HelpSymbol('m', 'Number of members'),
+      HelpSymbol('j', 'Number of joints'),
+    ],
+    notes: [
+      'Members are rigid and pins frictionless. A member through three or '
+          'more joints is one rigid body: use it for a bent lever or a member '
+          'that branches.',
+      'A load at a joint several members share is taken to act on the pin. To '
+          'load one member there instead, put the load at a joint on that member '
+          'alone, just beside the pin: the reactions do not change, but the pin '
+          'forces on each member do.',
+      'A couple can act only at a joint on one member, and a fixed support '
+          'can hold only one member, because a frictionless pin passes no moment.',
+      'Fewer unknowns than equations is a mechanism; more is statically '
+          'indeterminate and needs member stiffnesses. Even when the counts '
+          'balance, badly placed supports — three reactions meeting at a point, '
+          'or all parallel — leave the frame unstable, which the tool reports.',
+      'A straight two-joint member with nothing acting between its pins is a '
+          'two-force member, and its axial force is reported as tension or '
+          'compression. Check compression members for buckling separately.',
+    ],
+    references: [
+      'Beer & Johnston, Vector Mechanics for Engineers: Statics, ch. 6',
+      'Hibbeler, Engineering Mechanics: Statics, §6.6',
     ],
   ),
 

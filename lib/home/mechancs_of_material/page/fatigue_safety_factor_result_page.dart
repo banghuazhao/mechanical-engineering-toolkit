@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/mechancs_of_material/widget/calculation_card.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
@@ -110,6 +111,7 @@ class FatigueSafetyFactorResultPage extends StatelessWidget {
           ultimateStrength: su,
           safetyFactor: safetyFactor,
         ),
+        const SolveForCard(toolId: 119),
       ],
     );
   }

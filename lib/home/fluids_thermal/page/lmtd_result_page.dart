@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/fluids_thermal/model/heat_transfer_calculator.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
@@ -81,6 +82,7 @@ class LmtdResultPage extends StatelessWidget {
       ],
       children: [
         FormulaCard(steps: steps),
+        SolveForCard(toolId: 812),
         ParameterSweepCard(
           variableLabel: l10n.Overall_Coefficient_U,
           variableCategory: UnitCategory.heatTransferCoefficient,

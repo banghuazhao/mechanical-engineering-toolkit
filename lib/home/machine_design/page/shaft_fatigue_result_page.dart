@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/model/shaft_fatigue_calculator.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/goodman_diagram_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
@@ -78,6 +79,7 @@ class ShaftFatigueResultPage extends StatelessWidget {
           ultimateStrength: sut,
           safetyFactor: n,
         ),
+        SolveForCard(toolId: 703),
         ParameterSweepCard(
           variableLabel: S.of(context).Target_Safety_Factor_N,
           variableCategory: null,

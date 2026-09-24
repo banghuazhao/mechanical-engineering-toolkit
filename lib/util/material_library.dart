@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+import 'fluid_library.dart';
+import 'lamina_library.dart';
 import 'others.dart';
+import 'thermal_material_library.dart';
 
 enum MaterialCategory { metal, plastic, other }
 
@@ -50,6 +53,18 @@ class MaterialPreset {
 
   /// True for user-added presets (only these are persisted / deletable).
   final bool isCustom;
+
+  MaterialPreset copyWith({String? name}) => MaterialPreset(
+        name: name ?? this.name,
+        category: category,
+        elasticModulusSI: elasticModulusSI,
+        shearModulusSI: shearModulusSI,
+        yieldStrengthSI: yieldStrengthSI,
+        ultimateStrengthSI: ultimateStrengthSI,
+        densitySI: densitySI,
+        poissonsRatio: poissonsRatio,
+        isCustom: true,
+      );
 
   Map<String, dynamic> toJson() => {
         'name': name,
@@ -332,29 +347,233 @@ const List<MaterialPreset> builtInMaterials = [
   ),
 ];
 
-/// User-defined custom materials, persisted locally via SharedPreferences.
-/// Built-in presets above are not stored — only user additions are.
+/// One library's user-defined entries, persisted as a list of JSON strings
+/// under [storageKey].
+///
+/// Built-in presets are never stored — only what the user added — so a later
+/// release can correct a built-in value without fighting a stale copy.
+///
+/// Entries are addressed by index rather than by name. Names are kept unique
+/// from here on (see [MaterialLibrary.isNameTaken]), but a list saved before
+/// that check existed may hold two entries with one name, and deleting one of
+/// them must not take the other with it.
+class CustomPresetList<T> {
+  CustomPresetList._({
+    required this.storageKey,
+    required this.encode,
+    required this.decode,
+    required this.nameOf,
+    required VoidCallback onChanged,
+  }) : _onChanged = onChanged;
+
+  final String storageKey;
+  final Map<String, dynamic> Function(T preset) encode;
+  final T Function(Map<String, dynamic> json) decode;
+  final String Function(T preset) nameOf;
+  final VoidCallback _onChanged;
+
+  List<String> get _raw =>
+      SharedPreferencesHelper.localStorage.getStringList(storageKey) ?? [];
+
+  void _write(List<String> raw) {
+    SharedPreferencesHelper.localStorage.setStringList(storageKey, raw);
+    _onChanged();
+  }
+
+  /// The stored entries, oldest first. An entry that no longer decodes — a
+  /// hand-edited backup, say — is skipped rather than taking the whole list
+  /// down with it.
+  List<T> get items {
+    final result = <T>[];
+    for (final entry in _raw) {
+      final value = _tryDecode(entry);
+      if (value != null) result.add(value);
+    }
+    return result;
+  }
+
+  T? _tryDecode(String entry) {
+    try {
+      return decode(jsonDecode(entry) as Map<String, dynamic>);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  void add(T preset) => _write([..._raw, jsonEncode(encode(preset))]);
+
+  /// Replaces the entry at [index] in [items].
+  void replaceAt(int index, T preset) {
+    final raw = _raw;
+    final rawIndex = _rawIndexOf(raw, index);
+    if (rawIndex == null) return;
+    raw[rawIndex] = jsonEncode(encode(preset));
+    _write(raw);
+  }
+
+  /// Removes the entry at [index] in [items].
+  void removeAt(int index) {
+    final raw = _raw;
+    final rawIndex = _rawIndexOf(raw, index);
+    if (rawIndex == null) return;
+    raw.removeAt(rawIndex);
+    _write(raw);
+  }
+
+  /// Maps an index in [items] — which skips undecodable entries — back to
+  /// the stored list.
+  int? _rawIndexOf(List<String> raw, int index) {
+    var seen = -1;
+    for (var i = 0; i < raw.length; i++) {
+      if (_tryDecode(raw[i]) == null) continue;
+      seen++;
+      if (seen == index) return i;
+    }
+    return null;
+  }
+}
+
+/// The four preset libraries a calculator can fill its inputs from, and the
+/// entries the user has added to each, persisted locally via
+/// SharedPreferences.
+///
+/// Built-ins live in each library's own file as `const` lists; this object
+/// only holds what is editable. The isotropic list keeps the storage key and
+/// JSON shape it has had since custom materials first shipped, so entries
+/// saved by an older release are still there.
 class MaterialLibrary extends ChangeNotifier {
-  static const _key = 'CUSTOM_MATERIALS';
-
-  List<MaterialPreset> get customPresets {
-    final raw = SharedPreferencesHelper.localStorage.getStringList(_key) ?? [];
-    return raw.map((s) => MaterialPreset.fromJson(jsonDecode(s))).toList();
+  MaterialLibrary() {
+    isotropic = CustomPresetList._(
+      storageKey: 'CUSTOM_MATERIALS',
+      encode: (m) => m.toJson(),
+      decode: MaterialPreset.fromJson,
+      nameOf: (m) => m.name,
+      onChanged: notifyListeners,
+    );
+    laminae = CustomPresetList._(
+      storageKey: 'CUSTOM_LAMINAE',
+      encode: (l) => l.toJson(),
+      decode: LaminaPreset.fromJson,
+      nameOf: (l) => l.name,
+      onChanged: notifyListeners,
+    );
+    fluids = CustomPresetList._(
+      storageKey: 'CUSTOM_FLUIDS',
+      encode: (f) => f.toJson(),
+      decode: FluidPreset.fromJson,
+      nameOf: (f) => f.name,
+      onChanged: notifyListeners,
+    );
+    thermal = CustomPresetList._(
+      storageKey: 'CUSTOM_THERMAL_MATERIALS',
+      encode: (t) => t.toJson(),
+      decode: ThermalMaterialPreset.fromJson,
+      nameOf: (t) => t.name,
+      onChanged: notifyListeners,
+    );
   }
 
-  List<MaterialPreset> get all => [...builtInMaterials, ...customPresets];
+  late final CustomPresetList<MaterialPreset> isotropic;
+  late final CustomPresetList<LaminaPreset> laminae;
+  late final CustomPresetList<FluidPreset> fluids;
+  late final CustomPresetList<ThermalMaterialPreset> thermal;
 
-  void addCustom(MaterialPreset preset) {
-    final raw = SharedPreferencesHelper.localStorage.getStringList(_key) ?? [];
-    raw.add(jsonEncode(preset.toJson()));
-    SharedPreferencesHelper.localStorage.setStringList(_key, raw);
-    notifyListeners();
+  List<MaterialPreset> get customPresets => isotropic.items;
+
+  List<MaterialPreset> get all => [...builtInMaterials, ...isotropic.items];
+
+  List<LaminaPreset> get allLaminae => [...builtInLaminae, ...laminae.items];
+
+  List<FluidPreset> get allFluids => [...builtInFluids, ...fluids.items];
+
+  List<ThermalMaterialPreset> get allThermal =>
+      [...builtInThermalMaterials, ...thermal.items];
+
+  void addCustom(MaterialPreset preset) => isotropic.add(preset);
+
+  /// Whether [name] already names an entry — built-in or custom — in the
+  /// library [builtIn] and [custom] describe, ignoring case and surrounding
+  /// space. Pass [exceptIndex] when renaming custom entry [exceptIndex], so
+  /// it does not collide with itself.
+  static bool isNameTaken<T>(
+    String name, {
+    required List<T> builtIn,
+    required CustomPresetList<T> custom,
+    int? exceptIndex,
+  }) {
+    final wanted = name.trim().toLowerCase();
+    for (final preset in builtIn) {
+      if (custom.nameOf(preset).trim().toLowerCase() == wanted) return true;
+    }
+    final items = custom.items;
+    for (var i = 0; i < items.length; i++) {
+      if (i == exceptIndex) continue;
+      if (custom.nameOf(items[i]).trim().toLowerCase() == wanted) return true;
+    }
+    return false;
   }
 
-  void removeCustom(String name) {
-    final raw = SharedPreferencesHelper.localStorage.getStringList(_key) ?? [];
-    raw.removeWhere((s) => (jsonDecode(s) as Map)['name'] == name);
-    SharedPreferencesHelper.localStorage.setStringList(_key, raw);
-    notifyListeners();
+  /// Every custom entry, as one JSON document a user can keep or move to
+  /// another device.
+  String exportJson() => const JsonEncoder.withIndent('  ').convert({
+        'format': exportFormat,
+        'version': 1,
+        'isotropic': [for (final m in isotropic.items) m.toJson()],
+        'laminae': [for (final l in laminae.items) l.toJson()],
+        'fluids': [for (final f in fluids.items) f.toJson()],
+        'thermal': [for (final t in thermal.items) t.toJson()],
+      });
+
+  /// Tags an export so an import can tell it from any other JSON on the
+  /// clipboard.
+  static const exportFormat = 'me-toolkit-materials';
+
+  /// Adds the entries of an [exportJson] document.
+  ///
+  /// An entry whose name is already taken in its library is skipped rather
+  /// than renamed or overwritten: importing the same backup twice should
+  /// change nothing the second time. Throws [FormatException] when [source]
+  /// is not an export at all.
+  ({int added, int skipped}) importJson(String source) {
+    final Object? decoded;
+    try {
+      decoded = jsonDecode(source.trim());
+    } on FormatException {
+      throw const FormatException('Not a materials export');
+    }
+    if (decoded is! Map<String, dynamic> ||
+        decoded['format'] != exportFormat) {
+      throw const FormatException('Not a materials export');
+    }
+
+    var added = 0;
+    var skipped = 0;
+    void merge<T>(String key, List<T> builtIn, CustomPresetList<T> custom) {
+      final entries = decoded as Map<String, dynamic>;
+      final list = entries[key];
+      if (list is! List) return;
+      for (final entry in list) {
+        T preset;
+        try {
+          preset = custom.decode(Map<String, dynamic>.from(entry as Map));
+        } catch (_) {
+          skipped++;
+          continue;
+        }
+        if (isNameTaken(custom.nameOf(preset),
+            builtIn: builtIn, custom: custom)) {
+          skipped++;
+          continue;
+        }
+        custom.add(preset);
+        added++;
+      }
+    }
+
+    merge('isotropic', builtInMaterials, isotropic);
+    merge('laminae', builtInLaminae, laminae);
+    merge('fluids', builtInFluids, fluids);
+    merge('thermal', builtInThermalMaterials, thermal);
+    return (added: added, skipped: skipped);
   }
 }

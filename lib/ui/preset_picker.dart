@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
+import 'package:mechanical_engineering_toolkit/ui/preset_library.dart';
 import 'package:mechanical_engineering_toolkit/util/fluid_library.dart';
 import 'package:mechanical_engineering_toolkit/util/lamina_library.dart';
-import 'package:mechanical_engineering_toolkit/util/number.dart';
 import 'package:mechanical_engineering_toolkit/util/thermal_material_library.dart';
-import 'package:mechanical_engineering_toolkit/util/unit_system.dart';
-import 'package:mechanical_engineering_toolkit/util/units.dart';
-import 'package:provider/provider.dart';
 
 /// A button that opens a searchable sheet of read-only presets and hands the
-/// chosen one back.
+/// chosen one back — standard sections, pipe sizes, ideal gases: published
+/// tables a user has no reason to extend.
 ///
-/// Deliberately not shared with `MaterialPresetButton` in
-/// `material_preset_picker.dart`: that one also adds, persists and deletes
-/// user-defined entries, and folding an editable library and a fixed one into
-/// a single widget would cost more in configuration flags than the list tile
-/// it saves.
+/// The four material libraries, which a user can add to, go through
+/// [PresetLibraryButton] in `preset_library.dart` instead. Folding an
+/// editable library and a fixed table into one widget would cost more in
+/// configuration flags than the list tile it saves.
 class PresetPickerButton<T> extends StatelessWidget {
   const PresetPickerButton({
     super.key,
@@ -167,63 +163,24 @@ class FluidPresetButton extends StatelessWidget {
   final ValueChanged<FluidPreset> onSelected;
 
   @override
-  Widget build(BuildContext context) {
-    return PresetPickerButton<FluidPreset>(
-      buttonLabel: S.of(context).Pick_Fluid,
-      sheetTitle: S.of(context).Fluid_Presets,
-      searchHint: S.of(context).Search_Fluids,
-      emptyLabel: S.of(context).No_Fluids_Found,
-      icon: Icons.water_drop_outlined,
-      presets: builtInFluids,
-      nameOf: (fluid) => fluid.name,
-      subtitleOf: (context, fluid) {
-        final system = context.read<UnitSystemPreference>().system;
-        final precs = context.read<NumberPrecisionHelper>();
-        final density = precs.formatSI(
-            fluid.densitySI, UnitCategory.density, system);
-        // Small-value form, or every water preset reads as a flat "0.001".
-        final viscosity = precs.formatSmallSI(
-            fluid.viscositySI, UnitCategory.dynamicViscosity, system);
-        return 'ρ = $density · μ = $viscosity';
-      },
-      onSelected: onSelected,
-    );
-  }
+  Widget build(BuildContext context) => PresetLibraryButton<FluidPreset>(
+        library: fluidPresetLibrary,
+        onSelected: onSelected,
+      );
 }
 
-/// Picks a thermal conductivity by material name, grouped metals first.
+/// Picks a thermal conductivity by material name.
 class ThermalMaterialButton extends StatelessWidget {
   const ThermalMaterialButton({super.key, required this.onSelected});
 
   final ValueChanged<ThermalMaterialPreset> onSelected;
 
-  String _groupLabel(BuildContext context, ThermalMaterialGroup group) =>
-      switch (group) {
-        ThermalMaterialGroup.metal => S.of(context).Group_Metal,
-        ThermalMaterialGroup.building => S.of(context).Group_Building,
-        ThermalMaterialGroup.insulation => S.of(context).Group_Insulation,
-      };
-
   @override
-  Widget build(BuildContext context) {
-    return PresetPickerButton<ThermalMaterialPreset>(
-      buttonLabel: S.of(context).Pick_Thermal_Material,
-      sheetTitle: S.of(context).Thermal_Material_Presets,
-      searchHint: S.of(context).Search_Materials,
-      emptyLabel: S.of(context).No_Materials_Found,
-      icon: Icons.thermostat_rounded,
-      presets: builtInThermalMaterials,
-      nameOf: (material) => material.name,
-      subtitleOf: (context, material) {
-        final system = context.read<UnitSystemPreference>().system;
-        final precs = context.read<NumberPrecisionHelper>();
-        final k = precs.formatSI(
-            material.conductivitySI, UnitCategory.thermalConductivity, system);
-        return '${_groupLabel(context, material.group)} · k = $k';
-      },
-      onSelected: onSelected,
-    );
-  }
+  Widget build(BuildContext context) =>
+      PresetLibraryButton<ThermalMaterialPreset>(
+        library: thermalPresetLibrary,
+        onSelected: onSelected,
+      );
 }
 
 /// Picks a unidirectional lamina, handing back its elastic constants and
@@ -234,23 +191,8 @@ class LaminaPresetButton extends StatelessWidget {
   final ValueChanged<LaminaPreset> onSelected;
 
   @override
-  Widget build(BuildContext context) {
-    return PresetPickerButton<LaminaPreset>(
-      buttonLabel: S.of(context).Pick_Lamina,
-      sheetTitle: S.of(context).Lamina_Presets,
-      searchHint: S.of(context).Search_Materials,
-      emptyLabel: S.of(context).No_Materials_Found,
-      icon: Icons.layers_outlined,
-      presets: builtInLaminae,
-      nameOf: (lamina) => lamina.name,
-      subtitleOf: (context, lamina) {
-        final system = context.read<UnitSystemPreference>().system;
-        final precs = context.read<NumberPrecisionHelper>();
-        String modulus(double v) => precs.formatSI(v, UnitCategory.modulus, system);
-        return 'E1 = ${modulus(lamina.e1)} · E2 = ${modulus(lamina.e2)}'
-            ' · G12 = ${modulus(lamina.g12)} · ν12 = ${precs.formatValue(lamina.nu12)}';
-      },
-      onSelected: onSelected,
-    );
-  }
+  Widget build(BuildContext context) => PresetLibraryButton<LaminaPreset>(
+        library: laminaPresetLibrary,
+        onSelected: onSelected,
+      );
 }

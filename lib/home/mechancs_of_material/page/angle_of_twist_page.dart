@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
@@ -244,6 +245,7 @@ class _AngleOfTwistResultPage extends StatelessWidget {
       ],
       children: [
         FormulaCard(steps: formulaSteps),
+        SolveForCard(toolId: 114),
         ParameterSweepCard(
           variableLabel: 'Length, L',
           variableCategory: UnitCategory.length,

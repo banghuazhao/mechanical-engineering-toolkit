@@ -3,6 +3,7 @@ import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/model/power_screw_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/page/power_screw_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
@@ -134,6 +135,7 @@ T_L &= \frac{F d_m}{2}\left(\frac{\pi \mu d_m \sec\alpha - l}{\pi d_m + \mu l \s
 e &= \frac{F l}{2\pi T_R}, \qquad \text{self-locking if } \mu\sec\alpha > \tan\lambda
 \end{aligned}''',
         ),
+        SolveForCard(toolId: 712),
         ParameterSweepCard(
           variableLabel: l10n.Thread_Friction_Mu,
           variableCategory: null,

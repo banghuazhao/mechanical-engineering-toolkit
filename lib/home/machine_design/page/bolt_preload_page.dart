@@ -3,6 +3,7 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
@@ -208,6 +209,7 @@ class _BoltPreloadResultPage extends StatelessWidget {
       ],
       children: [
         FormulaCard(steps: formulaSteps),
+        SolveForCard(toolId: 706),
         ParameterSweepCard(
           variableLabel: S.of(context).Diameter_D,
           variableCategory: UnitCategory.length,

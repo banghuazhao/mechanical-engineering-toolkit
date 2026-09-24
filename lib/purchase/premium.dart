@@ -69,6 +69,9 @@ enum PremiumFeature {
 
   /// The what-if chart that sweeps one input across a range.
   parameterSweep,
+
+  /// Solving a calculation backwards for one of its inputs.
+  solveFor,
 }
 
 /// Answers "may this build do that yet?".

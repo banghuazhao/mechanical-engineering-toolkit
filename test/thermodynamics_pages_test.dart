@@ -14,6 +14,7 @@ import 'package:mechanical_engineering_toolkit/home/thermodynamics/page/rankine_
 import 'package:mechanical_engineering_toolkit/home/thermodynamics/page/steam_tables_page.dart';
 import 'package:mechanical_engineering_toolkit/home/thermodynamics/page/steam_tables_result_page.dart';
 import 'package:mechanical_engineering_toolkit/purchase/remove_ads_service.dart';
+import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_theme.dart';
 import 'package:mechanical_engineering_toolkit/ui/line_plot_card.dart';
 import 'package:mechanical_engineering_toolkit/util/language.dart';
@@ -72,7 +73,13 @@ void _useTallViewport(WidgetTester tester) {
 /// Every value shown beside [label] on a result page, in order. A cycle
 /// repeats its labels once per state, so the caller picks which one it means.
 List<String> _valuesFor(WidgetTester tester, String label) {
-  final rows = find.ancestor(of: find.text(label), matching: find.byType(Row));
+  // Result rows only: the Solve For card names the same outputs in its
+  // dropdown, with no value beside them.
+  final rows = find.ancestor(
+    of: find.descendant(
+        of: find.byType(AppCopyableValue), matching: find.text(label)),
+    matching: find.byType(Row),
+  );
   return [
     for (var i = 0; i < rows.evaluate().length; i++)
       tester

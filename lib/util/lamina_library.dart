@@ -12,11 +12,12 @@ class LaminaPreset {
     required this.e2,
     required this.g12,
     required this.nu12,
-    required this.xt,
-    required this.xc,
-    required this.yt,
-    required this.yc,
-    required this.s,
+    this.xt,
+    this.xc,
+    this.yt,
+    this.yc,
+    this.s,
+    this.isCustom = false,
   });
 
   final String name;
@@ -31,13 +32,61 @@ class LaminaPreset {
   final double nu12;
 
   /// Fibre-direction tensile and compressive strengths, MPa.
-  final double xt, xc;
+  ///
+  /// The strengths are optional so a user-defined lamina can be saved from
+  /// its elastic constants alone — a data sheet often quotes those without
+  /// allowables. Every built-in preset carries all five.
+  final double? xt, xc;
 
   /// Transverse tensile and compressive strengths, MPa.
-  final double yt, yc;
+  final double? yt, yc;
 
   /// In-plane shear strength, MPa.
-  final double s;
+  final double? s;
+
+  /// True for a lamina the user added; only those are stored and editable.
+  final bool isCustom;
+
+  LaminaPreset copyWith({String? name}) => LaminaPreset(
+        name: name ?? this.name,
+        e1: e1,
+        e2: e2,
+        g12: g12,
+        nu12: nu12,
+        xt: xt,
+        xc: xc,
+        yt: yt,
+        yc: yc,
+        s: s,
+        isCustom: true,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'E1': e1,
+        'E2': e2,
+        'G12': g12,
+        'nu12': nu12,
+        'Xt': xt,
+        'Xc': xc,
+        'Yt': yt,
+        'Yc': yc,
+        'S': s,
+      };
+
+  factory LaminaPreset.fromJson(Map<String, dynamic> json) => LaminaPreset(
+        name: json['name'] as String,
+        e1: (json['E1'] as num).toDouble(),
+        e2: (json['E2'] as num).toDouble(),
+        g12: (json['G12'] as num).toDouble(),
+        nu12: (json['nu12'] as num).toDouble(),
+        xt: (json['Xt'] as num?)?.toDouble(),
+        xc: (json['Xc'] as num?)?.toDouble(),
+        yt: (json['Yt'] as num?)?.toDouble(),
+        yc: (json['Yc'] as num?)?.toDouble(),
+        s: (json['S'] as num?)?.toDouble(),
+        isCustom: true,
+      );
 }
 
 /// The five materials of Tsai & Hahn's *Introduction to Composite Materials*

@@ -887,6 +887,57 @@ const Map<int, ToolHelp> toolHelpJa = {
     ],
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
+  122: ToolHelp(
+    summary: 'クレーンフック、C 形クランプのフレーム、チェーンリンク、リングなどの厚い曲がり部材の応力を、Winkler–Bach '
+        'の曲がりはり理論で求めます。平面断面は平面を保ちますが、内側の繊維は外側より短いため、曲げ応力は直線ではなく双曲線分布になり、中立軸は曲率中心側へ移動し、内側繊維には曲げの公式が予測するより大きな応力が生じます。',
+    formulas: [
+      HelpFormula(
+        tex: r'r_n = \frac{A}{\int_A dA/r}, \qquad e = r_c - r_n',
+        plain: 'rn = A / ∫dA/r,   e = rc − rn',
+        caption: '中立軸半径と図心からのずれ',
+      ),
+      HelpFormula(
+        tex: r'\sigma(r) = \frac{N}{A} + \frac{M\,(r_n - r)}{A\,e\,r}',
+        plain: 'σ(r) = N/A + M·(rn − r) / (A·e·r)',
+        caption: '半径 r における応力',
+      ),
+      HelpFormula(
+        tex: r'\int_A \frac{dA}{r} = b \ln\frac{r_o}{r_i}',
+        plain: '∫dA/r = b·ln(ro/ri)',
+        caption: '長方形の場合。各断面にそれぞれ厳密解があります',
+      ),
+      HelpFormula(
+        tex: r'K_i = \frac{\sigma_{i}}{M c_i^{\prime} / I}',
+        plain: 'Ki = σi / (M·ci′/I)、ci′ = rc − ri',
+        caption: '内側繊維の曲率係数',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('ri, ro', '内側・外側繊維までの半径', 'mm'),
+      HelpSymbol('rc', '図心までの半径', 'mm'),
+      HelpSymbol('rn', '中立軸までの半径', 'mm'),
+      HelpSymbol('e', '偏心量 rc − rn', 'mm'),
+      HelpSymbol('A', '断面積', 'mm²'),
+      HelpSymbol('M', '曲げモーメント（はりを伸ばす向きが正）', 'N·mm'),
+      HelpSymbol('N', '図心に作用する軸力（引張が正）', 'N'),
+      HelpSymbol('σ', '垂直応力（引張が正）', 'MPa'),
+      HelpSymbol('Ki', '曲がりはりの曲げ応力と直ばりの曲げ応力の比'),
+    ],
+    notes: [
+      '線形弾性材料、荷重を含む対称面、平面保持を仮定します。半径方向応力とせん断応力は無視します。非常に背の高い断面や、フランジが変形する薄肉の '
+          'I 形・T 形断面以外では妥当です。',
+      'フック荷重では力の作用線が曲率中心を通るため、断面には N = F と M = F·rc が作用し、内側繊維では直応力 F/A '
+          'が曲げ応力に加わります。',
+      'e はほぼ等しい 2 つの半径の小さな差なので、rn は厳密な積分から求めます。e がわずかにずれるだけで応力は大きく変わります。',
+      'rc/h ≈ 10 を超えると曲げの公式の誤差は数 % 以内ですが、約 5 未満では内側繊維を 10 % を大きく超えて過小評価します。',
+      '断面変化部の応力集中や疲労はこの計算の対象外です。',
+    ],
+    references: [
+      'Shigley\'s Mechanical Engineering Design, §3-18',
+      'Boresi & Schmidt, Advanced Mechanics of Materials, ch. 9',
+      'Young & Budynas, Roark\'s Formulas for Stress and Strain, §9.1',
+    ],
+  ),
   400: ToolHelp(
     summary: '平面内の共点力を 1 つの合力にまとめ、その大きさと向きを求めます。'
         'ほとんどの静力学の問題における最初の一歩：複数の力を、'
@@ -986,6 +1037,46 @@ const Map<int, ToolHelp> toolHelpJa = {
     references: [
       'Hibbeler, Structural Analysis, ch. 3',
       'Beer & Johnston, Vector Mechanics for Engineers, ch. 6',
+    ],
+  ),
+  404: ToolHelp(
+    summary: 'ブームと支柱、A 形フレーム、ペンチ、リンク機構など、多力部材を 1 '
+        'つ以上含む平面フレーム・機械を、分解して解きます。各部材は釣り合った剛体、各ピンはそこに集まる部材・荷重・支点と釣り合っているとして解き、各ピンが各部材に及ぼす力と支点反力を求めます。',
+    formulas: [
+      HelpFormula(
+        tex: r'\sum F_x = 0, \quad \sum F_y = 0, \quad \sum M = 0 \;\text{on every member}',
+        plain: '各部材で ΣFx = 0、ΣFy = 0、ΣM = 0',
+        caption: '釣り合い：部材ごとに 3 式',
+      ),
+      HelpFormula(
+        tex: r'\sum F_x = 0, \quad \sum F_y = 0 \;\text{at every pin}',
+        plain: '各ピンで ΣFx = 0、ΣFy = 0',
+        caption: '釣り合い：ピンごとに 2 式',
+      ),
+      HelpFormula(
+        tex: r'2a + r = 3m + 2j',
+        plain: '2·a + r = 3·m + 2·j',
+        caption: '静定性の確認',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('a', '部材と節点の接続数'),
+      HelpSymbol('r', '支点反力の成分数'),
+      HelpSymbol('m', '部材数'),
+      HelpSymbol('j', '節点数'),
+    ],
+    notes: [
+      '部材は剛体、ピンは摩擦なしとします。3 つ以上の節点を通る部材は 1 つの剛体として扱うので、曲がったてこや枝分かれした部材を表せます。',
+      '複数の部材が共有する節点の荷重はピンに作用するものとします。その位置で 1 '
+          'つの部材だけに荷重をかけたい場合は、ピンのすぐ横にその部材だけの節点を置いて荷重を与えてください。支点反力は変わりませんが、各部材に働くピン力は変わります。',
+      '摩擦のないピンはモーメントを伝えないため、偶力は 1 つの部材だけに属する節点にしか与えられず、固定支点も 1 つの部材しか支えられません。',
+      '未知数が式の数より少なければ機構（不安定）、多ければ不静定で部材の剛性が必要です。数が合っていても、3 つの反力が 1 '
+          '点に集まる、あるいはすべて平行といった支点配置では不安定になり、ツールがそれを知らせます。',
+      'ピン間に何も作用しない 2 節点の直線部材は二力部材で、その軸力を引張または圧縮として表示します。圧縮部材の座屈は別途確認してください。',
+    ],
+    references: [
+      'Beer & Johnston, Vector Mechanics for Engineers: Statics, ch. 6',
+      'Hibbeler, Engineering Mechanics: Statics, §6.6',
     ],
   ),
   200: ToolHelp(

@@ -830,6 +830,56 @@ const Map<int, ToolHelp> toolHelpZhHk = {
     ],
     diagram: 'images/simple_beam/icon_simple_beam.png',
   ),
+  122: ToolHelp(
+    summary: '用 Winkler–Bach 曲樑理論計算厚曲桿的應力，如吊鈎、C '
+        '形夾框架、鏈環和圓環。平截面仍保持平面，但內側纖維比外側短，因此彎曲應力呈雙曲線分佈而非線性分佈，中性軸向曲率中心偏移，內側纖維應力大於直樑彎曲公式的預測值。',
+    formulas: [
+      HelpFormula(
+        tex: r'r_n = \frac{A}{\int_A dA/r}, \qquad e = r_c - r_n',
+        plain: 'rn = A / ∫dA/r，   e = rc − rn',
+        caption: '中性軸半徑及其相對形心的偏移',
+      ),
+      HelpFormula(
+        tex: r'\sigma(r) = \frac{N}{A} + \frac{M\,(r_n - r)}{A\,e\,r}',
+        plain: 'σ(r) = N/A + M·(rn − r) / (A·e·r)',
+        caption: '半徑 r 處的應力',
+      ),
+      HelpFormula(
+        tex: r'\int_A \frac{dA}{r} = b \ln\frac{r_o}{r_i}',
+        plain: '∫dA/r = b·ln(ro/ri)',
+        caption: '矩形截面；每種截面都有各自的解析式',
+      ),
+      HelpFormula(
+        tex: r'K_i = \frac{\sigma_{i}}{M c_i^{\prime} / I}',
+        plain: 'Ki = σi / (M·ci′/I)，其中 ci′ = rc − ri',
+        caption: '內側纖維的曲率係數',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('ri, ro', '內、外側纖維的半徑', 'mm'),
+      HelpSymbol('rc', '形心半徑', 'mm'),
+      HelpSymbol('rn', '中性軸半徑', 'mm'),
+      HelpSymbol('e', '偏心距 rc − rn', 'mm'),
+      HelpSymbol('A', '截面面積', 'mm²'),
+      HelpSymbol('M', '彎矩，使樑伸直時為正', 'N·mm'),
+      HelpSymbol('N', '作用於形心的軸力，受拉為正', 'N'),
+      HelpSymbol('σ', '正應力，受拉為正', 'MPa'),
+      HelpSymbol('Ki', '曲樑彎曲應力與直樑彎曲應力之比'),
+    ],
+    notes: [
+      '假定材料線彈性、載荷位於對稱面內、平截面假設成立。忽略徑向應力和剪應力；除非截面很高，或是翼緣會變形的薄翼緣工字形和 T '
+          '形截面，這一假定都是合理的。',
+      '吊鈎載荷的作用線通過曲率中心，截面承受 N = F 和 M = F·rc，內側纖維處的直接應力 F/A 與彎曲應力疊加。',
+      'e 是兩個幾乎相等的半徑之差，數值很小，因此 rn 由精確積分求得——e 稍有偏差，應力就會相差很大。',
+      'rc/h 大於約 10 時，直樑公式的誤差在百分之幾以內；小於約 5 時，它對內側纖維的低估遠超 10 %。',
+      '截面變化處的應力集中和疲勞不在本計算範圍內。',
+    ],
+    references: [
+      'Shigley\'s Mechanical Engineering Design, §3-18',
+      'Boresi & Schmidt, Advanced Mechanics of Materials, ch. 9',
+      'Young & Budynas, Roark\'s Formulas for Stress and Strain, §9.1',
+    ],
+  ),
   400: ToolHelp(
     summary: '把平面內的共點力合成為一個合力，給出其大小和方向。'
         '這是几乎所有靜力學問題的第一步：用一個等效的力取代一組力。',
@@ -920,6 +970,44 @@ const Map<int, ToolHelp> toolHelpZhHk = {
     references: [
       'Hibbeler, Structural Analysis, ch. 3',
       'Beer & Johnston, Vector Mechanics for Engineers, ch. 6',
+    ],
+  ),
+  404: ToolHelp(
+    summary: '透過拆分求解平面剛架或機構——即含有至少一個多力桿件的結構，如吊臂與撐桿、A '
+        '字架、鉗子或連桿機構：每個桿件都是處於平衡的剛體，每個銷釘都與匯交於其上的桿件、載荷和支座保持平衡。結果為各銷釘作用於各桿件的力以及支座反力。',
+    formulas: [
+      HelpFormula(
+        tex: r'\sum F_x = 0, \quad \sum F_y = 0, \quad \sum M = 0 \;\text{on every member}',
+        plain: '每個桿件上 ΣFx = 0，ΣFy = 0，ΣM = 0',
+        caption: '平衡：每個桿件三個方程',
+      ),
+      HelpFormula(
+        tex: r'\sum F_x = 0, \quad \sum F_y = 0 \;\text{at every pin}',
+        plain: '每個銷釘處 ΣFx = 0，ΣFy = 0',
+        caption: '平衡：每個銷釘兩個方程',
+      ),
+      HelpFormula(
+        tex: r'2a + r = 3m + 2j',
+        plain: '2·a + r = 3·m + 2·j',
+        caption: '靜定性校核',
+      ),
+    ],
+    symbols: [
+      HelpSymbol('a', '桿件與節點的連接數'),
+      HelpSymbol('r', '支座反力分量數'),
+      HelpSymbol('m', '桿件數'),
+      HelpSymbol('j', '節點數'),
+    ],
+    notes: [
+      '桿件為剛體，銷釘無摩擦。通過三個或更多節點的桿件是一個整體剛體，可用來表示折桿或分叉桿件。',
+      '多個桿件共用節點上的載荷視為作用在銷釘上。若要讓該處的載荷只作用於某一桿件，請在緊鄰銷釘處設置一個只屬於該桿件的節點並加載：支座反力不變，但各桿件受到的銷釘力會改變。',
+      '無摩擦銷釘不傳遞彎矩，因此力偶只能加在只屬於一個桿件的節點上，固定端也只能支承一個桿件。',
+      '未知量少於方程數是機構；多於方程數則為超靜定，需要桿件剛度。即使數目相等，支座佈置不當——三個反力匯交於一點或全部平行——也會使結構不穩定，本工具會給出提示。',
+      '兩節點之間無其他作用的直桿是二力桿，其軸力按受拉或受壓給出。受壓桿件需另行校核屈曲。',
+    ],
+    references: [
+      'Beer & Johnston, Vector Mechanics for Engineers: Statics, ch. 6',
+      'Hibbeler, Engineering Mechanics: Statics, §6.6',
     ],
   ),
   200: ToolHelp(

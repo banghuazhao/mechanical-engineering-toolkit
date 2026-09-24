@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/vibration/model/torsional_frequency_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/vibration/page/torsional_frequency_page.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
@@ -91,6 +92,7 @@ class TorsionalFrequencyResultPage extends StatelessWidget {
       ],
       children: [
         FormulaCard(steps: steps, tex: r'''\begin{aligned}k_t&=\frac{GJ_p}{L}\\\omega_n&=\sqrt{\frac{k_t}{J_\text{eff}}}\end{aligned}'''),
+        SolveForCard(toolId: 711),
         ParameterSweepCard(
           variableLabel: l10n.Shaft_Diameter_D,
           variableCategory: UnitCategory.length,

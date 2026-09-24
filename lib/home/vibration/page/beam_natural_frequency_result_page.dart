@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/vibration/model/beam_natural_frequency_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/vibration/page/beam_natural_frequency_page.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
@@ -89,6 +90,7 @@ class BeamNaturalFrequencyResultPage extends StatelessWidget {
       ],
       children: [
         FormulaCard(steps: steps, tex: r'''f_n = \frac{(\beta_n L)^2}{2\pi L^2}\sqrt{\frac{EI}{\rho A}}'''),
+        SolveForCard(toolId: 710),
         ParameterSweepCard(
           variableLabel: l10n.Beam_Length_L,
           variableCategory: UnitCategory.span,

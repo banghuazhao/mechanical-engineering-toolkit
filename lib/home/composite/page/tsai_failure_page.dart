@@ -161,12 +161,14 @@ class _TsaiFailurePageState extends State<TsaiFailurePage> {
                   ]),
                   SizedBox(height: context.tokens.space2),
                   LaminaPresetButton(
+                    // A custom lamina may carry no strengths; keep whatever
+                    // was entered for any it leaves out.
                     onSelected: (lamina) => setState(() {
-                      _xt = lamina.xt;
-                      _xc = lamina.xc;
-                      _yt = lamina.yt;
-                      _yc = lamina.yc;
-                      _s = lamina.s;
+                      _xt = lamina.xt ?? _xt;
+                      _xc = lamina.xc ?? _xc;
+                      _yt = lamina.yt ?? _yt;
+                      _yc = lamina.yc ?? _yc;
+                      _s = lamina.s ?? _s;
                       _presetGeneration++;
                     }),
                   ),

@@ -41,8 +41,8 @@ void main() {
     test('fibre direction is the stiff and strong one', () {
       for (final l in builtInLaminae) {
         expect(l.e1, greaterThan(l.e2), reason: l.name);
-        expect(l.xt, greaterThan(l.yt), reason: l.name);
-        expect(l.xc, greaterThan(l.yc), reason: l.name);
+        expect(l.xt, greaterThan(l.yt!), reason: l.name);
+        expect(l.xc, greaterThan(l.yc!), reason: l.name);
       }
     });
 

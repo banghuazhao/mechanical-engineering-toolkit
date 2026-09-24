@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Draws the tool illustrations for the Fluids & Thermal, Standard Sections
-and Vibration tools, in the style of the hand-made icons already in
+"""Draws the tool illustrations for the Fluids & Thermal, Standard Sections,
+Vibration, Thermodynamics, Curved Beam and Frames tools, in the style of the hand-made icons already in
 `images/icons/`.
 
 Those were drawn by hand; these are generated so the seven of them stay
@@ -528,6 +528,84 @@ def rankine():
     c.save("icon_rankine.png")
 
 
+def _bar(c: Canvas, p0, p1, half=11, fill=TAN):
+    """A member drawn as a solid bar with rounded, pinned ends."""
+    (x0, y0), (x1, y1) = p0, p1
+    ang = math.atan2(y1 - y0, x1 - x0)
+    nx, ny = -math.sin(ang) * half, math.cos(ang) * half
+    body = [(x0 + nx, y0 + ny), (x1 + nx, y1 + ny),
+            (x1 - nx, y1 - ny), (x0 - nx, y0 - ny)]
+    for (x, y) in (p0, p1):
+        c.ellipse((x - half, y - half, x + half, y + half), fill=fill)
+    c.polygon(body, fill=fill)
+    c.line(body[0], body[1], BLACK, LW)
+    c.line(body[2], body[3], BLACK, LW)
+    # Only the outer half of each end cap is outline; the inner half would
+    # draw a seam across the bar.
+    for (x, y), a0 in ((p0, math.degrees(ang) + 90), (p1, math.degrees(ang) - 90)):
+        c.arc((x, y), half, a0, a0 + 180, BLACK, LW)
+
+
+def _pin(c: Canvas, x, y, r=6):
+    c.ellipse((x - r, y - r, x + r, y + r), fill=WHITE, w=4)
+
+
+def curved_beam():
+    """A thick curved bar opened by a moment at each end, its neutral axis
+    (red) inside the centroidal one (dashed) — the one thing that sets a
+    curved beam apart."""
+    c = Canvas()
+    cx, cy = 150, 150
+    ri, ro = 50, 98
+    a0, a1 = 150, 390  # open at the bottom, like a hook turned over
+    steps = 80
+
+    def pt(r, a):
+        return (cx + r * math.cos(math.radians(a)),
+                cy + r * math.sin(math.radians(a)))
+
+    outer = [pt(ro, a0 + (a1 - a0) * i / steps) for i in range(steps + 1)]
+    inner = [pt(ri, a1 - (a1 - a0) * i / steps) for i in range(steps + 1)]
+    c.polygon(outer + inner, fill=TAN)
+    c.polyline(outer + inner + [outer[0]], BLACK, LW)
+    rc, rn = (ri + ro) / 2, 70
+    for i in range(2, steps - 2, 4):
+        c.line(pt(rc, a0 + (a1 - a0) * i / steps),
+               pt(rc, a0 + (a1 - a0) * (i + 2) / steps), BLACK, 2.5)
+    c.arc((cx, cy), rn, a0 + 3, a1 - 3, RED, 4)
+    # The centre of curvature and the radius to the inner fibre.
+    c.ellipse((cx - 5, cy - 5, cx + 5, cy + 5), fill=BLACK, outline=None)
+    c.dashed((cx, cy), pt(ri, 270), BLACK, 2.5)
+    c.text((cx + 13, cy - 24), "r", 32)
+    # Equal and opposite moments on the two end faces, opening the bar.
+    left, right = pt(rc, a0), pt(rc, a1)
+    c.arc((left[0], left[1] + 6), 26, 330, 150, RED, 5.5, head=16)
+    c.arc((right[0], right[1] + 6), 26, 210, 30, RED, 5.5, head=16)
+    c.text((left[0] - 8, left[1] + 58), "M", 38, RED)
+    c.text((right[0] + 8, right[1] + 58), "M", 38, RED)
+    c.save("icon_curved_beam.png")
+
+
+def frame():
+    """A post, a boom pinned to it and a diagonal brace: a frame whose
+    members carry bending, not just the axial force of a truss."""
+    c = Canvas()
+    base, top = (72, 232), (72, 80)
+    tip, brace_on_post, brace_on_boom = (240, 80), (72, 170), (170, 80)
+    _bar(c, base, top)
+    _bar(c, top, tip)
+    _bar(c, brace_on_post, brace_on_boom, half=8, fill=GREY)
+    for x, y in (top, brace_on_post, brace_on_boom):
+        _pin(c, x, y)
+    # Built in at the foot, so the frame stands on its own: a pinned post
+    # with nothing else holding it would fall over.
+    c.rect((34, base[1] + 11, 110, base[1] + 17), fill=BLACK, w=0)
+    c.hatch((34, base[1] + 17, 110, base[1] + 33))
+    c.arrow((tip[0], tip[1] + 18), (tip[0], tip[1] + 118), RED, 6, head=20)
+    c.text((tip[0] - 26, tip[1] + 96), "P", 46, RED)
+    c.save("icon_frame.png")
+
+
 def main() -> None:
     print("writing icons:")
     reynolds()
@@ -545,6 +623,8 @@ def main() -> None:
     ideal_gas()
     air_cycle()
     rankine()
+    curved_beam()
+    frame()
 
 
 if __name__ == "__main__":

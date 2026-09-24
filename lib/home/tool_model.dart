@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/beam/page/beam_calculator_page.dart';
 import 'package:mechanical_engineering_toolkit/home/beam/page/beam_section_properties_page.dart';
+import 'package:mechanical_engineering_toolkit/home/beam/page/curved_beam_page.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/page/centroid_page.dart';
+import 'package:mechanical_engineering_toolkit/home/statics/page/frame_analysis_page.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/page/resultant_force_page.dart';
 import 'package:mechanical_engineering_toolkit/home/statics/page/truss_analysis_page.dart';
 import 'package:mechanical_engineering_toolkit/home/fluids_thermal/page/composite_wall_page.dart';
@@ -431,6 +433,30 @@ class ToolLibrary {
                         toolId: toolId,
                         initialInputs: initialInputs,
                       )))),
+      Tool(
+          id: 122,
+          image: AssetImage("images/icons/icon_curved_beam.png"),
+          title: S.of(context).Curved_Beam,
+          type: ToolType.beamEngineering,
+          keywords: const [
+            'curved beam',
+            'crane hook',
+            'hook',
+            'winkler',
+            'c-frame',
+            'chain link',
+            'neutral axis',
+            'eccentricity',
+            'thick curved'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              ToolPageRoute(
+                  builder: (context) => CurvedBeamPage(
+                        title: title,
+                        toolId: toolId,
+                        initialInputs: initialInputs,
+                      )))),
       // Theory of Elasticity
       Tool(
           id: 200,
@@ -628,6 +654,29 @@ class ToolLibrary {
               context,
               ToolPageRoute(
                   builder: (context) => TrussAnalysisPage(
+                      title: title,
+                      toolId: toolId,
+                      initialInputs: initialInputs)))),
+      Tool(
+          id: 404,
+          image: AssetImage("images/icons/icon_frame.png"),
+          title: S.of(context).Frames_and_Machines,
+          type: ToolType.statics,
+          keywords: const [
+            'frame',
+            'machine',
+            'multi-force member',
+            'pin force',
+            'free body diagram',
+            'pliers',
+            'linkage',
+            'two-force member',
+            'equilibrium'
+          ],
+          action: (context, title, toolId, {initialInputs}) => Navigator.push(
+              context,
+              ToolPageRoute(
+                  builder: (context) => FrameAnalysisPage(
                       title: title,
                       toolId: toolId,
                       initialInputs: initialInputs)))),

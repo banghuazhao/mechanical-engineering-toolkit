@@ -10,6 +10,7 @@ class ThermalMaterialPreset {
     required this.name,
     required this.conductivitySI,
     required this.group,
+    this.isCustom = false,
   });
 
   final String name;
@@ -20,6 +21,33 @@ class ThermalMaterialPreset {
   /// Coarse grouping used to order the picker: metals conduct, insulators
   /// resist, and the building materials sit in between.
   final ThermalMaterialGroup group;
+
+  /// True for a material the user added; only those are stored and editable.
+  final bool isCustom;
+
+  ThermalMaterialPreset copyWith({String? name}) => ThermalMaterialPreset(
+        name: name ?? this.name,
+        conductivitySI: conductivitySI,
+        group: group,
+        isCustom: true,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'k': conductivitySI,
+        'group': group.name,
+      };
+
+  factory ThermalMaterialPreset.fromJson(Map<String, dynamic> json) =>
+      ThermalMaterialPreset(
+        name: json['name'] as String,
+        conductivitySI: (json['k'] as num).toDouble(),
+        group: ThermalMaterialGroup.values.firstWhere(
+          (g) => g.name == json['group'],
+          orElse: () => ThermalMaterialGroup.metal,
+        ),
+        isCustom: true,
+      );
 }
 
 enum ThermalMaterialGroup { metal, building, insulation }

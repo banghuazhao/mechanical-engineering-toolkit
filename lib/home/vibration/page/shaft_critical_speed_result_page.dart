@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/vibration/model/shaft_critical_speed_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/vibration/page/shaft_critical_speed_page.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
@@ -107,6 +108,7 @@ class ShaftCriticalSpeedResultPage extends StatelessWidget {
       ],
       children: [
         FormulaCard(steps: steps, tex: r'''\begin{aligned}\omega_r&=\sqrt{\frac{k}{m}}\\\frac{1}{\omega_c^{2}}&=\frac{1}{\omega_r^{2}}+\frac{1}{\omega_s^{2}}\\N_c&=\frac{60\,\omega_c}{2\pi}\end{aligned}'''),
+        SolveForCard(toolId: 709),
         ParameterSweepCard(
           variableLabel: l10n.Shaft_Diameter_D,
           variableCategory: UnitCategory.length,

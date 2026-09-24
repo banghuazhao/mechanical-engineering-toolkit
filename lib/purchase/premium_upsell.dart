@@ -60,6 +60,7 @@ Future<void> showLockedFeatureUpsell(
     PremiumFeature.fullHistory =>
       strings.Premium_Locked_History(ToolHistory.maxEntries),
     PremiumFeature.parameterSweep => strings.Premium_Locked_Sweep,
+    PremiumFeature.solveFor => strings.Premium_Locked_Solve,
   };
   return showPremiumUpsell(context, reason: reason);
 }
@@ -289,6 +290,7 @@ class _PremiumOfferState extends State<PremiumOffer> {
               _Benefit(strings.Premium_Benefit_Projects),
               _Benefit(strings.Premium_Benefit_History(ToolHistory.maxEntries)),
               _Benefit(strings.Premium_Benefit_Sweep),
+              _Benefit(strings.Premium_Benefit_Solve),
             ],
             if (!onPlay) _Benefit(strings.Premium_Benefit_Universal),
             SizedBox(height: tokens.space4),

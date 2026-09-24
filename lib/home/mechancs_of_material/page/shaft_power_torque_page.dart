@@ -5,6 +5,7 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/history.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
@@ -245,6 +246,7 @@ class _ShaftPowerTorqueResultPage extends StatelessWidget {
       ],
       children: [
         FormulaCard(steps: steps),
+        SolveForCard(toolId: 115),
         ParameterSweepCard(
           variableLabel: 'Speed, n',
           variableCategory: UnitCategory.angularVelocity,

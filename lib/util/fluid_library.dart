@@ -10,6 +10,7 @@ class FluidPreset {
     required this.name,
     required this.densitySI,
     required this.viscositySI,
+    this.isCustom = false,
   });
 
   /// Includes the reference temperature: both properties are strong functions
@@ -21,6 +22,29 @@ class FluidPreset {
 
   /// Dynamic viscosity μ, Pa·s.
   final double viscositySI;
+
+  /// True for a fluid the user added; only those are stored and editable.
+  final bool isCustom;
+
+  FluidPreset copyWith({String? name}) => FluidPreset(
+        name: name ?? this.name,
+        densitySI: densitySI,
+        viscositySI: viscositySI,
+        isCustom: true,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'density': densitySI,
+        'viscosity': viscositySI,
+      };
+
+  factory FluidPreset.fromJson(Map<String, dynamic> json) => FluidPreset(
+        name: json['name'] as String,
+        densitySI: (json['density'] as num).toDouble(),
+        viscositySI: (json['viscosity'] as num).toDouble(),
+        isCustom: true,
+      );
 }
 
 /// Nominal properties at 1 atm and the stated temperature, for quick

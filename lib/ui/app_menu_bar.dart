@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/major_list_page.dart';
+import 'package:mechanical_engineering_toolkit/home/my_materials_page.dart';
 import 'package:mechanical_engineering_toolkit/home/saved_projects_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_favorites.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_history_page.dart';
@@ -257,6 +258,10 @@ class AppMenuBar extends StatelessWidget {
               shortcut: const SingleActivator(LogicalKeyboardKey.keyP,
                   meta: true, shift: true),
               onSelected: () => open('projects', const SavedProjectsPage()),
+            ),
+            PlatformMenuItem(
+              label: l10n.My_Materials,
+              onSelected: () => open('materials', const MyMaterialsPage()),
             ),
             PlatformMenuItem(
               label: l10n.Recommended_by_Major,

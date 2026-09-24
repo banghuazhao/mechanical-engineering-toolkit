@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/model/spur_gear_calculator.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
@@ -76,6 +77,7 @@ class SpurGearResultPage extends StatelessWidget {
       children: [
         const FormulaCard(steps: formulaSteps),
         if (result.bendingStressMPa != null)
+          SolveForCard(toolId: 702),
           ParameterSweepCard(
             variableLabel: S.of(context).Face_Width_F,
             variableCategory: UnitCategory.length,

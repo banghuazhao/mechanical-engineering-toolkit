@@ -26,65 +26,117 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(label) => "Copied ${label}";
 
-  static String m3(label) =>
+  static String m3(name) => "Delete “${name}”?";
+
+  static String m4(label) =>
       "Drag along the line to explore other values of ${label}.";
 
-  static String m4(limit) =>
+  static String m5(limit) =>
       "The peak temperature must be above the compression-end temperature, ${limit}.";
 
-  static String m5(limit) =>
+  static String m6(n) => "Enter x and y for J${n}.";
+
+  static String m7(n) => "Member ${n} needs at least two joints.";
+
+  static String m8(limit) =>
       "The turbine inlet must be hotter than the boiler’s saturation temperature, ${limit} — or leave it blank for saturated steam.";
 
-  static String m6(x) => "Fixing moment at x = ${x}";
+  static String m9(x) => "Fixing moment at x = ${x}";
 
-  static String m7(index) => "Layer ${index}";
+  static String m10(members, joints, equations) =>
+      "${members} members × 3 + ${joints} pins × 2 = ${equations} equations";
 
-  static String m8(index) => "Mode ${index}";
+  static String m11(path) => "Along the member: ${path}";
 
-  static String m9(max) => "Your last ${max} calculations in History";
+  static String m12(count) =>
+      "${count} unknowns: two pin-force components per member at each of its joints, plus the reactions";
 
-  static String m10(total) =>
+  static String m13(index) => "Layer ${index}";
+
+  static String m14(n) => "Member ${n}";
+
+  static String m15(index) => "Mode ${index}";
+
+  static String m16(n) => "Force on member at J${n}";
+
+  static String m17(max) => "Your last ${max} calculations in History";
+
+  static String m18(total) =>
       "All ${total} tools — machine design, composites, fluids and thermal, vibration, and more";
 
-  static String m11(count, total) =>
+  static String m19(count, total) =>
       "${count} of ${total} tools are free. Premium unlocks the rest.";
 
-  static String m12(count, max) =>
+  static String m20(count, max) =>
       "Showing the ${count} most recent. Premium shows up to ${max}.";
 
-  static String m13(max) =>
+  static String m21(max) =>
       "Premium shows up to your last ${max} calculations.";
 
-  static String m14(tool) => "${tool} is a Premium tool";
+  static String m22(tool) => "${tool} is a Premium tool";
 
-  static String m15(value) => "Preview: ${value}";
+  static String m23(name) => "${name} (copy)";
 
-  static String m16(count) => "${count} calculations";
+  static String m24(name, n) => "${name} (copy ${n})";
 
-  static String m17(name) => "Saved “${name}”";
+  static String m25(count) =>
+      "Copied ${count} presets. Use Import from clipboard on the other device.";
 
-  static String m18(name) => "Renamed to “${name}”";
+  static String m26(added, skipped) =>
+      "Imported ${added}; skipped ${skipped} already here.";
 
-  static String m19(x) => "Reaction at x = ${x}";
+  static String m27(value) => "Preview: ${value}";
 
-  static String m20(tool) => "Remove ${tool} from favorites";
+  static String m28(count) => "${count} calculations";
 
-  static String m21(count, total) =>
+  static String m29(name) => "Saved “${name}”";
+
+  static String m30(name) => "Renamed to “${name}”";
+
+  static String m31(x) => "Reaction at x = ${x}";
+
+  static String m32(tool) => "Remove ${tool} from favorites";
+
+  static String m33(count, total) =>
       "${count} of ${total} tools are free. Watch one ad per tool to unlock more, or get all tools with Premium.";
 
-  static String m22(n) => "Dimension ${n}";
+  static String m34(output, value) => "Now: ${output} = ${value}";
 
-  static String m23(n) => "State ${n}";
+  static String m35(count) =>
+      "${count} values give this result; this is the one nearest your current input.";
 
-  static String m24(label) => "What if: ${label}";
+  static String m36(input) => "No value of ${input} gives this result.";
+
+  static String m37(input, output, low, high) =>
+      "No value of ${input} gives this result. Changing it alone, ${output} can range from ${low} to ${high}.";
+
+  static String m38(value) => "Was ${value}";
+
+  static String m39(input) =>
+      "${input} is filled in. Calculate to see the full result.";
+
+  static String m40(n) => "Dimension ${n}";
+
+  static String m41(n) => "State ${n}";
+
+  static String m42(label) => "What if: ${label}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "A_From_A": MessageLookupByLibrary.simpleMessage("a (from A)"),
     "About_This_Tool": MessageLookupByLibrary.simpleMessage("About this tool"),
     "Active_Coils_Na": MessageLookupByLibrary.simpleMessage("Active coils, Na"),
+    "Add_Custom_Fluid": MessageLookupByLibrary.simpleMessage(
+      "Add custom fluid",
+    ),
+    "Add_Custom_Lamina": MessageLookupByLibrary.simpleMessage(
+      "Add custom lamina",
+    ),
     "Add_Custom_Material": MessageLookupByLibrary.simpleMessage(
       "Add custom material",
+    ),
+    "Add_Custom_Thermal_Material": MessageLookupByLibrary.simpleMessage(
+      "Add thermal material",
     ),
     "Add_Dimension": MessageLookupByLibrary.simpleMessage("Add dimension"),
     "Add_Force": MessageLookupByLibrary.simpleMessage("Add Force"),
@@ -138,9 +190,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "Answer_No": MessageLookupByLibrary.simpleMessage("No"),
     "Answer_Yes": MessageLookupByLibrary.simpleMessage("Yes"),
     "Appearance": MessageLookupByLibrary.simpleMessage("APPEARANCE"),
+    "Applied_Couple_M": MessageLookupByLibrary.simpleMessage(
+      "Couple, M (+ counter-clockwise)",
+    ),
     "Applied_Force_F": MessageLookupByLibrary.simpleMessage("Applied force, F"),
+    "Applied_Load": MessageLookupByLibrary.simpleMessage("Load"),
     "Area": MessageLookupByLibrary.simpleMessage("Area"),
     "Area_A": MessageLookupByLibrary.simpleMessage("Area, A"),
+    "Axial_Force_Compression": MessageLookupByLibrary.simpleMessage(
+      "Two-force member: compression",
+    ),
+    "Axial_Force_Tension": MessageLookupByLibrary.simpleMessage(
+      "Two-force member: tension",
+    ),
     "Axial_Load_F": MessageLookupByLibrary.simpleMessage("Axial load, F"),
     "Back_Work_Ratio": MessageLookupByLibrary.simpleMessage(
       "Back work ratio (%)",
@@ -206,6 +268,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Bending_Moment_Diagram": MessageLookupByLibrary.simpleMessage(
       "Bending-moment diagram",
     ),
+    "Bending_Moment_Straightening": MessageLookupByLibrary.simpleMessage(
+      "Bending moment, M",
+    ),
     "Bending_Stress_At_Mmax": MessageLookupByLibrary.simpleMessage(
       "Bending stress at Mmax",
     ),
@@ -226,12 +291,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "Bolted_Riveted_Joint": MessageLookupByLibrary.simpleMessage(
       "Bolted / Riveted Joint",
     ),
+    "Bore_Diameter_Di": MessageLookupByLibrary.simpleMessage(
+      "Bore diameter, di",
+    ),
     "Both": MessageLookupByLibrary.simpleMessage("Both"),
     "Boundary_Work_W": MessageLookupByLibrary.simpleMessage("Boundary work, W"),
     "Buckling_Load": MessageLookupByLibrary.simpleMessage("Buckling Load"),
     "Buckling_load_of_column": MessageLookupByLibrary.simpleMessage(
       "Buckling load of column",
     ),
+    "Built_In_Presets": MessageLookupByLibrary.simpleMessage("Built-in"),
     "Calculate": MessageLookupByLibrary.simpleMessage("Calculate"),
     "Calculation": MessageLookupByLibrary.simpleMessage("Calculation"),
     "Calculation_Copied": MessageLookupByLibrary.simpleMessage(
@@ -245,6 +314,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Center_Distance_C": MessageLookupByLibrary.simpleMessage(
       "Center distance, C",
     ),
+    "Centroid_Radius_Rc": MessageLookupByLibrary.simpleMessage(
+      "Centroid radius, rc",
+    ),
+    "Centroid_Rc": MessageLookupByLibrary.simpleMessage("Centroid, rc"),
     "Centroid_of_Composite_Area": MessageLookupByLibrary.simpleMessage(
       "Centroid of Composite Area",
     ),
@@ -329,6 +402,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Copied": MessageLookupByLibrary.simpleMessage("Copied"),
     "Copied_Value": m2,
     "Copy": MessageLookupByLibrary.simpleMessage("Copy"),
+    "Copy_Presets_Export": MessageLookupByLibrary.simpleMessage("Copy export"),
     "Copy_Result": MessageLookupByLibrary.simpleMessage("Copy result"),
     "Corrected_Length_Lc": MessageLookupByLibrary.simpleMessage(
       "Corrected length, Lc",
@@ -342,6 +416,36 @@ class MessageLookup extends MessageLookupByLibrary {
       "Critical speed, Nc",
     ),
     "Cross_Section": MessageLookupByLibrary.simpleMessage("Cross-section"),
+    "Curvature_Factor_Ki": MessageLookupByLibrary.simpleMessage(
+      "Curvature factor, Ki",
+    ),
+    "Curvature_Factor_Ko": MessageLookupByLibrary.simpleMessage(
+      "Curvature factor, Ko",
+    ),
+    "Curvature_Ratio_Rc_H": MessageLookupByLibrary.simpleMessage(
+      "Curvature ratio, rc/h",
+    ),
+    "Curved_Beam": MessageLookupByLibrary.simpleMessage(
+      "Curved Beam in Bending",
+    ),
+    "Curved_Beam_Hook_Hint": MessageLookupByLibrary.simpleMessage(
+      "The load\'s line of action passes through the centre of curvature, as on a crane hook: the section carries N = F and M = F·rc.",
+    ),
+    "Curved_Beam_Note": MessageLookupByLibrary.simpleMessage(
+      "The flexure formula M·c/I underestimates the inner-fibre stress by the factor Ki, and the error grows as rc/h falls — below about 5 it is well over 10 %. Check the inner fibre first.",
+    ),
+    "Curved_Beam_Sign_Hint": MessageLookupByLibrary.simpleMessage(
+      "A positive M straightens the beam and puts the inner fibre in tension; a negative one closes it up. N acts at the centroid.",
+    ),
+    "Custom_Fluid_Hint": MessageLookupByLibrary.simpleMessage(
+      "Both properties change with temperature, so include it in the name — for example “Hydraulic oil, 40 °C”.",
+    ),
+    "Custom_Lamina_Hint": MessageLookupByLibrary.simpleMessage(
+      "E1, E2, G12 and ν12 are required. The strengths are optional; when given, they fill the Tsai failure criteria.",
+    ),
+    "Custom_Material_Hint": MessageLookupByLibrary.simpleMessage(
+      "Fill in what you know — each tool uses only the properties it needs. Leave G blank to derive it from E and ν.",
+    ),
     "Cutoff_Ratio_Rc": MessageLookupByLibrary.simpleMessage("Cutoff ratio, rc"),
     "Cycle_Brayton": MessageLookupByLibrary.simpleMessage("Brayton"),
     "Cycle_Diesel": MessageLookupByLibrary.simpleMessage("Diesel"),
@@ -360,6 +464,10 @@ class MessageLookup extends MessageLookupByLibrary {
           "Deflections and slopes of simple beams",
         ),
     "Delete": MessageLookupByLibrary.simpleMessage("Delete"),
+    "Delete_Preset_Description": MessageLookupByLibrary.simpleMessage(
+      "This removes it from your presets on this device. Calculations that already used it keep their numbers.",
+    ),
+    "Delete_Preset_Question": m3,
     "Delete_Project_Description": MessageLookupByLibrary.simpleMessage(
       "This removes the project and its saved inputs from this device.",
     ),
@@ -395,11 +503,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "Desc_Composite_Wall": MessageLookupByLibrary.simpleMessage(
       "Steady one-dimensional conduction through a layered plane wall. Layer resistances t/k add in series with the optional convection films 1/h on each face, giving U, the heat flow, and the temperature at every interface.",
     ),
+    "Desc_Curved_Beam": MessageLookupByLibrary.simpleMessage(
+      "Stresses in a thick curved member — a crane hook, a C-frame, a chain link — where the flexure formula underestimates the inner fibre. Winkler–Bach curved-beam theory.",
+    ),
     "Desc_Fillet_Weld": MessageLookupByLibrary.simpleMessage(
       "Shear stress on the weld throat for a fillet weld of leg size w and effective length L, treating the throat as the failure plane (the standard simplified approach).",
     ),
     "Desc_Fin_Efficiency": MessageLookupByLibrary.simpleMessage(
       "Straight rectangular fin of uniform section, solved with an adiabatic tip and the corrected length Lc = L + t/2: m = √(2h/kt) and η = tanh(mLc)/(mLc).",
+    ),
+    "Desc_Frame_Joints": MessageLookupByLibrary.simpleMessage(
+      "Add a joint wherever members meet, a load or couple acts, a support holds the structure, or a member bends. A load at a joint shared by several members acts on the pin.",
+    ),
+    "Desc_Frame_Members": MessageLookupByLibrary.simpleMessage(
+      "Each member is one rigid body. Pick its joints in order along it; three or more make a bent or branched member, such as a lever or the arm of a pair of pliers.",
     ),
     "Desc_Ideal_Gas_Process": MessageLookupByLibrary.simpleMessage(
       "The end state, work, heat and entropy change of an ideal gas taken through one of the five classic processes, with constant specific heats.",
@@ -470,7 +587,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Displacement": MessageLookupByLibrary.simpleMessage("Displacement"),
     "Display_Format": MessageLookupByLibrary.simpleMessage("DISPLAY FORMAT"),
     "Double_Shear": MessageLookupByLibrary.simpleMessage("Double shear"),
-    "Drag_Along_Line": m3,
+    "Drag_Along_Line": m4,
     "Drill_Tap_Chart": MessageLookupByLibrary.simpleMessage(
       "Drill & Tap Chart",
     ),
@@ -480,6 +597,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Driving_Torque_T1": MessageLookupByLibrary.simpleMessage(
       "Driving torque, T1",
     ),
+    "Duplicate": MessageLookupByLibrary.simpleMessage("Duplicate"),
+    "Duplicate_And_Edit": MessageLookupByLibrary.simpleMessage(
+      "Duplicate and edit",
+    ),
     "Dynamic_Load_Rating_C": MessageLookupByLibrary.simpleMessage(
       "Dynamic load rating, C",
     ),
@@ -487,6 +608,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Dynamic viscosity, μ",
     ),
     "E_Modulus": MessageLookupByLibrary.simpleMessage("E (modulus)"),
+    "Eccentricity_E": MessageLookupByLibrary.simpleMessage(
+      "Eccentricity, e = rc − rn",
+    ),
+    "Edit": MessageLookupByLibrary.simpleMessage("Edit"),
+    "Edit_Preset": MessageLookupByLibrary.simpleMessage("Edit preset"),
     "Effective_Inertia_J": MessageLookupByLibrary.simpleMessage(
       "Effective inertia, Jeff",
     ),
@@ -549,6 +675,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Center_Distance_Positive": MessageLookupByLibrary.simpleMessage(
       "Center distance must be positive.",
     ),
+    "Err_Conductivity_Required": MessageLookupByLibrary.simpleMessage(
+      "Enter a positive conductivity.",
+    ),
+    "Err_Curved_Beam_Inputs": MessageLookupByLibrary.simpleMessage(
+      "Enter the inner radius, every dimension of the section and the load.",
+    ),
     "Err_Cycle_Cutoff": MessageLookupByLibrary.simpleMessage(
       "The cutoff ratio must be smaller than the compression ratio.",
     ),
@@ -558,7 +690,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Cycle_K": MessageLookupByLibrary.simpleMessage(
       "The specific heat ratio k must be greater than 1.",
     ),
-    "Err_Cycle_Peak": m4,
+    "Err_Cycle_Peak": m5,
     "Err_Cycle_Positive": MessageLookupByLibrary.simpleMessage(
       "Pressures and specific heats must be positive.",
     ),
@@ -635,6 +767,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Face_Width_Positive": MessageLookupByLibrary.simpleMessage(
       "Face width must be positive.",
     ),
+    "Err_Fluid_Properties_Required": MessageLookupByLibrary.simpleMessage(
+      "Enter a positive density and viscosity.",
+    ),
     "Err_Gas_Cp_R": MessageLookupByLibrary.simpleMessage(
       "cp must be larger than R, or cv would not be positive.",
     ),
@@ -656,9 +791,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Interference_Positive": MessageLookupByLibrary.simpleMessage(
       "Interference must be positive.",
     ),
+    "Err_Joint_Coordinates": m6,
+    "Err_Lamina_Constants_Required": MessageLookupByLibrary.simpleMessage(
+      "Enter E1, E2, G12 and ν12.",
+    ),
     "Err_Loads_Non_Negative": MessageLookupByLibrary.simpleMessage(
       "Loads cannot be negative.",
     ),
+    "Err_Member_Needs_Two_Joints": m7,
     "Err_Member_Unknown_Joint": MessageLookupByLibrary.simpleMessage(
       "A member references an unknown joint.",
     ),
@@ -673,6 +813,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Err_P_Positive": MessageLookupByLibrary.simpleMessage(
       "Equivalent load P must be positive.",
+    ),
+    "Err_Poisson_Range": MessageLookupByLibrary.simpleMessage(
+      "Poisson\'s ratio must be greater than −1 and no more than 0.5.",
     ),
     "Err_Polytropic_N": MessageLookupByLibrary.simpleMessage(
       "Use a polytropic exponent above zero other than 1 — n = 1 is the isothermal process.",
@@ -695,7 +838,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Err_Rankine_Supercritical": MessageLookupByLibrary.simpleMessage(
       "A boiler above the critical pressure needs a turbine inlet temperature.",
     ),
-    "Err_Rankine_Superheat": m5,
+    "Err_Rankine_Superheat": m8,
     "Err_Result_Not_Savable": MessageLookupByLibrary.simpleMessage(
       "This result cannot be matched to a tool, so it cannot be saved.",
     ),
@@ -788,6 +931,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Favorites": MessageLookupByLibrary.simpleMessage("Favorites"),
     "Feedback": MessageLookupByLibrary.simpleMessage("Feedback"),
+    "Fibre_Stresses": MessageLookupByLibrary.simpleMessage("Fibre stresses"),
     "Fillet_Weld_Strength": MessageLookupByLibrary.simpleMessage(
       "Fillet Weld Strength",
     ),
@@ -831,10 +975,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "Fits_Tolerances": MessageLookupByLibrary.simpleMessage(
       "Fits & Tolerances (ISO 286)",
     ),
-    "Fixing_Moment_At_X": m6,
+    "Fixing_Moment_At_X": m9,
+    "Flange_Inside": MessageLookupByLibrary.simpleMessage(
+      "Flange on the inner side",
+    ),
+    "Flange_Outside": MessageLookupByLibrary.simpleMessage(
+      "Flange on the outer side",
+    ),
     "Flange_Thickness": MessageLookupByLibrary.simpleMessage(
       "Flange thickness",
     ),
+    "Flange_Thickness_Tf": MessageLookupByLibrary.simpleMessage(
+      "Flange thickness, tf",
+    ),
+    "Flange_Width_Bf": MessageLookupByLibrary.simpleMessage("Flange width, bf"),
     "Flexural_Rigidity_EI": MessageLookupByLibrary.simpleMessage(
       "Flexural rigidity, EI",
     ),
@@ -866,6 +1020,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "Format_Scientific": MessageLookupByLibrary.simpleMessage("Scientific"),
     "Formula": MessageLookupByLibrary.simpleMessage("Formula"),
     "Formulas": MessageLookupByLibrary.simpleMessage("Formulas"),
+    "Frame_Count_Step": m10,
+    "Frame_Geometry": MessageLookupByLibrary.simpleMessage("Frame"),
+    "Frame_Member_Path": m11,
+    "Frame_Note": MessageLookupByLibrary.simpleMessage(
+      "Pin forces are those each pin exerts on the member listed; the member exerts the equal and opposite force on the pin. θ is measured counter-clockwise from +x.",
+    ),
+    "Frame_Pin_Step": MessageLookupByLibrary.simpleMessage(
+      "Each pin: ΣFx = 0, ΣFy = 0 with the members, loads and support at it",
+    ),
+    "Frame_Unknowns_Step": m12,
+    "Frames_and_Machines": MessageLookupByLibrary.simpleMessage(
+      "Frames and Machines",
+    ),
     "Friction_Factor_f": MessageLookupByLibrary.simpleMessage(
       "Friction factor, f",
     ),
@@ -934,6 +1101,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Holds with collar friction",
     ),
     "Hole_um": MessageLookupByLibrary.simpleMessage("Hole (µm)"),
+    "Hook_Load_F": MessageLookupByLibrary.simpleMessage("Load, F"),
     "Hot_Inlet": MessageLookupByLibrary.simpleMessage("Hot inlet"),
     "Hot_Outlet": MessageLookupByLibrary.simpleMessage("Hot outlet"),
     "Hot_Stream_Range": MessageLookupByLibrary.simpleMessage(
@@ -955,6 +1123,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Image_Guru": MessageLookupByLibrary.simpleMessage("Image Guru"),
     "Imperial_US": MessageLookupByLibrary.simpleMessage("Imperial (US)"),
+    "Import_From_Clipboard": MessageLookupByLibrary.simpleMessage(
+      "Import from clipboard",
+    ),
     "Include_Shaft_Mass": MessageLookupByLibrary.simpleMessage(
       "Include the shaft\'s own mass",
     ),
@@ -969,6 +1140,19 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Inlet_Temperature_T1": MessageLookupByLibrary.simpleMessage(
       "Inlet temperature, T₁",
+    ),
+    "Inner_Fibre_Stress": MessageLookupByLibrary.simpleMessage(
+      "Inner fibre stress, σi",
+    ),
+    "Inner_Flange_Thickness_T1": MessageLookupByLibrary.simpleMessage(
+      "Inner flange thickness, t1",
+    ),
+    "Inner_Flange_Width_B1": MessageLookupByLibrary.simpleMessage(
+      "Inner flange width, b1",
+    ),
+    "Inner_Radius_Ri": MessageLookupByLibrary.simpleMessage("Inner radius, ri"),
+    "Inner_Width_Bi": MessageLookupByLibrary.simpleMessage(
+      "Width at inner fibre, bi",
     ),
     "Input_Speed_N1": MessageLookupByLibrary.simpleMessage("Input speed, n1"),
     "Inputs": MessageLookupByLibrary.simpleMessage("Inputs"),
@@ -1034,7 +1218,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Large pulley diameter, d2",
     ),
     "Latent_Heat_Hfg": MessageLookupByLibrary.simpleMessage("Latent heat, hfg"),
-    "Layer_Number": m7,
+    "Layer_Number": m13,
     "Layer_Resistances": MessageLookupByLibrary.simpleMessage(
       "Layer resistances",
     ),
@@ -1077,6 +1261,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Distributed",
     ),
     "Load_Type_Point": MessageLookupByLibrary.simpleMessage("Point"),
+    "Loading_Hook": MessageLookupByLibrary.simpleMessage("Hook load"),
+    "Loading_Moment": MessageLookupByLibrary.simpleMessage("Moment"),
     "Log_Mean_Delta_T": MessageLookupByLibrary.simpleMessage("Log mean ΔT"),
     "ME_Toolkit": MessageLookupByLibrary.simpleMessage("ME Toolkit"),
     "Machine_Design": MessageLookupByLibrary.simpleMessage("Machine Design"),
@@ -1132,6 +1318,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Member_Forces": MessageLookupByLibrary.simpleMessage(
       "Member Forces (+ tension, \\u2212 compression)",
     ),
+    "Member_N": m14,
     "Members": MessageLookupByLibrary.simpleMessage("Members"),
     "Menu_Back": MessageLookupByLibrary.simpleMessage("Back"),
     "Menu_Cut": MessageLookupByLibrary.simpleMessage("Cut"),
@@ -1167,11 +1354,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minor_Loss_K": MessageLookupByLibrary.simpleMessage("Minor losses, ΣK"),
     "Mint_Translate": MessageLookupByLibrary.simpleMessage("Mint Translate"),
     "Minus_Tolerance": MessageLookupByLibrary.simpleMessage("Lower, −"),
-    "Mode_Number": m8,
+    "Mode_Number": m15,
     "Module_M": MessageLookupByLibrary.simpleMessage("Module, m"),
     "Modulus_E": MessageLookupByLibrary.simpleMessage("Modulus, E"),
     "Mohrs_Circle_for_Plane_Stress": MessageLookupByLibrary.simpleMessage(
       "Mohr\'s Circle for Plane Stress",
+    ),
+    "Moment_Carried_M": MessageLookupByLibrary.simpleMessage(
+      "Bending moment, M",
     ),
     "Moments_of_Inertia": MessageLookupByLibrary.simpleMessage(
       "Moments of Inertia",
@@ -1186,7 +1376,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "More": MessageLookupByLibrary.simpleMessage("More"),
     "MoreApps": MessageLookupByLibrary.simpleMessage("More Apps"),
+    "More_Actions": MessageLookupByLibrary.simpleMessage("More actions"),
     "MyFavourite": MessageLookupByLibrary.simpleMessage("My Favourite"),
+    "My_Materials": MessageLookupByLibrary.simpleMessage("My Materials"),
+    "My_Presets": MessageLookupByLibrary.simpleMessage("My presets"),
     "NASALover": MessageLookupByLibrary.simpleMessage("NASA Lover"),
     "Name": MessageLookupByLibrary.simpleMessage("Name"),
     "Natural_Frequency_Estimate": MessageLookupByLibrary.simpleMessage(
@@ -1197,7 +1390,14 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Net_Power": MessageLookupByLibrary.simpleMessage("Net power"),
     "Net_Work": MessageLookupByLibrary.simpleMessage("Net work, w_net"),
+    "Neutral_Axis_Rn": MessageLookupByLibrary.simpleMessage("Neutral axis, rn"),
+    "Neutral_Radius_Rn": MessageLookupByLibrary.simpleMessage(
+      "Neutral-axis radius, rn",
+    ),
     "New_Project": MessageLookupByLibrary.simpleMessage("New project"),
+    "No_Custom_Presets_Message": MessageLookupByLibrary.simpleMessage(
+      "Nothing of your own yet. Tap Add to create one, or duplicate a built-in below and change what differs.",
+    ),
     "No_Favorites_Yet": MessageLookupByLibrary.simpleMessage(
       "No favorites yet",
     ),
@@ -1232,9 +1432,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "Nominal_Size": MessageLookupByLibrary.simpleMessage("Nominal"),
     "Nominal_Size_mm": MessageLookupByLibrary.simpleMessage("Size (mm)"),
     "None": MessageLookupByLibrary.simpleMessage("None"),
+    "Normal_Force_Carried_N": MessageLookupByLibrary.simpleMessage(
+      "Normal force, N",
+    ),
+    "Normal_Force_N": MessageLookupByLibrary.simpleMessage(
+      "Normal force, N (+ tension)",
+    ),
     "Not_a_number": MessageLookupByLibrary.simpleMessage("Not a number"),
     "Note_Polar_Moment": MessageLookupByLibrary.simpleMessage(
       "J = Ix + Iy is the polar area moment. It is not the Saint-Venant torsion constant for non-circular sections.",
+    ),
+    "Nothing_To_Export": MessageLookupByLibrary.simpleMessage(
+      "There are no presets of your own to export yet.",
     ),
     "NovelsHub": MessageLookupByLibrary.simpleMessage("Novels Hub"),
     "Novels_Hub": MessageLookupByLibrary.simpleMessage("Novels Hub"),
@@ -1254,6 +1463,19 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Orthotropic_material": MessageLookupByLibrary.simpleMessage(
       "Orthotropic material",
+    ),
+    "Outer_Fibre_Stress": MessageLookupByLibrary.simpleMessage(
+      "Outer fibre stress, σo",
+    ),
+    "Outer_Flange_Thickness_T2": MessageLookupByLibrary.simpleMessage(
+      "Outer flange thickness, t2",
+    ),
+    "Outer_Flange_Width_B2": MessageLookupByLibrary.simpleMessage(
+      "Outer flange width, b2",
+    ),
+    "Outer_Radius_Ro": MessageLookupByLibrary.simpleMessage("Outer radius, ro"),
+    "Outer_Width_Bo": MessageLookupByLibrary.simpleMessage(
+      "Width at outer fibre, bo",
     ),
     "Output_Speed_N2": MessageLookupByLibrary.simpleMessage("Output speed, n2"),
     "Outside_Air": MessageLookupByLibrary.simpleMessage("Outside air"),
@@ -1302,6 +1524,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Pick material",
     ),
     "Pin": MessageLookupByLibrary.simpleMessage("Pin"),
+    "Pin_Force_At": m16,
     "Pinion_Pitch_Diameter_D1": MessageLookupByLibrary.simpleMessage(
       "Pinion pitch diameter, d1",
     ),
@@ -1330,6 +1553,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Point_Position_A": MessageLookupByLibrary.simpleMessage(
       "Point position, a",
     ),
+    "Poissons_Ratio_Nu": MessageLookupByLibrary.simpleMessage(
+      "Poisson\'s ratio, ν",
+    ),
     "Polar_Area_Moment_J": MessageLookupByLibrary.simpleMessage(
       "Polar area moment, J",
     ),
@@ -1353,17 +1579,20 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Benefit_Export": MessageLookupByLibrary.simpleMessage(
       "PDF reports, CSV export and result images",
     ),
-    "Premium_Benefit_History": m9,
+    "Premium_Benefit_History": m17,
     "Premium_Benefit_No_Ads": MessageLookupByLibrary.simpleMessage(
       "Remove all ads",
     ),
     "Premium_Benefit_Projects": MessageLookupByLibrary.simpleMessage(
       "Saved projects and combined project reports",
     ),
+    "Premium_Benefit_Solve": MessageLookupByLibrary.simpleMessage(
+      "Solve any calculation backwards for the input you need",
+    ),
     "Premium_Benefit_Sweep": MessageLookupByLibrary.simpleMessage(
       "What-if parameter sweep charts",
     ),
-    "Premium_Benefit_Tools": m10,
+    "Premium_Benefit_Tools": m18,
     "Premium_Benefit_Universal": MessageLookupByLibrary.simpleMessage(
       "Premium on iPhone, iPad and Mac with the same Apple Account",
     ),
@@ -1373,19 +1602,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Description_Play": MessageLookupByLibrary.simpleMessage(
       "One purchase, yours forever. Restore it on any Android device signed in to the same Google Account.",
     ),
-    "Premium_Free_Tools_Note": m11,
-    "Premium_History_Limited": m12,
+    "Premium_Free_Tools_Note": m19,
+    "Premium_History_Limited": m20,
     "Premium_Locked_Export": MessageLookupByLibrary.simpleMessage(
       "PDF, CSV and image export are part of Premium.",
     ),
-    "Premium_Locked_History": m13,
+    "Premium_Locked_History": m21,
     "Premium_Locked_Projects": MessageLookupByLibrary.simpleMessage(
       "Saved projects are part of Premium.",
+    ),
+    "Premium_Locked_Solve": MessageLookupByLibrary.simpleMessage(
+      "Solving for an input is part of Premium.",
     ),
     "Premium_Locked_Sweep": MessageLookupByLibrary.simpleMessage(
       "What-if charts are part of Premium.",
     ),
-    "Premium_Locked_Tool": m14,
+    "Premium_Locked_Tool": m22,
     "Premium_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Premium is not available from the App Store yet.",
     ),
@@ -1408,6 +1640,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "Premium_Unlocked_Description_Play": MessageLookupByLibrary.simpleMessage(
       "All tools are unlocked and ads are removed. Restore your purchase on any Android device with the same Google Account.",
     ),
+    "Preset_Copy_Name": m23,
+    "Preset_Copy_Name_N": m24,
+    "Preset_Name_Required": MessageLookupByLibrary.simpleMessage(
+      "Enter a name.",
+    ),
+    "Preset_Name_Taken": MessageLookupByLibrary.simpleMessage(
+      "Another preset already has this name.",
+    ),
+    "Preset_Needs_A_Property": MessageLookupByLibrary.simpleMessage(
+      "Enter at least one property.",
+    ),
+    "Presets_Export_Copied": m25,
+    "Presets_Import_Invalid": MessageLookupByLibrary.simpleMessage(
+      "The clipboard does not hold an ME Toolkit materials export.",
+    ),
+    "Presets_Imported": m26,
     "Press_Shrink_Fit_Interference": MessageLookupByLibrary.simpleMessage(
       "Press / Shrink-Fit Interference",
     ),
@@ -1417,7 +1665,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Pressure ratio, rp",
     ),
     "Pressure_Rise": MessageLookupByLibrary.simpleMessage("Pressure rise, Δp"),
-    "Preview_Value": m15,
+    "Preview_Value": m27,
     "Principal_stresses_and_plane": MessageLookupByLibrary.simpleMessage(
       "Principal stresses and plane",
     ),
@@ -1440,7 +1688,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Product_Not_Found": MessageLookupByLibrary.simpleMessage(
       "Remove Ads is not available from the App Store yet.",
     ),
-    "Project_Calculations": m16,
+    "Project_Calculations": m28,
     "Project_Entry_No_Result": MessageLookupByLibrary.simpleMessage(
       "Inputs only",
     ),
@@ -1454,8 +1702,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "Project_Report_Empty": MessageLookupByLibrary.simpleMessage(
       "This project has no saved results yet. Open a calculation and use Save to project to add one.",
     ),
-    "Project_Saved": m17,
-    "Project_Updated": m18,
+    "Project_Saved": m29,
+    "Project_Updated": m30,
     "Proof_Strength_Sp": MessageLookupByLibrary.simpleMessage("Proof Sp"),
     "Pump_Efficiency": MessageLookupByLibrary.simpleMessage(
       "Pump efficiency, ηp (%)",
@@ -1481,6 +1729,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Purchasing": MessageLookupByLibrary.simpleMessage("Purchasing…"),
     "Pv_Diagram": MessageLookupByLibrary.simpleMessage("p–v diagram"),
     "Quality_X": MessageLookupByLibrary.simpleMessage("Quality, x"),
+    "Radial_Depth_H": MessageLookupByLibrary.simpleMessage("Radial depth, h"),
     "Radius_Gyration_rx": MessageLookupByLibrary.simpleMessage(
       "Radius of gyration, rx",
     ),
@@ -1504,7 +1753,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "The turbine exhausts below 88 % quality. That much moisture erodes the last-stage blades — raise the superheat, or add reheat.",
     ),
     "RatethisApp": MessageLookupByLibrary.simpleMessage("Rate this App"),
-    "Reaction_At_X": m19,
+    "Reaction": MessageLookupByLibrary.simpleMessage("Reaction"),
+    "Reaction_At_X": m31,
     "Recommended_by_Major": MessageLookupByLibrary.simpleMessage(
       "Recommended by Major",
     ),
@@ -1522,7 +1772,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Remove_Layer": MessageLookupByLibrary.simpleMessage("Remove layer"),
     "Remove_Load": MessageLookupByLibrary.simpleMessage("Remove load"),
-    "Remove_Tool_from_Favorites": m20,
+    "Remove_Tool_from_Favorites": m32,
     "Remove_from_Favorites": MessageLookupByLibrary.simpleMessage(
       "Remove from favorites",
     ),
@@ -1572,7 +1822,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Rewarded_Tool_Watch": MessageLookupByLibrary.simpleMessage(
       "Watch ad to unlock",
     ),
-    "Rewarded_Tools_Note": m21,
+    "Rewarded_Tools_Note": m33,
     "Reynolds_Number": MessageLookupByLibrary.simpleMessage(
       "Reynolds Number & Flow Regime",
     ),
@@ -1677,12 +1927,27 @@ class MessageLookup extends MessageLookupByLibrary {
       "A standard section fills the weak-axis Iy, which governs an unbraced column.",
     ),
     "Section_Flange_tf": MessageLookupByLibrary.simpleMessage("Flange, tf"),
+    "Section_Geometry": MessageLookupByLibrary.simpleMessage(
+      "Section geometry",
+    ),
+    "Section_I": MessageLookupByLibrary.simpleMessage("I-section"),
+    "Section_Loading": MessageLookupByLibrary.simpleMessage("Loading"),
+    "Section_Loads": MessageLookupByLibrary.simpleMessage("Section loads"),
     "Section_Modulus_Zx": MessageLookupByLibrary.simpleMessage(
       "Section modulus, Zx",
     ),
     "Section_Modulus_Zy": MessageLookupByLibrary.simpleMessage(
       "Section modulus, Zy",
     ),
+    "Section_Rectangle": MessageLookupByLibrary.simpleMessage("Rectangle"),
+    "Section_Round_Tube": MessageLookupByLibrary.simpleMessage("Round tube"),
+    "Section_Shape": MessageLookupByLibrary.simpleMessage("Cross-section"),
+    "Section_Solid_Round": MessageLookupByLibrary.simpleMessage("Solid round"),
+    "Section_T": MessageLookupByLibrary.simpleMessage("T-section"),
+    "Section_To_Scale": MessageLookupByLibrary.simpleMessage(
+      "Section to scale",
+    ),
+    "Section_Trapezoid": MessageLookupByLibrary.simpleMessage("Trapezoid"),
     "Section_Web_tw": MessageLookupByLibrary.simpleMessage("Web, tw"),
     "Section_Width_b": MessageLookupByLibrary.simpleMessage("Width, b"),
     "Sections_Footnote": MessageLookupByLibrary.simpleMessage(
@@ -1744,6 +2009,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Share_Format_Text_Description": MessageLookupByLibrary.simpleMessage(
       "Plain text you can paste anywhere",
     ),
+    "Share_Presets_Export": MessageLookupByLibrary.simpleMessage(
+      "Share export",
+    ),
     "Share_Results": MessageLookupByLibrary.simpleMessage("Share results"),
     "SharethisApp": MessageLookupByLibrary.simpleMessage("Share this App"),
     "Shear_Force_Diagram": MessageLookupByLibrary.simpleMessage(
@@ -1770,6 +2038,21 @@ class MessageLookup extends MessageLookupByLibrary {
       "Small pulley diameter, d1",
     ),
     "Solid_Height": MessageLookupByLibrary.simpleMessage("Solid height"),
+    "Solve": MessageLookupByLibrary.simpleMessage("Solve"),
+    "Solve_By_Changing": MessageLookupByLibrary.simpleMessage("By changing"),
+    "Solve_Current_Value": m34,
+    "Solve_For": MessageLookupByLibrary.simpleMessage("Solve for an input"),
+    "Solve_For_Description": MessageLookupByLibrary.simpleMessage(
+      "Set the result you want and choose which input may change; the app finds the value that gives it.",
+    ),
+    "Solve_Nearest_Of": m35,
+    "Solve_No_Solution": m36,
+    "Solve_No_Solution_Range": m37,
+    "Solve_Target_Output": MessageLookupByLibrary.simpleMessage("Result"),
+    "Solve_Target_Value": MessageLookupByLibrary.simpleMessage("Target value"),
+    "Solve_Use_Value": MessageLookupByLibrary.simpleMessage("Use this value"),
+    "Solve_Was": m38,
+    "Solved_Value_Filled": m39,
     "Span_L": MessageLookupByLibrary.simpleMessage("Span, L"),
     "Span_L_Short": MessageLookupByLibrary.simpleMessage("Span L"),
     "Specific_Enthalpy_H": MessageLookupByLibrary.simpleMessage(
@@ -1806,7 +2089,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stackup_Contributions": MessageLookupByLibrary.simpleMessage(
       "Share of the variation",
     ),
-    "Stackup_Dimension_N": m22,
+    "Stackup_Dimension_N": m40,
     "Stackup_Dimensions": MessageLookupByLibrary.simpleMessage(
       "Dimension chain",
     ),
@@ -1838,7 +2121,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Standard_Sections": MessageLookupByLibrary.simpleMessage(
       "Standard Sections",
     ),
-    "State_Numbered": m23,
+    "State_Numbered": m41,
     "Static_Deflection_Delta": MessageLookupByLibrary.simpleMessage(
       "Static deflection, δst",
     ),
@@ -1874,7 +2157,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "Stiffness_Matrix_Q": MessageLookupByLibrary.simpleMessage(
       "Stiffness Matrix Q",
     ),
+    "Straight_Beam_Inner": MessageLookupByLibrary.simpleMessage(
+      "Straight-beam σi (M·c/I)",
+    ),
+    "Straight_Beam_Outer": MessageLookupByLibrary.simpleMessage(
+      "Straight-beam σo (M·c/I)",
+    ),
     "Strain": MessageLookupByLibrary.simpleMessage("Strain"),
+    "Strength_S": MessageLookupByLibrary.simpleMessage("S (in-plane shear)"),
+    "Strength_Xc": MessageLookupByLibrary.simpleMessage(
+      "Xc (fibre compressive)",
+    ),
+    "Strength_Xt": MessageLookupByLibrary.simpleMessage("Xt (fibre tensile)"),
+    "Strength_Yc": MessageLookupByLibrary.simpleMessage(
+      "Yc (transverse compressive)",
+    ),
+    "Strength_Yt": MessageLookupByLibrary.simpleMessage(
+      "Yt (transverse tensile)",
+    ),
     "Stress": MessageLookupByLibrary.simpleMessage("Stress"),
     "Stress_Area_As": MessageLookupByLibrary.simpleMessage("Stress area"),
     "Stress_At_Diameter": MessageLookupByLibrary.simpleMessage(
@@ -1884,6 +2184,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Stress-concentration factors (defaults: profiled keyway) and target safety factor",
     ),
     "Stress_Results": MessageLookupByLibrary.simpleMessage("Stress Results"),
+    "Stress_Through_Depth": MessageLookupByLibrary.simpleMessage(
+      "Stress through the depth",
+    ),
     "Stresses_in_a_thin_walled_cylindrical_pressure_vessel":
         MessageLookupByLibrary.simpleMessage(
           "Stresses in a thin-walled cylindrical pressure vessel",
@@ -1910,6 +2213,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Support_Cantilever_Right": MessageLookupByLibrary.simpleMessage(
       "Cantilever, fixed at right",
     ),
+    "Support_Fixed": MessageLookupByLibrary.simpleMessage("Fixed"),
     "Support_Fixed_Fixed": MessageLookupByLibrary.simpleMessage(
       "Fixed at both ends",
     ),
@@ -1928,6 +2232,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "SwiftComp:Composites Material",
     ),
     "System_Default": MessageLookupByLibrary.simpleMessage("System default"),
+    "Tab_Fluids": MessageLookupByLibrary.simpleMessage("Fluids"),
+    "Tab_Laminae": MessageLookupByLibrary.simpleMessage("Laminae"),
+    "Tab_Solids": MessageLookupByLibrary.simpleMessage("Solids"),
+    "Tab_Thermal": MessageLookupByLibrary.simpleMessage("Thermal"),
     "Tangential_Load_Wt": MessageLookupByLibrary.simpleMessage(
       "Tangential load, Wt",
     ),
@@ -2022,6 +2330,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "Total_Resistance_R": MessageLookupByLibrary.simpleMessage(
       "Total resistance, R",
     ),
+    "Toward_Centre_Of_Curvature": MessageLookupByLibrary.simpleMessage(
+      "toward the centre of curvature",
+    ),
     "Transverse_shear_stress_in_beam": MessageLookupByLibrary.simpleMessage(
       "Transverse shear stress in beam",
     ),
@@ -2091,7 +2402,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Water_Tracker": MessageLookupByLibrary.simpleMessage("Water Tracker"),
     "Weak_Axis": MessageLookupByLibrary.simpleMessage("Weak axis (y-y)"),
     "Web_Thickness": MessageLookupByLibrary.simpleMessage("Web thickness"),
-    "What_If": m24,
+    "Web_Thickness_Tw": MessageLookupByLibrary.simpleMessage(
+      "Web thickness, tw",
+    ),
+    "What_If": m42,
     "Wire_Diameter_D": MessageLookupByLibrary.simpleMessage("Wire diameter, d"),
     "World_Weather_Live": MessageLookupByLibrary.simpleMessage(
       "World Weather Live",

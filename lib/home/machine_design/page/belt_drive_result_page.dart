@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/model/belt_drive_calculator.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
@@ -87,6 +88,7 @@ class BeltDriveResultPage extends StatelessWidget {
       ],
       children: [
         FormulaCard(steps: formulaSteps),
+        SolveForCard(toolId: 705),
         ParameterSweepCard(
           variableLabel: S.of(context).Center_Distance_C,
           variableCategory: UnitCategory.length,

@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/beam/model/beam_solver.dart';
 import 'package:mechanical_engineering_toolkit/home/beam/page/beam_calculator_page.dart';
+import 'package:mechanical_engineering_toolkit/home/statics/page/frame_analysis_page.dart';
 import 'package:mechanical_engineering_toolkit/home/thermodynamics/model/air_standard_cycle_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/thermodynamics/model/ideal_gas_calculator.dart';
 import 'package:mechanical_engineering_toolkit/home/thermodynamics/model/steam_tables_calculator.dart';
@@ -55,7 +56,20 @@ Map<String, String> displayInputs(
         continue;
       }
     }
-    // The thermodynamics tools store their mode the same way.
+    // A frame member is stored as its joint indices, zero-based; the page
+    // and the reader both count joints from J1.
+    if (frameMemberKeyPattern.hasMatch(entry.key)) {
+      final number = int.parse(entry.key.substring('Member'.length));
+      final path = entry.value
+          .split(',')
+          .map((part) => int.tryParse(part.trim()))
+          .whereType<int>()
+          .map((index) => 'J${index + 1}')
+          .join(' → ');
+      display[S.of(context).Member_N(number)] = path;
+      continue;
+    }
+        // The thermodynamics tools store their mode the same way.
     final mode = _modeLabel(context, entry.key, entry.value);
     if (mode != null) {
       display[mode.$1] = mode.$2;

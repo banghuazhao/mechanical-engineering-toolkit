@@ -4,6 +4,7 @@ import 'package:mechanical_engineering_toolkit/home/thermodynamics/model/rankine
 import 'package:mechanical_engineering_toolkit/home/thermodynamics/page/rankine_page.dart';
 import 'package:mechanical_engineering_toolkit/home/thermodynamics/page/thermo_widgets.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/line_plot_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
@@ -120,6 +121,7 @@ class RankineResultPage extends StatelessWidget {
           ResultWarningCard(message: l10n.Rankine_Wet_Exhaust),
         StateTableCard(title: l10n.Cycle_States, columns: columns, rows: rows),
         FormulaCard(steps: steps, tex: rankineTex),
+        SolveForCard(toolId: toolId),
         LinePlotCard(
           title: l10n.Ts_Diagram,
           xAxisLabel: axisLabel('s', UnitCategory.specificEntropy, system),

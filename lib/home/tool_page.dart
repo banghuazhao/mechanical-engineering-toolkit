@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/language_picker.dart';
 import 'package:mechanical_engineering_toolkit/home/major_list_page.dart';
+import 'package:mechanical_engineering_toolkit/home/my_materials_page.dart';
 import 'package:mechanical_engineering_toolkit/home/saved_projects_page.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_favorites.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_launcher.dart';
@@ -387,6 +388,11 @@ class _ToolPageState extends State<ToolPage> {
         title: S.of(context).Saved_Projects,
         leadingIcon: Icons.bookmark_rounded,
         onTap: () => open(const SavedProjectsPage()),
+      ),
+      MoreRow(
+        title: S.of(context).My_Materials,
+        leadingIcon: Icons.science_rounded,
+        onTap: () => open(const MyMaterialsPage()),
       ),
       const Divider(height: 24, indent: 16, endIndent: 16),
       MoreRow(

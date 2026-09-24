@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/generated/l10n.dart';
 import 'package:mechanical_engineering_toolkit/home/machine_design/model/press_fit_calculator.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/parameter_sweep_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_scaffold.dart';
@@ -64,6 +65,7 @@ class PressFitResultPage extends StatelessWidget {
       ],
       children: [
         FormulaCard(steps: formulaSteps),
+        SolveForCard(toolId: 708),
         ParameterSweepCard(
           variableLabel: S.of(context).Diametral_Interference,
           variableCategory: UnitCategory.length,

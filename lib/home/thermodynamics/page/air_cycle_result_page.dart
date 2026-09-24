@@ -4,6 +4,7 @@ import 'package:mechanical_engineering_toolkit/home/thermodynamics/model/air_sta
 import 'package:mechanical_engineering_toolkit/home/thermodynamics/page/air_cycle_page.dart';
 import 'package:mechanical_engineering_toolkit/home/thermodynamics/page/thermo_widgets.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
+import 'package:mechanical_engineering_toolkit/solve/solve_for_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/app_components.dart';
 import 'package:mechanical_engineering_toolkit/ui/line_plot_card.dart';
 import 'package:mechanical_engineering_toolkit/ui/result_model.dart';
@@ -147,6 +148,7 @@ class AirCycleResultPage extends StatelessWidget {
           rows: rows,
         ),
         FormulaCard(steps: steps, tex: airCycleTex(r.cycle)),
+        SolveForCard(toolId: toolId),
         LinePlotCard(
           title: l10n.Pv_Diagram,
           xAxisLabel: axisLabel('v', UnitCategory.specificVolume, system),
