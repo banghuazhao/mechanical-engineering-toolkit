@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Added Solve For to 28 calculators: set the result you want, choose the input that may change, and the app works the calculation backwards to the value that gives it — the diameter that keeps a stress at 150 MPa, the pressure ratio for a 40 % Brayton cycle, the rating a bearing needs for 20 000 hours. Where several values work, it takes the one nearest your design and says so; where none does, it says what range that input alone can reach. "Use this value" reopens the tool with the answer in its field. On a Mac it is part of Premium, like the what-if charts.
+- Added Curved Beam in Bending under Beam Engineering: Winkler–Bach theory for rectangular, trapezoidal, solid round, tube, T and I sections, loaded by a moment and normal force or by a hook load through the centre of curvature. It reports both fibre stresses, the neutral-axis shift, the straight-beam comparison and the curvature factors, draws the section to scale with its centroid and neutral axis, and plots the stress through the depth.
+- Added Frames and Machines under Statics, for structures with multi-force members that the method of joints cannot solve: bent and branched members through any number of joints, pin, roller and fixed supports, and forces and couples. It takes the structure apart and reports the force every pin puts on every member, the support reactions, and the axial force in any two-force member, and says whether a frame that will not solve is a mechanism, indeterminate, or unstable.
+- Custom materials now reach every library: fluids, thermal materials and composite laminae can be added alongside isotropic materials, and any entry, built-in or your own, can be duplicated as the starting point for a new one. Custom isotropic materials gain Poisson's ratio, with G worked out from E and ν when left blank; custom laminae may leave out their strengths.
+- Added My Materials, in the side menu and the Mac's Go menu, to add, edit and delete your own presets and browse the built-in ones, and to move your presets to another device as a JSON export via the clipboard or the share sheet.
+- Your own presets can now be edited, and a name already taken — by a built-in or another of yours — is refused rather than creating a twin. Deleting one of two presets saved under the same name by an earlier version no longer deletes both.
+- Added Home Screen widgets on Android, Favourite Tools and Recent Tools, resizable, each row opening its calculator directly and a locked tool marked as such, in light and dark.
+- Added Android launcher shortcuts: long-press the app icon for the Unit Converter and up to three favourite tools, or recent ones until you star any.
+
 ## 1.14.0 - 2026-09-20
 
 - iPhone and iPad now offer Premium: the free set of tools stays free, any other tool unlocks permanently on the device after one rewarded ad, and Premium unlocks them all and removes ads. Premium is the existing Remove Ads purchase under a new name, so everyone who bought Remove Ads already has it, and it is the same purchase as the Mac's Premium.

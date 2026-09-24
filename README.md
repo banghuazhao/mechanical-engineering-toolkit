@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 A cross-platform engineering calculator for students, researchers, and practising
-engineers. Sixty-four tools spanning mechanics of materials, beam analysis,
+engineers. Sixty-six tools spanning mechanics of materials, beam analysis,
 statics, machine design and vibration, fluids and heat transfer, thermodynamics,
 elasticity, and composites — each one showing the governing formula, the
 substituted calculation steps, and a result you can export or share.
@@ -21,6 +21,10 @@ substituted calculation steps, and a result you can export or share.
 
 - **Transparent calculations.** Every result page shows the governing formula with
   values substituted, not just a number.
+- **Solve for any input.** Run a calculation backwards: set the result you
+  want — a stress, a critical speed, an efficiency — pick the input that may
+  change, and the app finds the value that gives it, then reopens the tool
+  with it filled in. Available on 28 calculators.
 - **SI and Imperial throughout.** Switch unit systems at any time; every field
   converts in place.
 - **Configurable precision.** Auto, scientific, decimal, or engineering notation,
@@ -36,6 +40,9 @@ substituted calculation steps, and a result you can export or share.
 - **Material and section libraries.** Isotropic materials, unidirectional
   composite laminae, fluid properties, thermal materials, and standard steel
   sections.
+- **Your own materials.** Add, edit, or copy-and-adjust entries in any of the
+  four material libraries, from the picker in a tool or from *My Materials*,
+  and move them to another device as a JSON export.
 - **Discovery.** Full-text search, favourites, history, and recommendations by
   engineering major.
 - **Six languages.** English, German, French, Japanese, Simplified Chinese, and
@@ -50,8 +57,10 @@ substituted calculation steps, and a result you can export or share.
   opening the app, *Open Tool* jumps into any calculator, and *Open Unit
   Converter* does what it says. Usable from the Shortcuts app, the Action
   button, Spotlight and Siri.
-- **Home Screen widgets.** *Favourite Tools* and *Recent Tools*, in all three
-  sizes, each tile opening its calculator directly.
+- **Home Screen widgets.** *Favourite Tools* and *Recent Tools* on iPhone,
+  iPad, Mac and Android, each row opening its calculator directly.
+- **Android launcher shortcuts.** Long-press the icon for the Unit Converter
+  and your favourite (or most recent) tools.
 - **iPhone, iPad, Android and Mac.** The Mac app is a second platform on the same
   App Store record, so its unlock is shared with iOS — see below.
 
@@ -60,12 +69,12 @@ substituted calculation steps, and a result you can export or share.
 | Category | Tools | Coverage |
 |---|---:|---|
 | Mechanics of Material | 16 | General stress, bar force–displacement, torsion and angle of twist, plane-stress transformation, principal stresses, Mohr's circle, spherical shell, thin-walled cylindrical pressure vessel, column buckling, thermal deformation, shaft power and torque, Von Mises / Tresca, fatigue safety factor (Modified Goodman), bolted and riveted joints, combined loading |
-| Beam Engineering | 7 | Moments of inertia, flexure formula, cantilever and simple-beam deflections and slopes, transverse shear stress, beam section properties, general beam analysis (six support arrangements, any number of point, distributed and couple loads, solved by the stiffness method) |
+| Beam Engineering | 8 | Moments of inertia, flexure formula, cantilever and simple-beam deflections and slopes, transverse shear stress, beam section properties, general beam analysis (six support arrangements, any number of point, distributed and couple loads, solved by the stiffness method), curved beams in bending (Winkler–Bach: rectangle, trapezoid, round, tube, T and I sections, with a crane-hook load case) |
 | Machine Design | 12 | Helical compression springs, spur gear geometry and Lewis bending stress, shaft fatigue design (DE-Goodman), bearing L10 life, belt and chain drives, bolt preload / torque-tension, fillet weld strength, press / shrink-fit interference, power screws (torque, efficiency, self-locking), shaft critical speed (Dunkerley), beam natural frequency (first three modes, five end conditions), torsional natural frequency (one or two rotors) |
 | Fluids & Thermal | 6 | Reynolds number and flow regime, pipe pressure drop (Darcy–Weisbach with Colebrook), pump and fan power, composite wall conduction, fin efficiency, heat exchanger sizing by LMTD |
 | Thermodynamics | 4 | Steam tables (IAPWS-IF97: saturation by temperature or pressure, and single states from p–T, p–x, p–h or p–s), ideal gas processes (isothermal, isobaric, isochoric, isentropic, polytropic), air-standard Otto, Diesel and Brayton cycles, Rankine steam cycle with turbine and pump efficiencies |
 | Composite Material | 7 | Lamina and laminate stress/strain, lamina engineering constants, laminate plane and 3D properties, rule of mixtures, Tsai-Hill and Tsai-Wu failure criteria |
-| Statics | 3 | Resultant of forces (2D), centroid of composite area, truss analysis by method of joints |
+| Statics | 4 | Resultant of forces (2D), centroid of composite area, truss analysis by method of joints, frames and machines (multi-force members, pin forces on each member, pin, roller and fixed supports, applied couples) |
 | Theory of Elasticity | 2 | Constitutive relation and stress/strain of linear elastic material |
 | Reference & Utilities | 7 | Unit converter, drill and tap chart, ISO 286 fits and tolerances, standard sections (AISC W, IPE, HEB), ASME B36.10M pipe schedules, 1D tolerance stack-up (worst case and RSS), bolt grades and tightening torque (ISO 898-1 and SAE J429) |
 
@@ -151,7 +160,7 @@ build includes the tools listed in
 tables, plus at least one working calculator in each of the nine categories —
 and shares results as text. **Premium** adds the rest of the library,
 PDF/CSV/image export, saved projects, the calculation history beyond the last
-five entries, and the what-if sweep charts.
+five entries, the what-if sweep charts, and solving for an input.
 
 The two are the *same* App Store Connect product
 (`…mechanicalEngineeringToolkit.remove_ads`): macOS is a second platform on one
@@ -189,6 +198,9 @@ product):
 - Description: **Unlock all tools and remove ads on iPhone, iPad and Mac.**
 
 ## Shortcuts and the Home Screen widget
+
+This section covers the Apple platforms; Android is
+[below](#android-widgets-and-launcher-shortcuts).
 
 The native code both platforms share lives in [`apple/`](apple), not under
 `ios/` or `macos/`, because both Xcode projects compile it — one copy, two
@@ -233,6 +245,28 @@ second door into a tool this build holds behind Premium — it reaches the same
 upgrade sheet the library shows. An id that no longer exists is ignored rather
 than crashing, which is what an old widget tile looks like after a tool is
 withdrawn.
+
+### Android widgets and launcher shortcuts
+
+Android uses the same channel and the same snapshot. `ShortcutBridge.kt`
+answers the Dart side's `publishSnapshot` and `ready` exactly as the Swift
+bridge does, stores the snapshot in the app's own preferences (an Android
+widget runs in the app's process, so there is no container to share), and
+then:
+
+- redraws the two App Widgets, `FavoriteToolsWidget` and `RecentToolsWidget`
+  in [`QuickToolsWidget.kt`](android/app/src/main/kotlin/com/appsbay/mechanical_engineering_toolkit/QuickToolsWidget.kt),
+  whose rows come from a `RemoteViewsService` and carry a per-category colour
+  mark in place of the tool illustration;
+- republishes the dynamic launcher shortcuts in
+  [`LauncherShortcuts.kt`](android/app/src/main/kotlin/com/appsbay/mechanical_engineering_toolkit/LauncherShortcuts.kt):
+  up to three favourites, or recent tools while there are none, beside the
+  static Unit Converter shortcut in `res/xml/shortcuts.xml`.
+
+Widget rows and shortcuts open `metoolkit://tool/<id>` in `MainActivity`,
+which hands the link to the bridge; a cold-start link waits in the bridge's
+queue until Dart says it is ready, then goes through `DeepLinkRouter` and
+`launchTool` like any other.
 
 ### The App Group, and the one step that is not in this repository
 
