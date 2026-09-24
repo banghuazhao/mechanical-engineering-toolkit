@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ME Toolkit</string>
+
+    <!-- Home Screen widgets and launcher shortcuts. -->
+    <string name="widget_favorites_name">Favourite Tools</string>
+    <string name="widget_favorites_description">The tools you have starred, one tap away.</string>
+    <string name="widget_recents_name">Recent Tools</string>
+    <string name="widget_recents_description">Jump back into your last calculations.</string>
+    <string name="widget_favorites_header">Favourites</string>
+    <string name="widget_recents_header">Recent</string>
+    <string name="widget_favorites_empty">Star a tool in the app to see it here.</string>
+    <string name="widget_recents_empty">Run a calculation to see it here.</string>
+    <string name="widget_locked">Premium tool</string>
+    <string name="shortcut_unit_converter_short">Unit Converter</string>
+    <string name="shortcut_unit_converter_long">Open Unit Converter</string>
 </resources>

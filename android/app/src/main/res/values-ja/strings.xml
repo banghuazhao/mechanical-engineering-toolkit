@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Home Screen widgets and launcher shortcuts. -->
+    <string name="widget_favorites_name">お気に入りのツール</string>
+    <string name="widget_favorites_description">お気に入りのツールをワンタップで。</string>
+    <string name="widget_recents_name">最近使ったツール</string>
+    <string name="widget_recents_description">直近の計算にすぐ戻れます。</string>
+    <string name="widget_favorites_header">お気に入り</string>
+    <string name="widget_recents_header">最近</string>
+    <string name="widget_favorites_empty">アプリでツールをお気に入りにするとここに表示されます。</string>
+    <string name="widget_recents_empty">計算するとここに表示されます。</string>
+    <string name="widget_locked">Premium ツール</string>
+    <string name="shortcut_unit_converter_short">単位換算</string>
+    <string name="shortcut_unit_converter_long">単位換算を開く</string>
+</resources>

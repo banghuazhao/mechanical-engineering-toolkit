@@ -54,11 +54,14 @@ class ShortcutToolSummary {
   int get hashCode => Object.hash(id, title, categoryId, category, locked);
 }
 
-/// Talks to `apple/METoolkitShared/ShortcutBridge.swift`.
+/// Talks to `apple/METoolkitShared/ShortcutBridge.swift` on iOS and macOS,
+/// and to `ShortcutBridge.kt` on Android — one channel, the same three
+/// methods. On Apple platforms the snapshot feeds the WidgetKit widgets and
+/// the Shortcuts actions; on Android, the App Widgets and the launcher
+/// shortcuts.
 ///
-/// Everything here is a no-op off Apple platforms: Android has its own
-/// App Widget story and no App Intents, so rather than pretend, the calls
-/// return early and the caller needs no platform check of its own.
+/// Everything here is a no-op elsewhere, so the caller needs no platform
+/// check of its own.
 class ShortcutBridge {
   ShortcutBridge._();
 
@@ -75,7 +78,7 @@ class ShortcutBridge {
   static bool get isSupported {
     if (debugForceSupported) return true;
     if (kIsWeb) return false;
-    return Platform.isIOS || Platform.isMacOS;
+    return Platform.isIOS || Platform.isMacOS || Platform.isAndroid;
   }
 
   static void Function(Uri link)? _linkHandler;
@@ -121,11 +124,11 @@ class ShortcutBridge {
     return null;
   }
 
-  /// Hands the widget its content and asks WidgetKit to redraw.
+  /// Hands the widgets and shortcuts their content and asks them to redraw.
   ///
-  /// Returns false when the platform has nowhere to put it — off Apple
-  /// platforms, or when the App Group entitlement is missing, which is what a
-  /// build signed without it looks like from here.
+  /// Returns false when the platform has nowhere to put it — an unsupported
+  /// platform, or on Apple platforms a missing App Group entitlement, which
+  /// is what a build signed without it looks like from here.
   static Future<bool> publishSnapshot({
     required List<ShortcutToolSummary> tools,
     required List<int> favoriteIds,

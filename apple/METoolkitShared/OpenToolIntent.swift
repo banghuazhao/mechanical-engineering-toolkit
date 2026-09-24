@@ -4,7 +4,7 @@ import Foundation
 /// One calculator, as offered in the Shortcuts picker.
 ///
 /// The titles come from the snapshot the running app publishes, so they are
-/// already in the user's language — there is no second copy of sixty-four
+/// already in the user's language — there is no second copy of sixty-six
 /// tool names on this side to translate or to let rot.
 @available(iOS 16.0, macOS 13.0, *)
 struct METoolkitToolEntity: AppEntity {

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_launcher.dart';
 import 'package:mechanical_engineering_toolkit/home/tool_model.dart';
 
-/// The scheme registered in both Info.plists.
+/// The scheme registered in both Info.plists and the Android manifest.
 const String kDeepLinkScheme = 'metoolkit';
 
-/// Routes a `metoolkit://` link from a Home Screen widget tile or a Shortcuts
-/// action.
+/// Routes a `metoolkit://` link from a Home Screen widget tile, a Shortcuts
+/// action or an Android launcher shortcut.
 ///
-/// Mirrors `apple/METoolkitShared/DeepLink.swift`, which is the only thing
-/// that builds these URLs. Two forms exist:
+/// Mirrors `apple/METoolkitShared/DeepLink.swift` and `ToolSnapshot.kt`,
+/// which are the only things that build these URLs. Two forms exist:
 ///
 ///   `metoolkit://tool/703`  open that calculator
 ///   `metoolkit://library`   show the tool library

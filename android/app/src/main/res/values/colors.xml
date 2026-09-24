@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="launch_surface">#FFFBF8</color>
+
+    <!-- Home Screen widgets, matching AppTheme.light(). -->
+    <color name="widget_surface">#FFFBF8</color>
+    <color name="widget_row_surface">#F5ECE6</color>
+    <color name="widget_primary_text">#211A17</color>
+    <color name="widget_secondary_text">#57443A</color>
+    <color name="widget_accent">#8B654B</color>
+
+    <!-- Launcher shortcut icons. -->
+    <color name="shortcut_background">#F5E5D9</color>
+    <color name="shortcut_glyph">#8B654B</color>
 </resources>

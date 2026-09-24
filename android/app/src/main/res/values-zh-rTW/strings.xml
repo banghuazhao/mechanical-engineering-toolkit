@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">機械工具箱</string>
+
+    <!-- Home Screen widgets and launcher shortcuts. -->
+    <string name="widget_favorites_name">收藏的工具</string>
+    <string name="widget_favorites_description">一鍵打開已收藏的工具。</string>
+    <string name="widget_recents_name">最近使用的工具</string>
+    <string name="widget_recents_description">快速回到最近的計算。</string>
+    <string name="widget_favorites_header">收藏</string>
+    <string name="widget_recents_header">最近</string>
+    <string name="widget_favorites_empty">在應用程式中收藏工具後會顯示在這裡。</string>
+    <string name="widget_recents_empty">完成一次計算後會顯示在這裡。</string>
+    <string name="widget_locked">Premium 工具</string>
+    <string name="shortcut_unit_converter_short">單位換算</string>
+    <string name="shortcut_unit_converter_long">打開單位換算</string>
 </resources>

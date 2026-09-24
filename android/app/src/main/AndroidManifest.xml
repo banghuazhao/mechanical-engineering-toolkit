@@ -33,7 +33,47 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- metoolkit://tool/703 and metoolkit://library, from the Home
+                 Screen widgets and the launcher shortcuts; routed by
+                 lib/util/deep_links.dart. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="metoolkit"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts"/>
         </activity>
+
+        <!-- Home Screen widgets: Favourite Tools and Recent Tools. -->
+        <receiver
+            android:name=".FavoriteToolsWidget"
+            android:exported="false"
+            android:label="@string/widget_favorites_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_favorite_tools_info"/>
+        </receiver>
+        <receiver
+            android:name=".RecentToolsWidget"
+            android:exported="false"
+            android:label="@string/widget_recents_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_recent_tools_info"/>
+        </receiver>
+        <service
+            android:name=".QuickToolsWidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

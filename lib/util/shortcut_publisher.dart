@@ -14,8 +14,8 @@ import 'package:provider/provider.dart';
 /// duplicates are collapsed on the native side.
 const int _kRecentToolLimit = 12;
 
-/// Keeps the Home Screen widget and the Shortcuts "Open Tool" picker in step
-/// with the app.
+/// Keeps the Home Screen widgets, the Shortcuts "Open Tool" picker and the
+/// Android launcher shortcuts in step with the app.
 ///
 /// Sits in the widget tree rather than beside it because everything it
 /// publishes needs a `BuildContext`: the tool titles and category names come
@@ -49,7 +49,7 @@ class ShortcutPublisher extends StatefulWidget {
 
 class _ShortcutPublisherState extends State<ShortcutPublisher> {
   /// What was last handed to the native side, so an unrelated rebuild does
-  /// not re-encode sixty-four tools and wake WidgetKit for nothing.
+  /// not re-encode sixty-six tools and wake the widgets for nothing.
   List<ShortcutToolSummary>? _publishedTools;
   List<int>? _publishedFavorites;
   List<int>? _publishedRecents;
@@ -72,7 +72,7 @@ class _ShortcutPublisherState extends State<ShortcutPublisher> {
 
   /// Defers the publish to after this frame.
   ///
-  /// Reading the tool library builds all sixty-four `Tool` records, and
+  /// Reading the tool library builds all sixty-six `Tool` records, and
   /// [PremiumGate] is read again inside the loop; doing that inside [build]
   /// would put a channel call on the frame that is currently laying out.
   void _schedulePublish() {

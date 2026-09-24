@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="launch_surface">#171210</color>
+
+    <!-- Home Screen widgets, matching AppTheme.dark(). -->
+    <color name="widget_surface">#171210</color>
+    <color name="widget_row_surface">#2A211D</color>
+    <color name="widget_primary_text">#EDE0DA</color>
+    <color name="widget_secondary_text">#DDC2B5</color>
+    <color name="widget_accent">#D7B79F</color>
+
+    <color name="shortcut_background">#6A4832</color>
+    <color name="shortcut_glyph">#F5E5D9</color>
 </resources>

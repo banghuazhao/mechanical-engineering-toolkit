@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Home Screen widgets and launcher shortcuts. -->
+    <string name="widget_favorites_name">Favorisierte Werkzeuge</string>
+    <string name="widget_favorites_description">Ihre markierten Werkzeuge, einen Tipp entfernt.</string>
+    <string name="widget_recents_name">Zuletzt verwendet</string>
+    <string name="widget_recents_description">Direkt zurück zu Ihren letzten Berechnungen.</string>
+    <string name="widget_favorites_header">Favoriten</string>
+    <string name="widget_recents_header">Zuletzt</string>
+    <string name="widget_favorites_empty">Markieren Sie in der App ein Werkzeug, um es hier zu sehen.</string>
+    <string name="widget_recents_empty">Führen Sie eine Berechnung aus, um sie hier zu sehen.</string>
+    <string name="widget_locked">Premium-Werkzeug</string>
+    <string name="shortcut_unit_converter_short">Einheiten</string>
+    <string name="shortcut_unit_converter_long">Einheitenumrechner öffnen</string>
+</resources>

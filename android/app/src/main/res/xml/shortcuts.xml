@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The one launcher shortcut that is always there. The rest — favourites,
+     or recent tools — are published at run time by LauncherShortcuts.kt. -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_convert"
+        android:shortcutId="unit-converter"
+        android:shortcutLongLabel="@string/shortcut_unit_converter_long"
+        android:shortcutShortLabel="@string/shortcut_unit_converter_short">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="metoolkit://tool/500"
+            android:targetClass="com.appsbay.mechanical_engineering_toolkit.MainActivity"
+            android:targetPackage="com.appsbay.mechanical_engineering_toolkit" />
+    </shortcut>
+</shortcuts>
